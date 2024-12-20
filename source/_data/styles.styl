@@ -1,0 +1,78 @@
+// 主题色调
+:root {
+  --theme-color: #37e2d5;
+  --theme-hover: #5ce1e6;
+  --text-white: #fff;
+  --text-black: #000;
+  --text-gray: #999;
+  --card-bg: #fff;
+}
+
+// 全局样式
+body {
+  cursor: url('/img/default.cur'), default;
+}
+a {
+  cursor: url('/img/pointer.cur'), pointer;
+}
+
+// 导航栏
+#nav {
+  backdrop-filter: blur(10px);
+  background: rgba(255,255,255,0.8);
+  &.show {
+    background: rgba(255,255,255,0.95);
+  }
+}
+
+// 卡片样式
+.card-widget {
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s;
+  &:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+  }
+}
+
+// 文章卡片
+.post-card {
+  border-radius: 12px;
+  transition: all 0.3s;
+  &:hover {
+    transform: translateY(-6px);
+  }
+}
+
+// 头像动画
+.avatar-img {
+  transition: all 0.8s;
+  &:hover {
+    transform: rotate(360deg);
+  }
+}
+
+// 页面加载动画
+.loading-box {
+  background: var(--card-bg);
+  .loading-image {
+    animation: rotate 3s linear infinite;
+  }
+}
+
+// 滚动条
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--theme-color);
+  border-radius: 4px;
+}
+
+// 选中文字
+::selection {
+  background: var(--theme-color);
+  color: var(--text-white);
+}

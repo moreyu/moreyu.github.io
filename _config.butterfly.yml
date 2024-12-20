@@ -1,0 +1,48 @@
+# 主题色调
+theme_color:
+  enable: true
+  main: "#49b1f5"
+
+# 页面加载动画
+preloader:
+  enable: true
+  source: 1
+  pace_css_url:
+  avatar: https://s11.ax1x.com/2023/07/07/pCc1TSO.jpg
+
+# 资源注入
+inject:
+  head:
+    - <link rel="stylesheet" href="/css/custom.css" type="text/css">
+  bottom:
+    - <script defer src="/js/loading.js"></script>
+
+# 基础配置
+menu:
+  首页: / || fas fa-home
+  归档: /archives/ || fas fa-archive
+  标签: /tags/ || fas fa-tags
+  分类: /categories/ || fas fa-folder-open
+  友链: /link/ || fas fa-link
+  关于: /about/ || fas fa-heart
+
+# 网站图标和头像 (使用在线图片链接)
+favicon: https://cdn.jsdelivr.net/gh/moreyu/cdn@main/favicon.png
+avatar:
+  img: https://cdn.jsdelivr.net/gh/moreyu/cdn@main/avatar.jpg
+  effect: false
+
+# 完全禁用 busuanzi 统计
+busuanzi:
+  enable: false
+  site_uv: false
+  site_pv: false
+  page_pv: false
+
+# 禁用 Service Worker
+pwa: false
+service_worker: false
+
+# 禁用不必要的第三方服务
+third_party:
+  enable: false
