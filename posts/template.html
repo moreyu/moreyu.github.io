@@ -18,7 +18,19 @@
         <a href="/about"><i class="fas fa-user"></i> 关于 👋</a>
     </nav>
     <main class="post-content">
-        <!-- 文章内容将在这里 -->
+        <h1 class="gradient-text">文章标题</h1>
+        <div class="post-meta">
+            <time>发布日期：2025-03-10</time>
+            <div class="tags">
+                <span class="tag">标签1</span>
+                <span class="tag">标签2</span>
+            </div>
+        </div>
+        
+        <!-- 文章内容 -->
+        <article>
+            在这里放置文章内容...
+        </article>
     </main>
     <footer>
         <p>&copy; 2025 Moreyu's Blog 🎉 | 本站已稳定运行 999 天 ⚡️</p>
@@ -36,16 +48,21 @@
         </button>
     </div>
     <script src="/js/theme.js"></script>
+    <script src="/js/scroll.js"></script>
     <script>
-        // 滚动进度条
-        window.addEventListener('scroll', () => {
-            const scrolled = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
-            document.querySelector('.scroll-progress').style.width = scrolled + '%';
-        });
-
-        // 返回顶部
+        // 返回顶部按钮
         document.querySelector('.floating-btn').addEventListener('click', () => {
             window.scrollTo({top: 0, behavior: 'smooth'});
+        });
+
+        // 标签点击动画
+        document.querySelectorAll('.tag').forEach(tag => {
+            tag.addEventListener('click', () => {
+                tag.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    tag.style.transform = 'scale(1)';
+                }, 200);
+            });
         });
     </script>
 </body>

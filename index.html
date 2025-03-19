@@ -8,11 +8,150 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="stylesheet" href="/css/style.css">
 </head>
-<body><div class="scroll-progress"></div><button class="theme-toggle" aria-label="切换主题"><i class="fas fa-moon"></i></button><h1 class="gradient-text">Moreyu's Blog ✨</h1><nav class="nav"><a href="/"><i class="fas fa-home"></i> 首页 🏠</a><a href="/archives"><i class="fas fa-archive"></i> 归档 📚</a><a href="/categories"><i class="fas fa-folder"></i> 分类 📂</a><a href="/about"><i class="fas fa-user"></i> 关于 👋</a></nav><div class="search-bar"><input type="text" placeholder="搜索文章... 🔍" aria-label="搜索文章"/></div><div class="featured-post"><img src="https://picsum.photos/800/400" alt="特色文章"><div class="featured-content"><h2>✨ 特色文章</h2><p>探索前沿技术的无限可能... 🚀</p></div></div><div class="card"><h2 class="gradient-text">最新文章 📝</h2><div class="post"><h3 class="post-title"><a href="/posts/2025/03/home-server-part4.html">家用伺服器折腾手记-4：Mac mini 部署 AList 服务 🗂️</a></h3><div class="post-date">2025-03-10</div><p class="post-excerpt">探索如何在 Mac mini 上部署 AList，实现跨设备文件传输和私人影视库功能。本文详细介绍了环境配置、部署步骤、进阶设置和实用功能，让你轻松搭建自己的文件管理中心... 🚀</p><div class="tags"><span class="tag">Docker 🐳</span><span class="tag">文件管理 📁</span><span class="tag">自动化 ⚙️</span></div></div><div class="tags"><span class="tag">服务器 🖥️</span><span class="tag">Docker 🐳</span><span class="tag">自动化 ⚙️</span><span class="tag">影视 🎬</span><span class="tag">AI 🤖</span></div><div class="post"><h3 class="post-title"><a href="/posts/2025/03/home-server-part3.html">家用伺服器折腾手记-3：Mac mini 部署 Open WebUI 教程 🤖</a></h3><div class="post-date">2025-03-09</div><p class="post-excerpt">探索如何在 Mac mini 上部署 Open WebUI，搭建属于自己的本地 AI 助手。本文详细介绍了环境配置、模型管理、性能优化等内容，让你轻松驾驭大语言模型... 🚀</p><div class="tags"><span class="tag">Docker 🐳</span><span class="tag">AI 🤖</span><span class="tag">自动化 ⚙️</span></div></div><div class="post"><h3 class="post-title"><a href="/posts/2025/03/home-server-part2.html">家用伺服器折腾手记-2：Mac mini 部署 MoviePilot 教程 🎬</a></h3><div class="post-date">2025-03-08</div><p class="post-excerpt">继续我们的 Mac mini 服务器系列！本文将介绍如何使用 Docker Compose 部署 MoviePilot，一个强大的电影管理工具。包含完整的部署步骤、配置说明、性能优化和进阶使用技巧... 🚀</p><div class="tags"><span class="tag">Docker 🐳</span><span class="tag">影视 🎬</span><span class="tag">自动化 ⚙️</span></div></div><div class="post"><h3 class="post-title"><a href="/posts/2025/03/home-server-part1.html">家用伺服器折腾手记-1：Mac mini 搭建青龙面板教程 🖥️</a></h3><div class="post-date">2025-03-07</div><p class="post-excerpt">Mac mini 作为家用服务器的完美选择！本文详细介绍如何配置 Mac mini 运行 Docker、Docker Compose，并搭建青龙面板实现自动化脚本管理。包含完整的环境配置、安装步骤和性能优化建议... 🚀</p><div class="tags"><span class="tag">服务器 🖥️</span><span class="tag">Docker 🐳</span><span class="tag">自动化 ⚙️</span></div></div></div><footer><p>&copy; 2025 Moreyu's Blog 🎉 | 本站已稳定运行 999 天 ⚡️</p><div class="social-links"><a href="https://github.com/moreyu" target="_blank"><i class="fab fa-github"></i> GitHub 🐱</a><a href="mailto:your@email.com"><i class="fas fa-envelope"></i> Email ✉️</a></div></footer><div class="floating-menu"><button class="floating-btn" title="返回顶部" aria-label="返回顶部"><i class="fas fa-arrow-up"></i></button><button class="floating-btn" title="分享" aria-label="分享"><i class="fas fa-share-alt"></i></button></div><script src="/js/theme.js"></script><script>window.addEventListener('scroll',()=>{const scrolled=(window.scrollY/(document.documentElement.scrollHeight-window.innerHeight))*100;document.querySelector('.scroll-progress').style.width=scrolled+'%'});document.querySelector('.floating-btn').addEventListener('click',()=>{window.scrollTo({top:0,behavior:'smooth'})});const searchInput=document.querySelector('.search-bar input');searchInput.addEventListener('input',e=>{const searchTerm=e.target.value.toLowerCase();const posts=document.querySelectorAll('.post');posts.forEach(post=>{const title=post.querySelector('.post-title').textContent.toLowerCase();const excerpt=post.querySelector('.post-excerpt').textContent.toLowerCase();if(title.includes(searchTerm)||excerpt.includes(searchTerm)){post.style.display='block'}else{post.style.display='none'}})});document.querySelectorAll('.tag').forEach(tag=>{
-  tag.addEventListener('click',()=>{
-    tag.style.transform='scale(0.95)';
-    setTimeout(()=>{
-      tag.style.transform='scale(1)';
-    },200)
-  })
-});</script></body></html>
+<body>
+  <div class="scroll-progress"></div>
+  <button class="theme-toggle" aria-label="切换主题">
+    <i class="fas fa-moon"></i>
+  </button>
+  
+  <h1 class="gradient-text">Moreyu's Blog ✨</h1>
+  
+  <nav class="nav">
+    <a href="/"><i class="fas fa-home"></i> 首页 🏠</a>
+    <a href="/archives"><i class="fas fa-archive"></i> 归档 📚</a>
+    <a href="/categories"><i class="fas fa-folder"></i> 分类 📂</a>
+    <a href="/about"><i class="fas fa-user"></i> 关于 👋</a>
+  </nav>
+  
+  <div class="search-bar">
+    <input type="text" placeholder="搜索文章... 🔍" aria-label="搜索文章"/>
+  </div>
+  
+  <div class="featured-post">
+    <img src="https://picsum.photos/800/400" alt="特色文章">
+    <div class="featured-content">
+      <h2>✨ 特色文章</h2>
+      <p>探索前沿技术的无限可能... 🚀</p>
+    </div>
+  </div>
+  
+  <div class="card">
+    <h2 class="gradient-text">最新文章 📝</h2>
+    <div class="post">
+      <h3 class="post-title">
+        <a href="/posts/2025/03/home-server-part4.html">家用伺服器折腾手记-4：Mac mini 部署 AList 服务 🗂️</a>
+      </h3>
+      <div class="post-date">2025-03-10</div>
+      <p class="post-excerpt">探索如何在 Mac mini 上部署 AList，实现跨设备文件传输和私人影视库功能。本文详细介绍了环境配置、部署步骤、进阶设置和实用功能，让你轻松搭建自己的文件管理中心... 🚀</p>
+      <div class="tags">
+        <span class="tag">Docker 🐳</span>
+        <span class="tag">文件管理 📁</span>
+        <span class="tag">自动化 ⚙️</span>
+      </div>
+    </div>
+    
+    <div class="tags">
+      <span class="tag">服务器 🖥️</span>
+      <span class="tag">Docker 🐳</span>
+      <span class="tag">自动化 ⚙️</span>
+      <span class="tag">影视 🎬</span>
+      <span class="tag">AI 🤖</span>
+    </div>
+    
+    <div class="post">
+      <h3 class="post-title">
+        <a href="/posts/2025/03/home-server-part3.html">家用伺服器折腾手记-3：Mac mini 部署 Open WebUI 教程 🤖</a>
+      </h3>
+      <div class="post-date">2025-03-09</div>
+      <p class="post-excerpt">探索如何在 Mac mini 上部署 Open WebUI，搭建属于自己的本地 AI 助手。本文详细介绍了环境配置、模型管理、性能优化等内容，让你轻松驾驭大语言模型... 🚀</p>
+      <div class="tags">
+        <span class="tag">Docker 🐳</span>
+        <span class="tag">AI 🤖</span>
+        <span class="tag">自动化 ⚙️</span>
+      </div>
+    </div>
+    
+    <div class="post">
+      <h3 class="post-title">
+        <a href="/posts/2025/03/home-server-part2.html">家用伺服器折腾手记-2：Mac mini 部署 MoviePilot 教程 🎬</a>
+      </h3>
+      <div class="post-date">2025-03-08</div>
+      <p class="post-excerpt">继续我们的 Mac mini 服务器系列！本文将介绍如何使用 Docker Compose 部署 MoviePilot，一个强大的电影管理工具。包含完整的部署步骤、配置说明、性能优化和进阶使用技巧... 🚀</p>
+      <div class="tags">
+        <span class="tag">Docker 🐳</span>
+        <span class="tag">影视 🎬</span>
+        <span class="tag">自动化 ⚙️</span>
+      </div>
+    </div>
+    
+    <div class="post">
+      <h3 class="post-title">
+        <a href="/posts/2025/03/home-server-part1.html">家用伺服器折腾手记-1：Mac mini 搭建青龙面板教程 🖥️</a>
+      </h3>
+      <div class="post-date">2025-03-07</div>
+      <p class="post-excerpt">Mac mini 作为家用服务器的完美选择！本文详细介绍如何配置 Mac mini 运行 Docker、Docker Compose，并搭建青龙面板实现自动化脚本管理。包含完整的环境配置、安装步骤和性能优化建议... 🚀</p>
+      <div class="tags">
+        <span class="tag">服务器 🖥️</span>
+        <span class="tag">Docker 🐳</span>
+        <span class="tag">自动化 ⚙️</span>
+      </div>
+    </div>
+  </div>
+  
+  <footer>
+    <p>&copy; 2025 Moreyu's Blog 🎉 | 本站已稳定运行 999 天 ⚡️</p>
+    <div class="social-links">
+      <a href="https://github.com/moreyu" target="_blank"><i class="fab fa-github"></i> GitHub 🐱</a>
+      <a href="mailto:your@email.com"><i class="fas fa-envelope"></i> Email ✉️</a>
+    </div>
+  </footer>
+  
+  <div class="floating-menu">
+    <button class="floating-btn" title="返回顶部" aria-label="返回顶部">
+      <i class="fas fa-arrow-up"></i>
+    </button>
+    <button class="floating-btn" title="分享" aria-label="分享">
+      <i class="fas fa-share-alt"></i>
+    </button>
+  </div>
+
+  <!-- 脚本引用 -->
+  <script src="/js/theme.js"></script>
+  <script src="/js/scroll.js"></script>
+  <script>
+    // 返回顶部按钮
+    document.querySelector('.floating-btn').addEventListener('click', () => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+
+    // 搜索功能
+    const searchInput = document.querySelector('.search-bar input');
+    searchInput.addEventListener('input', e => {
+      const searchTerm = e.target.value.toLowerCase();
+      const posts = document.querySelectorAll('.post');
+      posts.forEach(post => {
+        const title = post.querySelector('.post-title').textContent.toLowerCase();
+        const excerpt = post.querySelector('.post-excerpt').textContent.toLowerCase();
+        if (title.includes(searchTerm) || excerpt.includes(searchTerm)) {
+          post.style.display = 'block';
+        } else {
+          post.style.display = 'none';
+        }
+      });
+    });
+
+    // 标签点击动画
+    document.querySelectorAll('.tag').forEach(tag => {
+      tag.addEventListener('click', () => {
+        tag.style.transform = 'scale(0.95)';
+        setTimeout(() => {
+          tag.style.transform = 'scale(1)';
+        }, 200);
+      });
+    });
+  </script>
+</body>
+</html>
