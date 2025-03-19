@@ -1,0 +1,44 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>家用伺服器折腾手记-4：Mac mini 部署 AList 服务 - Moreyu's Blog</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/maple-mono@latest/index.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css"><style>body{font-family:"Maple Mono",monospace;line-height:1.8;max-width:800px;margin:0 auto;padding:20px;background:#f5f5f7;color:#333}h1,h2,h3{color:#FF375F}a{color:#0066cc;text-decoration:none}a:hover{text-decoration:underline}pre{background:#1d1d1f;padding:1rem;border-radius:8px;overflow-x:auto}code{font-family:"Maple Mono",monospace}.container{background:white;padding:2rem;border-radius:16px;box-shadow:0 4px 6px rgba(0,0,0,.1);margin:2rem 0}.meta{color:#666;font-size:.9em;margin-bottom:2rem}.tag{display:inline-block;padding:0.2rem 0.8rem;border-radius:20px;background:linear-gradient(90deg,#FF375F,#FF453A);color:white;font-size:0.9em;margin:0.2rem}.back-to-home{position:fixed;bottom:20px;right:20px;background:rgba(255,55,95,.9);color:white;padding:10px 20px;border-radius:20px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 4px 6px rgba(0,0,0,.1);transition:all .3s ease}.back-to-home:hover{transform:translateY(-2px);box-shadow:0 6px 8px rgba(0,0,0,.2);text-decoration:none}.note{background:rgba(255,55,95,.1);padding:1rem;border-radius:8px;margin:1rem 0;border-left:4px solid #FF375F}.warning{background:rgba(255,204,0,.1);padding:1rem;border-radius:8px;margin:1rem 0;border-left:4px solid #FFCC00}@media (prefers-color-scheme:dark){body{background:#000;color:#f5f5f7}.container{background:#1d1d1f}a{color:#2997ff}}</style></head><body><div class="container"><h1>家用伺服器折腾手记-4：Mac mini 部署 AList 服务 🗂️</h1><div class="meta">发布于 2025-03-10 · <span class="tag">Docker 🐳</span> <span class="tag">文件管理 📁</span> <span class="tag">自动化 ⚙️</span></div><p>继续我们的 Mac mini 服务器系列！今天我们要介绍如何使用 Docker 部署 AList，一个强大的文件列表程序。通过 AList，我们可以实现跨设备文件传输、搭建私人影视库，甚至可以整合各种云存储服务。</p><h2>为什么选择 AList？ 🤔</h2><ul><li>支持多种存储方式：本地存储、WebDAV、S3、OneDrive 等</li><li>美观的界面：支持多种主题，响应式设计</li><li>强大的文件预览：支持视频、音频、图片、文档等多种格式</li><li>便捷的文件管理：支持上传、下载、复制、移动等操作</li><li>完善的权限控制：可以设置用户权限和访问密码</li></ul><h2>环境准备 🛠️</h2><p>确保你的 Mac mini 上已经安装了 Docker 和 Docker Compose。如果还没有安装，可以参考我们的第一篇文章。</p><h2>部署步骤 📝</h2><h3>1. 创建配置文件</h3><p>首先创建一个新的目录来存放 AList 的配置文件：</p><pre><code>mkdir -p ~/docker/alist
+cd ~/docker/alist</code></pre><p>创建 docker-compose.yml 文件：</p><pre><code>version: "3.8"
+services:
+  alist:
+    image: xhofe/alist:latest
+    container_name: alist
+    volumes:
+      - ./data:/opt/alist/data
+      - /path/to/media:/media  # 替换为你的媒体文件路径
+    ports:
+      - "5244:5244"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Shanghai
+    restart: unless-stopped</code></pre><div class="note">注意：请将 /path/to/media 替换为你实际的媒体文件路径。</div><h3>2. 启动服务</h3><p>在配置文件目录下运行：</p><pre><code>docker-compose up -d</code></pre><p>查看初始密码：</p><pre><code>docker exec -it alist ./alist admin</code></pre><h3>3. 基础配置</h3><ol><li>访问 <code>http://你的IP:5244</code></li><li>使用默认用户名 <code>admin</code> 和上一步获取的密码登录</li><li>进入管理面板，修改密码</li><li>添加存储：<ul><li>本地存储：直接映射本地文件夹</li><li>WebDAV：连接其他 WebDAV 服务</li><li>云存储：配置各类云存储服务</li></ul></li></ol><h2>进阶配置 ⚙️</h2><h3>1. 反向代理设置</h3><p>如果你想通过域名访问 AList，可以配置 Nginx 反向代理：</p><pre><code>server {
+    listen 80;
+    server_name alist.yourdomain.com;
+
+    location / {
+        proxy_pass http://127.0.0.1:5244;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}</code></pre><h3>2. SSL 配置</h3><p>建议配置 SSL 证书，确保数据传输安全：</p><pre><code>server {
+    listen 443 ssl;
+    server_name alist.yourdomain.com;
+
+    ssl_certificate /path/to/cert.pem;
+    ssl_certificate_key /path/to/key.pem;
+
+    # ... 其他配置同上
+}</code></pre><h3>3. 文件预览优化</h3><p>AList 支持多种文件预览方式，可以根据需要进行配置：</p><ul><li>视频预览：支持 HLS 转码，平滑播放</li><li>音频预览：支持在线播放和播放列表</li><li>文档预览：支持 Office、PDF 等格式</li><li>图片预览：支持图片缩放和幻灯片播放</li></ul><h2>实用功能展示 🌟</h2><h3>1. 跨设备文件传输</h3><ul><li>Web 界面拖拽上传</li><li>WebDAV 协议支持</li><li>移动端 App 访问</li><li>支持断点续传</li></ul><h3>2. 影视库功能</h3><ul><li>自动识别影视信息</li><li>在线播放支持</li><li>字幕自动匹配</li><li>播放进度记录</li></ul><h3>3. 文件管理</h3><ul><li>文件分类展示</li><li>文件搜索功能</li><li>批量操作支持</li><li>离线下载功能</li></ul><h2>性能优化 🚀</h2><ol><li>缓存配置：<pre><code>environment:
+  - CACHE_SIZE=1000
+  - CACHE_TIMEOUT=60</code></pre></li><li>资源限制：<pre><code>services:
+  alist:
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+        reservations:
+          memory: 512M</code></pre></li></ol><h2>常见问题 ❓</h2><div class="warning"><strong>权限问题</strong><br>如果遇到文件访问权限问题，请检查：<ul><li>容器内的 PUID 和 PGID 设置</li><li>挂载目录的权限设置</li><li>SELinux 配置（如果启用）</li></ul></div><h2>进阶使用 🎯</h2><h3>1. API 集成</h3><p>AList 提供了完整的 API 接口，可以用于：</p><ul><li>自动化文件管理</li><li>第三方应用集成</li><li>自定义功能开发</li></ul><h3>2. 备份策略</h3><p>定期备份重要数据：</p><pre><code>0 2 * * * tar -czf /backup/alist-$(date +%Y%m%d).tar.gz /path/to/alist/data</code></pre><h2>总结 📝</h2><p>通过 AList，我们实现了：</p><ul><li>便捷的跨设备文件传输</li><li>私人影视库的搭建</li><li>统一的文件管理平台</li><li>安全的数据访问控制</li></ul><p>下一篇文章，我们将探讨如何将 AList 与其他服务（如 Emby、Jellyfin）集成，构建更完整的家庭媒体中心。</p></div><a href="/" class="back-to-home">返回首页 🏠</a><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script><script>hljs.highlightAll();</script></body></html>
