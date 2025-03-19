@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>文章标题 - Moreyu's Blog ✨</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/maple-mono@latest/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="scroll-progress"></div>
+    <button class="theme-toggle" aria-label="切换主题"><i class="fas fa-moon"></i></button>
+    <nav class="nav">
+        <a href="/"><i class="fas fa-home"></i> 首页 🏠</a>
+        <a href="/archives"><i class="fas fa-archive"></i> 归档 📚</a>
+        <a href="/categories"><i class="fas fa-folder"></i> 分类 📂</a>
+        <a href="/about"><i class="fas fa-user"></i> 关于 👋</a>
+    </nav>
+    <main class="post-content">
+        <!-- 文章内容将在这里 -->
+    </main>
+    <footer>
+        <p>&copy; 2025 Moreyu's Blog 🎉 | 本站已稳定运行 999 天 ⚡️</p>
+        <div class="social-links">
+            <a href="https://github.com/moreyu" target="_blank"><i class="fab fa-github"></i> GitHub 🐱</a>
+            <a href="mailto:your@email.com"><i class="fas fa-envelope"></i> Email ✉️</a>
+        </div>
+    </footer>
+    <div class="floating-menu">
+        <button class="floating-btn" title="返回顶部" aria-label="返回顶部">
+            <i class="fas fa-arrow-up"></i>
+        </button>
+        <button class="floating-btn" title="分享" aria-label="分享">
+            <i class="fas fa-share-alt"></i>
+        </button>
+    </div>
+    <script src="/js/theme.js"></script>
+    <script>
+        // 滚动进度条
+        window.addEventListener('scroll', () => {
+            const scrolled = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+            document.querySelector('.scroll-progress').style.width = scrolled + '%';
+        });
+
+        // 返回顶部
+        document.querySelector('.floating-btn').addEventListener('click', () => {
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        });
+    </script>
+</body>
+</html> 
