@@ -427,6 +427,12 @@
               rotateY(${distanceX * 5}deg)
               translateZ(10px)
             `;
+            // 添加鼠标样式
+            card.style.cursor = 'pointer';
+          } else {
+            // 重置变换
+            card.style.transform = '';
+            card.style.cursor = '';
           }
         });
       });
@@ -435,6 +441,22 @@
         const cards = document.querySelectorAll('.post, .featured-card');
         cards.forEach(card => {
           card.style.transform = '';
+          card.style.cursor = '';
+        });
+      });
+
+      // 添加点击事件处理
+      document.querySelectorAll('.post, .featured-card').forEach(card => {
+        card.addEventListener('click', (e) => {
+          // 如果点击的是链接，让事件继续传播
+          if (e.target.tagName === 'A' || e.target.closest('a')) {
+            return;
+          }
+          // 否则，找到卡片中的第一个链接并触发点击
+          const link = card.querySelector('a');
+          if (link) {
+            link.click();
+          }
         });
       });
     }
