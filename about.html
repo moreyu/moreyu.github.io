@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>关于我 - Moreyu's Blog ✨</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/maple-mono@latest/index.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    /* 技能卡片样式 */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+
+    .skill-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      box-shadow: var(--shadow);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .skill-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .skill-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, transparent 95%, var(--primary) 95%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .skill-card:hover::before {
+      opacity: 0.1;
+    }
+
+    .skill-icon {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: var(--primary);
+    }
+
+    /* 时间线样式 */
+    .timeline {
+      position: relative;
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 2rem 0;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 2px;
+      height: 100%;
+      background: var(--primary);
+      opacity: 0.3;
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 2rem;
+      width: 50%;
+      padding-right: 2rem;
+      opacity: 0;
+      transform: translateX(-50px);
+      animation: slideInRight 0.8s ease forwards;
+    }
+
+    .timeline-item:nth-child(even) {
+      margin-left: 50%;
+      padding-right: 0;
+      padding-left: 2rem;
+      animation: slideInLeft 0.8s ease forwards;
+    }
+
+    .timeline-content {
+      background: var(--card-bg);
+      padding: 1.5rem;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      position: relative;
+    }
+
+    .timeline-content::before {
+      content: '';
+      position: absolute;
+      right: -10px;
+      top: 20px;
+      width: 20px;
+      height: 20px;
+      background: var(--primary);
+      border-radius: 50%;
+      box-shadow: 0 0 0 4px var(--card-bg);
+    }
+
+    .timeline-item:nth-child(even) .timeline-content::before {
+      right: auto;
+      left: -10px;
+    }
+
+    /* 动画效果 */
+    @keyframes slideInRight {
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes slideInLeft {
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    /* 头像动画 */
+    .avatar-container {
+      position: relative;
+      width: 150px;
+      height: 150px;
+      margin: 0 auto 2rem;
+    }
+
+    .avatar {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--primary);
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .avatar-ring {
+      position: absolute;
+      top: -10px;
+      left: -10px;
+      right: -10px;
+      bottom: -10px;
+      border: 2px solid var(--primary);
+      border-radius: 50%;
+      animation: rotate 10s linear infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* 社交链接动画 */
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+
+    .social-link {
+      position: relative;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: var(--card-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      font-size: 1.5rem;
+      transition: all 0.3s ease;
+      box-shadow: var(--shadow);
+    }
+
+    .social-link:hover {
+      transform: translateY(-5px) scale(1.1);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .social-link::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border-radius: 50%;
+      background: linear-gradient(45deg, var(--primary), var(--primary-light));
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: -1;
+    }
+
+    .social-link:hover::before {
+      opacity: 0.2;
+    }
+  </style>
+</head>
+<body>
+  <div class="scroll-progress"></div>
+  <button class="theme-toggle" aria-label="切换主题">
+    <i class="fas fa-moon"></i>
+  </button>
+  
+  <h1 class="gradient-text">关于我 ✨</h1>
+  
+  <nav class="nav">
+    <a href="/"><i class="fas fa-home"></i> 首页 🏠</a>
+    <a href="/archives"><i class="fas fa-archive"></i> 归档 📚</a>
+    <a href="/categories"><i class="fas fa-folder"></i> 分类 📂</a>
+    <a href="/about"><i class="fas fa-user"></i> 关于 👋</a>
+  </nav>
+
+  <div class="card">
+    <div class="avatar-container">
+      <img src="https://picsum.photos/150" alt="头像" class="avatar">
+      <div class="avatar-ring"></div>
+    </div>
+
+    <h2 class="gradient-text">👋 你好，我是 Moreyu</h2>
+    <p>热爱技术，热爱生活。在这里分享我的技术探索和生活感悟。</p>
+
+    <div class="social-links">
+      <a href="https://github.com/moreyu" class="social-link" target="_blank">
+        <i class="fab fa-github"></i>
+      </a>
+      <a href="mailto:your@email.com" class="social-link">
+        <i class="fas fa-envelope"></i>
+      </a>
+      <a href="#" class="social-link">
+        <i class="fab fa-twitter"></i>
+      </a>
+    </div>
+
+    <h3 class="gradient-text">🎯 技能专长</h3>
+    <div class="skills-grid">
+      <div class="skill-card">
+        <i class="fas fa-code skill-icon"></i>
+        <h4>前端开发</h4>
+        <p>HTML, CSS, JavaScript, React, Vue</p>
+      </div>
+      <div class="skill-card">
+        <i class="fas fa-server skill-icon"></i>
+        <h4>后端开发</h4>
+        <p>Node.js, Python, Java, Go</p>
+      </div>
+      <div class="skill-card">
+        <i class="fas fa-database skill-icon"></i>
+        <h4>数据库</h4>
+        <p>MySQL, MongoDB, Redis</p>
+      </div>
+      <div class="skill-card">
+        <i class="fas fa-cloud skill-icon"></i>
+        <h4>云服务</h4>
+        <p>AWS, Docker, Kubernetes</p>
+      </div>
+    </div>
+
+    <h3 class="gradient-text">📚 学习经历</h3>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-content">
+          <h4>2025</h4>
+          <p>开始学习云原生技术</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-content">
+          <h4>2024</h4>
+          <p>深入研究 AI 技术</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-content">
+          <h4>2023</h4>
+          <p>开始写技术博客</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-content">
+          <h4>2022</h4>
+          <p>开始学习编程</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Moreyu's Blog 🎉 | 本站已稳定运行 999 天 ⚡️</p>
+    <div class="social-links">
+      <a href="https://github.com/moreyu" target="_blank"><i class="fab fa-github"></i> GitHub 🐱</a>
+      <a href="mailto:your@email.com"><i class="fas fa-envelope"></i> Email ✉️</a>
+    </div>
+  </footer>
+
+  <div class="floating-menu">
+    <button class="floating-btn" title="返回顶部" aria-label="返回顶部">
+      <i class="fas fa-arrow-up"></i>
+    </button>
+    <button class="floating-btn" title="分享" aria-label="分享">
+      <i class="fas fa-share-alt"></i>
+    </button>
+  </div>
+
+  <script src="/js/theme.js"></script>
+  <script src="/js/scroll.js"></script>
+  <script>
+    // 返回顶部按钮
+    document.querySelector('.floating-btn').addEventListener('click', () => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+
+    // 技能卡片动画
+    const skillCards = document.querySelectorAll('.skill-card');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, { threshold: 0.1 });
+
+    skillCards.forEach(card => {
+      card.style.opacity = '0';
+      card.style.transform = 'translateY(20px)';
+      observer.observe(card);
+    });
+  </script>
+</body>
+</html> 
