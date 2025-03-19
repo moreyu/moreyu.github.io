@@ -7,6 +7,13 @@ function initTheme() {
   // 立即应用主题
   applyTheme(theme);
   
+  // 监听系统主题变化
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+    if (!localStorage.getItem('theme')) {
+      applyTheme(e.matches ? 'dark' : 'light');
+    }
+  });
+  
   // 设置主题切换按钮
   const themeToggle = document.querySelector('.theme-toggle');
   if (themeToggle) {
@@ -22,6 +29,8 @@ function initTheme() {
 // 应用主题
 function applyTheme(theme) {
   document.documentElement.setAttribute('data-theme', theme);
+  
+  // 更新主题切换按钮图标
   const themeToggle = document.querySelector('.theme-toggle');
   if (themeToggle) {
     const themeIcon = themeToggle.querySelector('i');
@@ -33,6 +42,9 @@ function applyTheme(theme) {
       themeIcon.classList.add('fa-moon');
     }
   }
+  
+  // 触发自定义事件，通知主题变化
+  document.dispatchEvent(new CustomEvent('themechange', { detail: { theme } }));
 }
 
 // 在 DOM 加载完成前就初始化主题，避免闪烁
