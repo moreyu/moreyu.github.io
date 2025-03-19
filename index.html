@@ -153,37 +153,139 @@
   <script src="/js/theme.js"></script>
   <script src="/js/scroll.js"></script>
   <script>
+    // 搜索功能增强
+    const searchInput = document.querySelector('.search-bar input');
+    const posts = document.querySelectorAll('.post');
+    
+    // 实时搜索与高亮
+    searchInput.addEventListener('input', e => {
+      const searchTerm = e.target.value.toLowerCase();
+      posts.forEach(post => {
+        const title = post.querySelector('.post-title').textContent.toLowerCase();
+        const excerpt = post.querySelector('.post-excerpt').textContent.toLowerCase();
+        const tags = Array.from(post.querySelectorAll('.tag')).map(tag => tag.textContent.toLowerCase());
+        
+        if (title.includes(searchTerm) || excerpt.includes(searchTerm) || tags.some(tag => tag.includes(searchTerm))) {
+          post.style.display = 'block';
+          // 添加搜索结果动画
+          post.style.animation = 'fadeIn 0.5s ease-out';
+          
+          // 高亮匹配文本
+          if (searchTerm) {
+            highlightText(post, searchTerm);
+          } else {
+            // 移除高亮
+            removeHighlight(post);
+          }
+        } else {
+          post.style.display = 'none';
+        }
+      });
+      
+      // 显示搜索结果计数
+      const visiblePosts = document.querySelectorAll('.post[style="display: block"]').length;
+      updateSearchResults(visiblePosts, searchTerm);
+    });
+
+    // 高亮文本函数
+    function highlightText(element, term) {
+      const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
+      let node;
+      while (node = walker.nextNode()) {
+        const parent = node.parentNode;
+        if (parent.nodeName !== 'SCRIPT' && !parent.classList.contains('highlighted')) {
+          const content = node.textContent;
+          const regex = new RegExp(`(${term})`, 'gi');
+          if (regex.test(content)) {
+            const highlighted = content.replace(regex, '<mark style="background: var(--primary); color: white; padding: 0 4px; border-radius: 4px;">$1</mark>');
+            const span = document.createElement('span');
+            span.innerHTML = highlighted;
+            parent.replaceChild(span, node);
+          }
+        }
+      }
+    }
+
+    // 移除高亮
+    function removeHighlight(element) {
+      element.querySelectorAll('mark').forEach(mark => {
+        const text = document.createTextNode(mark.textContent);
+        mark.parentNode.replaceChild(text, mark);
+      });
+    }
+
+    // 更新搜索结果
+    function updateSearchResults(count, term) {
+      let resultsDiv = document.querySelector('.search-results');
+      if (!resultsDiv) {
+        resultsDiv = document.createElement('div');
+        resultsDiv.className = 'search-results';
+        resultsDiv.style.textAlign = 'center';
+        resultsDiv.style.margin = '1rem 0';
+        resultsDiv.style.color = 'var(--text)';
+        resultsDiv.style.opacity = '0.8';
+        searchInput.parentNode.after(resultsDiv);
+      }
+      
+      if (term) {
+        resultsDiv.textContent = `找到 ${count} 篇相关文章 ✨`;
+        resultsDiv.style.animation = 'fadeIn 0.3s ease-out';
+      } else {
+        resultsDiv.textContent = '';
+      }
+    }
+
+    // 标签点击动画与过滤
+    document.querySelectorAll('.tag').forEach(tag => {
+      tag.addEventListener('click', () => {
+        // 视觉反馈
+        tag.style.transform = 'scale(0.95)';
+        setTimeout(() => tag.style.transform = 'scale(1)', 200);
+        
+        // 自动填充搜索框并触发搜索
+        const tagText = tag.textContent.trim();
+        searchInput.value = tagText;
+        searchInput.dispatchEvent(new Event('input'));
+        
+        // 添加涟漪效果
+        const ripple = document.createElement('div');
+        ripple.className = 'ripple';
+        ripple.style.cssText = `
+          position: absolute;
+          background: var(--primary);
+          border-radius: 50%;
+          pointer-events: none;
+          transform: translate(-50%, -50%);
+          animation: ripple 0.6s linear;
+        `;
+        tag.appendChild(ripple);
+        setTimeout(() => ripple.remove(), 600);
+      });
+    });
+
+    // 添加涟漪动画
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes ripple {
+        0% {
+          width: 0;
+          height: 0;
+          opacity: 0.5;
+        }
+        100% {
+          width: 200px;
+          height: 200px;
+          opacity: 0;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+
     // 返回顶部按钮
     document.querySelector('.floating-btn').addEventListener('click', () => {
       window.scrollTo({
         top: 0,
         behavior: 'smooth'
-      });
-    });
-
-    // 搜索功能
-    const searchInput = document.querySelector('.search-bar input');
-    searchInput.addEventListener('input', e => {
-      const searchTerm = e.target.value.toLowerCase();
-      const posts = document.querySelectorAll('.post');
-      posts.forEach(post => {
-        const title = post.querySelector('.post-title').textContent.toLowerCase();
-        const excerpt = post.querySelector('.post-excerpt').textContent.toLowerCase();
-        if (title.includes(searchTerm) || excerpt.includes(searchTerm)) {
-          post.style.display = 'block';
-        } else {
-          post.style.display = 'none';
-        }
-      });
-    });
-
-    // 标签点击动画
-    document.querySelectorAll('.tag').forEach(tag => {
-      tag.addEventListener('click', () => {
-        tag.style.transform = 'scale(0.95)';
-        setTimeout(() => {
-          tag.style.transform = 'scale(1)';
-        }, 200);
       });
     });
   </script>
