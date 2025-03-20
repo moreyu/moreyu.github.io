@@ -65,6 +65,7 @@
             -webkit-backdrop-filter: blur(10px);
             box-shadow: 0 4px 6px rgba(0, 0, 0, .1);
             transition: all .3s ease;
+            z-index: 1000;
         }
 
         .back-to-home:hover {
@@ -298,10 +299,22 @@
         @media (max-width: 768px) {
             body {
                 padding: 15px;
+                padding-bottom: 80px;
             }
             
             .share-container {
-                display: none;
+                position: fixed;
+                left: 20px;
+                top: auto;
+                bottom: 20px;
+                transform: none;
+                flex-direction: row;
+                gap: 10px;
+            }
+
+            .back-to-home {
+                bottom: 20px;
+                right: 20px;
             }
         }
     </style>

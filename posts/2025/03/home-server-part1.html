@@ -65,6 +65,7 @@
             -webkit-backdrop-filter: blur(10px);
             box-shadow: 0 4px 6px rgba(0, 0, 0, .1);
             transition: all .3s ease;
+            z-index: 1000;
         }
 
         .back-to-home:hover {
@@ -248,10 +249,10 @@
             background: rgba(255, 55, 95, 0.9);
             color: white;
             cursor: pointer;
-      display: flex;
+            transition: all 0.3s ease;
+            display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s ease;
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
         }
@@ -338,6 +339,7 @@
         @media (max-width: 768px) {
             body {
                 padding: 15px;
+                padding-bottom: 80px;
             }
 
             pre {
@@ -346,9 +348,8 @@
             }
 
             .back-to-home {
-                bottom: 15px;
-                right: 15px;
-                padding: 8px 16px;
+                bottom: 20px;
+                right: 20px;
             }
 
             .copy-button {
@@ -360,16 +361,14 @@
 
             .share-container {
                 position: fixed;
-                left: 0;
+                left: 20px;
                 top: auto;
                 bottom: 20px;
                 transform: none;
-                width: 100%;
                 flex-direction: row;
-                justify-content: center;
-                gap: 20px;
-      }
-    }
+                gap: 10px;
+            }
+        }
   </style>
 </head>
 <body>
@@ -412,7 +411,7 @@
         <div class="meta">发布时间：2025-03-07 | 分类：服务器, Docker, 自动化</div>
         <h2>前言 📝</h2>
         <p>最近入手了一台 Mac mini M2，除了日常使用外，我还想把它变成一台家用服务器。考虑到 Mac mini 的性能强大、功耗低、噪音小等优点，它非常适合作为 24/7 运行的家用服务器。这篇文章将详细介绍如何在 Mac mini 上搭建 Docker 环境并运行青龙面板。</p>
-        <h2>环境准备 ��️</h2>
+        <h2>环境准备 🛠️</h2>
         <h3>1. 安装 Homebrew</h3>
         <pre><code class="bash">/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</code></pre>
         <p>安装完成后，确保将 Homebrew 添加到 PATH 中。对于 Apple Silicon Mac，通常需要添加以下路径：</p>
