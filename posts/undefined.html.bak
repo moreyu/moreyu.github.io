@@ -314,7 +314,7 @@
   <main class="post-content">
     <div class="post-meta">
       <span><i class="far fa-calendar"></i> 2025-03-20</span>
-      <span><i class="far fa-clock"></i> 阅读时间：5分钟</span>
+      <span><i class="far fa-clock"></i> 阅读时间：4分钟</span>
       <span><i class="far fa-folder"></i> 分类：未分类</span>
     </div>
 
@@ -325,11 +325,7 @@
 
       
 
-      <div class="post-meta">
-        <span><i class="far fa-calendar"></i> 2025-03-20</span>
-        <span><i class="far fa-clock"></i> 阅读时间：4分钟</span>
-        <span><i class="far fa-folder"></i> 分类：未分类</span>
-      </div>
+      
 
       <h1>My First Post | Moreyu's Blog</h1>
 
@@ -364,11 +360,7 @@
 
   <main class="post-content">
     <div class="card">
-      <div class="post-meta">
-        <span><i class="far fa-calendar"></i> 2024-01-01</span>
-        <span><i class="far fa-clock"></i> 阅读时间：1分钟</span>
-        <span><i class="far fa-folder"></i> 分类：|Technology</span>
-      </div>
+      
 
       <h2 id="Welcome-to-My-Blog"><a href="#Welcome-to-My-Blog" class="headerlink" title="Welcome to My Blog"></a>Welcome to My Blog</h2><p>This is my first blog post. I’ll be sharing my thoughts and experiences here.</p>
 <h3 id="About-Me"><a href="#About-Me" class="headerlink" title="About Me"></a>About Me</h3><ul>
@@ -382,21 +374,19 @@
     </div>
   </main>
 
-      <div class="post-tags">
-        <span class="tag">Blog</span>
-<span class="tag">Hexo</span>
-      </div>
+      
 
-      <div class="post-tags">
-        <span class="tag">Blog</span>
-<span class="tag">Hexo</span>
-<span class="tag">Blog</span>
-<span class="tag">Hexo</span>
-      </div>
+      
     </article>
 
     <div class="post-tags">
       <span class="tag">Blog</span>
+<span class="tag">Hexo</span>
+<span class="tag">Blog</span>
+<span class="tag">Hexo</span>
+<span class="tag">Blog</span>
+<span class="tag">Hexo</span>
+<span class="tag">Blog</span>
 <span class="tag">Hexo</span>
 <span class="tag">Blog</span>
 <span class="tag">Hexo</span>

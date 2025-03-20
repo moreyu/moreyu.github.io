@@ -382,6 +382,25 @@
     document.querySelectorAll('h2[id], h3[id]').forEach((section) => {
       observer.observe(section);
     });
+
+    // 阅读进度条
+    const readingProgress = document.querySelector('.reading-progress');
+    const content = document.querySelector('.post-content');
+    
+    if (readingProgress && content) {
+      const updateProgress = () => {
+        const contentBox = content.getBoundingClientRect();
+        const totalHeight = contentBox.height;
+        const windowHeight = window.innerHeight;
+        const scrolled = window.scrollY;
+        const progress = Math.min((scrolled / (totalHeight - windowHeight)) * 100, 100);
+        readingProgress.style.background = `linear-gradient(to bottom, var(--primary) ${progress}%, transparent ${progress}%)`;
+      };
+      
+      window.addEventListener('scroll', updateProgress);
+      window.addEventListener('resize', updateProgress);
+      updateProgress();
+    }
   </script>
 </body>
 </html> 

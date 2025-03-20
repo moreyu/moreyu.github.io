@@ -314,7 +314,7 @@
   <main class="post-content">
     <div class="post-meta">
       <span><i class="far fa-calendar"></i> 2025-03-08</span>
-      <span><i class="far fa-clock"></i> 阅读时间：15分钟</span>
+      <span><i class="far fa-clock"></i> 阅读时间：13分钟</span>
       <span><i class="far fa-folder"></i> 分类：服务器</span>
     </div>
 
@@ -325,11 +325,7 @@
 
       
 
-      <div class="post-meta">
-        <span><i class="far fa-calendar"></i> 2025-03-08</span>
-        <span><i class="far fa-clock"></i> 阅读时间：14分钟</span>
-        <span><i class="far fa-folder"></i> 分类：服务器</span>
-      </div>
+      
 
       <h1>家用伺服器折腾手记-2：Mac mini 部署 MoviePilot 教程</h1>
 
@@ -364,11 +360,7 @@
 
   <main class="post-content">
     <div class="card">
-      <div class="post-meta">
-        <span><i class="far fa-calendar"></i> 2025-03-08</span>
-        <span><i class="far fa-clock"></i> 阅读时间：11分钟</span>
-        <span><i class="far fa-folder"></i> 分类：服务器</span>
-      </div>
+      
 
       <div class="reading-progress">
     <div class="reading-progress-bar"></div>
@@ -401,11 +393,7 @@
 
   <main class="post-content">
     <div class="card">
-      <div class="post-meta">
-        <span><i class="far fa-calendar"></i> 2025-03-08</span>
-        <span><i class="far fa-clock"></i> 阅读时间：9分钟</span>
-        <span><i class="far fa-folder"></i> 分类：服务器</span>
-      </div>
+      
 
       <h1>家用伺服器折腾手记-2：Mac mini 部署 MoviePilot 教程 🎬</h1><div class="meta">发布时间：2025-03-08 | 分类：服务器, Docker, 影视</div><h2>前言 📝</h2><p>在上一篇文章中，我们介绍了如何在 Mac mini 上搭建 Docker 环境。这次我们将继续探索，使用 Docker Compose 部署 MoviePilot，这是一个强大的电影管理工具，可以帮助我们自动下载和管理电影资源。MoviePilot 是 NAStool 的 Python 重制版，提供了更好的性能和更多的功能。</p><h2>准备工作 🛠️</h2><div class="tip"><strong>提示：</strong>确保你已经按照上一篇文章完成了 Docker 环境的搭建。</div><h3>1. 创建工作目录</h3><pre><code class="bash">mkdir -p ~/docker/moviepilot
 cd ~/docker/moviepilot</code></pre><h3>2. 创建配置文件</h3><pre><code class="yaml"># docker-compose.yml
@@ -503,28 +491,25 @@ if __name__ == "__main__":
     </div>
   </main>
 
-      <div class="post-tags">
-        <span class="tag">服务器</span>
-<span class="tag"></span>
-      </div>
+      
     </div>
   </main>
 
-      <div class="post-tags">
-        <span class="tag">服务器</span>
-<span class="tag"></span>
-      </div>
+      
 
-      <div class="post-tags">
-        <span class="tag">服务器</span>
-<span class="tag"></span>
-<span class="tag">服务器</span>
-<span class="tag"></span>
-      </div>
+      
     </article>
 
     <div class="post-tags">
       <span class="tag">服务器</span>
+<span class="tag"></span>
+<span class="tag">服务器</span>
+<span class="tag"></span>
+<span class="tag">服务器</span>
+<span class="tag"></span>
+<span class="tag">服务器</span>
+<span class="tag"></span>
+<span class="tag">服务器</span>
 <span class="tag"></span>
 <span class="tag">服务器</span>
 <span class="tag"></span>

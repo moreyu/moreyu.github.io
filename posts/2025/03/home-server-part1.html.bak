@@ -314,7 +314,7 @@
   <main class="post-content">
     <div class="post-meta">
       <span><i class="far fa-calendar"></i> 2025-03-07</span>
-      <span><i class="far fa-clock"></i> 阅读时间：15分钟</span>
+      <span><i class="far fa-clock"></i> 阅读时间：13分钟</span>
       <span><i class="far fa-folder"></i> 分类：服务器</span>
     </div>
 
@@ -325,11 +325,7 @@
 
       
 
-      <div class="post-meta">
-        <span><i class="far fa-calendar"></i> 2025-03-07</span>
-        <span><i class="far fa-clock"></i> 阅读时间：14分钟</span>
-        <span><i class="far fa-folder"></i> 分类：服务器</span>
-      </div>
+      
 
       <h1>家用伺服器折腾手记-1：Mac mini 搭建青龙面板教程</h1>
 
@@ -364,11 +360,7 @@
 
   <main class="post-content">
     <div class="card">
-      <div class="post-meta">
-        <span><i class="far fa-calendar"></i> 2025-03-07</span>
-        <span><i class="far fa-clock"></i> 阅读时间：11分钟</span>
-        <span><i class="far fa-folder"></i> 分类：服务器</span>
-      </div>
+      
 
       <div class="reading-progress">
     <div class="reading-progress-bar"></div>
@@ -401,11 +393,7 @@
 
   <main class="post-content">
     <div class="card">
-      <div class="post-meta">
-        <span><i class="far fa-calendar"></i> 2025-03-07</span>
-        <span><i class="far fa-clock"></i> 阅读时间：9分钟</span>
-        <span><i class="far fa-folder"></i> 分类：服务器</span>
-      </div>
+      
 
       <h1>家用伺服器折腾手记-1：Mac mini 搭建青龙面板教程 🖥️</h1><div class="meta">发布时间：2025-03-07 | 分类：服务器, Docker, 自动化</div><h2>前言 📝</h2><p>最近入手了一台 Mac mini M2，除了日常使用外，我还想把它变成一台家用服务器。考虑到 Mac mini 的性能强大、功耗低、噪音小等优点，它非常适合作为 24/7 运行的家用服务器。这篇文章将详细介绍如何在 Mac mini 上搭建 Docker 环境并运行青龙面板。</p><h2>环境准备 🛠️</h2><h3>1. 安装 Homebrew</h3><pre><code class="bash">/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</code></pre><p>安装完成后，确保将 Homebrew 添加到 PATH 中。对于 Apple Silicon Mac，通常需要添加以下路径：</p><pre><code class="bash">echo 'eval "$(/opt/homebrew/bin/brew shellenv)"\ &gt;&gt; ~/.zprofile
 eval "$(/opt/homebrew/bin/brew shellenv)"</code></pre><h3>2. 安装 Docker</h3><pre><code class="bash">brew install --cask docker</code></pre><p>安装完成后，启动 Docker Desktop 并等待其初始化完成。</p><h3>3. 创建工作目录</h3><pre><code class="bash">mkdir -p ~/docker/qinglong
@@ -496,28 +484,25 @@ if __name__ == "__main__":
     </div>
   </main>
 
-      <div class="post-tags">
-        <span class="tag">服务器</span>
-<span class="tag"></span>
-      </div>
+      
     </div>
   </main>
 
-      <div class="post-tags">
-        <span class="tag">服务器</span>
-<span class="tag"></span>
-      </div>
+      
 
-      <div class="post-tags">
-        <span class="tag">服务器</span>
-<span class="tag"></span>
-<span class="tag">服务器</span>
-<span class="tag"></span>
-      </div>
+      
     </article>
 
     <div class="post-tags">
       <span class="tag">服务器</span>
+<span class="tag"></span>
+<span class="tag">服务器</span>
+<span class="tag"></span>
+<span class="tag">服务器</span>
+<span class="tag"></span>
+<span class="tag">服务器</span>
+<span class="tag"></span>
+<span class="tag">服务器</span>
 <span class="tag"></span>
 <span class="tag">服务器</span>
 <span class="tag"></span>

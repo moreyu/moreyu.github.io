@@ -37,49 +37,42 @@ function extractContent(html) {
   
   if (mainContent.length) {
     // 如果已经是新模板格式，提取主要内容
-    const mainHtml = mainContent.html();
-    const tempDiv = cheerio.load(`<div>${mainHtml}</div>`)('div');
-    
-    // 移除元数据和标签
-    tempDiv.find('.post-meta').remove();
-    tempDiv.find('.post-tags').remove();
-    tempDiv.find('h1').first().remove();
-    
-    content = tempDiv.html();
+    content = mainContent.html();
   } else {
     // 如果是旧格式，尝试提取文章主体
     const article = $('article').first();
     if (article.length) {
-      const articleHtml = article.html();
-      const tempDiv = cheerio.load(`<div>${articleHtml}</div>`)('div');
-      
-      // 移除不需要的元素
-      tempDiv.find('.post-meta').remove();
-      tempDiv.find('.post-tags').remove();
-      tempDiv.find('h1').first().remove();
-      
-      content = tempDiv.html();
+      content = article.html();
     } else {
-      // 创建临时容器
-      const tempDiv = cheerio.load(`<div>${$('body').html()}</div>`)('div');
-      
-      // 移除不需要的元素
-      tempDiv.find('script').remove();
-      tempDiv.find('style').remove();
-      tempDiv.find('header').remove();
-      tempDiv.find('footer').remove();
-      tempDiv.find('nav').remove();
-      tempDiv.find('aside').remove();
-      tempDiv.find('.back-home').remove();
-      tempDiv.find('.reading-progress').remove();
-      tempDiv.find('.toc').remove();
-      tempDiv.find('.post-meta').remove();
-      tempDiv.find('.post-tags').remove();
-      tempDiv.find('h1').first().remove();
-      
-      content = tempDiv.html();
+      // 创建临时容器获取 body 内容
+      content = $('body').html();
     }
   }
+  
+  // 使用临时容器处理内容
+  const tempDiv = cheerio.load(`<div>${content}</div>`, null, false);
+  
+  // 移除不需要的元素
+  tempDiv('script').remove();
+  tempDiv('style').remove();
+  tempDiv('header').remove();
+  tempDiv('footer').remove();
+  tempDiv('nav').remove();
+  tempDiv('aside').remove();
+  tempDiv('.back-home').remove();
+  tempDiv('.reading-progress').remove();
+  tempDiv('.toc').remove();
+  tempDiv('.post-meta').remove();
+  tempDiv('.post-tags').remove();
+  tempDiv('h1').first().remove();
+  
+  // 清理多余的嵌套
+  content = tempDiv.root().html();
+  
+  // 移除空的容器
+  content = content.replace(/<div[^>]*>\s*<\/div>/g, '');
+  content = content.replace(/<p[^>]*>\s*<\/p>/g, '');
+  content = content.replace(/<span[^>]*>\s*<\/span>/g, '');
   
   // 提取日期
   let date = new Date().toISOString().split('T')[0];
@@ -118,21 +111,26 @@ function extractContent(html) {
   
   // 生成目录
   const toc = [];
-  $('h2, h3').each((i, el) => {
-    const level = el.name === 'h2' ? 2 : 3;
-    const text = $(el).text().replace(/[#\d.]+\s*/, ''); // 移除标题前的数字和点
+  const headings = tempDiv('h2, h3');
+  headings.each((i, el) => {
+    const level = el.tagName === 'h2' ? 2 : 3;
+    const text = tempDiv(el).text().replace(/[#\d.]+\s*/, ''); // 移除标题前的数字和点
     const id = text.toLowerCase()
       .replace(/[^\u4e00-\u9fa5a-zA-Z0-9]+/g, '-') // 将非中文、英文、数字字符转换为连字符
       .replace(/^-+|-+$/g, ''); // 移除首尾连字符
-    $(el).attr('id', id);
+    tempDiv(el).attr('id', id);
     toc.push(`${'  '.repeat(level - 2)}<li><a href="#${id}">${text}</a></li>`);
   });
+  
+  // 更新内容中的标题 ID
+  content = tempDiv.root().html();
   
   // 清理内容
   content = content
     .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
     .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '')
     .replace(/<!--[\s\S]*?-->/g, '')
+    .replace(/\s+/g, ' ')
     .trim();
   
   return {
