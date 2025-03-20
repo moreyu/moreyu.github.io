@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>家用伺服器折腾手记-4：Mac mini 部署 AList 服务 - Moreyu's Blog ✨</title>
+  <title>家用伺服器折腾手记-4：Mac mini 部署 Nginx 反向代理教程 - Moreyu's Blog</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/maple-mono@latest/index.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/atom-one-dark.min.css">
@@ -391,152 +391,6 @@
       color: var(--bg);
       box-shadow: 0 0 10px var(--primary);
     }
-
-    /* 移动端优化 */
-    @media (max-width: 768px) {
-      body {
-        padding: 1rem;
-      }
-      
-      .post-content {
-        padding: 1rem;
-        margin: 0;
-        width: 100%;
-      }
-      
-      h1 {
-        font-size: 1.5rem;
-        line-height: 1.4;
-        margin: 1rem 0;
-      }
-      
-      h2 {
-        font-size: 1.3rem;
-      }
-      
-      h3 {
-        font-size: 1.1rem;
-      }
-      
-      .post-meta {
-        flex-direction: column;
-        gap: 0.5rem;
-        margin-bottom: 1rem;
-      }
-      
-      .share-buttons {
-        position: fixed;
-        bottom: 1rem;
-        left: 50%;
-        transform: translateX(-50%);
-        display: flex;
-        gap: 0.5rem;
-        z-index: 100;
-      }
-      
-      .theme-toggle {
-        top: 1rem;
-        right: 1rem;
-      }
-    }
-
-    /* 导航栏响应式优化 */
-    .toc {
-      position: fixed;
-      right: 2rem;
-      top: 6rem;
-      width: 250px;
-      max-height: calc(100vh - 8rem);
-      overflow-y: auto;
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 1rem;
-      font-size: 0.9rem;
-      transition: all 0.3s ease;
-      opacity: 0.8;
-    }
-
-    .toc:hover {
-      opacity: 1;
-      transform: translateX(0);
-    }
-
-    @media (max-width: 1200px) {
-      .toc {
-        transform: translateX(calc(100% + 2rem));
-        right: 0;
-      }
-      
-      .toc.active {
-        transform: translateX(0);
-      }
-      
-      .toc-toggle {
-        display: block;
-        position: fixed;
-        right: 1rem;
-        top: 5rem;
-        background: var(--card-bg);
-        color: var(--primary);
-        padding: 0.5rem;
-        border-radius: 4px;
-        border: 1px solid var(--primary);
-        cursor: pointer;
-        z-index: 1000;
-        opacity: 0.8;
-        transition: opacity 0.3s;
-      }
-      
-      .toc-toggle:hover {
-        opacity: 1;
-      }
-    }
-
-    @media (min-width: 1201px) {
-      .toc-toggle {
-        display: none;
-      }
-      
-      .post-content {
-        max-width: calc(100% - 300px);
-      }
-    }
-
-    /* 代码块优化 */
-    pre {
-      margin: 1rem -1rem;
-      padding: 1rem;
-      border-radius: 8px;
-      overflow-x: auto;
-      position: relative;
-    }
-
-    @media (min-width: 768px) {
-      pre {
-        margin: 1rem 0;
-      }
-    }
-
-    /* 图片优化 */
-    img {
-      max-width: 100%;
-      height: auto;
-      border-radius: 8px;
-      margin: 1rem 0;
-    }
-
-    /* 链接样式优化 */
-    a {
-      color: var(--primary);
-      text-decoration: none;
-      border-bottom: 1px solid transparent;
-      transition: all 0.3s;
-    }
-
-    a:hover {
-      border-bottom-color: var(--primary);
-    }
   </style>
 </head>
 <body>
@@ -556,12 +410,12 @@
     <div class="post-meta">
       <span><i class="far fa-calendar"></i> 2025-03-20</span>
       <span><i class="far fa-clock"></i> 阅读时间：9分钟</span>
-      <span><i class="far fa-folder"></i> 分类：未分类</span></span></span>
+      <span><i class="far fa-folder"></i> 分类：未分类</span></span>
     </div>
 
     <h1>家用伺服器折腾手记-4：Mac mini 部署 AList 服务</h1>
 
-    <html><head></head><body><div><div class="post-meta"><span>2025-03-20</span><span>阅读时间：9分钟</span><span>分类：未分类</span></div><h1>家用伺服器折腾手记-4：Mac mini 部署 AList 服务</h1><div><div class="post-meta"><span>2025-03-20</span><span>阅读时间：8分钟</span><span>分类：未分类</span></div>发布于 2025-03-10 · <span class="tag">Docker 🐳</span><span class="tag">文件管理 📁</span><span class="tag">自动化 ⚙️</span><p>继续我们的 Mac mini 服务器系列！今天我们要介绍如何使用 Docker 部署 AList，一个强大的文件列表程序。通过 AList，我们可以实现跨设备文件传输、搭建私人影视库，甚至可以整合各种云存储服务。</p><h2 id="为什么选择-alist">为什么选择 AList？ 🤔</h2><ul><li>支持多种存储方式：本地存储、WebDAV、S3、OneDrive 等</li><li>美观的界面：支持多种主题，响应式设计</li><li>强大的文件预览：支持视频、音频、图片、文档等多种格式</li><li>便捷的文件管理：支持上传、下载、复制、移动等操作</li><li>完善的权限控制：可以设置用户权限和访问密码</li></ul><h2 id="环境准备">环境准备 🛠️</h2><p>确保你的 Mac mini 上已经安装了 Docker 和 Docker Compose。如果还没有安装，可以参考我们的第一篇文章。</p><h2 id="部署步骤">部署步骤 📝</h2><h3 id="1-创建配置文件">1. 创建配置文件</h3><p>首先创建一个新的目录来存放 AList 的配置文件：</p><pre><code>mkdir -p ~/docker/alist cd ~/docker/alist</code></pre><p>创建 docker-compose.yml 文件：</p><pre><code>version: "3.8" services: alist: image: xhofe/alist:latest container_name: alist volumes: - ./data:/opt/alist/data - /path/to/media:/media # 替换为你的媒体文件路径 ports: - "5244:5244" environment: - PUID=1000 - PGID=1000 - TZ=Asia/Shanghai restart: unless-stopped</code></pre>注意：请将 /path/to/media 替换为你实际的媒体文件路径。<h3 id="2-启动服务">2. 启动服务</h3><p>在配置文件目录下运行：</p><pre><code>docker-compose up -d</code></pre><p>查看初始密码：</p><pre><code>docker exec -it alist ./alist admin</code></pre><h3 id="3-基础配置">3. 基础配置</h3><ol><li>访问 <code>http://你的IP:5244</code></li><li>使用默认用户名 <code>admin</code>和上一步获取的密码登录</li><li>进入管理面板，修改密码</li><li>添加存储：<ul><li>本地存储：直接映射本地文件夹</li><li>WebDAV：连接其他 WebDAV 服务</li><li>云存储：配置各类云存储服务</li></ul></li></ol><h2 id="进阶配置">进阶配置 ⚙️</h2><h3 id="1-反向代理设置">1. 反向代理设置</h3><p>如果你想通过域名访问 AList，可以配置 Nginx 反向代理：</p><pre><code>server { listen 80; server_name alist.yourdomain.com; location / { proxy_pass http://127.0.0.1:5244; proxy_set_header Host $host; proxy_set_header X-Real-IP $remote_addr; proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for; proxy_set_header X-Forwarded-Proto $scheme; } }</code></pre><h3 id="2-ssl-配置">2. SSL 配置</h3><p>建议配置 SSL 证书，确保数据传输安全：</p><pre><code>server { listen 443 ssl; server_name alist.yourdomain.com; ssl_certificate /path/to/cert.pem; ssl_certificate_key /path/to/key.pem; # ... 其他配置同上 }</code></pre><h3 id="3-文件预览优化">3. 文件预览优化</h3><p>AList 支持多种文件预览方式，可以根据需要进行配置：</p><ul><li>视频预览：支持 HLS 转码，平滑播放</li><li>音频预览：支持在线播放和播放列表</li><li>文档预览：支持 Office、PDF 等格式</li><li>图片预览：支持图片缩放和幻灯片播放</li></ul><h2 id="实用功能展示">实用功能展示 🌟</h2><h3 id="1-跨设备文件传输">1. 跨设备文件传输</h3><ul><li>Web 界面拖拽上传</li><li>WebDAV 协议支持</li><li>移动端 App 访问</li><li>支持断点续传</li></ul><h3 id="2-影视库功能">2. 影视库功能</h3><ul><li>自动识别影视信息</li><li>在线播放支持</li><li>字幕自动匹配</li><li>播放进度记录</li></ul><h3 id="3-文件管理">3. 文件管理</h3><ul><li>文件分类展示</li><li>文件搜索功能</li><li>批量操作支持</li><li>离线下载功能</li></ul><h2 id="性能优化">性能优化 🚀</h2><ol><li>缓存配置：<pre><code>environment: - CACHE_SIZE=1000 - CACHE_TIMEOUT=60</code></pre></li><li>资源限制：<pre><code>services: alist: deploy: resources: limits: memory: 1G reservations: memory: 512M</code></pre></li></ol><h2 id="常见问题">常见问题 ❓</h2><strong>权限问题</strong>如果遇到文件访问权限问题，请检查：<ul><li>容器内的 PUID 和 PGID 设置</li><li>挂载目录的权限设置</li><li>SELinux 配置（如果启用）</li></ul><h2 id="进阶使用">进阶使用 🎯</h2><h3 id="1-api-集成">1. API 集成</h3><p>AList 提供了完整的 API 接口，可以用于：</p><ul><li>自动化文件管理</li><li>第三方应用集成</li><li>自定义功能开发</li></ul><h3 id="2-备份策略">2. 备份策略</h3><p>定期备份重要数据：</p><pre><code>0 2 * * * tar -czf /backup/alist-$(date +%Y%m%d).tar.gz /path/to/alist/data</code></pre><h2 id="总结">总结 📝</h2><p>通过 AList，我们实现了：</p><ul><li>便捷的跨设备文件传输</li><li>私人影视库的搭建</li><li>统一的文件管理平台</li><li>安全的数据访问控制</li></ul><p>下一篇文章，我们将探讨如何将 AList 与其他服务（如 Emby、Jellyfin）集成，构建更完整的家庭媒体中心。</p><a href="/" class="back-to-home">返回首页 🏠</a><div class="post-tags"><span class="tag">Docker 🐳</span><span class="tag">文件管理 📁</span><span class="tag">自动化 ⚙️</span><span class="tag">Docker 🐳</span><span class="tag">文件管理 📁</span><span class="tag">自动化 ⚙️</span></div></div><div class="post-tags"><span class="tag">Docker 🐳</span><span class="tag">文件管理 📁</span><span class="tag">自动化 ⚙️</span></div></div></body></html>
+    <html><head></head><body><div><div class="post-meta"><span>2025-03-20</span><span>阅读时间：8分钟</span><span>分类：未分类</span></div><h1>家用伺服器折腾手记-4：Mac mini 部署 AList 服务</h1><button class="share-button" title="分享到微信" onclick="shareToWeChat()"></button>发布于 2025-03-10 · <span class="tag">Docker 🐳</span><span class="tag">文件管理 📁</span><span class="tag">自动化 ⚙️</span><p>继续我们的 Mac mini 服务器系列！今天我们要介绍如何使用 Docker 部署 AList，一个强大的文件列表程序。通过 AList，我们可以实现跨设备文件传输、搭建私人影视库，甚至可以整合各种云存储服务。</p><h2 id="为什么选择-alist">为什么选择 AList？ 🤔</h2><ul><li>支持多种存储方式：本地存储、WebDAV、S3、OneDrive 等</li><li>美观的界面：支持多种主题，响应式设计</li><li>强大的文件预览：支持视频、音频、图片、文档等多种格式</li><li>便捷的文件管理：支持上传、下载、复制、移动等操作</li><li>完善的权限控制：可以设置用户权限和访问密码</li></ul><h2 id="环境准备">环境准备 🛠️</h2><p>确保你的 Mac mini 上已经安装了 Docker 和 Docker Compose。如果还没有安装，可以参考我们的第一篇文章。</p><h2 id="部署步骤">部署步骤 📝</h2><h3 id="1-创建配置文件">1. 创建配置文件</h3><p>首先创建一个新的目录来存放 AList 的配置文件：</p><pre><code>mkdir -p ~/docker/alist cd ~/docker/alist</code></pre><p>创建 docker-compose.yml 文件：</p><pre><code>version: "3.8" services: alist: image: xhofe/alist:latest container_name: alist volumes: - ./data:/opt/alist/data - /path/to/media:/media # 替换为你的媒体文件路径 ports: - "5244:5244" environment: - PUID=1000 - PGID=1000 - TZ=Asia/Shanghai restart: unless-stopped</code></pre>注意：请将 /path/to/media 替换为你实际的媒体文件路径。<h3 id="2-启动服务">2. 启动服务</h3><p>在配置文件目录下运行：</p><pre><code>docker-compose up -d</code></pre><p>查看初始密码：</p><pre><code>docker exec -it alist ./alist admin</code></pre><h3 id="3-基础配置">3. 基础配置</h3><ol><li>访问 <code>http://你的IP:5244</code></li><li>使用默认用户名 <code>admin</code>和上一步获取的密码登录</li><li>进入管理面板，修改密码</li><li>添加存储：<ul><li>本地存储：直接映射本地文件夹</li><li>WebDAV：连接其他 WebDAV 服务</li><li>云存储：配置各类云存储服务</li></ul></li></ol><h2 id="进阶配置">进阶配置 ⚙️</h2><h3 id="1-反向代理设置">1. 反向代理设置</h3><p>如果你想通过域名访问 AList，可以配置 Nginx 反向代理：</p><pre><code>server { listen 80; server_name alist.yourdomain.com; location / { proxy_pass http://127.0.0.1:5244; proxy_set_header Host $host; proxy_set_header X-Real-IP $remote_addr; proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for; proxy_set_header X-Forwarded-Proto $scheme; } }</code></pre><h3 id="2-ssl-配置">2. SSL 配置</h3><p>建议配置 SSL 证书，确保数据传输安全：</p><pre><code>server { listen 443 ssl; server_name alist.yourdomain.com; ssl_certificate /path/to/cert.pem; ssl_certificate_key /path/to/key.pem; # ... 其他配置同上 }</code></pre><h3 id="3-文件预览优化">3. 文件预览优化</h3><p>AList 支持多种文件预览方式，可以根据需要进行配置：</p><ul><li>视频预览：支持 HLS 转码，平滑播放</li><li>音频预览：支持在线播放和播放列表</li><li>文档预览：支持 Office、PDF 等格式</li><li>图片预览：支持图片缩放和幻灯片播放</li></ul><h2 id="实用功能展示">实用功能展示 🌟</h2><h3 id="1-跨设备文件传输">1. 跨设备文件传输</h3><ul><li>Web 界面拖拽上传</li><li>WebDAV 协议支持</li><li>移动端 App 访问</li><li>支持断点续传</li></ul><h3 id="2-影视库功能">2. 影视库功能</h3><ul><li>自动识别影视信息</li><li>在线播放支持</li><li>字幕自动匹配</li><li>播放进度记录</li></ul><h3 id="3-文件管理">3. 文件管理</h3><ul><li>文件分类展示</li><li>文件搜索功能</li><li>批量操作支持</li><li>离线下载功能</li></ul><h2 id="性能优化">性能优化 🚀</h2><ol><li>缓存配置：<pre><code>environment: - CACHE_SIZE=1000 - CACHE_TIMEOUT=60</code></pre></li><li>资源限制：<pre><code>services: alist: deploy: resources: limits: memory: 1G reservations: memory: 512M</code></pre></li></ol><h2 id="常见问题">常见问题 ❓</h2><strong>权限问题</strong>如果遇到文件访问权限问题，请检查：<ul><li>容器内的 PUID 和 PGID 设置</li><li>挂载目录的权限设置</li><li>SELinux 配置（如果启用）</li></ul><h2 id="进阶使用">进阶使用 🎯</h2><h3 id="1-api-集成">1. API 集成</h3><p>AList 提供了完整的 API 接口，可以用于：</p><ul><li>自动化文件管理</li><li>第三方应用集成</li><li>自定义功能开发</li></ul><h3 id="2-备份策略">2. 备份策略</h3><p>定期备份重要数据：</p><pre><code>0 2 * * * tar -czf /backup/alist-$(date +%Y%m%d).tar.gz /path/to/alist/data</code></pre><h2 id="总结">总结 📝</h2><p>通过 AList，我们实现了：</p><ul><li>便捷的跨设备文件传输</li><li>私人影视库的搭建</li><li>统一的文件管理平台</li><li>安全的数据访问控制</li></ul><p>下一篇文章，我们将探讨如何将 AList 与其他服务（如 Emby、Jellyfin）集成，构建更完整的家庭媒体中心。</p><a href="/" class="back-to-home">返回首页 🏠</a><div class="post-tags"><span class="tag">Docker 🐳</span><span class="tag">文件管理 📁</span><span class="tag">自动化 ⚙️</span><span class="tag">Docker 🐳</span><span class="tag">文件管理 📁</span><span class="tag">自动化 ⚙️</span></div></div></body></html>
 
     <div class="post-tags">
       <span class="tag">Docker 🐳</span>
@@ -636,56 +490,21 @@
       setTheme(newTheme);
     });
 
-    // 目录导航优化
+    // 目录切换
     const tocToggle = document.querySelector('.toc-toggle');
     const toc = document.querySelector('.toc');
     
     if (tocToggle && toc) {
-      let touchStartX = 0;
-      let touchEndX = 0;
-      
-      // 点击切换
       tocToggle.addEventListener('click', () => {
         toc.classList.toggle('active');
       });
       
-      // 滑动手势
-      document.addEventListener('touchstart', (e) => {
-        touchStartX = e.touches[0].clientX;
-      });
-      
-      document.addEventListener('touchend', (e) => {
-        touchEndX = e.changedTouches[0].clientX;
-        const swipeDistance = touchEndX - touchStartX;
-        
-        if (Math.abs(swipeDistance) > 50) {
-          if (swipeDistance > 0) {
-            // 向右滑动，显示目录
-            toc.classList.add('active');
-          } else {
-            // 向左滑动，隐藏目录
-            toc.classList.remove('active');
-          }
-        }
-      });
-      
-      // 点击外部区域关闭
+      // 点击目录外部区域关闭目录
       document.addEventListener('click', (e) => {
         if (!toc.contains(e.target) && !tocToggle.contains(e.target)) {
           toc.classList.remove('active');
         }
       });
-      
-      // 滚动时自动隐藏
-      let lastScrollTop = 0;
-      window.addEventListener('scroll', () => {
-        const st = window.pageYOffset || document.documentElement.scrollTop;
-        if (st > lastScrollTop && window.innerWidth <= 1200) {
-          // 向下滚动，隐藏目录
-          toc.classList.remove('active');
-        }
-        lastScrollTop = st <= 0 ? 0 : st;
-      }, false);
     }
 
     // 图片预览
