@@ -64,15 +64,23 @@ function extractContent(html) {
   tempDiv('.toc').remove();
   tempDiv('.post-meta').remove();
   tempDiv('.post-tags').remove();
-  tempDiv('h1').first().remove();
+  
+  // 移除重复的标题
+  const h1s = tempDiv('h1');
+  if (h1s.length > 1) {
+    h1s.slice(1).remove();
+  }
   
   // 清理多余的嵌套
   content = tempDiv.root().html();
   
-  // 移除空的容器
-  content = content.replace(/<div[^>]*>\s*<\/div>/g, '');
-  content = content.replace(/<p[^>]*>\s*<\/p>/g, '');
-  content = content.replace(/<span[^>]*>\s*<\/span>/g, '');
+  // 移除空的容器和重复的标题
+  content = content
+    .replace(/<div[^>]*>\s*<\/div>/g, '')
+    .replace(/<p[^>]*>\s*<\/p>/g, '')
+    .replace(/<span[^>]*>\s*<\/span>/g, '')
+    .replace(/<h1[^>]*>([^<]+)<\/h1>(\s*<h1[^>]*>\1<\/h1>)+/g, '<h1>$1</h1>')
+    .replace(/(<div[^>]*>(\s*<div[^>]*>)*\s*)(<h[1-6][^>]*>.*?<\/h[1-6]>)(\s*<\/div>)*\s*\2/g, '$3');
   
   // 提取日期
   let date = new Date().toISOString().split('T')[0];
@@ -131,6 +139,8 @@ function extractContent(html) {
     .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '')
     .replace(/<!--[\s\S]*?-->/g, '')
     .replace(/\s+/g, ' ')
+    .replace(/(<[^>]+>)\s+/g, '$1')
+    .replace(/\s+(<\/[^>]+>)/g, '$1')
     .trim();
   
   return {
