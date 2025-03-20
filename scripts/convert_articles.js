@@ -80,7 +80,10 @@ function extractContent(html) {
     .replace(/<p[^>]*>\s*<\/p>/g, '')
     .replace(/<span[^>]*>\s*<\/span>/g, '')
     .replace(/<h1[^>]*>([^<]+)<\/h1>(\s*<h1[^>]*>\1<\/h1>)+/g, '<h1>$1</h1>')
-    .replace(/(<div[^>]*>(\s*<div[^>]*>)*\s*)(<h[1-6][^>]*>.*?<\/h[1-6]>)(\s*<\/div>)*\s*\2/g, '$3');
+    .replace(/(<div[^>]*>(\s*<div[^>]*>)*\s*)(<h[1-6][^>]*>.*?<\/h[1-6]>)(\s*<\/div>)*\s*\2/g, '$3')
+    .replace(/<div[^>]*>\s*(<div[^>]*>\s*)*(.+?)\s*(<\/div>\s*)*<\/div>/g, '$2')
+    .replace(/<article[^>]*>\s*(<div[^>]*>\s*)*(.+?)\s*(<\/div>\s*)*<\/article>/g, '$2')
+    .replace(/<main[^>]*>\s*(<div[^>]*>\s*)*(.+?)\s*(<\/div>\s*)*<\/main>/g, '$2');
   
   // 提取日期
   let date = new Date().toISOString().split('T')[0];
@@ -141,6 +144,7 @@ function extractContent(html) {
     .replace(/\s+/g, ' ')
     .replace(/(<[^>]+>)\s+/g, '$1')
     .replace(/\s+(<\/[^>]+>)/g, '$1')
+    .replace(/<div[^>]*>\s*(<div[^>]*>\s*)*(.+?)\s*(<\/div>\s*)*<\/div>/g, '$2')
     .trim();
   
   return {
