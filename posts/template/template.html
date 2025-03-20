@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,22 +7,58 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/maple-mono@latest/index.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/atom-one-dark.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.8/dist/medium-zoom.min.css">
   <style>
     :root {
-      /* Neon Theme */
-      --primary: #00dc82;
-      --primary-dark: #00b368;
-      --primary-light: #33e599;
-      --text: #f5f5f5;
-      --text-light: #a0a0a0;
-      --bg: #1a1a1a;
-      --card-bg: #242424;
-      --border: #333;
-      --shadow: 0 2px 4px rgba(0,0,0,0.2);
-      --code-bg: #282c34;
-      --code-color: #abb2bf;
-      --font-mono: 'Maple Mono', monospace;
-      --gradient: linear-gradient(120deg, var(--primary) 0%, var(--primary-light) 100%);
+      /* Light Theme */
+      --primary-light-theme: #00dc82;
+      --primary-dark-light-theme: #00b368;
+      --primary-light-light-theme: #33e599;
+      --text-light-theme: #1a1a1a;
+      --text-light-light-theme: #666666;
+      --bg-light-theme: #f5f5f5;
+      --card-bg-light-theme: #ffffff;
+      --border-light-theme: #e0e0e0;
+      --code-bg-light-theme: #f8f8f8;
+      --code-color-light-theme: #333333;
+
+      /* Dark Theme */
+      --primary-dark-theme: #00dc82;
+      --primary-dark-dark-theme: #00b368;
+      --primary-light-dark-theme: #33e599;
+      --text-dark-theme: #f5f5f5;
+      --text-light-dark-theme: #a0a0a0;
+      --bg-dark-theme: #1a1a1a;
+      --card-bg-dark-theme: #242424;
+      --border-dark-theme: #333;
+      --code-bg-dark-theme: #282c34;
+      --code-color-dark-theme: #abb2bf;
+    }
+
+    html[data-theme="light"] {
+      --primary: var(--primary-light-theme);
+      --primary-dark: var(--primary-dark-light-theme);
+      --primary-light: var(--primary-light-light-theme);
+      --text: var(--text-light-theme);
+      --text-light: var(--text-light-light-theme);
+      --bg: var(--bg-light-theme);
+      --card-bg: var(--card-bg-light-theme);
+      --border: var(--border-light-theme);
+      --code-bg: var(--code-bg-light-theme);
+      --code-color: var(--code-color-light-theme);
+    }
+
+    html[data-theme="dark"] {
+      --primary: var(--primary-dark-theme);
+      --primary-dark: var(--primary-dark-dark-theme);
+      --primary-light: var(--primary-light-dark-theme);
+      --text: var(--text-dark-theme);
+      --text-light: var(--text-light-dark-theme);
+      --bg: var(--bg-dark-theme);
+      --card-bg: var(--card-bg-dark-theme);
+      --border: var(--border-dark-theme);
+      --code-bg: var(--code-bg-dark-theme);
+      --code-color: var(--code-color-dark-theme);
     }
 
     body {
@@ -300,8 +336,60 @@
 
     @media (max-width: 1200px) {
       .toc {
+        position: fixed;
+        right: -300px;
+        top: 6rem;
+        transition: right 0.3s ease;
+        background: var(--card-bg);
+        z-index: 999;
+      }
+
+      .toc.active {
+        right: 0;
+      }
+
+      .toc-toggle {
+        display: block;
+        position: fixed;
+        right: 2rem;
+        top: 6rem;
+        background: var(--card-bg);
+        color: var(--primary);
+        padding: 0.5rem;
+        border-radius: 4px;
+        border: 1px solid var(--primary);
+        cursor: pointer;
+        z-index: 1000;
+      }
+    }
+
+    @media (min-width: 1201px) {
+      .toc-toggle {
         display: none;
       }
+    }
+
+    /* 主题切换按钮样式 */
+    .theme-toggle {
+      position: fixed;
+      right: 2rem;
+      top: 2rem;
+      background: transparent;
+      color: var(--primary);
+      padding: 0.6rem;
+      border-radius: 50%;
+      font-size: 1.2rem;
+      border: 1px solid var(--primary);
+      cursor: pointer;
+      transition: all 0.3s;
+      z-index: 1000;
+    }
+
+    .theme-toggle:hover {
+      transform: rotate(180deg);
+      background: var(--primary);
+      color: var(--bg);
+      box-shadow: 0 0 10px var(--primary);
     }
   </style>
 </head>
@@ -309,6 +397,10 @@
   <div class="reading-progress">
     <div class="reading-progress-bar"></div>
   </div>
+
+  <button class="theme-toggle" aria-label="切换主题">
+    <i class="fas fa-moon"></i>
+  </button>
 
   <a href="/" class="back-home">
     <i class="fas fa-arrow-left"></i> 返回首页
@@ -330,6 +422,10 @@
     </div>
   </main>
 
+  <button class="toc-toggle">
+    <i class="fas fa-list"></i> 目录
+  </button>
+
   <aside class="toc">
     <div class="toc-title">📚 目录</div>
     <ul>
@@ -337,31 +433,65 @@
     </ul>
   </aside>
 
+  <div class="share-buttons">
+    <button class="share-button" onclick="shareToTwitter()">
+      <i class="fab fa-twitter"></i>
+    </button>
+    <button class="share-button" onclick="shareToFacebook()">
+      <i class="fab fa-facebook"></i>
+    </button>
+    <button class="share-button" onclick="copyLink()">
+      <i class="fas fa-link"></i>
+    </button>
+  </div>
+
   <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/highlight.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.8/dist/medium-zoom.min.js"></script>
   <script>
-    // 阅读进度
-    const readingProgress = document.querySelector('.reading-progress');
-    const content = document.querySelector('.post-content');
+    // 主题切换
+    const themeToggle = document.querySelector('.theme-toggle');
+    const htmlElement = document.documentElement;
+    const themeIcon = themeToggle.querySelector('i');
     
-    if (readingProgress && content) {
-      const updateProgress = () => {
-        const contentBox = content.getBoundingClientRect();
-        const totalHeight = contentBox.height - window.innerHeight;
-        const scrolled = window.scrollY;
-        const progress = Math.min((scrolled / totalHeight) * 100, 100);
-        readingProgress.style.setProperty('--progress', `${progress}%`);
-      };
-      
-      window.addEventListener('scroll', () => {
-        requestAnimationFrame(updateProgress);
-      });
-      
-      window.addEventListener('resize', () => {
-        requestAnimationFrame(updateProgress);
-      });
-      
-      updateProgress();
+    function setTheme(theme) {
+      htmlElement.setAttribute('data-theme', theme);
+      localStorage.setItem('theme', theme);
+      themeIcon.className = theme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
     }
+    
+    // 从 localStorage 获取主题设置
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    setTheme(savedTheme);
+    
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = htmlElement.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      setTheme(newTheme);
+    });
+
+    // 目录切换
+    const tocToggle = document.querySelector('.toc-toggle');
+    const toc = document.querySelector('.toc');
+    
+    if (tocToggle && toc) {
+      tocToggle.addEventListener('click', () => {
+        toc.classList.toggle('active');
+      });
+      
+      // 点击目录外部区域关闭目录
+      document.addEventListener('click', (e) => {
+        if (!toc.contains(e.target) && !tocToggle.contains(e.target)) {
+          toc.classList.remove('active');
+        }
+      });
+    }
+
+    // 图片预览
+    mediumZoom('img:not(.avatar)', {
+      margin: 24,
+      background: 'var(--bg)',
+      scrollOffset: 0,
+    });
 
     // 代码高亮和复制功能
     document.querySelectorAll('pre code').forEach((block) => {
@@ -400,6 +530,48 @@
     document.querySelectorAll('h2[id], h3[id]').forEach((section) => {
       observer.observe(section);
     });
+
+    // 阅读进度
+    const readingProgress = document.querySelector('.reading-progress');
+    const content = document.querySelector('.post-content');
+    
+    if (readingProgress && content) {
+      const updateProgress = () => {
+        const contentBox = content.getBoundingClientRect();
+        const totalHeight = contentBox.height - window.innerHeight;
+        const scrolled = window.scrollY;
+        const progress = Math.min((scrolled / totalHeight) * 100, 100);
+        readingProgress.style.setProperty('--progress', `${progress}%`);
+      };
+      
+      window.addEventListener('scroll', () => {
+        requestAnimationFrame(updateProgress);
+      });
+      
+      window.addEventListener('resize', () => {
+        requestAnimationFrame(updateProgress);
+      });
+      
+      updateProgress();
+    }
+
+    // 分享功能
+    function shareToTwitter() {
+      const text = document.title;
+      const url = window.location.href;
+      window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
+    }
+
+    function shareToFacebook() {
+      const url = window.location.href;
+      window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
+    }
+
+    async function copyLink() {
+      const url = window.location.href;
+      await navigator.clipboard.writeText(url);
+      alert('链接已复制到剪贴板！');
+    }
   </script>
 </body>
 </html> 
