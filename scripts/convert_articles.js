@@ -33,19 +33,31 @@ function extractContent(html) {
   
   // 提取内容
   let content = '';
-  if ($('article').length) {
-    content = $('article').html();
-  } else if ($('#article-container').length) {
-    content = $('#article-container').html();
+  const mainContent = $('.post-content').first();
+  
+  if (mainContent.length) {
+    // 如果已经是新模板格式，直接提取内容
+    content = mainContent.html();
   } else {
-    // 移除不需要的元素
-    $('script').remove();
-    $('style').remove();
-    $('header').remove();
-    $('footer').remove();
-    $('nav').remove();
-    $('aside').remove();
-    content = $('body').html();
+    // 如果是旧格式，尝试提取文章主体
+    const article = $('article').first();
+    if (article.length) {
+      content = article.html();
+    } else {
+      // 移除不需要的元素
+      $('script').remove();
+      $('style').remove();
+      $('header').remove();
+      $('footer').remove();
+      $('nav').remove();
+      $('aside').remove();
+      $('.back-home').remove();
+      $('.reading-progress').remove();
+      $('.toc').remove();
+      
+      // 提取主要内容
+      content = $('body').html();
+    }
   }
   
   // 提取日期
@@ -100,6 +112,9 @@ function extractContent(html) {
     .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
     .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '')
     .replace(/<!--[\s\S]*?-->/g, '')
+    .replace(/<div class="post-meta">[\s\S]*?<\/div>/, '') // 移除旧的元数据
+    .replace(/<div class="post-tags">[\s\S]*?<\/div>/, '') // 移除旧的标签
+    .replace(/<h1>[\s\S]*?<\/h1>/, '') // 移除旧的标题
     .trim();
   
   return {
