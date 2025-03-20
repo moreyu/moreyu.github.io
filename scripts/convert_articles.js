@@ -3,7 +3,7 @@ const path = require('path');
 const cheerio = require('cheerio');
 
 // 读取模板文件
-const template = fs.readFileSync('template.html', 'utf8');
+const template = fs.readFileSync('posts/template/template.html', 'utf8');
 
 // 递归获取所有 HTML 文件
 function getHtmlFiles(dir) {

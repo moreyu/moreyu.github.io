@@ -280,27 +280,64 @@
   <aside class="toc">
     <div class="toc-title">📚 目录</div>
     <ul>
-      <li><a href="#前言-📝">前言 📝</a></li>
-<li><a href="#环境准备-🛠️">环境准备 🛠️</a></li>
-  <li><a href="#1.-安装-homebrew">1. 安装 Homebrew</a></li>
-  <li><a href="#2.-安装-docker">2. 安装 Docker</a></li>
-  <li><a href="#3.-创建工作目录">3. 创建工作目录</a></li>
-<li><a href="#部署青龙面板-🚀">部署青龙面板 🚀</a></li>
-  <li><a href="#1.-创建-docker-compose.yml">1. 创建 docker-compose.yml</a></li>
-  <li><a href="#2.-启动服务">2. 启动服务</a></li>
-<li><a href="#配置青龙面板-⚙️">配置青龙面板 ⚙️</a></li>
-  <li><a href="#1.-初始化配置">1. 初始化配置</a></li>
-  <li><a href="#2.-配置依赖管理">2. 配置依赖管理</a></li>
-<li><a href="#实用脚本示例-📜">实用脚本示例 📜</a></li>
-  <li><a href="#1.-系统监控脚本">1. 系统监控脚本</a></li>
-  <li><a href="#2.-自动备份脚本">2. 自动备份脚本</a></li>
-<li><a href="#性能优化建议-🚀">性能优化建议 🚀</a></li>
-<li><a href="#常见问题与解决方案-💡">常见问题与解决方案 💡</a></li>
-  <li><a href="#1.-容器无法启动">1. 容器无法启动</a></li>
-  <li><a href="#2.-脚本运行失败">2. 脚本运行失败</a></li>
-<li><a href="#后续计划-🎯">后续计划 🎯</a></li>
+      <li><a href="#前言">前言 📝</a></li>
+<li><a href="#环境准备">环境准备 🛠️</a></li>
+  <li><a href="#安装-homebrew">安装 Homebrew</a></li>
+  <li><a href="#安装-docker">安装 Docker</a></li>
+  <li><a href="#创建工作目录">创建工作目录</a></li>
+<li><a href="#部署青龙面板">部署青龙面板 🚀</a></li>
+  <li><a href="#创建-docker-compose-yml">创建 docker-compose.yml</a></li>
+  <li><a href="#启动服务">启动服务</a></li>
+<li><a href="#配置青龙面板">配置青龙面板 ⚙️</a></li>
+  <li><a href="#初始化配置">初始化配置</a></li>
+  <li><a href="#配置依赖管理">配置依赖管理</a></li>
+<li><a href="#实用脚本示例">实用脚本示例 📜</a></li>
+  <li><a href="#系统监控脚本">系统监控脚本</a></li>
+  <li><a href="#自动备份脚本">自动备份脚本</a></li>
+<li><a href="#性能优化建议">性能优化建议 🚀</a></li>
+<li><a href="#常见问题与解决方案">常见问题与解决方案 💡</a></li>
+  <li><a href="#容器无法启动">容器无法启动</a></li>
+  <li><a href="#脚本运行失败">脚本运行失败</a></li>
+<li><a href="#后续计划">后续计划 🎯</a></li>
     </ul>
   </aside>
+
+  <div class="share-menu">
+    <button class="share-button" title="分享到微信" onclick="shareToWeChat()">
+      <i class="fab fa-weixin"></i>
+    </button>
+    <button class="share-button" title="分享到微博" onclick="shareToWeibo()">
+      <i class="fab fa-weibo"></i>
+    </button>
+    <button class="share-button" title="分享到 Twitter" onclick="shareToTwitter()">
+      <i class="fab fa-twitter"></i>
+    </button>
+    <button class="share-button" title="复制链接" onclick="copyPageUrl()">
+      <i class="fas fa-link"></i>
+    </button>
+  </div>
+
+  <main class="post-content">
+    <div class="card">
+      <div class="post-meta">
+        <span><i class="far fa-calendar"></i> 2025-03-07</span>
+        <span><i class="far fa-clock"></i> 阅读时间：11分钟</span>
+        <span><i class="far fa-folder"></i> 分类：服务器</span>
+      </div>
+
+      <div class="reading-progress">
+    <div class="reading-progress-bar"></div>
+  </div>
+  
+  <button class="theme-toggle" aria-label="切换主题">
+    <i class="fas fa-moon"></i>
+  </button>
+  
+  <h1 class="gradient-text">家用伺服器折腾手记-1：Mac mini 搭建青龙面板教程</h1>
+  
+  
+
+  
 
   <div class="share-menu">
     <button class="share-button" title="分享到微信" onclick="shareToWeChat()">
@@ -407,11 +444,18 @@ def backup():
     print(f"备份完成: {backup_file} ({backup_size:.2f}MB)")
 
 if __name__ == "__main__":
-    backup()</code></pre><h2>性能优化建议 🚀</h2><ul><li>合理设置定时任务间隔，避免任务重叠执行</li><li>定期清理日志文件和临时文件</li><li>使用 <code>cron</code> 表达式优化任务执行时间</li><li>对于资源密集型任务，建议在低峰期执行</li></ul><h2>常见问题与解决方案 💡</h2><h3>1. 容器无法启动</h3><ul><li>检查端口 5700 是否被占用：<code>lsof -i:5700</code></li><li>检查目录权限：<code>chmod -R 777 ~/docker/qinglong/data</code></li><li>查看 Docker 日志：<code>docker logs qinglong</code></li></ul><h3>2. 脚本运行失败</h3><ul><li>检查依赖是否安装完整</li><li>查看错误日志：<code>docker exec -it qinglong cat /ql/log/[脚本名称].log</code></li><li>确认环境变量配置正确</li></ul><h2>后续计划 🎯</h2><p>这是家用服务器系列的第一篇文章，后续我们将继续探索更多有趣的应用场景：</p><ul><li>搭建 Homebridge 实现智能家居集成</li><li>部署 Nginx 反向代理实现外网访问</li><li>使用 Docker Compose 管理多个服务</li><li>配置 SSL 证书实现安全访问</li></ul><a href="/" class="back-to-home">返回首页 🏠</a><script>hljs.highlightAll();</script>
+    backup()</code></pre><h2>性能优化建议 🚀</h2><ul><li>合理设置定时任务间隔，避免任务重叠执行</li><li>定期清理日志文件和临时文件</li><li>使用 <code>cron</code> 表达式优化任务执行时间</li><li>对于资源密集型任务，建议在低峰期执行</li></ul><h2>常见问题与解决方案 💡</h2><h3>1. 容器无法启动</h3><ul><li>检查端口 5700 是否被占用：<code>lsof -i:5700</code></li><li>检查目录权限：<code>chmod -R 777 ~/docker/qinglong/data</code></li><li>查看 Docker 日志：<code>docker logs qinglong</code></li></ul><h3>2. 脚本运行失败</h3><ul><li>检查依赖是否安装完整</li><li>查看错误日志：<code>docker exec -it qinglong cat /ql/log/[脚本名称].log</code></li><li>确认环境变量配置正确</li></ul><h2>后续计划 🎯</h2><p>这是家用服务器系列的第一篇文章，后续我们将继续探索更多有趣的应用场景：</p><ul><li>搭建 Homebridge 实现智能家居集成</li><li>部署 Nginx 反向代理实现外网访问</li><li>使用 Docker Compose 管理多个服务</li><li>配置 SSL 证书实现安全访问</li></ul><a href="/" class="back-to-home">返回首页 🏠</a>
 
 
       <div class="post-tags">
         
+      </div>
+    </div>
+  </main>
+
+      <div class="post-tags">
+        <span class="tag">服务器</span>
+<span class="tag"></span>
       </div>
     </div>
   </main>

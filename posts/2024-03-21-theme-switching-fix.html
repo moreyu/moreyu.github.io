@@ -1,13 +1,10 @@
 <!DOCTYPE html>
-<html lang="zh-CN" data-theme="light">
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>主题切换功能修复 - Moreyu's Blog ✨</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/maple-mono@latest/index.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  <link rel="stylesheet" href="/css/style.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.8/dist/medium-zoom.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github-dark.min.css">
   <style>
     /* 文章目录样式 */
     .toc {
@@ -23,21 +20,6 @@
       box-shadow: var(--shadow);
       font-size: 0.9rem;
       z-index: 100;
-      scrollbar-width: thin;
-      scrollbar-color: var(--primary) var(--card-bg);
-    }
-    
-    .toc::-webkit-scrollbar {
-      width: 6px;
-    }
-    
-    .toc::-webkit-scrollbar-track {
-      background: var(--card-bg);
-    }
-    
-    .toc::-webkit-scrollbar-thumb {
-      background-color: var(--primary);
-      border-radius: 3px;
     }
     
     .toc-title {
@@ -82,25 +64,27 @@
     .reading-progress {
       position: fixed;
       top: 0;
-      left: 0;
-      width: 100%;
-      height: 3px;
+      right: 0;
+      width: 2px;
+      height: 100vh;
       background: var(--border);
       z-index: 1000;
     }
     
     .reading-progress-bar {
-      height: 100%;
+      width: 100%;
       background: var(--primary);
-      width: 0;
-      transition: width 0.2s;
+      height: 0;
+      transition: height 0.2s;
     }
 
-    /* 代码块复制按钮 */
+    /* 代码块样式 */
     pre {
       position: relative;
       border-radius: 8px;
       margin: 1.5rem 0;
+      background: var(--card-bg) !important;
+      padding: 1rem !important;
     }
     
     .copy-button {
@@ -126,56 +110,12 @@
       background: var(--primary);
       color: white;
       border-color: var(--primary);
-      transform: scale(1.05);
-    }
-    
-    /* 图片预览 */
-    .medium-zoom-overlay {
-      background: var(--bg) !important;
-    }
-    
-    .medium-zoom-image--opened {
-      z-index: 1000;
     }
 
-    /* 分享按钮 */
-    .share-menu {
-      position: fixed;
-      left: 2rem;
-      top: 50%;
-      transform: translateY(-50%);
-      display: flex;
-      flex-direction: column;
-      gap: 0.8rem;
-      z-index: 100;
-    }
-    
-    .share-button {
-      width: 2.5rem;
-      height: 2.5rem;
-      border-radius: 50%;
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      color: var(--text);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      font-size: 1.1rem;
-    }
-    
-    .share-button:hover {
-      background: var(--primary);
-      color: white;
-      border-color: var(--primary);
-      transform: scale(1.1) rotate(360deg);
-    }
-
-    /* 文章内容样式优化 */
+    /* 文章内容样式 */
     .post-content {
       max-width: 800px;
-      margin: 0 auto;
+      margin: 2rem auto;
       padding: 2rem;
     }
     
@@ -183,17 +123,26 @@
       margin-top: 2.5rem;
       margin-bottom: 1.5rem;
       color: var(--primary);
+      font-size: 1.8rem;
     }
     
     .post-content h3 {
       margin-top: 2rem;
       margin-bottom: 1rem;
       color: var(--text);
+      font-size: 1.5rem;
     }
     
     .post-content p {
       line-height: 1.8;
-      margin: 1rem 0;
+      margin: 1.2rem 0;
+      color: var(--text);
+    }
+    
+    .post-content img {
+      max-width: 100%;
+      border-radius: 8px;
+      margin: 1.5rem 0;
     }
     
     .post-content code {
@@ -201,11 +150,16 @@
       padding: 0.2rem 0.4rem;
       border-radius: 4px;
       font-family: 'Maple Mono', monospace;
+      font-size: 0.9em;
+      color: var(--primary);
     }
     
     .post-content pre code {
       background: none;
       padding: 0;
+      color: var(--text);
+      font-size: 0.9rem;
+      line-height: 1.5;
     }
     
     .post-meta {
@@ -237,30 +191,71 @@
       color: white;
       transform: translateY(-2px);
     }
+
+    /* 返回首页按钮 */
+    .back-home {
+      position: fixed;
+      left: 2rem;
+      top: 2rem;
+      background: var(--card-bg);
+      border: 2px solid var(--primary);
+      color: var(--primary);
+      padding: 0.8rem 1.5rem;
+      border-radius: 30px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      text-decoration: none;
+      transition: all 0.3s;
+      z-index: 1000;
+      box-shadow: var(--shadow);
+    }
     
-    @media (max-width: 1200px) {
-      .toc {
-        display: none;
-      }
-      
-      .share-menu {
-        position: fixed;
+    .back-home:hover {
+      background: var(--primary);
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 768px) {
+      .back-home {
         left: 1rem;
-        bottom: 5rem;
-        top: auto;
-        transform: none;
-        flex-direction: row;
-        gap: 0.5rem;
+        top: 1rem;
+        padding: 0.6rem 1.2rem;
+        font-size: 1rem;
       }
       
       .post-content {
         padding: 1rem;
       }
     }
+
+    @media (max-width: 1200px) {
+      .toc {
+        display: none;
+      }
+    }
   </style>
 </head>
 <body>
   <div class="reading-progress">
+    <div class="reading-progress-bar"></div>
+  </div>
+
+  <a href="/" class="back-home">
+    <i class="fas fa-arrow-left"></i> 返回首页
+  </a>
+
+  <main class="post-content">
+    <article class="card">
+      <div class="post-meta">
+        <span><i class="far fa-calendar"></i> 2025-03-20</span>
+        <span><i class="far fa-clock"></i> 阅读时间：11分钟</span>
+        <span><i class="far fa-folder"></i> 分类：未分类</span>
+      </div>
+
+      <h1>主题切换功能修复</h1>
+
+      <div class="reading-progress">
     <div class="reading-progress-bar"></div>
   </div>
   
@@ -270,26 +265,9 @@
   
   <h1 class="gradient-text">主题切换功能修复</h1>
   
-  <nav class="nav">
-    <a href="/"><i class="fas fa-home"></i> 首页 🏠</a>
-    <a href="/archives"><i class="fas fa-archive"></i> 归档 📚</a>
-    <a href="/categories"><i class="fas fa-folder"></i> 分类 📂</a>
-    <a href="/about"><i class="fas fa-user"></i> 关于 👋</a>
-  </nav>
+  
 
-  <aside class="toc">
-    <div class="toc-title">📚 目录</div>
-    <ul>
-      <li><a href="#问题描述">问题描述</a></li>
-<li><a href="#解决方案">解决方案</a></li>
-  <li><a href="#创建独立的主题控制脚本">创建独立的主题控制脚本</a></li>
-  <li><a href="#创建全局样式文件">创建全局样式文件</a></li>
-  <li><a href="#创建文章页面模板">创建文章页面模板</a></li>
-<li><a href="#改进效果">改进效果</a></li>
-<li><a href="#使用说明">使用说明</a></li>
-<li><a href="#后续优化">后续优化</a></li>
-    </ul>
-  </aside>
+  
 
   <div class="share-menu">
     <button class="share-button" title="分享到微信" onclick="shareToWeChat()">
@@ -459,54 +437,64 @@ themeToggle.addEventListener('click', () =&gt; {
     </div>
   </main>
 
-  <footer>
-    <p>&copy; 2024 Moreyu's Blog 🎉 | 本站已稳定运行 444 天 ⚡️</p>
-    <div class="social-links">
-      <a href="https://github.com/moreyu" target="_blank"><i class="fab fa-github"></i> GitHub 🐱</a>
-      <a href="mailto:your@email.com"><i class="fas fa-envelope"></i> Email ✉️</a>
-    </div>
-  </footer>
+      <div class="post-tags">
+        <span class="tag">主题切换</span>
+<span class="tag">CSS变量</span>
+<span class="tag">JavaScript</span>
+<span class="tag">用户体验</span>
+<span class="tag">主题切换</span>
+<span class="tag">CSS变量</span>
+<span class="tag">JavaScript</span>
+<span class="tag">用户体验</span>
+      </div>
+    </article>
+  </main>
 
-  <script src="/js/theme.js"></script>
-  <script src="/js/scroll.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.8/dist/medium-zoom.min.js"></script>
+  <aside class="toc">
+    <div class="toc-title">📚 目录</div>
+    <ul>
+      <li><a href="#问题描述">问题描述</a></li>
+<li><a href="#解决方案">解决方案</a></li>
+  <li><a href="#创建独立的主题控制脚本">创建独立的主题控制脚本</a></li>
+  <li><a href="#创建全局样式文件">创建全局样式文件</a></li>
+  <li><a href="#创建文章页面模板">创建文章页面模板</a></li>
+<li><a href="#改进效果">改进效果</a></li>
+<li><a href="#使用说明">使用说明</a></li>
+<li><a href="#后续优化">后续优化</a></li>
+    </ul>
+  </aside>
+
+  <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/highlight.min.js"></script>
   <script>
-    // 初始化图片预览
-    mediumZoom('img:not(.avatar)', {
-      margin: 24,
-      background: 'var(--bg)',
-      scrollOffset: 40,
+    // 阅读进度
+    const progressBar = document.querySelector('.reading-progress-bar');
+    window.addEventListener('scroll', () => {
+      const winScroll = document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      progressBar.style.height = scrolled + '%';
     });
-    
-    // 代码块复制功能
-    document.querySelectorAll('pre').forEach(pre => {
+
+    // 代码高亮和复制功能
+    document.querySelectorAll('pre code').forEach((block) => {
+      hljs.highlightElement(block);
+      
       const button = document.createElement('button');
       button.className = 'copy-button';
       button.textContent = '复制';
-      button.addEventListener('click', () => {
-        navigator.clipboard.writeText(pre.querySelector('code').textContent)
-          .then(() => {
-            button.textContent = '已复制！';
-            setTimeout(() => button.textContent = '复制', 2000);
-          })
-          .catch(err => {
-            console.error('复制失败:', err);
-            button.textContent = '复制失败';
-            setTimeout(() => button.textContent = '复制', 2000);
-          });
+      
+      button.addEventListener('click', async () => {
+        const code = block.textContent;
+        await navigator.clipboard.writeText(code);
+        button.textContent = '已复制!';
+        setTimeout(() => {
+          button.textContent = '复制';
+        }, 2000);
       });
-      pre.appendChild(button);
+      
+      block.parentElement.appendChild(button);
     });
-    
-    // 阅读进度指示器
-    const progressBar = document.querySelector('.reading-progress-bar');
-    window.addEventListener('scroll', () => {
-      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      const scrolled = (winScroll / height) * 100;
-      progressBar.style.width = scrolled + '%';
-    });
-    
+
     // 目录高亮
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
@@ -519,34 +507,11 @@ themeToggle.addEventListener('click', () =&gt; {
           }
         }
       });
-    }, { threshold: 0.5 });
-    
-    document.querySelectorAll('h2, h3').forEach((heading) => {
-      observer.observe(heading);
-    });
+    }, { rootMargin: '0px 0px -80% 0px' });
 
-    // 分享功能
-    function shareToWeChat() {
-      alert('请截图分享到微信');
-    }
-    
-    function shareToWeibo() {
-      const text = document.title;
-      const url = window.location.href;
-      window.open(`http://service.weibo.com/share/share.php?url=${encodeURIComponent(url)}&title=${encodeURIComponent(text)}`);
-    }
-    
-    function shareToTwitter() {
-      const text = document.title;
-      const url = window.location.href;
-      window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`);
-    }
-    
-    function copyPageUrl() {
-      navigator.clipboard.writeText(window.location.href)
-        .then(() => alert('链接已复制到剪贴板！'))
-        .catch(err => console.error('复制失败:', err));
-    }
+    document.querySelectorAll('h2[id], h3[id]').forEach((section) => {
+      observer.observe(section);
+    });
   </script>
 </body>
 </html> 

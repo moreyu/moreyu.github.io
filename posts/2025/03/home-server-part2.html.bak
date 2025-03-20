@@ -280,33 +280,70 @@
   <aside class="toc">
     <div class="toc-title">📚 目录</div>
     <ul>
-      <li><a href="#前言-📝">前言 📝</a></li>
-<li><a href="#准备工作-🛠️">准备工作 🛠️</a></li>
-  <li><a href="#1.-创建工作目录">1. 创建工作目录</a></li>
-  <li><a href="#2.-创建配置文件">2. 创建配置文件</a></li>
-<li><a href="#部署步骤-🚀">部署步骤 🚀</a></li>
-  <li><a href="#1.-启动服务">1. 启动服务</a></li>
-  <li><a href="#2.-检查服务状态">2. 检查服务状态</a></li>
-<li><a href="#基础配置-⚙️">基础配置 ⚙️</a></li>
-  <li><a href="#1.-访问-web-界面">1. 访问 Web 界面</a></li>
-  <li><a href="#2.-配置媒体服务器">2. 配置媒体服务器</a></li>
-  <li><a href="#3.-配置下载器">3. 配置下载器</a></li>
-  <li><a href="#4.-配置索引器">4. 配置索引器</a></li>
-<li><a href="#进阶配置-🔧">进阶配置 🔧</a></li>
-  <li><a href="#1.-订阅规则设置">1. 订阅规则设置</a></li>
-  <li><a href="#2.-自定义识别词">2. 自定义识别词</a></li>
-<li><a href="#性能优化-🚄">性能优化 🚄</a></li>
-  <li><a href="#1.-资源限制">1. 资源限制</a></li>
-  <li><a href="#2.-缓存优化">2. 缓存优化</a></li>
-<li><a href="#常见问题-💡">常见问题 💡</a></li>
-  <li><a href="#1.-媒体识别问题">1. 媒体识别问题</a></li>
-  <li><a href="#2.-下载问题">2. 下载问题</a></li>
-<li><a href="#进阶使用-🎯">进阶使用 🎯</a></li>
-  <li><a href="#1.-api-集成">1. API 集成</a></li>
-  <li><a href="#2.-自动化脚本">2. 自动化脚本</a></li>
-<li><a href="#后续计划-📈">后续计划 📈</a></li>
+      <li><a href="#前言">前言 📝</a></li>
+<li><a href="#准备工作">准备工作 🛠️</a></li>
+  <li><a href="#创建工作目录">创建工作目录</a></li>
+  <li><a href="#创建配置文件">创建配置文件</a></li>
+<li><a href="#部署步骤">部署步骤 🚀</a></li>
+  <li><a href="#启动服务">启动服务</a></li>
+  <li><a href="#检查服务状态">检查服务状态</a></li>
+<li><a href="#基础配置">基础配置 ⚙️</a></li>
+  <li><a href="#访问-web-界面">访问 Web 界面</a></li>
+  <li><a href="#配置媒体服务器">配置媒体服务器</a></li>
+  <li><a href="#配置下载器">配置下载器</a></li>
+  <li><a href="#配置索引器">配置索引器</a></li>
+<li><a href="#进阶配置">进阶配置 🔧</a></li>
+  <li><a href="#订阅规则设置">订阅规则设置</a></li>
+  <li><a href="#自定义识别词">自定义识别词</a></li>
+<li><a href="#性能优化">性能优化 🚄</a></li>
+  <li><a href="#资源限制">资源限制</a></li>
+  <li><a href="#缓存优化">缓存优化</a></li>
+<li><a href="#常见问题">常见问题 💡</a></li>
+  <li><a href="#媒体识别问题">媒体识别问题</a></li>
+  <li><a href="#下载问题">下载问题</a></li>
+<li><a href="#进阶使用">进阶使用 🎯</a></li>
+  <li><a href="#api-集成">API 集成</a></li>
+  <li><a href="#自动化脚本">自动化脚本</a></li>
+<li><a href="#后续计划">后续计划 📈</a></li>
     </ul>
   </aside>
+
+  <div class="share-menu">
+    <button class="share-button" title="分享到微信" onclick="shareToWeChat()">
+      <i class="fab fa-weixin"></i>
+    </button>
+    <button class="share-button" title="分享到微博" onclick="shareToWeibo()">
+      <i class="fab fa-weibo"></i>
+    </button>
+    <button class="share-button" title="分享到 Twitter" onclick="shareToTwitter()">
+      <i class="fab fa-twitter"></i>
+    </button>
+    <button class="share-button" title="复制链接" onclick="copyPageUrl()">
+      <i class="fas fa-link"></i>
+    </button>
+  </div>
+
+  <main class="post-content">
+    <div class="card">
+      <div class="post-meta">
+        <span><i class="far fa-calendar"></i> 2025-03-08</span>
+        <span><i class="far fa-clock"></i> 阅读时间：11分钟</span>
+        <span><i class="far fa-folder"></i> 分类：服务器</span>
+      </div>
+
+      <div class="reading-progress">
+    <div class="reading-progress-bar"></div>
+  </div>
+  
+  <button class="theme-toggle" aria-label="切换主题">
+    <i class="fas fa-moon"></i>
+  </button>
+  
+  <h1 class="gradient-text">家用伺服器折腾手记-2：Mac mini 部署 MoviePilot 教程</h1>
+  
+  
+
+  
 
   <div class="share-menu">
     <button class="share-button" title="分享到微信" onclick="shareToWeChat()">
@@ -420,11 +457,18 @@ def clean_old_downloads():
                     print(f"删除失败: {file_path}, 错误: {e}")
 
 if __name__ == "__main__":
-    clean_old_downloads()</code></pre><h2>后续计划 📈</h2><p>在下一篇文章中，我们将探讨：</p><ul><li>如何使用 Nginx 反向代理实现外网访问</li><li>如何配置 SSL 证书实现安全访问</li><li>如何使用 Telegram Bot 实现远程控制</li><li>如何优化媒体库的分类和展示</li></ul><a href="/" class="back-to-home">返回首页 🏠</a><script>hljs.highlightAll();</script>
+    clean_old_downloads()</code></pre><h2>后续计划 📈</h2><p>在下一篇文章中，我们将探讨：</p><ul><li>如何使用 Nginx 反向代理实现外网访问</li><li>如何配置 SSL 证书实现安全访问</li><li>如何使用 Telegram Bot 实现远程控制</li><li>如何优化媒体库的分类和展示</li></ul><a href="/" class="back-to-home">返回首页 🏠</a>
 
 
       <div class="post-tags">
         
+      </div>
+    </div>
+  </main>
+
+      <div class="post-tags">
+        <span class="tag">服务器</span>
+<span class="tag"></span>
       </div>
     </div>
   </main>
