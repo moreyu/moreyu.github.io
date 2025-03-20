@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>家用伺服器折腾手记-1：Mac mini 搭建青龙面板教程 - Moreyu's Blog ✨</title>
+  <link rel="stylesheet" href="/css/magic.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/maple-mono@latest/index.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/atom-one-dark.min.css">
@@ -391,158 +392,10 @@
       color: var(--bg);
       box-shadow: 0 0 10px var(--primary);
     }
-
-    /* 移动端优化 */
-    @media (max-width: 768px) {
-      body {
-        padding: 1rem;
-      }
-      
-      .post-content {
-        padding: 1rem;
-        margin: 0;
-        width: 100%;
-      }
-      
-      h1 {
-        font-size: 1.5rem;
-        line-height: 1.4;
-        margin: 1rem 0;
-      }
-      
-      h2 {
-        font-size: 1.3rem;
-      }
-      
-      h3 {
-        font-size: 1.1rem;
-      }
-      
-      .post-meta {
-        flex-direction: column;
-        gap: 0.5rem;
-        margin-bottom: 1rem;
-      }
-      
-      .share-buttons {
-        position: fixed;
-        bottom: 1rem;
-        left: 50%;
-        transform: translateX(-50%);
-        display: flex;
-        gap: 0.5rem;
-        z-index: 100;
-      }
-      
-      .theme-toggle {
-        top: 1rem;
-        right: 1rem;
-      }
-    }
-
-    /* 导航栏响应式优化 */
-    .toc {
-      position: fixed;
-      right: 2rem;
-      top: 6rem;
-      width: 250px;
-      max-height: calc(100vh - 8rem);
-      overflow-y: auto;
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 1rem;
-      font-size: 0.9rem;
-      transition: all 0.3s ease;
-      opacity: 0.8;
-    }
-
-    .toc:hover {
-      opacity: 1;
-      transform: translateX(0);
-    }
-
-    @media (max-width: 1200px) {
-      .toc {
-        transform: translateX(calc(100% + 2rem));
-        right: 0;
-      }
-      
-      .toc.active {
-        transform: translateX(0);
-      }
-      
-      .toc-toggle {
-        display: block;
-        position: fixed;
-        right: 1rem;
-        top: 5rem;
-        background: var(--card-bg);
-        color: var(--primary);
-        padding: 0.5rem;
-        border-radius: 4px;
-        border: 1px solid var(--primary);
-        cursor: pointer;
-        z-index: 1000;
-        opacity: 0.8;
-        transition: opacity 0.3s;
-      }
-      
-      .toc-toggle:hover {
-        opacity: 1;
-      }
-    }
-
-    @media (min-width: 1201px) {
-      .toc-toggle {
-        display: none;
-      }
-      
-      .post-content {
-        max-width: calc(100% - 300px);
-      }
-    }
-
-    /* 代码块优化 */
-    pre {
-      margin: 1rem -1rem;
-      padding: 1rem;
-      border-radius: 8px;
-      overflow-x: auto;
-      position: relative;
-    }
-
-    @media (min-width: 768px) {
-      pre {
-        margin: 1rem 0;
-      }
-    }
-
-    /* 图片优化 */
-    img {
-      max-width: 100%;
-      height: auto;
-      border-radius: 8px;
-      margin: 1rem 0;
-    }
-
-    /* 链接样式优化 */
-    a {
-      color: var(--primary);
-      text-decoration: none;
-      border-bottom: 1px solid transparent;
-      transition: all 0.3s;
-    }
-
-    a:hover {
-      border-bottom-color: var(--primary);
-    }
   </style>
 </head>
 <body>
-  <div class="reading-progress">
-    <div class="reading-progress-bar"></div>
-  </div>
+  <div class="reading-progress"></div>
 
   <button class="theme-toggle" aria-label="切换主题">
     <i class="fas fa-moon"></i>
@@ -555,16 +408,20 @@
   <main class="post-content">
     <div class="post-meta">
       <span><i class="far fa-calendar"></i> 2025-03-20</span>
-      <span><i class="far fa-clock"></i> 阅读时间：1分钟</span>
-      <span><i class="far fa-folder"></i> 分类：未分类</span></span></span>
+      <span><i class="far fa-clock"></i> 阅读时间：11分钟</span>
+      <span><i class="far fa-folder"></i> 分类：服务器</span>
     </div>
 
     <h1>家用伺服器折腾手记-1：Mac mini 搭建青龙面板教程</h1>
 
-    <html><head></head><body><div><div class="post-meta"><span>2025-03-20</span><span>阅读时间：1分钟</span><span>分类：未分类</span></div><h1>家用伺服器折腾手记-1：Mac mini 搭建青龙面板教程</h1><div><div class="post-meta"><span>2025-03-20</span><span>阅读时间：1分钟</span><span>分类：未分类</span></div><div class="post-tags"><span class="tag">服务器</span></div></div><div class="post-tags"><span class="tag">服务器</span></div></div></body></html>
+    <div class="post-content">
+      // ... existing content ...
+    </div>
 
     <div class="post-tags">
       <span class="tag">服务器</span>
+      <span class="tag">Docker</span>
+      <span class="tag">自动化</span>
     </div>
   </main>
 
@@ -575,7 +432,7 @@
   <aside class="toc">
     <div class="toc-title">📚 目录</div>
     <ul>
-      
+      // ... existing toc ...
     </ul>
   </aside>
 
@@ -593,166 +450,6 @@
 
   <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/highlight.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.8/dist/medium-zoom.min.js"></script>
-  <script>
-    // 主题切换
-    const themeToggle = document.querySelector('.theme-toggle');
-    const htmlElement = document.documentElement;
-    const themeIcon = themeToggle.querySelector('i');
-    
-    function setTheme(theme) {
-      htmlElement.setAttribute('data-theme', theme);
-      localStorage.setItem('theme', theme);
-      themeIcon.className = theme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
-    }
-    
-    // 从 localStorage 获取主题设置
-    const savedTheme = localStorage.getItem('theme') || 'dark';
-    setTheme(savedTheme);
-    
-    themeToggle.addEventListener('click', () => {
-      const currentTheme = htmlElement.getAttribute('data-theme');
-      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-      setTheme(newTheme);
-    });
-
-    // 目录导航优化
-    const tocToggle = document.querySelector('.toc-toggle');
-    const toc = document.querySelector('.toc');
-    
-    if (tocToggle && toc) {
-      let touchStartX = 0;
-      let touchEndX = 0;
-      
-      // 点击切换
-      tocToggle.addEventListener('click', () => {
-        toc.classList.toggle('active');
-      });
-      
-      // 滑动手势
-      document.addEventListener('touchstart', (e) => {
-        touchStartX = e.touches[0].clientX;
-      });
-      
-      document.addEventListener('touchend', (e) => {
-        touchEndX = e.changedTouches[0].clientX;
-        const swipeDistance = touchEndX - touchStartX;
-        
-        if (Math.abs(swipeDistance) > 50) {
-          if (swipeDistance > 0) {
-            // 向右滑动，显示目录
-            toc.classList.add('active');
-          } else {
-            // 向左滑动，隐藏目录
-            toc.classList.remove('active');
-          }
-        }
-      });
-      
-      // 点击外部区域关闭
-      document.addEventListener('click', (e) => {
-        if (!toc.contains(e.target) && !tocToggle.contains(e.target)) {
-          toc.classList.remove('active');
-        }
-      });
-      
-      // 滚动时自动隐藏
-      let lastScrollTop = 0;
-      window.addEventListener('scroll', () => {
-        const st = window.pageYOffset || document.documentElement.scrollTop;
-        if (st > lastScrollTop && window.innerWidth <= 1200) {
-          // 向下滚动，隐藏目录
-          toc.classList.remove('active');
-        }
-        lastScrollTop = st <= 0 ? 0 : st;
-      }, false);
-    }
-
-    // 图片预览
-    mediumZoom('img:not(.avatar)', {
-      margin: 24,
-      background: 'var(--bg)',
-      scrollOffset: 0,
-    });
-
-    // 代码高亮和复制功能
-    document.querySelectorAll('pre code').forEach((block) => {
-      hljs.highlightElement(block);
-      
-      const button = document.createElement('button');
-      button.className = 'copy-button';
-      button.textContent = '复制';
-      
-      button.addEventListener('click', async () => {
-        const code = block.textContent;
-        await navigator.clipboard.writeText(code);
-        button.textContent = '已复制!';
-        setTimeout(() => {
-          button.textContent = '复制';
-        }, 2000);
-      });
-      
-      block.parentElement.appendChild(button);
-    });
-
-    // 目录高亮
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        const id = entry.target.getAttribute('id');
-        const tocLink = document.querySelector(`.toc a[href="#${id}"]`);
-        if (tocLink) {
-          if (entry.intersectionRatio > 0) {
-            document.querySelectorAll('.toc a').forEach(link => link.classList.remove('active'));
-            tocLink.classList.add('active');
-          }
-        }
-      });
-    }, { rootMargin: '0px 0px -80% 0px' });
-
-    document.querySelectorAll('h2[id], h3[id]').forEach((section) => {
-      observer.observe(section);
-    });
-
-    // 阅读进度
-    const readingProgress = document.querySelector('.reading-progress');
-    const content = document.querySelector('.post-content');
-    
-    if (readingProgress && content) {
-      const updateProgress = () => {
-        const contentBox = content.getBoundingClientRect();
-        const totalHeight = contentBox.height - window.innerHeight;
-        const scrolled = window.scrollY;
-        const progress = Math.min((scrolled / totalHeight) * 100, 100);
-        readingProgress.style.setProperty('--progress', `${progress}%`);
-      };
-      
-      window.addEventListener('scroll', () => {
-        requestAnimationFrame(updateProgress);
-      });
-      
-      window.addEventListener('resize', () => {
-        requestAnimationFrame(updateProgress);
-      });
-      
-      updateProgress();
-    }
-
-    // 分享功能
-    function shareToTwitter() {
-      const text = document.title;
-      const url = window.location.href;
-      window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
-    }
-
-    function shareToFacebook() {
-      const url = window.location.href;
-      window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
-    }
-
-    async function copyLink() {
-      const url = window.location.href;
-      await navigator.clipboard.writeText(url);
-      alert('链接已复制到剪贴板！');
-    }
-  </script>
+  <script src="/js/magic.js"></script>
 </body>
 </html> 
