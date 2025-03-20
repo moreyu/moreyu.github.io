@@ -32,8 +32,9 @@ function extractContent(html) {
   const title = $('title').text().split(' - ')[0] || $('h1').first().text() || '无标题';
   
   // 移除所有重复的标题
-  $('h1').each((i, el) => {
-    if (i > 0 && $(el).text().trim() === title.trim()) {
+  const h1s = $('h1');
+  h1s.each((i, el) => {
+    if (i > 0) {
       $(el).remove();
     }
   });
@@ -72,10 +73,10 @@ function extractContent(html) {
   tempDiv('.post-meta').remove();
   tempDiv('.post-tags').remove();
   
-  // 移除重复的标题
-  const h1s = tempDiv('h1');
-  h1s.each((i, el) => {
-    if (i > 0 && tempDiv(el).text().trim() === title.trim()) {
+  // 移除所有重复的标题
+  const tempH1s = tempDiv('h1');
+  tempH1s.each((i, el) => {
+    if (i > 0) {
       tempDiv(el).remove();
     }
   });
@@ -83,19 +84,27 @@ function extractContent(html) {
   // 清理多余的嵌套
   content = tempDiv.root().html();
   
-  // 移除空的容器和重复的标题
+  // 按顺序处理内容清理
   content = content
+    // 1. 移除注释
+    .replace(/<!--[\s\S]*?-->/g, '')
+    // 2. 移除空标签
     .replace(/<div[^>]*>\s*<\/div>/g, '')
     .replace(/<p[^>]*>\s*<\/p>/g, '')
     .replace(/<span[^>]*>\s*<\/span>/g, '')
+    // 3. 移除重复标题
     .replace(/<h1[^>]*>([^<]+)<\/h1>(\s*<h1[^>]*>\1<\/h1>)+/g, '<h1>$1</h1>')
-    .replace(/(<div[^>]*>(\s*<div[^>]*>)*\s*)(<h[1-6][^>]*>.*?<\/h[1-6]>)(\s*<\/div>)*\s*\2/g, '$3')
-    .replace(/<div[^>]*>\s*(<div[^>]*>\s*)*(.+?)\s*(<\/div>\s*)*<\/div>/g, '$2')
-    .replace(/<article[^>]*>\s*(<div[^>]*>\s*)*(.+?)\s*(<\/div>\s*)*<\/article>/g, '$2')
-    .replace(/<main[^>]*>\s*(<div[^>]*>\s*)*(.+?)\s*(<\/div>\s*)*<\/main>/g, '$2')
-    .replace(/<div[^>]*>(?:\s*<div[^>]*>)*\s*([\s\S]*?)\s*(?:<\/div>\s*)*<\/div>/g, '$1')
+    // 4. 处理多层嵌套，从内到外
+    .replace(/<div[^>]*>(\s*<div[^>]*>)*\s*([\s\S]*?)\s*(<\/div>\s*)*<\/div>/g, '$2')
+    .replace(/<article[^>]*>(\s*<div[^>]*>)*\s*([\s\S]*?)\s*(<\/div>\s*)*<\/article>/g, '$2')
+    .replace(/<main[^>]*>(\s*<div[^>]*>)*\s*([\s\S]*?)\s*(<\/div>\s*)*<\/main>/g, '$2')
+    // 5. 清理剩余的单层嵌套
     .replace(/<div[^>]*>([\s\S]*?)<\/div>/g, '$1')
-    .replace(/(<h1[^>]*>[\s\S]*?<\/h1>)[\s\S]*\1/g, '$1');
+    // 6. 清理空白字符
+    .replace(/\s+/g, ' ')
+    .replace(/(<[^>]+>)\s+/g, '$1')
+    .replace(/\s+(<\/[^>]+>)/g, '$1')
+    .trim();
   
   // 提取日期
   let date = new Date().toISOString().split('T')[0];
@@ -146,38 +155,13 @@ function extractContent(html) {
   const headings = tempDiv('h2, h3');
   headings.each((i, el) => {
     const level = el.tagName === 'h2' ? 2 : 3;
-    const text = tempDiv(el).text().replace(/[#\d.]+\s*/, ''); // 移除标题前的数字和点
+    const text = tempDiv(el).text().replace(/[#\d.]+\s*/, '');
     const id = text.toLowerCase()
-      .replace(/[^\u4e00-\u9fa5a-zA-Z0-9]+/g, '-') // 将非中文、英文、数字字符转换为连字符
-      .replace(/^-+|-+$/g, ''); // 移除首尾连字符
+      .replace(/[^\u4e00-\u9fa5a-zA-Z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
     tempDiv(el).attr('id', id);
     toc.push(`${'  '.repeat(level - 2)}<li><a href="#${id}">${text}</a></li>`);
   });
-  
-  // 更新内容中的标题 ID
-  content = tempDiv.root().html();
-  
-  // 清理内容
-  content = content
-    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
-    .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '')
-    .replace(/<!--[\s\S]*?-->/g, '')
-    .replace(/\s+/g, ' ')
-    .replace(/(<[^>]+>)\s+/g, '$1')
-    .replace(/\s+(<\/[^>]+>)/g, '$1')
-    .replace(/<div[^>]*>(?:\s*<div[^>]*>)*\s*([\s\S]*?)\s*(?:<\/div>\s*)*<\/div>/g, '$1')
-    .replace(/<div[^>]*>([\s\S]*?)<\/div>/g, '$1')
-    .replace(/(<h1[^>]*>[\s\S]*?<\/h1>)[\s\S]*\1/g, '$1')
-    .replace(/(<span class="tag">[^<]+<\/span>\s*)+/g, (match, p1) => {
-      const tags = new Set();
-      const regex = /<span class="tag">([^<]+)<\/span>/g;
-      let m;
-      while ((m = regex.exec(match)) !== null) {
-        tags.add(m[0]);
-      }
-      return Array.from(tags).join('\n');
-    })
-    .trim();
   
   return {
     title,

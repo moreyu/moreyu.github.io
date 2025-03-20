@@ -43,10 +43,10 @@
       height: 100vh;
       background: var(--border);
       z-index: 1000;
-      transition: all 0.3s ease;
     }
 
-    .reading-progress-bar {
+    .reading-progress::after {
+      content: '';
       position: absolute;
       top: 0;
       left: 0;
@@ -55,6 +55,10 @@
       background: var(--primary);
       box-shadow: 0 0 10px var(--primary);
       transition: height 0.3s ease;
+    }
+
+    .reading-progress:hover {
+      width: 5px;
     }
 
     /* 代码块样式 */
@@ -318,7 +322,7 @@
 
     <h1>My First Post | Moreyu's Blog</h1>
 
-    <h1>My First Post | Moreyu's Blog</h1><div><article class="card"><button class="theme-toggle" aria-label="切换主题"><i class="fas fa-moon"></i></button><div class="share-menu"><button class="share-button" title="分享到微信" onclick="shareToWeChat()"><i class="fab fa-weixin"></i></button><button class="share-button" title="分享到微博" onclick="shareToWeibo()"><i class="fab fa-weibo"></i></button><button class="share-button" title="分享到 Twitter" onclick="shareToTwitter()"><i class="fab fa-twitter"></i></button><button class="share-button" title="复制链接" onclick="copyPageUrl()"><i class="fas fa-link"></i></button><main class="post-content"><h2 id="welcome-to-my-blog"><a href="#Welcome-to-My-Blog" class="headerlink" title="Welcome to My Blog"></a>Welcome to My Blog</h2><p>This is my first blog post. I’ll be sharing my thoughts and experiences here.</p><h3 id="about-me"><a href="#About-Me" class="headerlink" title="About Me"></a>About Me</h3><ul><li>👋 Hi, I’m @moreyu</li><li>👀 I’m interested in coding</li><li>🌱 I’m currently learning web development</li><li>💞️ I’m looking to collaborate on open source projects</li></ul></main></article></div></div>
+    <h1>My First Post | Moreyu's Blog</h1><article class="card"><button class="theme-toggle" aria-label="切换主题"><i class="fas fa-moon"></i></button><div class="share-menu"><button class="share-button" title="分享到微信" onclick="shareToWeChat()"><i class="fab fa-weixin"></i></button><button class="share-button" title="分享到微博" onclick="shareToWeibo()"><i class="fab fa-weibo"></i></button><button class="share-button" title="分享到 Twitter" onclick="shareToTwitter()"><i class="fab fa-twitter"></i></button><button class="share-button" title="复制链接" onclick="copyPageUrl()"><i class="fas fa-link"></i></button><main class="post-content"><h2 id="welcome-to-my-blog"><a href="#Welcome-to-My-Blog" class="headerlink" title="Welcome to My Blog"></a>Welcome to My Blog</h2><p>This is my first blog post. I’ll be sharing my thoughts and experiences here.</p><h3 id="about-me"><a href="#About-Me" class="headerlink" title="About Me"></a>About Me</h3><ul><li>👋 Hi, I’m @moreyu</li><li>👀 I’m interested in coding</li><li>🌱 I’m currently learning web development</li><li>💞️ I’m looking to collaborate on open source projects</li></ul></main></article></div>
 
     <div class="post-tags">
       <span class="tag">Blog</span>
@@ -337,7 +341,7 @@
   <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/highlight.min.js"></script>
   <script>
     // 阅读进度
-    const readingProgress = document.querySelector('.reading-progress-bar');
+    const readingProgress = document.querySelector('.reading-progress');
     const content = document.querySelector('.post-content');
     
     if (readingProgress && content) {
@@ -347,11 +351,16 @@
         const windowHeight = window.innerHeight;
         const scrolled = window.scrollY;
         const progress = Math.min((scrolled / (totalHeight - windowHeight)) * 100, 100);
-        readingProgress.style.height = `${progress}%`;
+        readingProgress.style.setProperty('--progress', progress + '%');
+        readingProgress.querySelector('::after').style.height = progress + '%';
       };
       
-      window.addEventListener('scroll', updateProgress);
-      window.addEventListener('resize', updateProgress);
+      window.addEventListener('scroll', () => {
+        requestAnimationFrame(updateProgress);
+      });
+      window.addEventListener('resize', () => {
+        requestAnimationFrame(updateProgress);
+      });
       updateProgress();
     }
 
