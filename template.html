@@ -82,18 +82,18 @@
     .reading-progress {
       position: fixed;
       top: 0;
-      left: 0;
-      width: 100%;
-      height: 3px;
+      right: 0;
+      width: 2px;
+      height: 100vh;
       background: var(--border);
       z-index: 1000;
     }
     
     .reading-progress-bar {
-      height: 100%;
+      width: 100%;
       background: var(--primary);
-      width: 0;
-      transition: width 0.2s;
+      height: 0;
+      transition: height 0.2s;
     }
 
     /* 代码块复制按钮 */
@@ -101,6 +101,8 @@
       position: relative;
       border-radius: 8px;
       margin: 1.5rem 0;
+      background: var(--card-bg) !important;
+      padding: 1rem !important;
     }
     
     .copy-button {
@@ -238,6 +240,39 @@
       transform: translateY(-2px);
     }
     
+    /* 返回首页按钮 */
+    .back-home {
+      position: fixed;
+      left: 2rem;
+      top: 2rem;
+      background: var(--card-bg);
+      border: 2px solid var(--primary);
+      color: var(--primary);
+      padding: 0.8rem 1.5rem;
+      border-radius: 30px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      text-decoration: none;
+      transition: all 0.3s;
+      z-index: 1000;
+      box-shadow: var(--shadow);
+    }
+    
+    .back-home:hover {
+      background: var(--primary);
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 768px) {
+      .back-home {
+        left: 1rem;
+        top: 1rem;
+        padding: 0.6rem 1.2rem;
+        font-size: 1rem;
+      }
+    }
+
     @media (max-width: 1200px) {
       .toc {
         display: none;
@@ -327,42 +362,43 @@
   <script src="/js/scroll.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.8/dist/medium-zoom.min.js"></script>
   <script>
-    // 初始化图片预览
-    mediumZoom('img:not(.avatar)', {
-      margin: 24,
-      background: 'var(--bg)',
-      scrollOffset: 40,
+    // 阅读进度
+    const progressBar = document.querySelector('.reading-progress-bar');
+    window.addEventListener('scroll', () => {
+      const winScroll = document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      progressBar.style.height = scrolled + '%';
     });
-    
-    // 代码块复制功能
-    document.querySelectorAll('pre').forEach(pre => {
+
+    // 代码高亮
+    document.querySelectorAll('pre code').forEach((block) => {
+      hljs.highlightElement(block);
+      
+      // 添加复制按钮
       const button = document.createElement('button');
       button.className = 'copy-button';
       button.textContent = '复制';
-      button.addEventListener('click', () => {
-        navigator.clipboard.writeText(pre.querySelector('code').textContent)
-          .then(() => {
-            button.textContent = '已复制！';
-            setTimeout(() => button.textContent = '复制', 2000);
-          })
-          .catch(err => {
-            console.error('复制失败:', err);
-            button.textContent = '复制失败';
-            setTimeout(() => button.textContent = '复制', 2000);
-          });
+      
+      button.addEventListener('click', async () => {
+        const code = block.textContent;
+        await navigator.clipboard.writeText(code);
+        button.textContent = '已复制!';
+        setTimeout(() => {
+          button.textContent = '复制';
+        }, 2000);
       });
-      pre.appendChild(button);
+      
+      block.parentElement.appendChild(button);
     });
-    
-    // 阅读进度指示器
-    const progressBar = document.querySelector('.reading-progress-bar');
-    window.addEventListener('scroll', () => {
-      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      const scrolled = (winScroll / height) * 100;
-      progressBar.style.width = scrolled + '%';
+
+    // 图片预览
+    mediumZoom('[data-zoomable]', {
+      margin: 24,
+      background: 'var(--bg)',
+      scrollOffset: 0,
     });
-    
+
     // 目录高亮
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
@@ -375,34 +411,30 @@
           }
         }
       });
-    }, { threshold: 0.5 });
-    
-    document.querySelectorAll('h2, h3').forEach((heading) => {
-      observer.observe(heading);
+    }, { rootMargin: '0px 0px -80% 0px' });
+
+    document.querySelectorAll('h2[id], h3[id]').forEach((section) => {
+      observer.observe(section);
     });
 
     // 分享功能
-    function shareToWeChat() {
-      alert('请截图分享到微信');
-    }
-    
-    function shareToWeibo() {
-      const text = document.title;
-      const url = window.location.href;
-      window.open(`http://service.weibo.com/share/share.php?url=${encodeURIComponent(url)}&title=${encodeURIComponent(text)}`);
-    }
-    
-    function shareToTwitter() {
-      const text = document.title;
-      const url = window.location.href;
-      window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`);
-    }
-    
-    function copyPageUrl() {
-      navigator.clipboard.writeText(window.location.href)
-        .then(() => alert('链接已复制到剪贴板！'))
-        .catch(err => console.error('复制失败:', err));
-    }
+    const shareButtons = {
+      twitter: (url, title) => `https://twitter.com/intent/tweet?url=${url}&text=${title}`,
+      facebook: (url) => `https://www.facebook.com/sharer/sharer.php?u=${url}`,
+      linkedin: (url, title) => `https://www.linkedin.com/shareArticle?url=${url}&title=${title}`,
+    };
+
+    document.querySelectorAll('.share-button').forEach(button => {
+      button.addEventListener('click', () => {
+        const platform = button.dataset.platform;
+        const url = encodeURIComponent(window.location.href);
+        const title = encodeURIComponent(document.title);
+        
+        if (shareButtons[platform]) {
+          window.open(shareButtons[platform](url, title), '_blank');
+        }
+      });
+    });
   </script>
 </body>
 </html> 
