@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html lang="zh-CN" data-theme="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>家用伺服器折腾手记-1：Mac mini 搭建青龙面板教程 - Moreyu's Blog</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/maple-mono@latest/index.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/maple-mono@latest/index.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.8/dist/medium-zoom.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.8/dist/medium-zoom.min.js"></script>
-    <style>
+  <style>
         /* 基础样式 */
         body {
             font-family: "Maple Mono", monospace;
@@ -75,7 +75,7 @@
 
         /* 目录导航样式 */
         .toc {
-            position: fixed;
+      position: fixed;
             right: 20px;
             top: 20px;
             width: 280px;
@@ -87,7 +87,7 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            z-index: 1000;
+      z-index: 1000;
             transition: transform 0.3s ease;
             scrollbar-width: thin;
             scrollbar-color: #FF375F rgba(255, 255, 255, 0.1);
@@ -161,29 +161,29 @@
         /* 代码复制按钮样式 */
         .code-block {
             position: relative;
-        }
-
-        .copy-button {
-            position: absolute;
+    }
+    
+    .copy-button {
+      position: absolute;
             right: 10px;
             top: 10px;
             background: rgba(255, 255, 255, 0.1);
             border: none;
-            border-radius: 4px;
+      border-radius: 4px;
             padding: 4px 8px;
-            color: #fff;
+      color: #fff;
             font-size: 12px;
-            cursor: pointer;
-            opacity: 0;
+      cursor: pointer;
+      opacity: 0;
             transition: opacity 0.3s ease;
             font-family: "Maple Mono", monospace;
-        }
-
+    }
+    
         .code-block:hover .copy-button {
-            opacity: 1;
-        }
-
-        .copy-button:hover {
+      opacity: 1;
+    }
+    
+    .copy-button:hover {
             background: rgba(255, 255, 255, 0.2);
         }
 
@@ -248,7 +248,7 @@
             background: rgba(255, 55, 95, 0.9);
             color: white;
             cursor: pointer;
-            display: flex;
+      display: flex;
             align-items: center;
             justify-content: center;
             transition: all 0.3s ease;
@@ -287,9 +287,9 @@
 
             .toc a:hover {
                 color: #FF453A;
-            }
-
-            .toc-title {
+    }
+    
+    .toc-title {
                 color: #FF453A;
             }
 
@@ -319,9 +319,9 @@
         }
 
         /* 移动端适配 */
-        @media (max-width: 1200px) {
-            .toc {
-                display: none;
+    @media (max-width: 1200px) {
+      .toc {
+        display: none;
                 right: -300px;
             }
 
@@ -368,14 +368,14 @@
                 flex-direction: row;
                 justify-content: center;
                 gap: 20px;
-            }
-        }
-    </style>
+      }
+    }
+  </style>
 </head>
 <body>
     <div class="reading-progress-container">
-        <div class="reading-progress-bar"></div>
-    </div>
+    <div class="reading-progress-bar"></div>
+  </div>
 
     <div class="share-container">
         <button class="share-button" title="分享到微信" onclick="shareToWeChat()">
@@ -393,19 +393,19 @@
         <i class="fas fa-list"></i> 目录
     </button>
 
-    <aside class="toc">
-        <div class="toc-title">📚 目录</div>
-        <ul>
-            <li><a href="#前言">前言 📝</a></li>
-            <li><a href="#环境准备">环境准备 🛠️</a></li>
-            <li><a href="#部署青龙面板">部署青龙面板 🚀</a></li>
-            <li><a href="#配置青龙面板">配置青龙面板 ⚙️</a></li>
-            <li><a href="#实用脚本示例">实用脚本示例 📜</a></li>
-            <li><a href="#性能优化建议">性能优化建议 🚀</a></li>
-            <li><a href="#常见问题与解决方案">常见问题与解决方案 💡</a></li>
-            <li><a href="#后续计划">后续计划 🎯</a></li>
-        </ul>
-    </aside>
+  <aside class="toc">
+    <div class="toc-title">📚 目录</div>
+    <ul>
+      <li><a href="#前言">前言 📝</a></li>
+<li><a href="#环境准备">环境准备 🛠️</a></li>
+<li><a href="#部署青龙面板">部署青龙面板 🚀</a></li>
+<li><a href="#配置青龙面板">配置青龙面板 ⚙️</a></li>
+<li><a href="#实用脚本示例">实用脚本示例 📜</a></li>
+<li><a href="#性能优化建议">性能优化建议 🚀</a></li>
+<li><a href="#常见问题与解决方案">常见问题与解决方案 💡</a></li>
+<li><a href="#后续计划">后续计划 🎯</a></li>
+    </ul>
+  </aside>
 
     <main class="post-content">
         <h1>家用伺服器折腾手记-1：Mac mini 搭建青龙面板教程 🖥️</h1>
@@ -629,16 +629,16 @@ if __name__ == "__main__":
                 wrapper.className = 'code-block';
                 block.parentNode.insertBefore(wrapper, block);
                 wrapper.appendChild(block);
-
-                const button = document.createElement('button');
-                button.className = 'copy-button';
-                button.textContent = '复制';
+      
+      const button = document.createElement('button');
+      button.className = 'copy-button';
+      button.textContent = '复制';
                 wrapper.appendChild(button);
-
-                button.addEventListener('click', async () => {
+      
+      button.addEventListener('click', async () => {
                     const code = block.querySelector('code').innerText;
                     try {
-                        await navigator.clipboard.writeText(code);
+        await navigator.clipboard.writeText(code);
                         button.textContent = '已复制！';
                         button.classList.add('copied');
                         setTimeout(() => {
@@ -648,9 +648,9 @@ if __name__ == "__main__":
                     } catch (err) {
                         console.error('复制失败:', err);
                         button.textContent = '复制失败';
-                        setTimeout(() => {
-                            button.textContent = '复制';
-                        }, 2000);
+        setTimeout(() => {
+          button.textContent = '复制';
+        }, 2000);
                     }
                 });
             });
@@ -709,6 +709,6 @@ if __name__ == "__main__":
                 alert('复制失败，请手动复制链接');
             }
         }
-    </script>
+  </script>
 </body>
-</html>
+</html> 
