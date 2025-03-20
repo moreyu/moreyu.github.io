@@ -1,4 +1,368 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>家用伺服器折腾手记-1：Mac mini 搭建青龙面板教程 - Moreyu's Blog</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/maple-mono@latest/index.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script><style>body{font-family:"Maple Mono",monospace;line-height:1.6;max-width:800px;margin:0 auto;padding:20px;background:#f5f5f7;color:#333}pre{background:#1e1e1e;padding:15px;border-radius:8px;overflow-x:auto}code{font-family:"Maple Mono",monospace}h1,h2,h3{color:#FF375F}a{color:#0066cc;text-decoration:none}a:hover{text-decoration:underline}.meta{color:#666;font-size:.9em;margin-bottom:30px}@media (prefers-color-scheme:dark){body{background:#000;color:#f5f5f7}a{color:#2997ff}h1,h2,h3{color:#FF453A}}.back-to-home{position:fixed;bottom:20px;right:20px;background:rgba(255,55,95,.9);color:#fff;padding:10px 20px;border-radius:20px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 4px 6px rgba(0,0,0,.1);transition:all .3s ease}.back-to-home:hover{transform:translateY(-2px);box-shadow:0 6px 8px rgba(0,0,0,.2);text-decoration:none}@media (max-width:768px){body{padding:15px}pre{padding:10px;font-size:14px}.back-to-home{bottom:15px;right:15px;padding:8px 16px}}</style></head><body><h1>家用伺服器折腾手记-1：Mac mini 搭建青龙面板教程 🖥️</h1><div class="meta">发布时间：2025-03-07 | 分类：服务器, Docker, 自动化</div><h2>前言 📝</h2><p>最近入手了一台 Mac mini M2，除了日常使用外，我还想把它变成一台家用服务器。考虑到 Mac mini 的性能强大、功耗低、噪音小等优点，它非常适合作为 24/7 运行的家用服务器。这篇文章将详细介绍如何在 Mac mini 上搭建 Docker 环境并运行青龙面板。</p><h2>环境准备 🛠️</h2><h3>1. 安装 Homebrew</h3><pre><code class="bash">/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</code></pre><p>安装完成后，确保将 Homebrew 添加到 PATH 中。对于 Apple Silicon Mac，通常需要添加以下路径：</p><pre><code class="bash">echo 'eval "$(/opt/homebrew/bin/brew shellenv)"\ >> ~/.zprofile
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>家用伺服器折腾手记-1：Mac mini 搭建青龙面板教程 - Moreyu's Blog ✨</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/maple-mono@latest/index.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.8/dist/medium-zoom.min.css">
+  <style>
+    /* 文章目录样式 */
+    .toc {
+      position: fixed;
+      right: 2rem;
+      top: 6rem;
+      width: 280px;
+      max-height: calc(100vh - 8rem);
+      overflow-y: auto;
+      background: var(--card-bg);
+      border-radius: 8px;
+      padding: 1rem;
+      box-shadow: var(--shadow);
+      font-size: 0.9rem;
+      z-index: 100;
+      scrollbar-width: thin;
+      scrollbar-color: var(--primary) var(--card-bg);
+    }
+    
+    .toc::-webkit-scrollbar {
+      width: 6px;
+    }
+    
+    .toc::-webkit-scrollbar-track {
+      background: var(--card-bg);
+    }
+    
+    .toc::-webkit-scrollbar-thumb {
+      background-color: var(--primary);
+      border-radius: 3px;
+    }
+    
+    .toc-title {
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+      color: var(--primary);
+      font-size: 1.1rem;
+    }
+    
+    .toc ul {
+      list-style: none;
+      padding-left: 1rem;
+      margin: 0;
+    }
+    
+    .toc li {
+      margin: 0.5rem 0;
+      line-height: 1.4;
+    }
+    
+    .toc a {
+      color: var(--text-light);
+      text-decoration: none;
+      transition: all 0.2s;
+      display: block;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+    }
+    
+    .toc a:hover {
+      color: var(--primary);
+      background: var(--bg);
+    }
+    
+    .toc a.active {
+      color: var(--primary);
+      font-weight: bold;
+      background: var(--bg);
+    }
+
+    /* 阅读进度 */
+    .reading-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: var(--border);
+      z-index: 1000;
+    }
+    
+    .reading-progress-bar {
+      height: 100%;
+      background: var(--primary);
+      width: 0;
+      transition: width 0.2s;
+    }
+
+    /* 代码块复制按钮 */
+    pre {
+      position: relative;
+      border-radius: 8px;
+      margin: 1.5rem 0;
+    }
+    
+    .copy-button {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      padding: 0.3rem 0.6rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--text-light);
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      opacity: 0;
+    }
+    
+    pre:hover .copy-button {
+      opacity: 1;
+    }
+    
+    .copy-button:hover {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+      transform: scale(1.05);
+    }
+    
+    /* 图片预览 */
+    .medium-zoom-overlay {
+      background: var(--bg) !important;
+    }
+    
+    .medium-zoom-image--opened {
+      z-index: 1000;
+    }
+
+    /* 分享按钮 */
+    .share-menu {
+      position: fixed;
+      left: 2rem;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      z-index: 100;
+    }
+    
+    .share-button {
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 50%;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      font-size: 1.1rem;
+    }
+    
+    .share-button:hover {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+      transform: scale(1.1) rotate(360deg);
+    }
+
+    /* 文章内容样式优化 */
+    .post-content {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    
+    .post-content h2 {
+      margin-top: 2.5rem;
+      margin-bottom: 1.5rem;
+      color: var(--primary);
+    }
+    
+    .post-content h3 {
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      color: var(--text);
+    }
+    
+    .post-content p {
+      line-height: 1.8;
+      margin: 1rem 0;
+    }
+    
+    .post-content code {
+      background: var(--card-bg);
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+      font-family: 'Maple Mono', monospace;
+    }
+    
+    .post-content pre code {
+      background: none;
+      padding: 0;
+    }
+    
+    .post-meta {
+      display: flex;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+      color: var(--text-light);
+      font-size: 0.9rem;
+    }
+    
+    .post-tags {
+      margin-top: 3rem;
+      display: flex;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+    }
+    
+    .tag {
+      background: var(--card-bg);
+      color: var(--primary);
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+    }
+    
+    .tag:hover {
+      background: var(--primary);
+      color: white;
+      transform: translateY(-2px);
+    }
+    
+    @media (max-width: 1200px) {
+      .toc {
+        display: none;
+      }
+      
+      .share-menu {
+        position: fixed;
+        left: 1rem;
+        bottom: 5rem;
+        top: auto;
+        transform: none;
+        flex-direction: row;
+        gap: 0.5rem;
+      }
+      
+      .post-content {
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="reading-progress">
+    <div class="reading-progress-bar"></div>
+  </div>
+  
+  <button class="theme-toggle" aria-label="切换主题">
+    <i class="fas fa-moon"></i>
+  </button>
+  
+  <h1 class="gradient-text">家用伺服器折腾手记-1：Mac mini 搭建青龙面板教程</h1>
+  
+  <nav class="nav">
+    <a href="/"><i class="fas fa-home"></i> 首页 🏠</a>
+    <a href="/archives"><i class="fas fa-archive"></i> 归档 📚</a>
+    <a href="/categories"><i class="fas fa-folder"></i> 分类 📂</a>
+    <a href="/about"><i class="fas fa-user"></i> 关于 👋</a>
+  </nav>
+
+  <aside class="toc">
+    <div class="toc-title">📚 目录</div>
+    <ul>
+      <li><a href="#前言">前言 📝</a></li>
+<li><a href="#环境准备">环境准备 🛠️</a></li>
+  <li><a href="#安装-homebrew">安装 Homebrew</a></li>
+  <li><a href="#安装-docker">安装 Docker</a></li>
+  <li><a href="#创建工作目录">创建工作目录</a></li>
+<li><a href="#部署青龙面板">部署青龙面板 🚀</a></li>
+  <li><a href="#创建-docker-compose-yml">创建 docker-compose.yml</a></li>
+  <li><a href="#启动服务">启动服务</a></li>
+<li><a href="#配置青龙面板">配置青龙面板 ⚙️</a></li>
+  <li><a href="#初始化配置">初始化配置</a></li>
+  <li><a href="#配置依赖管理">配置依赖管理</a></li>
+<li><a href="#实用脚本示例">实用脚本示例 📜</a></li>
+  <li><a href="#系统监控脚本">系统监控脚本</a></li>
+  <li><a href="#自动备份脚本">自动备份脚本</a></li>
+<li><a href="#性能优化建议">性能优化建议 🚀</a></li>
+<li><a href="#常见问题与解决方案">常见问题与解决方案 💡</a></li>
+  <li><a href="#容器无法启动">容器无法启动</a></li>
+  <li><a href="#脚本运行失败">脚本运行失败</a></li>
+<li><a href="#后续计划">后续计划 🎯</a></li>
+    </ul>
+  </aside>
+
+  <div class="share-menu">
+    <button class="share-button" title="分享到微信" onclick="shareToWeChat()">
+      <i class="fab fa-weixin"></i>
+    </button>
+    <button class="share-button" title="分享到微博" onclick="shareToWeibo()">
+      <i class="fab fa-weibo"></i>
+    </button>
+    <button class="share-button" title="分享到 Twitter" onclick="shareToTwitter()">
+      <i class="fab fa-twitter"></i>
+    </button>
+    <button class="share-button" title="复制链接" onclick="copyPageUrl()">
+      <i class="fas fa-link"></i>
+    </button>
+  </div>
+
+  <main class="post-content">
+    <div class="card">
+      <div class="post-meta">
+        <span><i class="far fa-calendar"></i> 2025-03-07</span>
+        <span><i class="far fa-clock"></i> 阅读时间：11分钟</span>
+        <span><i class="far fa-folder"></i> 分类：服务器</span>
+      </div>
+
+      <div class="reading-progress">
+    <div class="reading-progress-bar"></div>
+  </div>
+  
+  <button class="theme-toggle" aria-label="切换主题">
+    <i class="fas fa-moon"></i>
+  </button>
+  
+  <h1 class="gradient-text">家用伺服器折腾手记-1：Mac mini 搭建青龙面板教程</h1>
+  
+  
+
+  
+
+  <div class="share-menu">
+    <button class="share-button" title="分享到微信" onclick="shareToWeChat()">
+      <i class="fab fa-weixin"></i>
+    </button>
+    <button class="share-button" title="分享到微博" onclick="shareToWeibo()">
+      <i class="fab fa-weibo"></i>
+    </button>
+    <button class="share-button" title="分享到 Twitter" onclick="shareToTwitter()">
+      <i class="fab fa-twitter"></i>
+    </button>
+    <button class="share-button" title="复制链接" onclick="copyPageUrl()">
+      <i class="fas fa-link"></i>
+    </button>
+  </div>
+
+  <main class="post-content">
+    <div class="card">
+      <div class="post-meta">
+        <span><i class="far fa-calendar"></i> 2025-03-07</span>
+        <span><i class="far fa-clock"></i> 阅读时间：9分钟</span>
+        <span><i class="far fa-folder"></i> 分类：服务器</span>
+      </div>
+
+      <h1>家用伺服器折腾手记-1：Mac mini 搭建青龙面板教程 🖥️</h1><div class="meta">发布时间：2025-03-07 | 分类：服务器, Docker, 自动化</div><h2>前言 📝</h2><p>最近入手了一台 Mac mini M2，除了日常使用外，我还想把它变成一台家用服务器。考虑到 Mac mini 的性能强大、功耗低、噪音小等优点，它非常适合作为 24/7 运行的家用服务器。这篇文章将详细介绍如何在 Mac mini 上搭建 Docker 环境并运行青龙面板。</p><h2>环境准备 🛠️</h2><h3>1. 安装 Homebrew</h3><pre><code class="bash">/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</code></pre><p>安装完成后，确保将 Homebrew 添加到 PATH 中。对于 Apple Silicon Mac，通常需要添加以下路径：</p><pre><code class="bash">echo 'eval "$(/opt/homebrew/bin/brew shellenv)"\ &gt;&gt; ~/.zprofile
 eval "$(/opt/homebrew/bin/brew shellenv)"</code></pre><h3>2. 安装 Docker</h3><pre><code class="bash">brew install --cask docker</code></pre><p>安装完成后，启动 Docker Desktop 并等待其初始化完成。</p><h3>3. 创建工作目录</h3><pre><code class="bash">mkdir -p ~/docker/qinglong
 cd ~/docker/qinglong</code></pre><h2>部署青龙面板 🚀</h2><h3>1. 创建 docker-compose.yml</h3><pre><code class="yaml">version: '3'
 services:
@@ -36,7 +400,7 @@ async function monitor() {
         `运行时间: ${(os.uptime() / 3600).toFixed(1)}小时`
     ].join('\n');
 
-    if (cpuUsage > 2 || usedMemPercentage > 80) {
+    if (cpuUsage &gt; 2 || usedMemPercentage &gt; 80) {
         await sendNotify.sendNotify('系统资源警告 ⚠️', message);
     }
 }
@@ -71,7 +435,7 @@ def backup():
     # 清理旧备份（保留最近7天）
     files = [f for f in os.listdir(backup_dir) if f.endswith('.tar.gz')]
     files.sort()
-    while len(files) > 7:
+    while len(files) &gt; 7:
         os.remove(os.path.join(backup_dir, files[0]))
         files = files[1:]
     
@@ -80,4 +444,110 @@ def backup():
     print(f"备份完成: {backup_file} ({backup_size:.2f}MB)")
 
 if __name__ == "__main__":
-    backup()</code></pre><h2>性能优化建议 🚀</h2><ul><li>合理设置定时任务间隔，避免任务重叠执行</li><li>定期清理日志文件和临时文件</li><li>使用 <code>cron</code> 表达式优化任务执行时间</li><li>对于资源密集型任务，建议在低峰期执行</li></ul><h2>常见问题与解决方案 💡</h2><h3>1. 容器无法启动</h3><ul><li>检查端口 5700 是否被占用：<code>lsof -i:5700</code></li><li>检查目录权限：<code>chmod -R 777 ~/docker/qinglong/data</code></li><li>查看 Docker 日志：<code>docker logs qinglong</code></li></ul><h3>2. 脚本运行失败</h3><ul><li>检查依赖是否安装完整</li><li>查看错误日志：<code>docker exec -it qinglong cat /ql/log/[脚本名称].log</code></li><li>确认环境变量配置正确</li></ul><h2>后续计划 🎯</h2><p>这是家用服务器系列的第一篇文章，后续我们将继续探索更多有趣的应用场景：</p><ul><li>搭建 Homebridge 实现智能家居集成</li><li>部署 Nginx 反向代理实现外网访问</li><li>使用 Docker Compose 管理多个服务</li><li>配置 SSL 证书实现安全访问</li></ul><a href="/" class="back-to-home">返回首页 🏠</a><script>hljs.highlightAll();</script></body></html>
+    backup()</code></pre><h2>性能优化建议 🚀</h2><ul><li>合理设置定时任务间隔，避免任务重叠执行</li><li>定期清理日志文件和临时文件</li><li>使用 <code>cron</code> 表达式优化任务执行时间</li><li>对于资源密集型任务，建议在低峰期执行</li></ul><h2>常见问题与解决方案 💡</h2><h3>1. 容器无法启动</h3><ul><li>检查端口 5700 是否被占用：<code>lsof -i:5700</code></li><li>检查目录权限：<code>chmod -R 777 ~/docker/qinglong/data</code></li><li>查看 Docker 日志：<code>docker logs qinglong</code></li></ul><h3>2. 脚本运行失败</h3><ul><li>检查依赖是否安装完整</li><li>查看错误日志：<code>docker exec -it qinglong cat /ql/log/[脚本名称].log</code></li><li>确认环境变量配置正确</li></ul><h2>后续计划 🎯</h2><p>这是家用服务器系列的第一篇文章，后续我们将继续探索更多有趣的应用场景：</p><ul><li>搭建 Homebridge 实现智能家居集成</li><li>部署 Nginx 反向代理实现外网访问</li><li>使用 Docker Compose 管理多个服务</li><li>配置 SSL 证书实现安全访问</li></ul><a href="/" class="back-to-home">返回首页 🏠</a>
+
+
+      <div class="post-tags">
+        
+      </div>
+    </div>
+  </main>
+
+      <div class="post-tags">
+        <span class="tag">服务器</span>
+<span class="tag"></span>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2024 Moreyu's Blog 🎉 | 本站已稳定运行 444 天 ⚡️</p>
+    <div class="social-links">
+      <a href="https://github.com/moreyu" target="_blank"><i class="fab fa-github"></i> GitHub 🐱</a>
+      <a href="mailto:your@email.com"><i class="fas fa-envelope"></i> Email ✉️</a>
+    </div>
+  </footer>
+
+  <script src="/js/theme.js"></script>
+  <script src="/js/scroll.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.8/dist/medium-zoom.min.js"></script>
+  <script>
+    // 初始化图片预览
+    mediumZoom('img:not(.avatar)', {
+      margin: 24,
+      background: 'var(--bg)',
+      scrollOffset: 40,
+    });
+    
+    // 代码块复制功能
+    document.querySelectorAll('pre').forEach(pre => {
+      const button = document.createElement('button');
+      button.className = 'copy-button';
+      button.textContent = '复制';
+      button.addEventListener('click', () => {
+        navigator.clipboard.writeText(pre.querySelector('code').textContent)
+          .then(() => {
+            button.textContent = '已复制！';
+            setTimeout(() => button.textContent = '复制', 2000);
+          })
+          .catch(err => {
+            console.error('复制失败:', err);
+            button.textContent = '复制失败';
+            setTimeout(() => button.textContent = '复制', 2000);
+          });
+      });
+      pre.appendChild(button);
+    });
+    
+    // 阅读进度指示器
+    const progressBar = document.querySelector('.reading-progress-bar');
+    window.addEventListener('scroll', () => {
+      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      progressBar.style.width = scrolled + '%';
+    });
+    
+    // 目录高亮
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        const id = entry.target.getAttribute('id');
+        const tocLink = document.querySelector(`.toc a[href="#${id}"]`);
+        if (tocLink) {
+          if (entry.intersectionRatio > 0) {
+            document.querySelectorAll('.toc a').forEach(link => link.classList.remove('active'));
+            tocLink.classList.add('active');
+          }
+        }
+      });
+    }, { threshold: 0.5 });
+    
+    document.querySelectorAll('h2, h3').forEach((heading) => {
+      observer.observe(heading);
+    });
+
+    // 分享功能
+    function shareToWeChat() {
+      alert('请截图分享到微信');
+    }
+    
+    function shareToWeibo() {
+      const text = document.title;
+      const url = window.location.href;
+      window.open(`http://service.weibo.com/share/share.php?url=${encodeURIComponent(url)}&title=${encodeURIComponent(text)}`);
+    }
+    
+    function shareToTwitter() {
+      const text = document.title;
+      const url = window.location.href;
+      window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`);
+    }
+    
+    function copyPageUrl() {
+      navigator.clipboard.writeText(window.location.href)
+        .then(() => alert('链接已复制到剪贴板！'))
+        .catch(err => console.error('复制失败:', err));
+    }
+  </script>
+</body>
+</html> 

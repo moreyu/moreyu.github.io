@@ -280,64 +280,27 @@
   <aside class="toc">
     <div class="toc-title">📚 目录</div>
     <ul>
-      <li><a href="#前言">前言 📝</a></li>
-<li><a href="#准备工作">准备工作 🛠️</a></li>
-  <li><a href="#创建工作目录">创建工作目录</a></li>
-  <li><a href="#创建配置文件">创建配置文件</a></li>
-<li><a href="#部署步骤">部署步骤 🚀</a></li>
-  <li><a href="#启动服务">启动服务</a></li>
-  <li><a href="#检查服务状态">检查服务状态</a></li>
-<li><a href="#基础配置">基础配置 ⚙️</a></li>
-  <li><a href="#访问-web-界面">访问 Web 界面</a></li>
-  <li><a href="#下载模型">下载模型</a></li>
-<li><a href="#进阶配置">进阶配置 🔧</a></li>
-  <li><a href="#自定义模型配置">自定义模型配置</a></li>
-<li><a href="#性能优化">性能优化 🚄</a></li>
-  <li><a href="#显存管理">显存管理</a></li>
-  <li><a href="#模型量化">模型量化</a></li>
-<li><a href="#常见问题">常见问题 💡</a></li>
-  <li><a href="#内存管理">内存管理</a></li>
-  <li><a href="#api-访问问题">API 访问问题</a></li>
-<li><a href="#后续计划">后续计划 📈</a></li>
+      <li><a href="#前言-📝">前言 📝</a></li>
+<li><a href="#准备工作-🛠️">准备工作 🛠️</a></li>
+  <li><a href="#1.-创建工作目录">1. 创建工作目录</a></li>
+  <li><a href="#2.-创建配置文件">2. 创建配置文件</a></li>
+<li><a href="#部署步骤-🚀">部署步骤 🚀</a></li>
+  <li><a href="#1.-启动服务">1. 启动服务</a></li>
+  <li><a href="#2.-检查服务状态">2. 检查服务状态</a></li>
+<li><a href="#基础配置-⚙️">基础配置 ⚙️</a></li>
+  <li><a href="#1.-访问-web-界面">1. 访问 Web 界面</a></li>
+  <li><a href="#2.-下载模型">2. 下载模型</a></li>
+<li><a href="#进阶配置-🔧">进阶配置 🔧</a></li>
+  <li><a href="#1.-自定义模型配置">1. 自定义模型配置</a></li>
+<li><a href="#性能优化-🚄">性能优化 🚄</a></li>
+  <li><a href="#1.-显存管理">1. 显存管理</a></li>
+  <li><a href="#2.-模型量化">2. 模型量化</a></li>
+<li><a href="#常见问题-💡">常见问题 💡</a></li>
+  <li><a href="#1.-内存管理">1. 内存管理</a></li>
+  <li><a href="#2.-api-访问问题">2. API 访问问题</a></li>
+<li><a href="#后续计划-📈">后续计划 📈</a></li>
     </ul>
   </aside>
-
-  <div class="share-menu">
-    <button class="share-button" title="分享到微信" onclick="shareToWeChat()">
-      <i class="fab fa-weixin"></i>
-    </button>
-    <button class="share-button" title="分享到微博" onclick="shareToWeibo()">
-      <i class="fab fa-weibo"></i>
-    </button>
-    <button class="share-button" title="分享到 Twitter" onclick="shareToTwitter()">
-      <i class="fab fa-twitter"></i>
-    </button>
-    <button class="share-button" title="复制链接" onclick="copyPageUrl()">
-      <i class="fas fa-link"></i>
-    </button>
-  </div>
-
-  <main class="post-content">
-    <div class="card">
-      <div class="post-meta">
-        <span><i class="far fa-calendar"></i> 2025-03-09</span>
-        <span><i class="far fa-clock"></i> 阅读时间：8分钟</span>
-        <span><i class="far fa-folder"></i> 分类：服务器</span>
-      </div>
-
-      <div class="reading-progress">
-    <div class="reading-progress-bar"></div>
-  </div>
-  
-  <button class="theme-toggle" aria-label="切换主题">
-    <i class="fas fa-moon"></i>
-  </button>
-  
-  <h1 class="gradient-text">家用伺服器折腾手记-3：Mac mini 部署 Open WebUI 教程</h1>
-  
-  
-
-  
 
   <div class="share-menu">
     <button class="share-button" title="分享到微信" onclick="shareToWeChat()">
@@ -403,18 +366,11 @@ services:
   ollama:
     environment:
       - CUDA_MEMORY_LIMIT=8G</code></pre><h3>2. 模型量化</h3><pre><code class="bash"># 使用量化版本的模型以减少内存占用
-docker exec -it ollama pull llama2:7b-q4</code></pre><h2>常见问题 💡</h2><h3>1. 内存管理</h3><ul><li>使用量化模型减少内存占用</li><li>及时清理未使用的模型</li><li>监控系统资源使用情况</li></ul><h3>2. API 访问问题</h3><ul><li>检查端口配置</li><li>确认防火墙设置</li><li>验证 API 密钥配置</li></ul><h2>后续计划 📈</h2><p>在下一篇文章中，我们将探讨：</p><ul><li>如何使用 FastAPI 构建 AI 服务 API</li><li>如何实现模型热加载和动态切换</li><li>如何优化大规模并发请求处理</li><li>如何集成向量数据库实现知识库问答</li></ul><a href="/" class="back-to-home">返回首页 🏠</a>
+docker exec -it ollama pull llama2:7b-q4</code></pre><h2>常见问题 💡</h2><h3>1. 内存管理</h3><ul><li>使用量化模型减少内存占用</li><li>及时清理未使用的模型</li><li>监控系统资源使用情况</li></ul><h3>2. API 访问问题</h3><ul><li>检查端口配置</li><li>确认防火墙设置</li><li>验证 API 密钥配置</li></ul><h2>后续计划 📈</h2><p>在下一篇文章中，我们将探讨：</p><ul><li>如何使用 FastAPI 构建 AI 服务 API</li><li>如何实现模型热加载和动态切换</li><li>如何优化大规模并发请求处理</li><li>如何集成向量数据库实现知识库问答</li></ul><a href="/" class="back-to-home">返回首页 🏠</a><script>hljs.highlightAll();</script>
 
 
       <div class="post-tags">
         
-      </div>
-    </div>
-  </main>
-
-      <div class="post-tags">
-        <span class="tag">服务器</span>
-<span class="tag"></span>
       </div>
     </div>
   </main>

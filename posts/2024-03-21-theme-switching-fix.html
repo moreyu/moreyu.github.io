@@ -268,7 +268,7 @@
     <i class="fas fa-moon"></i>
   </button>
   
-  <h1 class="gradient-text">主题切换功能修复 ✨</h1>
+  <h1 class="gradient-text">主题切换功能修复</h1>
   
   <nav class="nav">
     <a href="/"><i class="fas fa-home"></i> 首页 🏠</a>
@@ -281,18 +281,52 @@
     <div class="toc-title">📚 目录</div>
     <ul>
       <li><a href="#问题描述">问题描述</a></li>
-      <li><a href="#解决方案">解决方案</a>
-        <ul>
-          <li><a href="#创建独立的主题控制脚本">1. 创建独立的主题控制脚本</a></li>
-          <li><a href="#创建全局样式文件">2. 创建全局样式文件</a></li>
-          <li><a href="#创建文章页面模板">3. 创建文章页面模板</a></li>
-        </ul>
-      </li>
-      <li><a href="#改进效果">改进效果</a></li>
-      <li><a href="#使用说明">使用说明</a></li>
-      <li><a href="#后续优化">后续优化</a></li>
+<li><a href="#解决方案">解决方案</a></li>
+  <li><a href="#创建独立的主题控制脚本">创建独立的主题控制脚本</a></li>
+  <li><a href="#创建全局样式文件">创建全局样式文件</a></li>
+  <li><a href="#创建文章页面模板">创建文章页面模板</a></li>
+<li><a href="#改进效果">改进效果</a></li>
+<li><a href="#使用说明">使用说明</a></li>
+<li><a href="#后续优化">后续优化</a></li>
     </ul>
   </aside>
+
+  <div class="share-menu">
+    <button class="share-button" title="分享到微信" onclick="shareToWeChat()">
+      <i class="fab fa-weixin"></i>
+    </button>
+    <button class="share-button" title="分享到微博" onclick="shareToWeibo()">
+      <i class="fab fa-weibo"></i>
+    </button>
+    <button class="share-button" title="分享到 Twitter" onclick="shareToTwitter()">
+      <i class="fab fa-twitter"></i>
+    </button>
+    <button class="share-button" title="复制链接" onclick="copyPageUrl()">
+      <i class="fas fa-link"></i>
+    </button>
+  </div>
+
+  <main class="post-content">
+    <div class="card">
+      <div class="post-meta">
+        <span><i class="far fa-calendar"></i> 2025-03-20</span>
+        <span><i class="far fa-clock"></i> 阅读时间：8分钟</span>
+        <span><i class="far fa-folder"></i> 分类：未分类</span>
+      </div>
+
+      <div class="reading-progress">
+    <div class="reading-progress-bar"></div>
+  </div>
+  
+  <button class="theme-toggle" aria-label="切换主题">
+    <i class="fas fa-moon"></i>
+  </button>
+  
+  <h1 class="gradient-text">主题切换功能修复 ✨</h1>
+  
+  
+
+  
 
   <div class="share-menu">
     <button class="share-button" title="分享到微信" onclick="shareToWeChat()">
@@ -340,7 +374,7 @@ document.documentElement.setAttribute('data-theme', currentTheme);
 icon.className = currentTheme === 'light' ? 'fas fa-moon' : 'fas fa-sun';
 
 // 主题切换事件处理
-themeToggle.addEventListener('click', () => {
+themeToggle.addEventListener('click', () =&gt; {
   const currentTheme = document.documentElement.getAttribute('data-theme');
   const newTheme = currentTheme === 'light' ? 'dark' : 'light';
   
@@ -416,8 +450,17 @@ themeToggle.addEventListener('click', () => {
     </div>
   </main>
 
+      <div class="post-tags">
+        <span class="tag">主题切换</span>
+<span class="tag">CSS变量</span>
+<span class="tag">JavaScript</span>
+<span class="tag">用户体验</span>
+      </div>
+    </div>
+  </main>
+
   <footer>
-    <p>&copy; 2024 Moreyu's Blog 🎉 | 本站已稳定运行 999 天 ⚡️</p>
+    <p>&copy; 2024 Moreyu's Blog 🎉 | 本站已稳定运行 444 天 ⚡️</p>
     <div class="social-links">
       <a href="https://github.com/moreyu" target="_blank"><i class="fab fa-github"></i> GitHub 🐱</a>
       <a href="mailto:your@email.com"><i class="fas fa-envelope"></i> Email ✉️</a>
