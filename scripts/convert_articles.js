@@ -36,27 +36,48 @@ function extractContent(html) {
   const mainContent = $('.post-content').first();
   
   if (mainContent.length) {
-    // 如果已经是新模板格式，直接提取内容
-    content = mainContent.html();
+    // 如果已经是新模板格式，提取主要内容
+    const mainHtml = mainContent.html();
+    const tempDiv = cheerio.load(`<div>${mainHtml}</div>`)('div');
+    
+    // 移除元数据和标签
+    tempDiv.find('.post-meta').remove();
+    tempDiv.find('.post-tags').remove();
+    tempDiv.find('h1').first().remove();
+    
+    content = tempDiv.html();
   } else {
     // 如果是旧格式，尝试提取文章主体
     const article = $('article').first();
     if (article.length) {
-      content = article.html();
-    } else {
-      // 移除不需要的元素
-      $('script').remove();
-      $('style').remove();
-      $('header').remove();
-      $('footer').remove();
-      $('nav').remove();
-      $('aside').remove();
-      $('.back-home').remove();
-      $('.reading-progress').remove();
-      $('.toc').remove();
+      const articleHtml = article.html();
+      const tempDiv = cheerio.load(`<div>${articleHtml}</div>`)('div');
       
-      // 提取主要内容
-      content = $('body').html();
+      // 移除不需要的元素
+      tempDiv.find('.post-meta').remove();
+      tempDiv.find('.post-tags').remove();
+      tempDiv.find('h1').first().remove();
+      
+      content = tempDiv.html();
+    } else {
+      // 创建临时容器
+      const tempDiv = cheerio.load(`<div>${$('body').html()}</div>`)('div');
+      
+      // 移除不需要的元素
+      tempDiv.find('script').remove();
+      tempDiv.find('style').remove();
+      tempDiv.find('header').remove();
+      tempDiv.find('footer').remove();
+      tempDiv.find('nav').remove();
+      tempDiv.find('aside').remove();
+      tempDiv.find('.back-home').remove();
+      tempDiv.find('.reading-progress').remove();
+      tempDiv.find('.toc').remove();
+      tempDiv.find('.post-meta').remove();
+      tempDiv.find('.post-tags').remove();
+      tempDiv.find('h1').first().remove();
+      
+      content = tempDiv.html();
     }
   }
   
@@ -112,9 +133,6 @@ function extractContent(html) {
     .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
     .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '')
     .replace(/<!--[\s\S]*?-->/g, '')
-    .replace(/<div class="post-meta">[\s\S]*?<\/div>/, '') // 移除旧的元数据
-    .replace(/<div class="post-tags">[\s\S]*?<\/div>/, '') // 移除旧的标签
-    .replace(/<h1>[\s\S]*?<\/h1>/, '') // 移除旧的标题
     .trim();
   
   return {

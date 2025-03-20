@@ -4,46 +4,229 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>主题切换功能修复 - Moreyu's Blog ✨</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/@fontsource/maple-mono@latest/index.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/maple-mono@latest/index.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/atom-one-dark.min.css">
   <style>
     :root {
+      /* Neon Theme */
       --primary: #00dc82;
-      --text: #2c3e50;
-      --text-light: #666;
-      --bg: #fff;
-      --card-bg: #f8f9fa;
-      --border: #eee;
-      --shadow: 0 2px 4px rgba(0,0,0,0.1);
+      --primary-dark: #00b368;
+      --primary-light: #33e599;
+      --text: #f5f5f5;
+      --text-light: #a0a0a0;
+      --bg: #1a1a1a;
+      --card-bg: #242424;
+      --border: #333;
+      --shadow: 0 2px 4px rgba(0,0,0,0.2);
       --code-bg: #282c34;
       --code-color: #abb2bf;
-    }
-
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --primary: #00dc82;
-        --text: #f5f5f5;
-        --text-light: #aaa;
-        --bg: #1a1a1a;
-        --card-bg: #242424;
-        --border: #333;
-        --shadow: 0 2px 4px rgba(0,0,0,0.2);
-        --code-bg: #282c34;
-        --code-color: #abb2bf;
-      }
+      --font-mono: 'Maple Mono', monospace;
+      --gradient: linear-gradient(120deg, var(--primary) 0%, var(--primary-light) 100%);
     }
 
     body {
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-family: var(--font-mono);
       line-height: 1.6;
       color: var(--text);
       background: var(--bg);
     }
 
-    /* 文章目录样式 */
+    /* 阅读进度 */
+    .reading-progress {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 1px;
+      height: 100vh;
+      background: transparent;
+      z-index: 1000;
+      transition: all 0.3s ease;
+    }
+
+    .reading-progress:hover {
+      width: 3px;
+      background: var(--border);
+    }
+    
+    .reading-progress-bar {
+      width: 100%;
+      background: var(--gradient);
+      height: 0;
+      transition: height 0.2s;
+      box-shadow: 0 0 10px var(--primary);
+    }
+
+    /* 代码块样式 */
+    pre {
+      position: relative;
+      border-radius: 8px;
+      margin: 1.5rem 0;
+      background: var(--code-bg) !important;
+      padding: 1rem !important;
+      overflow-x: auto;
+      border: 1px solid var(--border);
+    }
+    
+    pre code {
+      font-family: var(--font-mono) !important;
+      font-size: 0.9rem !important;
+      line-height: 1.5 !important;
+      color: var(--code-color) !important;
+    }
+    
+    .copy-button {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      padding: 0.3rem 0.6rem;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 4px;
+      color: #fff;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      opacity: 0;
+    }
+    
+    pre:hover .copy-button {
+      opacity: 1;
+    }
+    
+    .copy-button:hover {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+      box-shadow: 0 0 10px var(--primary);
+    }
+
+    /* 文章内容样式 */
+    .post-content {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 2rem;
+      font-family: var(--font-mono);
+    }
+    
+    .post-content h1 {
+      font-size: 2.2rem;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 1.5rem;
+      font-weight: 600;
+    }
+    
+    .post-content h2 {
+      margin-top: 2.5rem;
+      margin-bottom: 1.5rem;
+      color: var(--primary);
+      font-size: 1.8rem;
+      font-weight: 600;
+    }
+    
+    .post-content h3 {
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      color: var(--primary-light);
+      font-size: 1.5rem;
+      font-weight: 500;
+    }
+    
+    .post-content p {
+      line-height: 1.8;
+      margin: 1.2rem 0;
+      color: var(--text);
+      font-size: 1rem;
+    }
+    
+    .post-content img {
+      max-width: 100%;
+      border-radius: 8px;
+      margin: 1.5rem 0;
+      border: 1px solid var(--border);
+    }
+    
+    .post-content code {
+      background: var(--code-bg);
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      font-size: 0.9em;
+      color: var(--primary);
+    }
+    
+    .post-content pre code {
+      background: none;
+      padding: 0;
+      color: var(--code-color);
+    }
+    
+    .post-meta {
+      display: flex;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+      color: var(--text-light);
+      font-size: 0.9rem;
+      font-family: var(--font-mono);
+    }
+    
+    .post-tags {
+      margin-top: 3rem;
+      display: flex;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+    }
+    
+    .tag {
+      background: transparent;
+      color: var(--primary);
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+      border: 1px solid var(--primary);
+    }
+    
+    .tag:hover {
+      background: var(--primary);
+      color: var(--bg);
+      transform: translateY(-2px);
+      box-shadow: 0 0 10px var(--primary);
+    }
+
+    /* 返回首页按钮 */
+    .back-home {
+      position: fixed;
+      left: 2rem;
+      top: 2rem;
+      background: transparent;
+      color: var(--primary);
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      text-decoration: none;
+      transition: all 0.3s;
+      z-index: 1000;
+      border: 1px solid var(--primary);
+      font-family: var(--font-mono);
+    }
+    
+    .back-home:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 10px var(--primary);
+      background: var(--primary);
+      color: var(--bg);
+    }
+
+    .back-home i {
+      margin-right: 0.5rem;
+    }
+
+    /* 目录样式 */
     .toc {
       position: fixed;
       right: 2rem;
@@ -57,6 +240,8 @@
       box-shadow: var(--shadow);
       font-size: 0.9rem;
       z-index: 100;
+      border: 1px solid var(--border);
+      font-family: var(--font-mono);
     }
     
     .toc-title {
@@ -97,187 +282,6 @@
       background: var(--bg);
     }
 
-    /* 阅读进度 */
-    .reading-progress {
-      position: fixed;
-      top: 0;
-      right: 0;
-      width: 1px;
-      height: 100vh;
-      background: var(--border);
-      z-index: 1000;
-      transition: width 0.3s;
-    }
-
-    .reading-progress:hover {
-      width: 4px;
-    }
-    
-    .reading-progress-bar {
-      width: 100%;
-      background: var(--primary);
-      height: 0;
-      transition: height 0.2s;
-    }
-
-    /* 代码块样式 */
-    pre {
-      position: relative;
-      border-radius: 8px;
-      margin: 1.5rem 0;
-      background: var(--code-bg) !important;
-      padding: 1rem !important;
-      overflow-x: auto;
-    }
-    
-    pre code {
-      font-family: 'Maple Mono', monospace !important;
-      font-size: 0.9rem !important;
-      line-height: 1.5 !important;
-      color: var(--code-color) !important;
-    }
-    
-    .copy-button {
-      position: absolute;
-      top: 0.5rem;
-      right: 0.5rem;
-      padding: 0.3rem 0.6rem;
-      background: rgba(255,255,255,0.1);
-      border: 1px solid rgba(255,255,255,0.2);
-      border-radius: 4px;
-      color: #fff;
-      font-size: 0.8rem;
-      cursor: pointer;
-      transition: all 0.2s;
-      opacity: 0;
-    }
-    
-    pre:hover .copy-button {
-      opacity: 1;
-    }
-    
-    .copy-button:hover {
-      background: var(--primary);
-      color: white;
-      border-color: var(--primary);
-    }
-
-    /* 文章内容样式 */
-    .post-content {
-      max-width: 800px;
-      margin: 2rem auto;
-      padding: 2rem;
-    }
-    
-    .post-content h1 {
-      font-size: 2.2rem;
-      color: var(--primary);
-      margin-bottom: 1.5rem;
-      font-weight: 600;
-    }
-    
-    .post-content h2 {
-      margin-top: 2.5rem;
-      margin-bottom: 1.5rem;
-      color: var(--text);
-      font-size: 1.8rem;
-      font-weight: 600;
-    }
-    
-    .post-content h3 {
-      margin-top: 2rem;
-      margin-bottom: 1rem;
-      color: var(--text);
-      font-size: 1.5rem;
-      font-weight: 500;
-    }
-    
-    .post-content p {
-      line-height: 1.8;
-      margin: 1.2rem 0;
-      color: var(--text);
-      font-size: 1rem;
-    }
-    
-    .post-content img {
-      max-width: 100%;
-      border-radius: 8px;
-      margin: 1.5rem 0;
-    }
-    
-    .post-content code {
-      background: var(--code-bg);
-      padding: 0.2rem 0.4rem;
-      border-radius: 4px;
-      font-family: 'Maple Mono', monospace;
-      font-size: 0.9em;
-      color: var(--code-color);
-    }
-    
-    .post-content pre code {
-      background: none;
-      padding: 0;
-    }
-    
-    .post-meta {
-      display: flex;
-      gap: 1.5rem;
-      margin-bottom: 2rem;
-      color: var(--text-light);
-      font-size: 0.9rem;
-    }
-    
-    .post-tags {
-      margin-top: 3rem;
-      display: flex;
-      gap: 0.8rem;
-      flex-wrap: wrap;
-    }
-    
-    .tag {
-      background: var(--card-bg);
-      color: var(--primary);
-      padding: 0.3rem 0.8rem;
-      border-radius: 20px;
-      font-size: 0.9rem;
-      transition: all 0.2s;
-    }
-    
-    .tag:hover {
-      background: var(--primary);
-      color: white;
-      transform: translateY(-2px);
-    }
-
-    /* 返回首页按钮 */
-    .back-home {
-      position: fixed;
-      left: 2rem;
-      top: 2rem;
-      background: var(--bg);
-      color: var(--text);
-      padding: 0.6rem 1.2rem;
-      border-radius: 8px;
-      font-size: 1rem;
-      text-decoration: none;
-      transition: all 0.3s;
-      z-index: 1000;
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      border: 1px solid var(--border);
-    }
-    
-    .back-home:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      color: var(--primary);
-    }
-
-    .back-home i {
-      margin-right: 0.5rem;
-    }
-
     @media (max-width: 768px) {
       .back-home {
         left: 1rem;
@@ -308,14 +312,18 @@
   </a>
 
   <main class="post-content">
-    <article class="card">
-      <div class="post-meta">
-        <span><i class="far fa-calendar"></i> 2025-03-20</span>
-        <span><i class="far fa-clock"></i> 阅读时间：12分钟</span>
-        <span><i class="far fa-folder"></i> 分类：未分类</span>
-      </div>
+    <div class="post-meta">
+      <span><i class="far fa-calendar"></i> 2025-03-20</span>
+      <span><i class="far fa-clock"></i> 阅读时间：13分钟</span>
+      <span><i class="far fa-folder"></i> 分类：未分类</span>
+    </div>
 
-      <h1>主题切换功能修复</h1>
+    <h1>主题切换功能修复</h1>
+
+    <article class="card">
+      
+
+      
 
       <div class="post-meta">
         <span><i class="far fa-calendar"></i> 2025-03-20</span>
@@ -489,12 +497,7 @@ themeToggle.addEventListener('click', () =&gt; {
         <li>添加主题切换快捷键支持</li>
       </ul>
 
-      <div class="post-tags">
-        <span class="tag">主题切换</span>
-        <span class="tag">CSS变量</span>
-        <span class="tag">JavaScript</span>
-        <span class="tag">用户体验</span>
-      </div>
+      
     </div>
   </main>
 
@@ -537,6 +540,41 @@ themeToggle.addEventListener('click', () =&gt; {
 <span class="tag">用户体验</span>
       </div>
     </article>
+
+    <div class="post-tags">
+      <span class="tag">主题切换</span>
+<span class="tag">CSS变量</span>
+<span class="tag">JavaScript</span>
+<span class="tag">用户体验</span>
+<span class="tag">主题切换</span>
+<span class="tag">CSS变量</span>
+<span class="tag">JavaScript</span>
+<span class="tag">用户体验</span>
+<span class="tag">主题切换</span>
+<span class="tag">CSS变量</span>
+<span class="tag">JavaScript</span>
+<span class="tag">用户体验</span>
+<span class="tag">主题切换</span>
+<span class="tag">CSS变量</span>
+<span class="tag">JavaScript</span>
+<span class="tag">用户体验</span>
+<span class="tag">主题切换</span>
+<span class="tag">CSS变量</span>
+<span class="tag">JavaScript</span>
+<span class="tag">用户体验</span>
+<span class="tag">主题切换</span>
+<span class="tag">CSS变量</span>
+<span class="tag">JavaScript</span>
+<span class="tag">用户体验</span>
+<span class="tag">主题切换</span>
+<span class="tag">CSS变量</span>
+<span class="tag">JavaScript</span>
+<span class="tag">用户体验</span>
+<span class="tag">主题切换</span>
+<span class="tag">CSS变量</span>
+<span class="tag">JavaScript</span>
+<span class="tag">用户体验</span>
+    </div>
   </main>
 
   <aside class="toc">
