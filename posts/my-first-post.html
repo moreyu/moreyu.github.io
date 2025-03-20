@@ -8,6 +8,66 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/atom-one-dark.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.8/dist/medium-zoom.min.css">
+  <link rel="stylesheet" href="/css/post.css">
+</head>
+<body>
+  <div class="reading-progress">
+    <div class="reading-progress-bar"></div>
+  </div>
+
+  <button class="theme-toggle" aria-label="切换主题">
+    <i class="fas fa-moon"></i>
+  </button>
+
+  <a href="/" class="back-home">
+    <i class="fas fa-arrow-left"></i> 返回首页
+  </a>
+
+  <main class="post-content">
+    <div class="post-meta">
+      <span><i class="far fa-calendar"></i> 2025-03-20</span>
+      <span><i class="far fa-clock"></i> 阅读时间：2分钟</span>
+      <span><i class="far fa-folder"></i> 分类：Blog</span></span>
+    </div>
+
+    <h1>My First Post ✨</h1>
+
+    <html><head></head><body><div><div class="card"><div class="post-meta"><span>2024-01-01</span><span>阅读时间：3分钟</span><span>分类：Blog</span></div><h2 id="welcome-to-my-blog">Welcome to My Blog</h2><p>This is my first blog post. I'll be sharing my thoughts and experiences here.</p><h2 id="about-me">About Me</h2><ul><li>👋 Hi, I'm @moreyu</li><li>👀 I'm interested in coding</li><li>🌱 I'm currently learning web development</li><li>💞️ I'm looking to collaborate on interesting projects</li></ul><h2 id="skills">Skills</h2><ul><li>HTML/CSS/JavaScript</li><li>Python</li><li>Git</li><li>Node.js</li></ul><h2 id="interests">Interests</h2><ul><li>Web Development</li><li>Open Source</li><li>Machine Learning</li><li>UI/UX Design</li></ul><div class="post-tags"><span class="tag">Blog</span><span class="tag">Introduction</span><span class="tag">Web Development</span></div></div></div></body></html>
+
+    <div class="post-tags">
+      <span class="tag">Blog</span>
+<span class="tag">Introduction</span>
+<span class="tag">Web Development</span>
+    </div>
+  </main>
+
+  <button class="toc-toggle">
+    <i class="fas fa-list"></i> 目录
+  </button>
+
+  <aside class="toc">
+    <div class="toc-title">📚 目录</div>
+    <ul>
+      <li><a href="#welcome-to-my-blog">Welcome to My Blog</a></li>
+<li><a href="#about-me">About Me</a></li>
+<li><a href="#skills">Skills</a></li>
+<li><a href="#interests">Interests</a></li>
+    </ul>
+  </aside>
+
+  <div class="share-buttons">
+    <button class="share-button" onclick="shareToTwitter()">
+      <i class="fab fa-twitter"></i>
+    </button>
+    <button class="share-button" onclick="shareToFacebook()">
+      <i class="fab fa-facebook"></i>
+    </button>
+    <button class="share-button" onclick="copyLink()">
+      <i class="fas fa-link"></i>
+    </button>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/highlight.min.js"></script>
   <style>
     :root {
       /* Light Theme */
