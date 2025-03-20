@@ -83,7 +83,8 @@ function extractContent(html) {
     .replace(/(<div[^>]*>(\s*<div[^>]*>)*\s*)(<h[1-6][^>]*>.*?<\/h[1-6]>)(\s*<\/div>)*\s*\2/g, '$3')
     .replace(/<div[^>]*>\s*(<div[^>]*>\s*)*(.+?)\s*(<\/div>\s*)*<\/div>/g, '$2')
     .replace(/<article[^>]*>\s*(<div[^>]*>\s*)*(.+?)\s*(<\/div>\s*)*<\/article>/g, '$2')
-    .replace(/<main[^>]*>\s*(<div[^>]*>\s*)*(.+?)\s*(<\/div>\s*)*<\/main>/g, '$2');
+    .replace(/<main[^>]*>\s*(<div[^>]*>\s*)*(.+?)\s*(<\/div>\s*)*<\/main>/g, '$2')
+    .replace(/<div[^>]*>(?:\s*<div[^>]*>)*\s*([\s\S]*?)\s*(?:<\/div>\s*)*<\/div>/g, '$1');
   
   // 提取日期
   let date = new Date().toISOString().split('T')[0];
@@ -110,14 +111,17 @@ function extractContent(html) {
     categories = metaCategoryMatch[1].split(',').map(c => c.trim());
   }
   
-  // 提取标签
-  let tags = [];
+  // 提取标签并去重
+  let tags = new Set();
   const tagEls = $('.post-meta__tags, .tag');
   
   if (tagEls.length) {
-    tags = tagEls.map((i, el) => $(el).text()).get();
+    tagEls.each((i, el) => {
+      const tag = $(el).text().trim();
+      if (tag) tags.add(tag);
+    });
   } else {
-    tags = categories;
+    categories.forEach(tag => tags.add(tag));
   }
   
   // 生成目录
@@ -144,7 +148,7 @@ function extractContent(html) {
     .replace(/\s+/g, ' ')
     .replace(/(<[^>]+>)\s+/g, '$1')
     .replace(/\s+(<\/[^>]+>)/g, '$1')
-    .replace(/<div[^>]*>\s*(<div[^>]*>\s*)*(.+?)\s*(<\/div>\s*)*<\/div>/g, '$2')
+    .replace(/<div[^>]*>(?:\s*<div[^>]*>)*\s*([\s\S]*?)\s*(?:<\/div>\s*)*<\/div>/g, '$1')
     .trim();
   
   return {
@@ -152,7 +156,7 @@ function extractContent(html) {
     content,
     date,
     category: categories[0],
-    tags: tags.map(tag => `<span class="tag">${tag}</span>`).join('\n'),
+    tags: Array.from(tags).map(tag => `<span class="tag">${tag}</span>`).join('\n'),
     toc: toc.join('\n'),
     readingTime: Math.ceil(content.length / 500) + '分钟'
   };
