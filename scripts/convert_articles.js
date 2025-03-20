@@ -84,7 +84,8 @@ function extractContent(html) {
     .replace(/<div[^>]*>\s*(<div[^>]*>\s*)*(.+?)\s*(<\/div>\s*)*<\/div>/g, '$2')
     .replace(/<article[^>]*>\s*(<div[^>]*>\s*)*(.+?)\s*(<\/div>\s*)*<\/article>/g, '$2')
     .replace(/<main[^>]*>\s*(<div[^>]*>\s*)*(.+?)\s*(<\/div>\s*)*<\/main>/g, '$2')
-    .replace(/<div[^>]*>(?:\s*<div[^>]*>)*\s*([\s\S]*?)\s*(?:<\/div>\s*)*<\/div>/g, '$1');
+    .replace(/<div[^>]*>(?:\s*<div[^>]*>)*\s*([\s\S]*?)\s*(?:<\/div>\s*)*<\/div>/g, '$1')
+    .replace(/<div[^>]*>([\s\S]*?)<\/div>/g, '$1');
   
   // 提取日期
   let date = new Date().toISOString().split('T')[0];
@@ -118,10 +119,16 @@ function extractContent(html) {
   if (tagEls.length) {
     tagEls.each((i, el) => {
       const tag = $(el).text().trim();
-      if (tag) tags.add(tag);
+      if (tag && !tag.includes('返回首页')) {
+        tags.add(tag);
+      }
     });
   } else {
-    categories.forEach(tag => tags.add(tag));
+    categories.forEach(tag => {
+      if (tag && !tag.includes('返回首页')) {
+        tags.add(tag);
+      }
+    });
   }
   
   // 生成目录
@@ -149,6 +156,17 @@ function extractContent(html) {
     .replace(/(<[^>]+>)\s+/g, '$1')
     .replace(/\s+(<\/[^>]+>)/g, '$1')
     .replace(/<div[^>]*>(?:\s*<div[^>]*>)*\s*([\s\S]*?)\s*(?:<\/div>\s*)*<\/div>/g, '$1')
+    .replace(/<div[^>]*>([\s\S]*?)<\/div>/g, '$1')
+    .replace(/(<h1[^>]*>[\s\S]*?<\/h1>)[\s\S]*\1/g, '$1')
+    .replace(/(<span class="tag">[^<]+<\/span>\s*)+/g, (match, p1) => {
+      const tags = new Set();
+      const regex = /<span class="tag">([^<]+)<\/span>/g;
+      let m;
+      while ((m = regex.exec(match)) !== null) {
+        tags.add(m[0]);
+      }
+      return Array.from(tags).join('\n');
+    })
     .trim();
   
   return {
