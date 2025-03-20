@@ -1,15 +1,271 @@
 <!DOCTYPE html>
-<html lang="zh-CN" data-theme="light">
+<html lang="zh-CN" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>My First Post - Moreyu's Blog ✨</title>
+  <title>My First Post ✨ - Moreyu's Blog ✨</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/maple-mono@latest/index.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/atom-one-dark.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.8/dist/medium-zoom.min.css">
   <style>
-    /* 文章目录样式 */
+    :root {
+      /* Light Theme */
+      --primary-light-theme: #00dc82;
+      --primary-dark-light-theme: #00b368;
+      --primary-light-light-theme: #33e599;
+      --text-light-theme: #1a1a1a;
+      --text-light-light-theme: #666666;
+      --bg-light-theme: #f5f5f5;
+      --card-bg-light-theme: #ffffff;
+      --border-light-theme: #e0e0e0;
+      --code-bg-light-theme: #f8f8f8;
+      --code-color-light-theme: #333333;
+
+      /* Dark Theme */
+      --primary-dark-theme: #00dc82;
+      --primary-dark-dark-theme: #00b368;
+      --primary-light-dark-theme: #33e599;
+      --text-dark-theme: #f5f5f5;
+      --text-light-dark-theme: #a0a0a0;
+      --bg-dark-theme: #1a1a1a;
+      --card-bg-dark-theme: #242424;
+      --border-dark-theme: #333;
+      --code-bg-dark-theme: #282c34;
+      --code-color-dark-theme: #abb2bf;
+    }
+
+    html[data-theme="light"] {
+      --primary: var(--primary-light-theme);
+      --primary-dark: var(--primary-dark-light-theme);
+      --primary-light: var(--primary-light-light-theme);
+      --text: var(--text-light-theme);
+      --text-light: var(--text-light-light-theme);
+      --bg: var(--bg-light-theme);
+      --card-bg: var(--card-bg-light-theme);
+      --border: var(--border-light-theme);
+      --code-bg: var(--code-bg-light-theme);
+      --code-color: var(--code-color-light-theme);
+    }
+
+    html[data-theme="dark"] {
+      --primary: var(--primary-dark-theme);
+      --primary-dark: var(--primary-dark-dark-theme);
+      --primary-light: var(--primary-light-dark-theme);
+      --text: var(--text-dark-theme);
+      --text-light: var(--text-light-dark-theme);
+      --bg: var(--bg-dark-theme);
+      --card-bg: var(--card-bg-dark-theme);
+      --border: var(--border-dark-theme);
+      --code-bg: var(--code-bg-dark-theme);
+      --code-color: var(--code-color-dark-theme);
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: var(--font-mono);
+      line-height: 1.6;
+      color: var(--text);
+      background: var(--bg);
+    }
+
+    /* 阅读进度 */
+    .reading-progress {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 3px;
+      height: 100vh;
+      background: var(--border);
+      z-index: 1000;
+      transition: width 0.3s ease;
+    }
+
+    .reading-progress::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: var(--progress, 0%);
+      background: var(--primary);
+      box-shadow: 0 0 10px var(--primary);
+      transition: height 0.3s ease;
+    }
+
+    .reading-progress:hover {
+      width: 5px;
+    }
+
+    /* 代码块样式 */
+    pre {
+      position: relative;
+      border-radius: 8px;
+      margin: 1.5rem 0;
+      background: var(--code-bg) !important;
+      padding: 1rem !important;
+      overflow-x: auto;
+      border: 1px solid var(--border);
+    }
+    
+    pre code {
+      font-family: var(--font-mono) !important;
+      font-size: 0.9rem !important;
+      line-height: 1.5 !important;
+      color: var(--code-color) !important;
+    }
+    
+    .copy-button {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      padding: 0.3rem 0.6rem;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 4px;
+      color: #fff;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      opacity: 0;
+    }
+    
+    pre:hover .copy-button {
+      opacity: 1;
+    }
+    
+    .copy-button:hover {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+      box-shadow: 0 0 10px var(--primary);
+    }
+
+    /* 文章内容样式 */
+    .post-content {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 2rem;
+      font-family: var(--font-mono);
+    }
+    
+    .post-content h1 {
+      font-size: 2.2rem;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 1.5rem;
+      font-weight: 600;
+    }
+    
+    .post-content h2 {
+      margin-top: 2.5rem;
+      margin-bottom: 1.5rem;
+      color: var(--primary);
+      font-size: 1.8rem;
+      font-weight: 600;
+    }
+    
+    .post-content h3 {
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      color: var(--primary-light);
+      font-size: 1.5rem;
+      font-weight: 500;
+    }
+    
+    .post-content p {
+      line-height: 1.8;
+      margin: 1.2rem 0;
+      color: var(--text);
+      font-size: 1rem;
+    }
+    
+    .post-content img {
+      max-width: 100%;
+      border-radius: 8px;
+      margin: 1.5rem 0;
+      border: 1px solid var(--border);
+    }
+    
+    .post-content code {
+      background: var(--code-bg);
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      font-size: 0.9em;
+      color: var(--primary);
+    }
+    
+    .post-content pre code {
+      background: none;
+      padding: 0;
+      color: var(--code-color);
+    }
+    
+    .post-meta {
+      display: flex;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+      color: var(--text-light);
+      font-size: 0.9rem;
+      font-family: var(--font-mono);
+    }
+    
+    .post-tags {
+      margin-top: 3rem;
+      display: flex;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+    }
+    
+    .tag {
+      background: transparent;
+      color: var(--primary);
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+      border: 1px solid var(--primary);
+    }
+    
+    .tag:hover {
+      background: var(--primary);
+      color: var(--bg);
+      transform: translateY(-2px);
+      box-shadow: 0 0 10px var(--primary);
+    }
+
+    /* 返回首页按钮 */
+    .back-home {
+      position: fixed;
+      left: 2rem;
+      top: 2rem;
+      background: transparent;
+      color: var(--primary);
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      text-decoration: none;
+      transition: all 0.3s;
+      z-index: 1000;
+      border: 1px solid var(--primary);
+      font-family: var(--font-mono);
+    }
+    
+    .back-home:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 10px var(--primary);
+      background: var(--primary);
+      color: var(--bg);
+    }
+
+    .back-home i {
+      margin-right: 0.5rem;
+    }
+
+    /* 目录样式 */
     .toc {
       position: fixed;
       right: 2rem;
@@ -23,21 +279,8 @@
       box-shadow: var(--shadow);
       font-size: 0.9rem;
       z-index: 100;
-      scrollbar-width: thin;
-      scrollbar-color: var(--primary) var(--card-bg);
-    }
-    
-    .toc::-webkit-scrollbar {
-      width: 6px;
-    }
-    
-    .toc::-webkit-scrollbar-track {
-      background: var(--card-bg);
-    }
-    
-    .toc::-webkit-scrollbar-thumb {
-      background-color: var(--primary);
-      border-radius: 3px;
+      border: 1px solid var(--border);
+      font-family: var(--font-mono);
     }
     
     .toc-title {
@@ -78,184 +321,75 @@
       background: var(--bg);
     }
 
-    /* 阅读进度 */
-    .reading-progress {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 3px;
-      background: var(--border);
-      z-index: 1000;
-    }
-    
-    .reading-progress-bar {
-      height: 100%;
-      background: var(--primary);
-      width: 0;
-      transition: width 0.2s;
-    }
-
-    /* 代码块复制按钮 */
-    pre {
-      position: relative;
-      border-radius: 8px;
-      margin: 1.5rem 0;
-    }
-    
-    .copy-button {
-      position: absolute;
-      top: 0.5rem;
-      right: 0.5rem;
-      padding: 0.3rem 0.6rem;
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      color: var(--text-light);
-      font-size: 0.8rem;
-      cursor: pointer;
-      transition: all 0.2s;
-      opacity: 0;
-    }
-    
-    pre:hover .copy-button {
-      opacity: 1;
-    }
-    
-    .copy-button:hover {
-      background: var(--primary);
-      color: white;
-      border-color: var(--primary);
-      transform: scale(1.05);
-    }
-    
-    /* 图片预览 */
-    .medium-zoom-overlay {
-      background: var(--bg) !important;
-    }
-    
-    .medium-zoom-image--opened {
-      z-index: 1000;
-    }
-
-    /* 分享按钮 */
-    .share-menu {
-      position: fixed;
-      left: 2rem;
-      top: 50%;
-      transform: translateY(-50%);
-      display: flex;
-      flex-direction: column;
-      gap: 0.8rem;
-      z-index: 100;
-    }
-    
-    .share-button {
-      width: 2.5rem;
-      height: 2.5rem;
-      border-radius: 50%;
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      color: var(--text);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      font-size: 1.1rem;
-    }
-    
-    .share-button:hover {
-      background: var(--primary);
-      color: white;
-      border-color: var(--primary);
-      transform: scale(1.1) rotate(360deg);
-    }
-
-    /* 文章内容样式优化 */
-    .post-content {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 2rem;
-    }
-    
-    .post-content h2 {
-      margin-top: 2.5rem;
-      margin-bottom: 1.5rem;
-      color: var(--primary);
-    }
-    
-    .post-content h3 {
-      margin-top: 2rem;
-      margin-bottom: 1rem;
-      color: var(--text);
-    }
-    
-    .post-content p {
-      line-height: 1.8;
-      margin: 1rem 0;
-    }
-    
-    .post-content code {
-      background: var(--card-bg);
-      padding: 0.2rem 0.4rem;
-      border-radius: 4px;
-      font-family: 'Maple Mono', monospace;
-    }
-    
-    .post-content pre code {
-      background: none;
-      padding: 0;
-    }
-    
-    .post-meta {
-      display: flex;
-      gap: 1.5rem;
-      margin-bottom: 2rem;
-      color: var(--text-light);
-      font-size: 0.9rem;
-    }
-    
-    .post-tags {
-      margin-top: 3rem;
-      display: flex;
-      gap: 0.8rem;
-      flex-wrap: wrap;
-    }
-    
-    .tag {
-      background: var(--card-bg);
-      color: var(--primary);
-      padding: 0.3rem 0.8rem;
-      border-radius: 20px;
-      font-size: 0.9rem;
-      transition: all 0.2s;
-    }
-    
-    .tag:hover {
-      background: var(--primary);
-      color: white;
-      transform: translateY(-2px);
-    }
-    
-    @media (max-width: 1200px) {
-      .toc {
-        display: none;
-      }
-      
-      .share-menu {
-        position: fixed;
+    @media (max-width: 768px) {
+      .back-home {
         left: 1rem;
-        bottom: 5rem;
-        top: auto;
-        transform: none;
-        flex-direction: row;
-        gap: 0.5rem;
+        top: 1rem;
+        padding: 0.6rem 1.2rem;
+        font-size: 1rem;
       }
       
       .post-content {
         padding: 1rem;
       }
+    }
+
+    @media (max-width: 1200px) {
+      .toc {
+        position: fixed;
+        right: -300px;
+        top: 6rem;
+        transition: right 0.3s ease;
+        background: var(--card-bg);
+        z-index: 999;
+      }
+
+      .toc.active {
+        right: 0;
+      }
+
+      .toc-toggle {
+        display: block;
+        position: fixed;
+        right: 2rem;
+        top: 6rem;
+        background: var(--card-bg);
+        color: var(--primary);
+        padding: 0.5rem;
+        border-radius: 4px;
+        border: 1px solid var(--primary);
+        cursor: pointer;
+        z-index: 1000;
+      }
+    }
+
+    @media (min-width: 1201px) {
+      .toc-toggle {
+        display: none;
+      }
+    }
+
+    /* 主题切换按钮样式 */
+    .theme-toggle {
+      position: fixed;
+      right: 2rem;
+      top: 2rem;
+      background: transparent;
+      color: var(--primary);
+      padding: 0.6rem;
+      border-radius: 50%;
+      font-size: 1.2rem;
+      border: 1px solid var(--primary);
+      cursor: pointer;
+      transition: all 0.3s;
+      z-index: 1000;
+    }
+
+    .theme-toggle:hover {
+      transform: rotate(180deg);
+      background: var(--primary);
+      color: var(--bg);
+      box-shadow: 0 0 10px var(--primary);
     }
   </style>
 </head>
@@ -263,136 +397,127 @@
   <div class="reading-progress">
     <div class="reading-progress-bar"></div>
   </div>
-  
+
   <button class="theme-toggle" aria-label="切换主题">
     <i class="fas fa-moon"></i>
   </button>
-  
-  <h1 class="gradient-text">My First Post ✨</h1>
-  
-  <nav class="nav">
-    <a href="/"><i class="fas fa-home"></i> 首页 🏠</a>
-    <a href="/archives"><i class="fas fa-archive"></i> 归档 📚</a>
-    <a href="/categories"><i class="fas fa-folder"></i> 分类 📂</a>
-    <a href="/about"><i class="fas fa-user"></i> 关于 👋</a>
-  </nav>
+
+  <a href="/" class="back-home">
+    <i class="fas fa-arrow-left"></i> 返回首页
+  </a>
+
+  <main class="post-content">
+    <div class="post-meta">
+      <span><i class="far fa-calendar"></i> 2025-03-20</span>
+      <span><i class="far fa-clock"></i> 阅读时间：2分钟</span>
+      <span><i class="far fa-folder"></i> 分类：Blog</span></span>
+    </div>
+
+    <h1>My First Post ✨</h1>
+
+    <html><head></head><body><div><div class="card"><div class="post-meta"><span>2024-01-01</span><span>阅读时间：3分钟</span><span>分类：Blog</span></div><h2 id="welcome-to-my-blog">Welcome to My Blog</h2><p>This is my first blog post. I'll be sharing my thoughts and experiences here.</p><h2 id="about-me">About Me</h2><ul><li>👋 Hi, I'm @moreyu</li><li>👀 I'm interested in coding</li><li>🌱 I'm currently learning web development</li><li>💞️ I'm looking to collaborate on interesting projects</li></ul><h2 id="skills">Skills</h2><ul><li>HTML/CSS/JavaScript</li><li>Python</li><li>Git</li><li>Node.js</li></ul><h2 id="interests">Interests</h2><ul><li>Web Development</li><li>Open Source</li><li>Machine Learning</li><li>UI/UX Design</li></ul><div class="post-tags"><span class="tag">Blog</span><span class="tag">Introduction</span><span class="tag">Web Development</span></div></div></div></body></html>
+
+    <div class="post-tags">
+      <span class="tag">Blog</span>
+<span class="tag">Introduction</span>
+<span class="tag">Web Development</span>
+    </div>
+  </main>
+
+  <button class="toc-toggle">
+    <i class="fas fa-list"></i> 目录
+  </button>
 
   <aside class="toc">
     <div class="toc-title">📚 目录</div>
     <ul>
-      <li><a href="#welcome">Welcome to My Blog</a></li>
-      <li><a href="#about-me">About Me</a></li>
-      <li><a href="#skills">Skills</a></li>
-      <li><a href="#interests">Interests</a></li>
+      <li><a href="#welcome-to-my-blog">Welcome to My Blog</a></li>
+<li><a href="#about-me">About Me</a></li>
+<li><a href="#skills">Skills</a></li>
+<li><a href="#interests">Interests</a></li>
     </ul>
   </aside>
 
-  <div class="share-menu">
-    <button class="share-button" title="分享到微信" onclick="shareToWeChat()">
-      <i class="fab fa-weixin"></i>
-    </button>
-    <button class="share-button" title="分享到微博" onclick="shareToWeibo()">
-      <i class="fab fa-weibo"></i>
-    </button>
-    <button class="share-button" title="分享到 Twitter" onclick="shareToTwitter()">
+  <div class="share-buttons">
+    <button class="share-button" onclick="shareToTwitter()">
       <i class="fab fa-twitter"></i>
     </button>
-    <button class="share-button" title="复制链接" onclick="copyPageUrl()">
+    <button class="share-button" onclick="shareToFacebook()">
+      <i class="fab fa-facebook"></i>
+    </button>
+    <button class="share-button" onclick="copyLink()">
       <i class="fas fa-link"></i>
     </button>
   </div>
 
-  <main class="post-content">
-    <div class="card">
-      <div class="post-meta">
-        <span><i class="far fa-calendar"></i> 2024-01-01</span>
-        <span><i class="far fa-clock"></i> 阅读时间：3分钟</span>
-        <span><i class="far fa-folder"></i> 分类：Blog</span>
-      </div>
-
-      <h2 id="welcome">Welcome to My Blog</h2>
-      <p>This is my first blog post. I'll be sharing my thoughts and experiences here.</p>
-
-      <h2 id="about-me">About Me</h2>
-      <ul>
-        <li>👋 Hi, I'm @moreyu</li>
-        <li>👀 I'm interested in coding</li>
-        <li>🌱 I'm currently learning web development</li>
-        <li>💞️ I'm looking to collaborate on interesting projects</li>
-      </ul>
-
-      <h2 id="skills">Skills</h2>
-      <ul>
-        <li>HTML/CSS/JavaScript</li>
-        <li>Python</li>
-        <li>Git</li>
-        <li>Node.js</li>
-      </ul>
-
-      <h2 id="interests">Interests</h2>
-      <ul>
-        <li>Web Development</li>
-        <li>Open Source</li>
-        <li>Machine Learning</li>
-        <li>UI/UX Design</li>
-      </ul>
-
-      <div class="post-tags">
-        <span class="tag">Blog</span>
-        <span class="tag">Introduction</span>
-        <span class="tag">Web Development</span>
-      </div>
-    </div>
-  </main>
-
-  <footer>
-    <p>&copy; 2024 Moreyu's Blog 🎉 | 本站已稳定运行 999 天 ⚡️</p>
-    <div class="social-links">
-      <a href="https://github.com/moreyu" target="_blank"><i class="fab fa-github"></i> GitHub 🐱</a>
-      <a href="mailto:your@email.com"><i class="fas fa-envelope"></i> Email ✉️</a>
-    </div>
-  </footer>
-
-  <script src="/js/theme.js"></script>
-  <script src="/js/scroll.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/highlight.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.8/dist/medium-zoom.min.js"></script>
   <script>
-    // 初始化图片预览
+    // 主题切换
+    const themeToggle = document.querySelector('.theme-toggle');
+    const htmlElement = document.documentElement;
+    const themeIcon = themeToggle.querySelector('i');
+    
+    function setTheme(theme) {
+      htmlElement.setAttribute('data-theme', theme);
+      localStorage.setItem('theme', theme);
+      themeIcon.className = theme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
+    }
+    
+    // 从 localStorage 获取主题设置
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    setTheme(savedTheme);
+    
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = htmlElement.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      setTheme(newTheme);
+    });
+
+    // 目录切换
+    const tocToggle = document.querySelector('.toc-toggle');
+    const toc = document.querySelector('.toc');
+    
+    if (tocToggle && toc) {
+      tocToggle.addEventListener('click', () => {
+        toc.classList.toggle('active');
+      });
+      
+      // 点击目录外部区域关闭目录
+      document.addEventListener('click', (e) => {
+        if (!toc.contains(e.target) && !tocToggle.contains(e.target)) {
+          toc.classList.remove('active');
+        }
+      });
+    }
+
+    // 图片预览
     mediumZoom('img:not(.avatar)', {
       margin: 24,
       background: 'var(--bg)',
-      scrollOffset: 40,
+      scrollOffset: 0,
     });
-    
-    // 代码块复制功能
-    document.querySelectorAll('pre').forEach(pre => {
+
+    // 代码高亮和复制功能
+    document.querySelectorAll('pre code').forEach((block) => {
+      hljs.highlightElement(block);
+      
       const button = document.createElement('button');
       button.className = 'copy-button';
       button.textContent = '复制';
-      button.addEventListener('click', () => {
-        navigator.clipboard.writeText(pre.querySelector('code').textContent)
-          .then(() => {
-            button.textContent = '已复制！';
-            setTimeout(() => button.textContent = '复制', 2000);
-          })
-          .catch(err => {
-            console.error('复制失败:', err);
-            button.textContent = '复制失败';
-            setTimeout(() => button.textContent = '复制', 2000);
-          });
+      
+      button.addEventListener('click', async () => {
+        const code = block.textContent;
+        await navigator.clipboard.writeText(code);
+        button.textContent = '已复制!';
+        setTimeout(() => {
+          button.textContent = '复制';
+        }, 2000);
       });
-      pre.appendChild(button);
+      
+      block.parentElement.appendChild(button);
     });
-    
-    // 阅读进度指示器
-    const progressBar = document.querySelector('.reading-progress-bar');
-    window.addEventListener('scroll', () => {
-      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      const scrolled = (winScroll / height) * 100;
-      progressBar.style.width = scrolled + '%';
-    });
-    
+
     // 目录高亮
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
@@ -405,33 +530,52 @@
           }
         }
       });
-    }, { threshold: 0.5 });
-    
-    document.querySelectorAll('h2, h3').forEach((heading) => {
-      observer.observe(heading);
+    }, { rootMargin: '0px 0px -80% 0px' });
+
+    document.querySelectorAll('h2[id], h3[id]').forEach((section) => {
+      observer.observe(section);
     });
 
+    // 阅读进度
+    const readingProgress = document.querySelector('.reading-progress');
+    const content = document.querySelector('.post-content');
+    
+    if (readingProgress && content) {
+      const updateProgress = () => {
+        const contentBox = content.getBoundingClientRect();
+        const totalHeight = contentBox.height - window.innerHeight;
+        const scrolled = window.scrollY;
+        const progress = Math.min((scrolled / totalHeight) * 100, 100);
+        readingProgress.style.setProperty('--progress', `${progress}%`);
+      };
+      
+      window.addEventListener('scroll', () => {
+        requestAnimationFrame(updateProgress);
+      });
+      
+      window.addEventListener('resize', () => {
+        requestAnimationFrame(updateProgress);
+      });
+      
+      updateProgress();
+    }
+
     // 分享功能
-    function shareToWeChat() {
-      alert('请截图分享到微信');
-    }
-    
-    function shareToWeibo() {
-      const text = document.title;
-      const url = window.location.href;
-      window.open(`http://service.weibo.com/share/share.php?url=${encodeURIComponent(url)}&title=${encodeURIComponent(text)}`);
-    }
-    
     function shareToTwitter() {
       const text = document.title;
       const url = window.location.href;
-      window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`);
+      window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
     }
-    
-    function copyPageUrl() {
-      navigator.clipboard.writeText(window.location.href)
-        .then(() => alert('链接已复制到剪贴板！'))
-        .catch(err => console.error('复制失败:', err));
+
+    function shareToFacebook() {
+      const url = window.location.href;
+      window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
+    }
+
+    async function copyLink() {
+      const url = window.location.href;
+      await navigator.clipboard.writeText(url);
+      alert('链接已复制到剪贴板！');
     }
   </script>
 </body>
