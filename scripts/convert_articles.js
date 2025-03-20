@@ -31,6 +31,13 @@ function extractContent(html) {
   // 提取标题
   const title = $('title').text().split(' - ')[0] || $('h1').first().text() || '无标题';
   
+  // 移除所有重复的标题
+  $('h1').each((i, el) => {
+    if (i > 0 && $(el).text().trim() === title.trim()) {
+      $(el).remove();
+    }
+  });
+  
   // 提取内容
   let content = '';
   const mainContent = $('.post-content').first();
@@ -67,9 +74,11 @@ function extractContent(html) {
   
   // 移除重复的标题
   const h1s = tempDiv('h1');
-  if (h1s.length > 1) {
-    h1s.slice(1).remove();
-  }
+  h1s.each((i, el) => {
+    if (i > 0 && tempDiv(el).text().trim() === title.trim()) {
+      tempDiv(el).remove();
+    }
+  });
   
   // 清理多余的嵌套
   content = tempDiv.root().html();
@@ -85,7 +94,8 @@ function extractContent(html) {
     .replace(/<article[^>]*>\s*(<div[^>]*>\s*)*(.+?)\s*(<\/div>\s*)*<\/article>/g, '$2')
     .replace(/<main[^>]*>\s*(<div[^>]*>\s*)*(.+?)\s*(<\/div>\s*)*<\/main>/g, '$2')
     .replace(/<div[^>]*>(?:\s*<div[^>]*>)*\s*([\s\S]*?)\s*(?:<\/div>\s*)*<\/div>/g, '$1')
-    .replace(/<div[^>]*>([\s\S]*?)<\/div>/g, '$1');
+    .replace(/<div[^>]*>([\s\S]*?)<\/div>/g, '$1')
+    .replace(/(<h1[^>]*>[\s\S]*?<\/h1>)[\s\S]*\1/g, '$1');
   
   // 提取日期
   let date = new Date().toISOString().split('T')[0];
