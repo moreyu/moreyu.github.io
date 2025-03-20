@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>主题切换功能修复 - Moreyu's Blog ✨</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/maple-mono@latest/index.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.8/dist/medium-zoom.min.css">
+  <style>
+    /* 文章目录样式 */
+    .toc {
+      position: fixed;
+      right: 2rem;
+      top: 6rem;
+      width: 280px;
+      max-height: calc(100vh - 8rem);
+      overflow-y: auto;
+      background: var(--card-bg);
+      border-radius: 8px;
+      padding: 1rem;
+      box-shadow: var(--shadow);
+      font-size: 0.9rem;
+      z-index: 100;
+    }
+    
+    .toc-title {
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+      color: var(--primary);
+    }
+    
+    .toc ul {
+      list-style: none;
+      padding-left: 1rem;
+    }
+    
+    .toc li {
+      margin: 0.3rem 0;
+    }
+    
+    .toc a {
+      color: var(--text-light);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    
+    .toc a:hover {
+      color: var(--primary);
+    }
+    
+    .toc a.active {
+      color: var(--primary);
+      font-weight: bold;
+    }
+
+    /* 阅读进度 */
+    .reading-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: var(--border);
+      z-index: 1000;
+    }
+    
+    .reading-progress-bar {
+      height: 100%;
+      background: var(--primary);
+      width: 0;
+      transition: width 0.2s;
+    }
+
+    @media (max-width: 1200px) {
+      .toc {
+        display: none;
+      }
+    }
+
+    /* 代码块复制按钮 */
+    pre {
+      position: relative;
+    }
+    
+    .copy-button {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      padding: 0.3rem 0.6rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--text-light);
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .copy-button:hover {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+    
+    /* 图片预览 */
+    .medium-zoom-overlay {
+      background: var(--bg) !important;
+    }
+    
+    .medium-zoom-image--opened {
+      z-index: 1000;
+    }
+
+    /* 分享按钮 */
+    .share-menu {
+      position: fixed;
+      left: 2rem;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      z-index: 100;
+    }
+    
+    .share-button {
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 50%;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .share-button:hover {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+      transform: scale(1.1);
+    }
+    
+    @media (max-width: 1200px) {
+      .share-menu {
+        position: fixed;
+        left: 1rem;
+        bottom: 1rem;
+        top: auto;
+        transform: none;
+        flex-direction: row;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="scroll-progress"></div>
+  <button class="theme-toggle" aria-label="切换主题">
+    <i class="fas fa-moon"></i>
+  </button>
+  
+  <h1 class="gradient-text">主题切换功能修复 ✨</h1>
+  
+  <nav class="nav">
+    <a href="/"><i class="fas fa-home"></i> 首页 🏠</a>
+    <a href="/archives"><i class="fas fa-archive"></i> 归档 📚</a>
+    <a href="/categories"><i class="fas fa-folder"></i> 分类 📂</a>
+    <a href="/about"><i class="fas fa-user"></i> 关于 👋</a>
+  </nav>
+
+  <main class="post-content">
+    <div class="card">
+      <div class="post-meta">
+        <span><i class="far fa-calendar"></i> 2024-03-21</span>
+        <span><i class="far fa-clock"></i> 阅读时间：5分钟</span>
+        <span><i class="far fa-folder"></i> 分类：技术</span>
+      </div>
+
+      <h2>问题描述</h2>
+      <p>在开发过程中，发现网站的主题切换功能在不同页面之间存在不一致的问题。具体表现为：</p>
+      <ul>
+        <li>首页和文章页面的主题切换不同步</li>
+        <li>主题设置在不同页面刷新后丢失</li>
+        <li>样式变量定义重复且不统一</li>
+      </ul>
+
+      <h2>解决方案</h2>
+      <p>为了解决这些问题，我们采取了以下措施：</p>
+
+      <h3>1. 创建独立的主题控制脚本</h3>
+      <p>创建了 <code>js/theme.js</code> 文件，统一管理主题切换逻辑：</p>
+      <pre><code>// 主题切换逻辑
+const themeToggle = document.querySelector('.theme-toggle');
+const icon = themeToggle.querySelector('i');
+
+// 从 localStorage 获取主题设置
+const currentTheme = localStorage.getItem('theme') || 'light';
+document.documentElement.setAttribute('data-theme', currentTheme);
+icon.className = currentTheme === 'light' ? 'fas fa-moon' : 'fas fa-sun';
+
+// 主题切换事件处理
+themeToggle.addEventListener('click', () => {
+  const currentTheme = document.documentElement.getAttribute('data-theme');
+  const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+  
+  document.documentElement.setAttribute('data-theme', newTheme);
+  localStorage.setItem('theme', newTheme);
+  
+  icon.className = newTheme === 'light' ? 'fas fa-moon' : 'fas fa-sun';
+});</code></pre>
+
+      <h3>2. 创建全局样式文件</h3>
+      <p>创建了 <code>css/style.css</code> 文件，统一管理主题相关的样式变量：</p>
+      <pre><code>:root[data-theme="light"] {
+  --primary: #007AFF;
+  --primary-light: #47A1FF;
+  --primary-dark: #0055B3;
+  --text: #333333;
+  --text-light: #666666;
+  --bg: #FFFFFF;
+  --card-bg: #F5F5F7;
+  --border: #E5E5EA;
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+:root[data-theme="dark"] {
+  --primary: #0A84FF;
+  --primary-light: #5E5CE6;
+  --primary-dark: #0071E3;
+  --text: #FFFFFF;
+  --text-light: #AEAEB2;
+  --bg: #000000;
+  --card-bg: #1C1C1E;
+  --border: #38383A;
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.4);
+}</code></pre>
+
+      <h3>3. 创建文章页面模板</h3>
+      <p>创建了 <code>posts/template.html</code> 作为文章页面的基础模板：</p>
+      <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="zh-CN" data-theme="light"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;
+  &lt;title&gt;文章标题 - Moreyu's Blog ✨&lt;/title&gt;
+  &lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/maple-mono@latest/index.css"&gt;
+  &lt;link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"&gt;
+  &lt;link rel="stylesheet" href="/css/style.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class="scroll-progress"&gt;&lt;/div&gt;
+  &lt;button class="theme-toggle" aria-label="切换主题"&gt;
+    &lt;i class="fas fa-moon"&gt;&lt;/i&gt;
+  &lt;/button&gt;
+  
+  &lt;h1 class="gradient-text"&gt;文章标题 ✨&lt;/h1&gt;
+  
+  &lt;nav class="nav"&gt;
+    &lt;a href="/"&gt;&lt;i class="fas fa-home"&gt;&lt;/i&gt; 首页 🏠&lt;/a&gt;
+    &lt;a href="/archives"&gt;&lt;i class="fas fa-archive"&gt;&lt;/i&gt; 归档 📚&lt;/a&gt;
+    &lt;a href="/categories"&gt;&lt;i class="fas fa-folder"&gt;&lt;/i&gt; 分类 📂&lt;/a&gt;
+    &lt;a href="/about"&gt;&lt;i class="fas fa-user"&gt;&lt;/i&gt; 关于 👋&lt;/a&gt;
+  &lt;/nav&gt;
+
+  &lt;main class="post-content"&gt;
+    &lt;div class="card"&gt;
+      &lt;div class="post-meta"&gt;
+        &lt;span&gt;&lt;i class="far fa-calendar"&gt;&lt;/i&gt; 发布日期&lt;/span&gt;
+        &lt;span&gt;&lt;i class="far fa-clock"&gt;&lt;/i&gt; 阅读时间&lt;/span&gt;
+        &lt;span&gt;&lt;i class="far fa-folder"&gt;&lt;/i&gt; 分类&lt;/span&gt;
+      &lt;/div&gt;
+
+      &lt;!-- 文章内容放在这里 --&gt;
+      
+    &lt;/div&gt;
+  &lt;/main&gt;
+
+  &lt;footer&gt;
+    &lt;p&gt;&amp;copy; 2024 Moreyu's Blog 🎉 | 本站已稳定运行 999 天 ⚡️&lt;/p&gt;
+    &lt;div class="social-links"&gt;
+      &lt;a href="https://github.com/moreyu" target="_blank"&gt;&lt;i class="fab fa-github"&gt;&lt;/i&gt; GitHub 🐱&lt;/a&gt;
+      &lt;a href="mailto:your@email.com"&gt;&lt;i class="fas fa-envelope"&gt;&lt;/i&gt; Email ✉️&lt;/a&gt;
+    &lt;/div&gt;
+  &lt;/footer&gt;
+
+  &lt;div class="floating-menu"&gt;
+    &lt;button class="floating-btn" title="返回顶部" aria-label="返回顶部"&gt;
+      &lt;i class="fas fa-arrow-up"&gt;&lt;/i&gt;
+    &lt;/button&gt;
+    &lt;button class="floating-btn" title="分享" aria-label="分享"&gt;
+      &lt;i class="fas fa-share-alt"&gt;&lt;/i&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+
+  &lt;script src="/js/theme.js"&gt;&lt;/script&gt;
+  &lt;script src="/js/scroll.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+      <h2>改进效果</h2>
+      <p>通过以上改进，我们实现了：</p>
+      <ul>
+        <li>主题切换在所有页面保持同步</li>
+        <li>主题设置通过 localStorage 持久化存储</li>
+        <li>样式变量统一管理，避免重复定义</li>
+        <li>文章页面模板化，便于维护和扩展</li>
+      </ul>
+
+      <h2>使用说明</h2>
+      <p>创建新文章时：</p>
+      <ol>
+        <li>使用 <code>posts/template.html</code> 作为模板</li>
+        <li>将文章内容放在 <code>&lt;main class="post-content"&gt;</code> 标签内</li>
+        <li>更新必要的元数据（标题、日期、分类等）</li>
+      </ol>
+
+      <h2>后续优化</h2>
+      <p>计划进行以下优化：</p>
+      <ul>
+        <li>添加主题切换动画效果</li>
+        <li>支持系统主题自动跟随</li>
+        <li>优化暗色主题配色方案</li>
+        <li>添加主题切换快捷键支持</li>
+      </ul>
+
+      <div class="post-tags">
+        <span class="tag">主题切换</span>
+        <span class="tag">CSS变量</span>
+        <span class="tag">JavaScript</span>
+        <span class="tag">用户体验</span>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2024 Moreyu's Blog 🎉 | 本站已稳定运行 999 天 ⚡️</p>
+    <div class="social-links">
+      <a href="https://github.com/moreyu" target="_blank"><i class="fab fa-github"></i> GitHub 🐱</a>
+      <a href="mailto:your@email.com"><i class="fas fa-envelope"></i> Email ✉️</a>
+    </div>
+  </footer>
+
+  <div class="floating-menu">
+    <button class="floating-btn" title="返回顶部" aria-label="返回顶部">
+      <i class="fas fa-arrow-up"></i>
+    </button>
+    <button class="floating-btn" title="分享" aria-label="分享">
+      <i class="fas fa-share-alt"></i>
+    </button>
+  </div>
+
+  <div class="share-menu">
+    <button class="share-button" title="分享到微信" onclick="shareToWeChat()">
+      <i class="fab fa-weixin"></i>
+    </button>
+    <button class="share-button" title="分享到微博" onclick="shareToWeibo()">
+      <i class="fab fa-weibo"></i>
+    </button>
+    <button class="share-button" title="分享到 Twitter" onclick="shareToTwitter()">
+      <i class="fab fa-twitter"></i>
+    </button>
+    <button class="share-button" title="复制链接" onclick="copyPageUrl()">
+      <i class="fas fa-link"></i>
+    </button>
+  </div>
+
+  <script src="/js/theme.js"></script>
+  <script src="/js/scroll.js"></script>
+
+  <div class="reading-progress">
+    <div class="reading-progress-bar"></div>
+  </div>
+
+  <aside class="toc">
+    <div class="toc-title">目录</div>
+    <ul>
+      <li><a href="#问题描述">问题描述</a></li>
+      <li><a href="#解决方案">解决方案</a>
+        <ul>
+          <li><a href="#创建独立的主题控制脚本">1. 创建独立的主题控制脚本</a></li>
+          <li><a href="#创建全局样式文件">2. 创建全局样式文件</a></li>
+          <li><a href="#创建文章页面模板">3. 创建文章页面模板</a></li>
+        </ul>
+      </li>
+      <li><a href="#改进效果">改进效果</a></li>
+      <li><a href="#使用说明">使用说明</a></li>
+      <li><a href="#后续优化">后续优化</a></li>
+    </ul>
+  </aside>
+
+  <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.8/dist/medium-zoom.min.js"></script>
+  <script>
+    // 初始化图片预览
+    mediumZoom('img:not(.avatar)', {
+      margin: 24,
+      background: 'var(--bg)',
+      scrollOffset: 40,
+    });
+    
+    // 代码块复制功能
+    document.querySelectorAll('pre').forEach(pre => {
+      const button = document.createElement('button');
+      button.className = 'copy-button';
+      button.textContent = '复制';
+      button.addEventListener('click', () => {
+        navigator.clipboard.writeText(pre.querySelector('code').textContent)
+          .then(() => {
+            button.textContent = '已复制！';
+            setTimeout(() => button.textContent = '复制', 2000);
+          })
+          .catch(err => {
+            console.error('复制失败:', err);
+            button.textContent = '复制失败';
+            setTimeout(() => button.textContent = '复制', 2000);
+          });
+      });
+      pre.appendChild(button);
+    });
+    
+    // 阅读进度指示器
+    const progressBar = document.querySelector('.reading-progress-bar');
+    window.addEventListener('scroll', () => {
+      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      progressBar.style.width = scrolled + '%';
+    });
+    
+    // 目录高亮
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        const id = entry.target.getAttribute('id');
+        const tocLink = document.querySelector(`.toc a[href="#${id}"]`);
+        if (tocLink) {
+          if (entry.intersectionRatio > 0) {
+            document.querySelectorAll('.toc a').forEach(link => link.classList.remove('active'));
+            tocLink.classList.add('active');
+          }
+        }
+      });
+    }, { threshold: 0.5 });
+    
+    document.querySelectorAll('h2, h3').forEach((heading) => {
+      observer.observe(heading);
+    });
+
+    // 分享功能
+    function shareToWeChat() {
+      alert('请截图分享到微信');
+    }
+    
+    function shareToWeibo() {
+      const text = document.title;
+      const url = window.location.href;
+      window.open(`http://service.weibo.com/share/share.php?url=${encodeURIComponent(url)}&title=${encodeURIComponent(text)}`);
+    }
+    
+    function shareToTwitter() {
+      const text = document.title;
+      const url = window.location.href;
+      window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`);
+    }
+    
+    function copyPageUrl() {
+      navigator.clipboard.writeText(window.location.href)
+        .then(() => alert('链接已复制到剪贴板！'))
+        .catch(err => console.error('复制失败:', err));
+    }
+  </script>
+</body>
+</html> 
