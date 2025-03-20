@@ -6,9 +6,70 @@
     <title>文章标题 - Moreyu's Blog ✨</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/maple-mono@latest/index.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/atom-one-dark.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.8/dist/medium-zoom.min.css">
     <style>
+        :root {
+            /* Light Theme */
+            --primary-light-theme: #00dc82;
+            --primary-dark-light-theme: #00b368;
+            --primary-light-light-theme: #33e599;
+            --text-light-theme: #1a1a1a;
+            --text-light-light-theme: #666666;
+            --bg-light-theme: #f5f5f5;
+            --card-bg-light-theme: #ffffff;
+            --border-light-theme: #e0e0e0;
+            --code-bg-light-theme: #f8f8f8;
+            --code-color-light-theme: #333333;
+
+            /* Dark Theme */
+            --primary-dark-theme: #00dc82;
+            --primary-dark-dark-theme: #00b368;
+            --primary-light-dark-theme: #33e599;
+            --text-dark-theme: #f5f5f5;
+            --text-light-dark-theme: #a0a0a0;
+            --bg-dark-theme: #1a1a1a;
+            --card-bg-dark-theme: #242424;
+            --border-dark-theme: #333;
+            --code-bg-dark-theme: #282c34;
+            --code-color-dark-theme: #abb2bf;
+        }
+
+        html[data-theme="light"] {
+            --primary: var(--primary-light-theme);
+            --primary-dark: var(--primary-dark-light-theme);
+            --primary-light: var(--primary-light-light-theme);
+            --text: var(--text-light-theme);
+            --text-light: var(--text-light-light-theme);
+            --bg: var(--bg-light-theme);
+            --card-bg: var(--card-bg-light-theme);
+            --border: var(--border-light-theme);
+            --code-bg: var(--code-bg-light-theme);
+            --code-color: var(--code-color-light-theme);
+        }
+
+        html[data-theme="dark"] {
+            --primary: var(--primary-dark-theme);
+            --primary-dark: var(--primary-dark-dark-theme);
+            --primary-light: var(--primary-light-dark-theme);
+            --text: var(--text-dark-theme);
+            --text-light: var(--text-light-dark-theme);
+            --bg: var(--bg-dark-theme);
+            --card-bg: var(--card-bg-dark-theme);
+            --border: var(--border-dark-theme);
+            --code-bg: var(--code-bg-dark-theme);
+            --code-color: var(--code-color-dark-theme);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: var(--font-mono);
+            line-height: 1.6;
+            color: var(--text);
+            background: var(--bg);
+        }
+
         /* 文章目录样式 */
         .toc {
             position: fixed;
@@ -82,25 +143,46 @@
         .reading-progress {
             position: fixed;
             top: 0;
-            left: 0;
-            width: 100%;
-            height: 3px;
+            right: 0;
+            width: 3px;
+            height: 100vh;
             background: var(--border);
             z-index: 1000;
-        }
-        
-        .reading-progress-bar {
-            height: 100%;
-            background: var(--primary);
-            width: 0;
-            transition: width 0.2s;
+            transition: width 0.3s ease;
         }
 
-        /* 代码块复制按钮 */
+        .reading-progress::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: var(--progress, 0%);
+            background: var(--primary);
+            box-shadow: 0 0 10px var(--primary);
+            transition: height 0.3s ease;
+        }
+
+        .reading-progress:hover {
+            width: 5px;
+        }
+
+        /* 代码块样式 */
         pre {
             position: relative;
             border-radius: 8px;
             margin: 1.5rem 0;
+            background: var(--code-bg) !important;
+            padding: 1rem !important;
+            overflow-x: auto;
+            border: 1px solid var(--border);
+        }
+        
+        pre code {
+            font-family: var(--font-mono) !important;
+            font-size: 0.9rem !important;
+            line-height: 1.5 !important;
+            color: var(--code-color) !important;
         }
         
         .copy-button {
@@ -108,10 +190,10 @@
             top: 0.5rem;
             right: 0.5rem;
             padding: 0.3rem 0.6rem;
-            background: var(--card-bg);
-            border: 1px solid var(--border);
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
             border-radius: 4px;
-            color: var(--text-light);
+            color: #fff;
             font-size: 0.8rem;
             cursor: pointer;
             transition: all 0.2s;
@@ -126,16 +208,7 @@
             background: var(--primary);
             color: white;
             border-color: var(--primary);
-            transform: scale(1.05);
-        }
-        
-        /* 图片预览 */
-        .medium-zoom-overlay {
-            background: var(--bg) !important;
-        }
-        
-        .medium-zoom-image--opened {
-            z-index: 1000;
+            box-shadow: 0 0 10px var(--primary);
         }
 
         /* 分享按钮 */
@@ -172,40 +245,66 @@
             transform: scale(1.1) rotate(360deg);
         }
 
-        /* 文章内容样式优化 */
+        /* 文章内容样式 */
         .post-content {
             max-width: 800px;
-            margin: 0 auto;
+            margin: 2rem auto;
             padding: 2rem;
+            font-family: var(--font-mono);
+        }
+        
+        .post-content h1 {
+            font-size: 2.2rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
         }
         
         .post-content h2 {
             margin-top: 2.5rem;
             margin-bottom: 1.5rem;
             color: var(--primary);
+            font-size: 1.8rem;
+            font-weight: 600;
         }
         
         .post-content h3 {
             margin-top: 2rem;
             margin-bottom: 1rem;
-            color: var(--text);
+            color: var(--primary-light);
+            font-size: 1.5rem;
+            font-weight: 500;
         }
         
         .post-content p {
             line-height: 1.8;
-            margin: 1rem 0;
+            margin: 1.2rem 0;
+            color: var(--text);
+            font-size: 1rem;
+        }
+        
+        .post-content img {
+            max-width: 100%;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            border: 1px solid var(--border);
         }
         
         .post-content code {
-            background: var(--card-bg);
+            background: var(--code-bg);
             padding: 0.2rem 0.4rem;
             border-radius: 4px;
-            font-family: 'Maple Mono', monospace;
+            font-family: var(--font-mono);
+            font-size: 0.9em;
+            color: var(--primary);
         }
         
         .post-content pre code {
             background: none;
             padding: 0;
+            color: var(--code-color);
         }
         
         .post-meta {
@@ -214,6 +313,7 @@
             margin-bottom: 2rem;
             color: var(--text-light);
             font-size: 0.9rem;
+            font-family: var(--font-mono);
         }
         
         .post-tags {
@@ -224,20 +324,44 @@
         }
         
         .tag {
-            background: var(--card-bg);
+            background: transparent;
             color: var(--primary);
             padding: 0.3rem 0.8rem;
             border-radius: 20px;
             font-size: 0.9rem;
             transition: all 0.2s;
+            border: 1px solid var(--primary);
         }
         
         .tag:hover {
             background: var(--primary);
-            color: white;
+            color: var(--bg);
             transform: translateY(-2px);
+            box-shadow: 0 0 10px var(--primary);
+        }
+
+        /* 返回首页按钮 */
+        .back-home {
+            position: fixed;
+            left: 2rem;
+            top: 2rem;
+            background: transparent;
+            color: var(--primary);
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            text-decoration: none;
+            border: 1px solid var(--primary);
+            transition: all 0.3s;
         }
         
+        .back-home:hover {
+            background: var(--primary);
+            color: var(--bg);
+            transform: translateY(-2px);
+            box-shadow: 0 0 10px var(--primary);
+        }
+
         @media (max-width: 1200px) {
             .toc {
                 display: none;
@@ -250,185 +374,141 @@
                 top: auto;
                 transform: none;
                 flex-direction: row;
-                gap: 0.5rem;
-            }
-            
-            .post-content {
-                padding: 1rem;
             }
         }
     </style>
 </head>
 <body>
-    <div class="reading-progress">
-        <div class="reading-progress-bar"></div>
-    </div>
-    <button class="theme-toggle" aria-label="切换主题"><i class="fas fa-moon"></i></button>
-    <h1 class="gradient-text">文章标题 ✨</h1>
-    <nav class="nav">
-        <a href="/"><i class="fas fa-home"></i> 首页 🏠</a>
-        <a href="/archives"><i class="fas fa-archive"></i> 归档 📚</a>
-        <a href="/categories"><i class="fas fa-folder"></i> 分类 📂</a>
-        <a href="/about"><i class="fas fa-user"></i> 关于 👋</a>
-    </nav>
-    <aside class="toc">
-        <div class="toc-title">📚 目录</div>
-        <!-- 目录内容将根据文章标题自动生成 -->
-    </aside>
+    <div class="reading-progress"></div>
+    
+    <a href="/" class="back-home">
+        <i class="fas fa-home"></i> 返回首页
+    </a>
+
     <div class="share-menu">
-        <button class="share-button" title="分享到微信" onclick="shareToWeChat()">
-            <i class="fab fa-weixin"></i>
-        </button>
-        <button class="share-button" title="分享到微博" onclick="shareToWeibo()">
-            <i class="fab fa-weibo"></i>
-        </button>
-        <button class="share-button" title="分享到 Twitter" onclick="shareToTwitter()">
+        <button class="share-button" onclick="shareToTwitter()">
             <i class="fab fa-twitter"></i>
         </button>
-        <button class="share-button" title="复制链接" onclick="copyPageUrl()">
+        <button class="share-button" onclick="shareToFacebook()">
+            <i class="fab fa-facebook"></i>
+        </button>
+        <button class="share-button" onclick="copyLink()">
             <i class="fas fa-link"></i>
         </button>
     </div>
-    <main class="post-content">
-        <div class="card">
-            <div class="post-meta">
-                <span><i class="far fa-calendar"></i> 发布日期</span>
-                <span><i class="far fa-clock"></i> 阅读时间</span>
-                <span><i class="far fa-folder"></i> 分类</span>
-            </div>
-            <!-- 在这里放置文章内容 -->
-            <div class="post-tags">
-                <!-- 在这里添加文章标签 -->
-            </div>
-        </div>
-    </main>
-    <footer>
-        <p>&copy; 2025 Moreyu's Blog 🎉 | 本站已稳定运行 999 天 ⚡️</p>
-        <div class="social-links">
-            <a href="https://github.com/moreyu" target="_blank"><i class="fab fa-github"></i> GitHub 🐱</a>
-            <a href="mailto:your@email.com"><i class="fas fa-envelope"></i> Email ✉️</a>
-        </div>
-    </footer>
-    <script src="/js/theme.js"></script>
-    <script src="/js/scroll.js"></script>
+
+    <nav class="toc">
+        <div class="toc-title">目录</div>
+        <ul id="toc-list"></ul>
+    </nav>
+
+    <article class="post-content">
+        <!-- 文章内容将在这里 -->
+    </article>
+
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/highlight.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.8/dist/medium-zoom.min.js"></script>
     <script>
-        // 初始化图片预览
-        mediumZoom('img:not(.avatar)', {
-            margin: 24,
-            background: 'var(--bg)',
-            scrollOffset: 40,
-        });
-        
-        // 代码块复制功能
-        document.querySelectorAll('pre').forEach(pre => {
+        // 代码高亮
+        document.querySelectorAll('pre code').forEach((block) => {
+            hljs.highlightBlock(block);
+            
+            // 添加复制按钮
             const button = document.createElement('button');
             button.className = 'copy-button';
             button.textContent = '复制';
-            button.addEventListener('click', () => {
-                navigator.clipboard.writeText(pre.querySelector('code').textContent)
-                    .then(() => {
-                        button.textContent = '已复制！';
-                        setTimeout(() => button.textContent = '复制', 2000);
-                    })
-                    .catch(err => {
-                        console.error('复制失败:', err);
-                        button.textContent = '复制失败';
-                        setTimeout(() => button.textContent = '复制', 2000);
-                    });
-            });
-            pre.appendChild(button);
+            button.onclick = () => {
+                navigator.clipboard.writeText(block.textContent).then(() => {
+                    button.textContent = '已复制!';
+                    setTimeout(() => {
+                        button.textContent = '复制';
+                    }, 2000);
+                });
+            };
+            block.parentNode.appendChild(button);
         });
+
+        // 图片预览
+        mediumZoom('img', {
+            margin: 24,
+            background: 'var(--bg)',
+            scrollOffset: 0,
+        });
+
+        // 生成目录
+        const headings = document.querySelectorAll('h2, h3');
+        const tocList = document.getElementById('toc-list');
         
-        // 阅读进度指示器
-        const progressBar = document.querySelector('.reading-progress-bar');
+        headings.forEach((heading, index) => {
+            const id = `heading-${index}`;
+            heading.id = id;
+            
+            const li = document.createElement('li');
+            const a = document.createElement('a');
+            a.href = `#${id}`;
+            a.textContent = heading.textContent;
+            
+            if (heading.tagName === 'H3') {
+                li.style.paddingLeft = '1rem';
+            }
+            
+            li.appendChild(a);
+            tocList.appendChild(li);
+        });
+
+        // 阅读进度
+        const readingProgress = document.querySelector('.reading-progress');
         window.addEventListener('scroll', () => {
-            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            const scrolled = (winScroll / height) * 100;
-            progressBar.style.width = scrolled + '%';
+            const docElement = document.documentElement;
+            const scrollTop = docElement.scrollTop || document.body.scrollTop;
+            const scrollHeight = docElement.scrollHeight || document.body.scrollHeight;
+            const clientHeight = docElement.clientHeight;
+            const scrolled = (scrollTop / (scrollHeight - clientHeight)) * 100;
+            
+            readingProgress.style.setProperty('--progress', `${scrolled}%`);
         });
-        
+
         // 目录高亮
-        const observer = new IntersectionObserver((entries) => {
+        const tocLinks = document.querySelectorAll('.toc a');
+        const observerOptions = {
+            rootMargin: '-60px 0px -80% 0px'
+        };
+
+        const headingObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 const id = entry.target.getAttribute('id');
                 const tocLink = document.querySelector(`.toc a[href="#${id}"]`);
-                if (tocLink) {
-                    if (entry.intersectionRatio > 0) {
-                        document.querySelectorAll('.toc a').forEach(link => link.classList.remove('active'));
-                        tocLink.classList.add('active');
-                    }
+                
+                if (entry.isIntersecting) {
+                    tocLinks.forEach(link => link.classList.remove('active'));
+                    tocLink?.classList.add('active');
                 }
             });
-        }, { threshold: 0.5 });
-        
-        document.querySelectorAll('h2, h3').forEach((heading) => {
-            observer.observe(heading);
-        });
+        }, observerOptions);
+
+        headings.forEach(heading => headingObserver.observe(heading));
 
         // 分享功能
-        function shareToWeChat() {
-            alert('请截图分享到微信');
-        }
-        
-        function shareToWeibo() {
-            const text = document.title;
-            const url = window.location.href;
-            window.open(`http://service.weibo.com/share/share.php?url=${encodeURIComponent(url)}&title=${encodeURIComponent(text)}`);
-        }
-        
         function shareToTwitter() {
-            const text = document.title;
-            const url = window.location.href;
-            window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`);
-        }
-        
-        function copyPageUrl() {
-            navigator.clipboard.writeText(window.location.href)
-                .then(() => alert('链接已复制到剪贴板！'))
-                .catch(err => console.error('复制失败:', err));
+            const url = encodeURIComponent(window.location.href);
+            const text = encodeURIComponent(document.title);
+            window.open(`https://twitter.com/intent/tweet?url=${url}&text=${text}`, '_blank');
         }
 
-        // 自动生成目录
-        function generateTOC() {
-            const toc = document.querySelector('.toc ul');
-            if (!toc) return;
-            
-            const headings = document.querySelectorAll('h2, h3');
-            const tocList = document.createElement('ul');
-            
-            let currentList = tocList;
-            let previousLevel = 2;
-            
-            headings.forEach(heading => {
-                const level = parseInt(heading.tagName.charAt(1));
-                const id = heading.id || heading.textContent.toLowerCase().replace(/\s+/g, '-');
-                heading.id = id;
-                
-                const listItem = document.createElement('li');
-                const link = document.createElement('a');
-                link.href = `#${id}`;
-                link.textContent = heading.textContent;
-                listItem.appendChild(link);
-                
-                if (level > previousLevel) {
-                    const newList = document.createElement('ul');
-                    currentList.lastElementChild.appendChild(newList);
-                    currentList = newList;
-                } else if (level < previousLevel) {
-                    currentList = tocList;
-                }
-                
-                currentList.appendChild(listItem);
-                previousLevel = level;
-            });
-            
-            document.querySelector('.toc').appendChild(tocList);
+        function shareToFacebook() {
+            const url = encodeURIComponent(window.location.href);
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
         }
-        
-        // 页面加载完成后生成目录
-        document.addEventListener('DOMContentLoaded', generateTOC);
+
+        function copyLink() {
+            navigator.clipboard.writeText(window.location.href).then(() => {
+                alert('链接已复制到剪贴板！');
+            });
+        }
+
+        // 主题切换
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
     </script>
 </body>
 </html> 

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN" data-theme="dark">
+<html lang="zh-CN" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -279,8 +279,21 @@
       box-shadow: var(--shadow);
       font-size: 0.9rem;
       z-index: 100;
-      border: 1px solid var(--border);
-      font-family: var(--font-mono);
+      scrollbar-width: thin;
+      scrollbar-color: var(--primary) var(--card-bg);
+    }
+    
+    .toc::-webkit-scrollbar {
+      width: 6px;
+    }
+    
+    .toc::-webkit-scrollbar-track {
+      background: var(--card-bg);
+    }
+    
+    .toc::-webkit-scrollbar-thumb {
+      background-color: var(--primary);
+      border-radius: 3px;
     }
     
     .toc-title {
@@ -336,36 +349,16 @@
 
     @media (max-width: 1200px) {
       .toc {
-        position: fixed;
-        right: -300px;
-        top: 6rem;
-        transition: right 0.3s ease;
-        background: var(--card-bg);
-        z-index: 999;
-      }
-
-      .toc.active {
-        right: 0;
-      }
-
-      .toc-toggle {
-        display: block;
-        position: fixed;
-        right: 2rem;
-        top: 6rem;
-        background: var(--card-bg);
-        color: var(--primary);
-        padding: 0.5rem;
-        border-radius: 4px;
-        border: 1px solid var(--primary);
-        cursor: pointer;
-        z-index: 1000;
-      }
-    }
-
-    @media (min-width: 1201px) {
-      .toc-toggle {
         display: none;
+      }
+      
+      .share-menu {
+        position: fixed;
+        left: 1rem;
+        bottom: 5rem;
+        top: auto;
+        transform: none;
+        flex-direction: row;
       }
     }
 
@@ -390,6 +383,40 @@
       background: var(--primary);
       color: var(--bg);
       box-shadow: 0 0 10px var(--primary);
+    }
+
+    /* 分享按钮 */
+    .share-menu {
+      position: fixed;
+      left: 2rem;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      z-index: 100;
+    }
+    
+    .share-button {
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 50%;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      font-size: 1.1rem;
+    }
+    
+    .share-button:hover {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+      transform: scale(1.1) rotate(360deg);
     }
   </style>
 </head>
