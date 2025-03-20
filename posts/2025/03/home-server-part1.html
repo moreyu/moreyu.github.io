@@ -391,6 +391,152 @@
       color: var(--bg);
       box-shadow: 0 0 10px var(--primary);
     }
+
+    /* 移动端优化 */
+    @media (max-width: 768px) {
+      body {
+        padding: 1rem;
+      }
+      
+      .post-content {
+        padding: 1rem;
+        margin: 0;
+        width: 100%;
+      }
+      
+      h1 {
+        font-size: 1.5rem;
+        line-height: 1.4;
+        margin: 1rem 0;
+      }
+      
+      h2 {
+        font-size: 1.3rem;
+      }
+      
+      h3 {
+        font-size: 1.1rem;
+      }
+      
+      .post-meta {
+        flex-direction: column;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+      }
+      
+      .share-buttons {
+        position: fixed;
+        bottom: 1rem;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 0.5rem;
+        z-index: 100;
+      }
+      
+      .theme-toggle {
+        top: 1rem;
+        right: 1rem;
+      }
+    }
+
+    /* 导航栏响应式优化 */
+    .toc {
+      position: fixed;
+      right: 2rem;
+      top: 6rem;
+      width: 250px;
+      max-height: calc(100vh - 8rem);
+      overflow-y: auto;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+      opacity: 0.8;
+    }
+
+    .toc:hover {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    @media (max-width: 1200px) {
+      .toc {
+        transform: translateX(calc(100% + 2rem));
+        right: 0;
+      }
+      
+      .toc.active {
+        transform: translateX(0);
+      }
+      
+      .toc-toggle {
+        display: block;
+        position: fixed;
+        right: 1rem;
+        top: 5rem;
+        background: var(--card-bg);
+        color: var(--primary);
+        padding: 0.5rem;
+        border-radius: 4px;
+        border: 1px solid var(--primary);
+        cursor: pointer;
+        z-index: 1000;
+        opacity: 0.8;
+        transition: opacity 0.3s;
+      }
+      
+      .toc-toggle:hover {
+        opacity: 1;
+      }
+    }
+
+    @media (min-width: 1201px) {
+      .toc-toggle {
+        display: none;
+      }
+      
+      .post-content {
+        max-width: calc(100% - 300px);
+      }
+    }
+
+    /* 代码块优化 */
+    pre {
+      margin: 1rem -1rem;
+      padding: 1rem;
+      border-radius: 8px;
+      overflow-x: auto;
+      position: relative;
+    }
+
+    @media (min-width: 768px) {
+      pre {
+        margin: 1rem 0;
+      }
+    }
+
+    /* 图片优化 */
+    img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      margin: 1rem 0;
+    }
+
+    /* 链接样式优化 */
+    a {
+      color: var(--primary);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: all 0.3s;
+    }
+
+    a:hover {
+      border-bottom-color: var(--primary);
+    }
   </style>
 </head>
 <body>
@@ -410,12 +556,12 @@
     <div class="post-meta">
       <span><i class="far fa-calendar"></i> 2025-03-20</span>
       <span><i class="far fa-clock"></i> 阅读时间：1分钟</span>
-      <span><i class="far fa-folder"></i> 分类：未分类</span></span>
+      <span><i class="far fa-folder"></i> 分类：未分类</span></span></span>
     </div>
 
     <h1>家用伺服器折腾手记-1：Mac mini 搭建青龙面板教程</h1>
 
-    <html><head></head><body><div><div class="post-meta"><span>2025-03-20</span><span>阅读时间：1分钟</span><span>分类：未分类</span></div><h1>家用伺服器折腾手记-1：Mac mini 搭建青龙面板教程</h1><button class="share-button" title="分享到微信" onclick="shareToWeChat()"></button><div class="post-tags"><span class="tag">服务器</span></div></div></body></html>
+    <html><head></head><body><div><div class="post-meta"><span>2025-03-20</span><span>阅读时间：1分钟</span><span>分类：未分类</span></div><h1>家用伺服器折腾手记-1：Mac mini 搭建青龙面板教程</h1><div><div class="post-meta"><span>2025-03-20</span><span>阅读时间：1分钟</span><span>分类：未分类</span></div><div class="post-tags"><span class="tag">服务器</span></div></div><div class="post-tags"><span class="tag">服务器</span></div></div></body></html>
 
     <div class="post-tags">
       <span class="tag">服务器</span>
@@ -469,21 +615,56 @@
       setTheme(newTheme);
     });
 
-    // 目录切换
+    // 目录导航优化
     const tocToggle = document.querySelector('.toc-toggle');
     const toc = document.querySelector('.toc');
     
     if (tocToggle && toc) {
+      let touchStartX = 0;
+      let touchEndX = 0;
+      
+      // 点击切换
       tocToggle.addEventListener('click', () => {
         toc.classList.toggle('active');
       });
       
-      // 点击目录外部区域关闭目录
+      // 滑动手势
+      document.addEventListener('touchstart', (e) => {
+        touchStartX = e.touches[0].clientX;
+      });
+      
+      document.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].clientX;
+        const swipeDistance = touchEndX - touchStartX;
+        
+        if (Math.abs(swipeDistance) > 50) {
+          if (swipeDistance > 0) {
+            // 向右滑动，显示目录
+            toc.classList.add('active');
+          } else {
+            // 向左滑动，隐藏目录
+            toc.classList.remove('active');
+          }
+        }
+      });
+      
+      // 点击外部区域关闭
       document.addEventListener('click', (e) => {
         if (!toc.contains(e.target) && !tocToggle.contains(e.target)) {
           toc.classList.remove('active');
         }
       });
+      
+      // 滚动时自动隐藏
+      let lastScrollTop = 0;
+      window.addEventListener('scroll', () => {
+        const st = window.pageYOffset || document.documentElement.scrollTop;
+        if (st > lastScrollTop && window.innerWidth <= 1200) {
+          // 向下滚动，隐藏目录
+          toc.classList.remove('active');
+        }
+        lastScrollTop = st <= 0 ? 0 : st;
+      }, false);
     }
 
     // 图片预览
