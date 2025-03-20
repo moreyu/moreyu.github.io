@@ -1,7 +1,432 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>家用伺服器折腾手记-1：Mac mini 搭建青龙面板教程 - Moreyu's Blog</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/maple-mono@latest/index.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script><style>body{font-family:"Maple Mono",monospace;line-height:1.6;max-width:800px;margin:0 auto;padding:20px;background:#f5f5f7;color:#333}pre{background:#1e1e1e;padding:15px;border-radius:8px;overflow-x:auto}code{font-family:"Maple Mono",monospace}h1,h2,h3{color:#FF375F}a{color:#0066cc;text-decoration:none}a:hover{text-decoration:underline}.meta{color:#666;font-size:.9em;margin-bottom:30px}@media (prefers-color-scheme:dark){body{background:#000;color:#f5f5f7}a{color:#2997ff}h1,h2,h3{color:#FF453A}}.back-to-home{position:fixed;bottom:20px;right:20px;background:rgba(255,55,95,.9);color:#fff;padding:10px 20px;border-radius:20px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 4px 6px rgba(0,0,0,.1);transition:all .3s ease}.back-to-home:hover{transform:translateY(-2px);box-shadow:0 6px 8px rgba(0,0,0,.2);text-decoration:none}@media (max-width:768px){body{padding:15px}pre{padding:10px;font-size:14px}.back-to-home{bottom:15px;right:15px;padding:8px 16px}}</style></head><body>
-<h1>家用伺服器折腾手记-1：Mac mini 搭建青龙面板教程 🖥️</h1><div class="meta">发布时间：2025-03-07 | 分类：服务器, Docker, 自动化</div><h2>前言 📝</h2><p>最近入手了一台 Mac mini M2，除了日常使用外，我还想把它变成一台家用服务器。考虑到 Mac mini 的性能强大、功耗低、噪音小等优点，它非常适合作为 24/7 运行的家用服务器。这篇文章将详细介绍如何在 Mac mini 上搭建 Docker 环境并运行青龙面板。</p><h2>环境准备 🛠️</h2><h3>1. 安装 Homebrew</h3><pre><code class="bash">/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</code></pre><p>安装完成后，确保将 Homebrew 添加到 PATH 中。对于 Apple Silicon Mac，通常需要添加以下路径：</p><pre><code class="bash">echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
-eval "$(/opt/homebrew/bin/brew shellenv)"</code></pre><h3>2. 安装 Docker</h3><pre><code class="bash">brew install --cask docker</code></pre><p>安装完成后，启动 Docker Desktop 并等待其初始化完成。</p><h3>3. 创建工作目录</h3><pre><code class="bash">mkdir -p ~/docker/qinglong
-cd ~/docker/qinglong</code></pre><h2>部署青龙面板 🚀</h2><h3>1. 创建 docker-compose.yml</h3><pre><code class="yaml">version: '3'
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>家用伺服器折腾手记-1：Mac mini 搭建青龙面板教程 - Moreyu's Blog</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/maple-mono@latest/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.8/dist/medium-zoom.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.8/dist/medium-zoom.min.js"></script>
+    <style>
+        /* 基础样式 */
+        body {
+            font-family: "Maple Mono", monospace;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f7;
+            color: #333;
+        }
+
+        pre {
+            background: #1e1e1e;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+
+        code {
+            font-family: "Maple Mono", monospace;
+        }
+
+        h1, h2, h3 {
+            color: #FF375F;
+        }
+
+        a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .meta {
+            color: #666;
+            font-size: .9em;
+            margin-bottom: 30px;
+        }
+
+        /* 返回首页按钮 */
+        .back-to-home {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255, 55, 95, .9);
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, .1);
+            transition: all .3s ease;
+        }
+
+        .back-to-home:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, .2);
+            text-decoration: none;
+        }
+
+        /* 目录导航样式 */
+        .toc {
+            position: fixed;
+            right: 20px;
+            top: 20px;
+            width: 280px;
+            max-height: 80vh;
+            overflow-y: auto;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: 1000;
+            transition: transform 0.3s ease;
+            scrollbar-width: thin;
+            scrollbar-color: #FF375F rgba(255, 255, 255, 0.1);
+        }
+
+        .toc::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .toc::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+        }
+
+        .toc::-webkit-scrollbar-thumb {
+            background: #FF375F;
+            border-radius: 3px;
+        }
+
+        .toc-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #FF375F;
+            font-size: 1.1em;
+        }
+
+        .toc ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .toc li {
+            margin: 8px 0;
+            padding-left: 15px;
+            border-left: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .toc li.active {
+            border-left: 2px solid #FF375F;
+        }
+
+        .toc a {
+            color: inherit;
+            text-decoration: none;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+        }
+
+        .toc a:hover {
+            color: #FF375F;
+        }
+
+        .toc-toggle {
+            position: fixed;
+            right: 20px;
+            top: 20px;
+            background: #FF375F;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            z-index: 1001;
+            display: none;
+            font-family: "Maple Mono", monospace;
+            font-size: 0.9em;
+        }
+
+        /* 代码复制按钮样式 */
+        .code-block {
+            position: relative;
+        }
+
+        .copy-button {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 4px;
+            padding: 4px 8px;
+            color: #fff;
+            font-size: 12px;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            font-family: "Maple Mono", monospace;
+        }
+
+        .code-block:hover .copy-button {
+            opacity: 1;
+        }
+
+        .copy-button:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .copy-button.copied {
+            background: #4CAF50;
+        }
+
+        /* 图片预览样式 */
+        .medium-zoom-overlay {
+            background: rgba(0, 0, 0, 0.9) !important;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+
+        .medium-zoom-image {
+            transition: transform 0.3s ease;
+        }
+
+        .medium-zoom-image:hover {
+            cursor: zoom-in;
+        }
+
+        .medium-zoom-image--opened {
+            cursor: zoom-out;
+        }
+
+        /* 阅读进度指示器样式 */
+        .reading-progress-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .reading-progress-bar {
+            height: 100%;
+            background: #FF375F;
+            width: 0;
+            transition: width 0.1s ease;
+        }
+
+        /* 分享按钮样式 */
+        .share-container {
+            position: fixed;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 1000;
+        }
+
+        .share-button {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255, 55, 95, 0.9);
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .share-button:hover {
+            transform: scale(1.1);
+            background: rgba(255, 55, 95, 1);
+        }
+
+        .share-button i {
+            font-size: 1.2em;
+        }
+
+        /* 深色模式适配 */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background: #000;
+                color: #f5f5f7;
+            }
+
+            a {
+                color: #2997ff;
+            }
+
+            h1, h2, h3 {
+                color: #FF453A;
+            }
+
+            .toc {
+                background: rgba(0, 0, 0, 0.8);
+                color: #f5f5f7;
+            }
+
+            .toc a:hover {
+                color: #FF453A;
+            }
+
+            .toc-title {
+                color: #FF453A;
+            }
+
+            .toc li.active {
+                border-left-color: #FF453A;
+            }
+
+            .toc-toggle {
+                background: #FF453A;
+            }
+
+            .reading-progress-container {
+                background: rgba(255, 255, 255, 0.1);
+            }
+
+            .reading-progress-bar {
+                background: #FF453A;
+            }
+
+            .share-button {
+                background: rgba(255, 69, 58, 0.9);
+            }
+
+            .share-button:hover {
+                background: rgba(255, 69, 58, 1);
+            }
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 1200px) {
+            .toc {
+                display: none;
+                right: -300px;
+            }
+
+            .toc.show {
+                display: block;
+                right: 20px;
+            }
+
+            .toc-toggle {
+                display: block;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+
+            pre {
+                padding: 10px;
+                font-size: 14px;
+            }
+
+            .back-to-home {
+                bottom: 15px;
+                right: 15px;
+                padding: 8px 16px;
+            }
+
+            .copy-button {
+                opacity: 1;
+                top: 5px;
+                right: 5px;
+                padding: 3px 6px;
+            }
+
+            .share-container {
+                position: fixed;
+                left: 0;
+                top: auto;
+                bottom: 20px;
+                transform: none;
+                width: 100%;
+                flex-direction: row;
+                justify-content: center;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="reading-progress-container">
+        <div class="reading-progress-bar"></div>
+    </div>
+
+    <div class="share-container">
+        <button class="share-button" title="分享到微信" onclick="shareToWeChat()">
+            <i class="fab fa-weixin"></i>
+        </button>
+        <button class="share-button" title="分享到微博" onclick="shareToWeibo()">
+            <i class="fab fa-weibo"></i>
+        </button>
+        <button class="share-button" title="复制链接" onclick="copyLink()">
+            <i class="fas fa-link"></i>
+        </button>
+    </div>
+
+    <button class="toc-toggle">
+        <i class="fas fa-list"></i> 目录
+    </button>
+
+    <aside class="toc">
+        <div class="toc-title">📚 目录</div>
+        <ul>
+            <li><a href="#前言">前言 📝</a></li>
+            <li><a href="#环境准备">环境准备 🛠️</a></li>
+            <li><a href="#部署青龙面板">部署青龙面板 🚀</a></li>
+            <li><a href="#配置青龙面板">配置青龙面板 ⚙️</a></li>
+            <li><a href="#实用脚本示例">实用脚本示例 📜</a></li>
+            <li><a href="#性能优化建议">性能优化建议 🚀</a></li>
+            <li><a href="#常见问题与解决方案">常见问题与解决方案 💡</a></li>
+            <li><a href="#后续计划">后续计划 🎯</a></li>
+        </ul>
+    </aside>
+
+    <main class="post-content">
+        <h1>家用伺服器折腾手记-1：Mac mini 搭建青龙面板教程 🖥️</h1>
+        <div class="meta">发布时间：2025-03-07 | 分类：服务器, Docker, 自动化</div>
+        <h2>前言 📝</h2>
+        <p>最近入手了一台 Mac mini M2，除了日常使用外，我还想把它变成一台家用服务器。考虑到 Mac mini 的性能强大、功耗低、噪音小等优点，它非常适合作为 24/7 运行的家用服务器。这篇文章将详细介绍如何在 Mac mini 上搭建 Docker 环境并运行青龙面板。</p>
+        <h2>环境准备 ��️</h2>
+        <h3>1. 安装 Homebrew</h3>
+        <pre><code class="bash">/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</code></pre>
+        <p>安装完成后，确保将 Homebrew 添加到 PATH 中。对于 Apple Silicon Mac，通常需要添加以下路径：</p>
+        <pre><code class="bash">echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
+eval "$(/opt/homebrew/bin/brew shellenv)"</code></pre>
+        <h3>2. 安装 Docker</h3>
+        <pre><code class="bash">brew install --cask docker</code></pre>
+        <p>安装完成后，启动 Docker Desktop 并等待其初始化完成。</p>
+        <h3>3. 创建工作目录</h3>
+        <pre><code class="bash">mkdir -p ~/docker/qinglong
+cd ~/docker/qinglong</code></pre>
+        <h2>部署青龙面板 🚀</h2>
+        <h3>1. 创建 docker-compose.yml</h3>
+        <pre><code class="yaml">version: '3'
 services:
   qinglong:
     image: whyour/qinglong:latest
@@ -14,12 +439,30 @@ services:
     environment:
       - ENABLE_HANGUP=true
       - ENABLE_WEB_PANEL=true
-      - TZ=Asia/Shanghai</code></pre><h3>2. 启动服务</h3><pre><code class="bash">docker-compose up -d</code></pre><p>使用以下命令检查容器状态：</p><pre><code class="bash">docker ps | grep qinglong</code></pre><h2>配置青龙面板 ⚙️</h2><h3>1. 初始化配置</h3><p>访问 <code>http://localhost:5700</code> 进行初始化配置：</p><ul><li>设置管理员账号密码</li><li>配置通知方式（推荐使用 Bark 或 Telegram）</li><li>添加定时任务</li></ul><h3>2. 配置依赖管理</h3><p>在"依赖管理"页面安装以下基础依赖：</p><pre><code class="bash"># NodeJS 依赖
+      - TZ=Asia/Shanghai</code></pre>
+        <h3>2. 启动服务</h3>
+        <pre><code class="bash">docker-compose up -d</code></pre>
+        <p>使用以下命令检查容器状态：</p>
+        <pre><code class="bash">docker ps | grep qinglong</code></pre>
+        <h2>配置青龙面板 ⚙️</h2>
+        <h3>1. 初始化配置</h3>
+        <p>访问 <code>http://localhost:5700</code> 进行初始化配置：</p>
+        <ul>
+            <li>设置管理员账号密码</li>
+            <li>配置通知方式（推荐使用 Bark 或 Telegram）</li>
+            <li>添加定时任务</li>
+        </ul>
+        <h3>2. 配置依赖管理</h3>
+        <p>在"依赖管理"页面安装以下基础依赖：</p>
+        <pre><code class="bash"># NodeJS 依赖
 npm install -g typescript ts-node
 
 # Python 依赖
 pip3 install requests
-pip3 install PyExecJS</code></pre><h2>实用脚本示例 📜</h2><h3>1. 系统监控脚本</h3><pre><code class="javascript">// monitor.js
+pip3 install PyExecJS</code></pre>
+        <h2>实用脚本示例 📜</h2>
+        <h3>1. 系统监控脚本</h3>
+        <pre><code class="javascript">// monitor.js
 const os = require('os');
 const sendNotify = require('./sendNotify');
 
@@ -42,7 +485,9 @@ async function monitor() {
     }
 }
 
-monitor();</code></pre><h3>2. 自动备份脚本</h3><pre><code class="python"># backup.py
+monitor();</code></pre>
+        <h3>2. 自动备份脚本</h3>
+        <pre><code class="python"># backup.py
 import os
 import time
 from datetime import datetime
@@ -81,4 +526,189 @@ def backup():
     print(f"备份完成: {backup_file} ({backup_size:.2f}MB)")
 
 if __name__ == "__main__":
-    backup()</code></pre><h2>性能优化建议 🚀</h2><ul><li>合理设置定时任务间隔，避免任务重叠执行</li><li>定期清理日志文件和临时文件</li><li>使用 <code>cron</code> 表达式优化任务执行时间</li><li>对于资源密集型任务，建议在低峰期执行</li></ul><h2>常见问题与解决方案 💡</h2><h3>1. 容器无法启动</h3><ul><li>检查端口 5700 是否被占用：<code>lsof -i:5700</code></li><li>检查目录权限：<code>chmod -R 777 ~/docker/qinglong/data</code></li><li>查看 Docker 日志：<code>docker logs qinglong</code></li></ul><h3>2. 脚本运行失败</h3><ul><li>检查依赖是否安装完整</li><li>查看错误日志：<code>docker exec -it qinglong cat /ql/log/[脚本名称].log</code></li><li>确认环境变量配置正确</li></ul><h2>后续计划 🎯</h2><p>这是家用服务器系列的第一篇文章，后续我们将继续探索更多有趣的应用场景：</p><ul><li>搭建 Homebridge 实现智能家居集成</li><li>部署 Nginx 反向代理实现外网访问</li><li>使用 Docker Compose 管理多个服务</li><li>配置 SSL 证书实现安全访问</li></ul><a href="/" class="back-to-home">返回首页 🏠</a><script>hljs.highlightAll();</script></body></html>
+    backup()</code></pre>
+        <h2>性能优化建议 🚀</h2>
+        <ul>
+            <li>合理设置定时任务间隔，避免任务重叠执行</li>
+            <li>定期清理日志文件和临时文件</li>
+            <li>使用 <code>cron</code> 表达式优化任务执行时间</li>
+            <li>对于资源密集型任务，建议在低峰期执行</li>
+        </ul>
+        <h2>常见问题与解决方案 💡</h2>
+        <h3>1. 容器无法启动</h3>
+        <ul>
+            <li>检查端口 5700 是否被占用：<code>lsof -i:5700</code></li>
+            <li>检查目录权限：<code>chmod -R 777 ~/docker/qinglong/data</code></li>
+            <li>查看 Docker 日志：<code>docker logs qinglong</code></li>
+        </ul>
+        <h3>2. 脚本运行失败</h3>
+        <ul>
+            <li>检查依赖是否安装完整</li>
+            <li>查看错误日志：<code>docker exec -it qinglong cat /ql/log/[脚本名称].log</code></li>
+            <li>确认环境变量配置正确</li>
+        </ul>
+        <h2>后续计划 🎯</h2>
+        <p>这是家用服务器系列的第一篇文章，后续我们将继续探索更多有趣的应用场景：</p>
+        <ul>
+            <li>搭建 Homebridge 实现智能家居集成</li>
+            <li>部署 Nginx 反向代理实现外网访问</li>
+            <li>使用 Docker Compose 管理多个服务</li>
+            <li>配置 SSL 证书实现安全访问</li>
+        </ul>
+        <a href="/" class="back-to-home">返回首页 🏠</a>
+    </main>
+
+    <script>
+        // 代码高亮
+        hljs.highlightAll();
+
+        // 目录导航功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const toc = document.querySelector('.toc');
+            const tocToggle = document.querySelector('.toc-toggle');
+            const headings = document.querySelectorAll('h2, h3');
+            const tocLinks = document.querySelectorAll('.toc a');
+
+            // 切换目录显示
+            tocToggle.addEventListener('click', () => {
+                toc.classList.toggle('show');
+            });
+
+            // 点击目录项时滚动到对应位置
+            tocLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = link.getAttribute('href').slice(1);
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 20,
+                            behavior: 'smooth'
+                        });
+                        // 在移动端点击后隐藏目录
+                        if (window.innerWidth <= 1200) {
+                            toc.classList.remove('show');
+                        }
+                    }
+                });
+            });
+
+            // 滚动时高亮当前标题
+            let lastActiveLink = null;
+            window.addEventListener('scroll', () => {
+                const scrollPosition = window.scrollY;
+                
+                // 找到当前可见的标题
+                let currentHeading = null;
+                headings.forEach(heading => {
+                    if (heading.offsetTop <= scrollPosition + 100) {
+                        currentHeading = heading;
+                    }
+                });
+                
+                if (currentHeading) {
+                    const currentId = currentHeading.id;
+                    const currentLink = document.querySelector(`.toc a[href="#${currentId}"]`);
+                    
+                    if (lastActiveLink) {
+                        lastActiveLink.parentElement.classList.remove('active');
+                    }
+                    
+                    if (currentLink) {
+                        currentLink.parentElement.classList.add('active');
+                        lastActiveLink = currentLink;
+                    }
+                }
+            });
+        });
+
+        // 代码复制功能
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('pre').forEach(block => {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'code-block';
+                block.parentNode.insertBefore(wrapper, block);
+                wrapper.appendChild(block);
+
+                const button = document.createElement('button');
+                button.className = 'copy-button';
+                button.textContent = '复制';
+                wrapper.appendChild(button);
+
+                button.addEventListener('click', async () => {
+                    const code = block.querySelector('code').innerText;
+                    try {
+                        await navigator.clipboard.writeText(code);
+                        button.textContent = '已复制！';
+                        button.classList.add('copied');
+                        setTimeout(() => {
+                            button.textContent = '复制';
+                            button.classList.remove('copied');
+                        }, 2000);
+                    } catch (err) {
+                        console.error('复制失败:', err);
+                        button.textContent = '复制失败';
+                        setTimeout(() => {
+                            button.textContent = '复制';
+                        }, 2000);
+                    }
+                });
+            });
+        });
+
+        // 图片预览功能
+        document.addEventListener('DOMContentLoaded', function() {
+            mediumZoom('img:not(.no-zoom)', {
+                margin: 24,
+                background: 'rgba(0, 0, 0, 0.9)',
+                scrollOffset: 40,
+                container: {
+                    top: 80,
+                    bottom: 80,
+                    right: 80,
+                    left: 80,
+                }
+            });
+        });
+
+        // 阅读进度指示器功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const progressBar = document.querySelector('.reading-progress-bar');
+            const content = document.querySelector('body');
+            
+            function updateProgress() {
+                const scrollPosition = window.scrollY;
+                const scrollHeight = content.scrollHeight - window.innerHeight;
+                const progress = (scrollPosition / scrollHeight) * 100;
+                progressBar.style.width = `${Math.min(100, Math.max(0, progress))}%`;
+            }
+            
+            window.addEventListener('scroll', updateProgress);
+            window.addEventListener('resize', updateProgress);
+            updateProgress();
+        });
+
+        // 分享功能
+        function shareToWeChat() {
+            alert('请使用微信扫描二维码分享');
+        }
+
+        function shareToWeibo() {
+            const title = document.title;
+            const url = window.location.href;
+            const weiboUrl = `http://service.weibo.com/share/share.php?url=${encodeURIComponent(url)}&title=${encodeURIComponent(title)}`;
+            window.open(weiboUrl, '_blank');
+        }
+
+        async function copyLink() {
+            try {
+                await navigator.clipboard.writeText(window.location.href);
+                alert('链接已复制到剪贴板！');
+            } catch (err) {
+                console.error('复制失败:', err);
+                alert('复制失败，请手动复制链接');
+            }
+        }
+    </script>
+</body>
+</html>

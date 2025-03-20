@@ -16,7 +16,7 @@ function getHtmlFiles(dir) {
     
     if (stat.isDirectory()) {
       results = results.concat(getHtmlFiles(filePath));
-    } else if (path.extname(file) === '.html' && !file.includes('template.html')) {
+    } else if (path.extname(file) === '.html' && file !== 'template.html') {
       results.push(filePath);
     }
   }
@@ -24,125 +24,142 @@ function getHtmlFiles(dir) {
   return results;
 }
 
-// 从文章中提取内容
+// 从旧文章中提取内容
 function extractContent(html) {
-  const $ = cheerio.load(html, { decodeEntities: false });
+  const $ = cheerio.load(html);
   
-  // 1. 清理页面
-  $('script').remove();
-  $('style').remove();
-  $('.back-home').remove();
-  $('.reading-progress').remove();
-  $('.theme-toggle').remove();
-  $('.share-buttons').remove();
-  $('.toc').remove();
-  $('.toc-toggle').remove();
+  // 提取标题
+  const title = $('title').text().split(' - ')[0] || $('h1').first().text() || '无标题';
   
-  // 2. 提取标题
-  let title = '';
-  const h1Elements = $('h1');
-  if (h1Elements.length > 0) {
-    title = $(h1Elements[0]).text().trim();
-    // 移除所有重复的标题
-    h1Elements.slice(1).remove();
+  // 提取内容
+  let content = '';
+  const mainContent = $('.post-content').first();
+  
+  if (mainContent.length) {
+    // 如果已经是新模板格式，提取主要内容
+    content = mainContent.html();
   } else {
-    title = $('title').text().split(' - ')[0] || '无标题';
-  }
-  
-  // 3. 提取元数据
-  let date = new Date().toISOString().split('T')[0];
-  let category = '未分类';
-  let tags = [];
-  
-  // 尝试从不同位置提取日期
-  const dateMatch = html.match(/发布时间：(\d{4}-\d{2}-\d{2})/);
-  if (dateMatch) {
-    date = dateMatch[1];
-  }
-  
-  // 尝试从不同位置提取分类
-  const categoryMatch = html.match(/分类：([^,\n]+)/);
-  if (categoryMatch) {
-    category = categoryMatch[1].trim();
-  }
-  
-  // 尝试从不同位置提取标签
-  $('.tag').each((i, el) => {
-    const tag = $(el).text().trim();
-    if (tag && !tags.includes(tag)) {
-      tags.push(tag);
+    // 如果是旧格式，尝试提取文章主体
+    const article = $('article').first();
+    if (article.length) {
+      content = article.html();
+    } else {
+      // 创建临时容器获取 body 内容
+      content = $('body').html();
     }
-  });
-  
-  // 如果没有标签，使用分类作为标签
-  if (tags.length === 0 && category !== '未分类') {
-    tags = [category];
   }
   
-  // 4. 提取主要内容
-  let mainContent = '';
-  const article = $('article').first();
-  const postContent = $('.post-content').first();
+  // 使用临时容器处理内容
+  const tempDiv = cheerio.load(`<div>${content}</div>`, null, false);
   
-  if (postContent.length) {
-    mainContent = postContent.html();
-  } else if (article.length) {
-    mainContent = article.html();
-  } else {
-    // 如果找不到特定容器，尝试提取 body 中的主要内容
-    const body = $('body');
-    body.find('header, footer, nav, .back-home, .reading-progress, .theme-toggle, .share-buttons, .toc, .toc-toggle').remove();
-    mainContent = body.html();
+  // 移除不需要的元素
+  tempDiv('script').remove();
+  tempDiv('style').remove();
+  tempDiv('header').remove();
+  tempDiv('footer').remove();
+  tempDiv('nav').remove();
+  tempDiv('aside').remove();
+  tempDiv('.back-home').remove();
+  tempDiv('.reading-progress').remove();
+  tempDiv('.toc').remove();
+  tempDiv('.post-meta').remove();
+  tempDiv('.post-tags').remove();
+  tempDiv('.theme-toggle:not(:first)').remove();
+  tempDiv('.share-button:not(:first)').remove();
+  tempDiv('.share-menu').remove();
+  
+  // 移除重复的标题和按钮
+  const h1s = tempDiv('h1');
+  if (h1s.length > 1) {
+    h1s.slice(1).remove();
   }
   
-  // 5. 清理内容
-  const tempDiv = cheerio.load(`<div>${mainContent}</div>`, { decodeEntities: false });
+  // 清理多余的嵌套
+  content = tempDiv.root().html();
   
-  // 移除空元素和多余的包装
-  tempDiv('*:empty').remove();
-  
-  // 清理内容
-  mainContent = tempDiv.root().html()
+  // 移除空的容器和重复的标题
+  content = content
     .replace(/<div[^>]*>\s*<\/div>/g, '')
     .replace(/<p[^>]*>\s*<\/p>/g, '')
     .replace(/<span[^>]*>\s*<\/span>/g, '')
+    .replace(/<h1[^>]*>([^<]+)<\/h1>(\s*<h1[^>]*>\1<\/h1>)+/g, '<h1>$1</h1>')
+    .replace(/(<div[^>]*>(\s*<div[^>]*>)*\s*)(<h[1-6][^>]*>.*?<\/h[1-6]>)(\s*<\/div>)*\s*\2/g, '$3')
+    .replace(/<div[^>]*>\s*(<div[^>]*>\s*)*(.+?)\s*(<\/div>\s*)*<\/div>/g, '$2')
+    .replace(/<article[^>]*>\s*(<div[^>]*>\s*)*(.+?)\s*(<\/div>\s*)*<\/article>/g, '$2')
+    .replace(/<main[^>]*>\s*(<div[^>]*>\s*)*(.+?)\s*(<\/div>\s*)*<\/main>/g, '$2')
+    .replace(/(<button[^>]*class="theme-toggle"[^>]*>[\s\S]*?<\/button>)\s*\1+/g, '$1')
+    .replace(/(<button[^>]*class="share-button"[^>]*>[\s\S]*?<\/button>)\s*\1+/g, '$1');
+  
+  // 提取日期
+  let date = new Date().toISOString().split('T')[0];
+  const timeEl = $('time').first();
+  const metaEl = $('.meta').first();
+  
+  if (timeEl.length && timeEl.attr('datetime')) {
+    date = timeEl.attr('datetime').split('T')[0];
+  } else if (metaEl.length) {
+    const dateMatch = metaEl.text().match(/发布时间：(\d{4}-\d{2}-\d{2})/);
+    if (dateMatch) {
+      date = dateMatch[1];
+    }
+  }
+  
+  // 提取分类
+  let categories = ['未分类'];
+  const categoryEl = $('.post-meta-categories');
+  const metaCategoryMatch = $('.meta').text().match(/分类：(.+?)(?=\s|$)/);
+  
+  if (categoryEl.length) {
+    categories = categoryEl.map((i, el) => $(el).text()).get();
+  } else if (metaCategoryMatch) {
+    categories = metaCategoryMatch[1].split(',').map(c => c.trim());
+  }
+  
+  // 提取标签
+  let tags = [];
+  const tagEls = $('.post-meta__tags, .tag');
+  
+  if (tagEls.length) {
+    tags = tagEls.map((i, el) => $(el).text()).get();
+  } else {
+    tags = categories;
+  }
+  
+  // 生成目录
+  const toc = [];
+  const headings = tempDiv('h2, h3');
+  headings.each((i, el) => {
+    const level = el.tagName === 'h2' ? 2 : 3;
+    const text = tempDiv(el).text().replace(/[#\d.]+\s*/, ''); // 移除标题前的数字和点
+    const id = text.toLowerCase()
+      .replace(/[^\u4e00-\u9fa5a-zA-Z0-9]+/g, '-') // 将非中文、英文、数字字符转换为连字符
+      .replace(/^-+|-+$/g, ''); // 移除首尾连字符
+    tempDiv(el).attr('id', id);
+    toc.push(`${'  '.repeat(level - 2)}<li><a href="#${id}">${text}</a></li>`);
+  });
+  
+  // 更新内容中的标题 ID
+  content = tempDiv.root().html();
+  
+  // 清理内容
+  content = content
+    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+    .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '')
     .replace(/<!--[\s\S]*?-->/g, '')
     .replace(/\s+/g, ' ')
     .replace(/(<[^>]+>)\s+/g, '$1')
     .replace(/\s+(<\/[^>]+>)/g, '$1')
+    .replace(/<div[^>]*>\s*(<div[^>]*>\s*)*(.+?)\s*(<\/div>\s*)*<\/div>/g, '$2')
     .trim();
-  
-  // 6. 生成目录
-  const toc = [];
-  const tempContent = cheerio.load(mainContent);
-  const headings = tempContent('h2, h3');
-  
-  headings.each((i, el) => {
-    const level = el.tagName === 'h2' ? 2 : 3;
-    const text = tempContent(el).text().trim();
-    if (text) {
-      const id = text.toLowerCase()
-        .replace(/[^\u4e00-\u9fa5a-zA-Z0-9]+/g, '-')
-        .replace(/^-+|-+$/g, '');
-      tempContent(el).attr('id', id);
-      toc.push(`${'  '.repeat(level - 2)}<li><a href="#${id}">${text}</a></li>`);
-    }
-  });
-  
-  // 更新内容中的标题 ID
-  mainContent = tempContent.root().html();
-  
-  // 7. 计算阅读时间
-  const readingTime = Math.max(1, Math.ceil(mainContent.length / 500));
   
   return {
     title,
-    content: mainContent,
+    content,
     date,
-    category,
+    category: categories[0],
     tags: tags.map(tag => `<span class="tag">${tag}</span>`).join('\n'),
     toc: toc.join('\n'),
-    readingTime: readingTime + '分钟'
+    readingTime: Math.ceil(content.length / 500) + '分钟'
   };
 }
 
@@ -155,11 +172,13 @@ function applyTemplate(template, data) {
     .replace(/{{category}}/g, data.category)
     .replace(/{{content}}/g, data.content)
     .replace(/{{tags}}/g, data.tags)
-    .replace(/{{toc}}/g, data.toc);
+    .replace(/{{toc}}/g, data.toc)
+    .replace(/{{days}}/g, Math.floor((Date.now() - new Date('2024-01-01')) / (1000 * 60 * 60 * 24)));
 }
 
 // 主函数
 async function main() {
+  // 安装依赖
   try {
     require('cheerio');
   } catch (e) {
@@ -167,9 +186,15 @@ async function main() {
     require('child_process').execSync('npm install cheerio');
   }
   
+  // 获取所有 HTML 文件
   const files = getHtmlFiles('posts');
   
+  // 转换每个文件
   for (const file of files) {
+    if (file.includes('template.html') || file.includes('my-first-post.html')) {
+      continue;
+    }
+    
     console.log(`正在处理: ${file}`);
     
     try {
@@ -179,9 +204,7 @@ async function main() {
       
       // 备份原文件
       const backupFile = file + '.bak';
-      if (fs.existsSync(file)) {
-        fs.renameSync(file, backupFile);
-      }
+      fs.renameSync(file, backupFile);
       
       // 写入新文件
       fs.writeFileSync(file, newHtml);
