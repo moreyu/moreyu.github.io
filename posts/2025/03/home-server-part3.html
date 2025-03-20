@@ -1,58 +1,42 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>家用伺服器折腾手记-3：Mac mini 部署 Homebridge 教程 - Moreyu's Blog</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/maple-mono@latest/index.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script><style>body{font-family:"Maple Mono",monospace;line-height:1.6;max-width:800px;margin:0 auto;padding:20px;background:#f5f5f7;color:#333}pre{background:#1e1e1e;padding:15px;border-radius:8px;overflow-x:auto}code{font-family:"Maple Mono",monospace}h1,h2,h3{color:#FF375F}a{color:#0066cc;text-decoration:none}a:hover{text-decoration:underline}.meta{color:#666;font-size:.9em;margin-bottom:30px}@media (prefers-color-scheme:dark){body{background:#000;color:#f5f5f7}a{color:#2997ff}h1,h2,h3{color:#FF453A}}.back-to-home{position:fixed;bottom:20px;right:20px;background:rgba(255,55,95,.9);color:#fff;padding:10px 20px;border-radius:20px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 4px 6px rgba(0,0,0,.1);transition:all .3s ease}.back-to-home:hover{transform:translateY(-2px);box-shadow:0 6px 8px rgba(0,0,0,.2);text-decoration:none}@media (max-width:768px){body{padding:15px}pre{padding:10px;font-size:14px}.back-to-home{bottom:15px;right:15px;padding:8px 16px}}</style></head><body>
-<h1>家用伺服器折腾手记-3：Mac mini 部署 Homebridge 教程 🏠</h1><div class="meta">发布时间：2025-03-21 | 分类：服务器, Docker, 智能家居</div><h2>前言 📝</h2><p>在前两篇文章中，我们已经在 Mac mini 上搭建了青龙面板和 MoviePilot。这一次，我们将探索如何使用 Homebridge 来打造智能家居中枢，让不支持 HomeKit 的设备也能接入苹果生态。</p><h2>环境准备 🛠️</h2><h3>1. 安装依赖</h3><pre><code class="bash">brew install node</code></pre><h3>2. 创建工作目录</h3><pre><code class="bash">mkdir -p ~/docker/homebridge
-cd ~/docker/homebridge</code></pre><h2>部署 Homebridge 🚀</h2><h3>1. 创建 docker-compose.yml</h3><pre><code class="yaml">version: '3'
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>家用伺服器折腾手记-3：Mac mini 部署 Open WebUI 教程 - Moreyu's Blog</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/maple-mono@latest/index.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script><style>body{font-family:"Maple Mono",monospace;line-height:1.6;max-width:800px;margin:0 auto;padding:20px;background:#f5f5f7;color:#333}pre{background:#1e1e1e;padding:15px;border-radius:8px;overflow-x:auto}code{font-family:"Maple Mono",monospace}h1,h2,h3{color:#FF375F}a{color:#0066cc;text-decoration:none}a:hover{text-decoration:underline}.meta{color:#666;font-size:.9em;margin-bottom:30px}img{max-width:100%;border-radius:8px;margin:20px 0}@media (prefers-color-scheme:dark){body{background:#000;color:#f5f5f7}a{color:#2997ff}h1,h2,h3{color:#FF453A}}.back-to-home{position:fixed;bottom:20px;right:20px;background:rgba(255,55,95,.9);color:white;padding:10px 20px;border-radius:20px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 4px 6px rgba(0,0,0,.1);transition:all .3s ease}.back-to-home:hover{transform:translateY(-2px);box-shadow:0 6px 8px rgba(0,0,0,.2);text-decoration:none}.tip{background:rgba(255,55,95,.1);padding:15px;border-radius:8px;margin:20px 0;border-left:4px solid #FF375F}@media (max-width:768px){body{padding:15px}pre{padding:10px;font-size:14px}.back-to-home{bottom:15px;right:15px;padding:8px 16px}}</style></head><body><h1>家用伺服器折腾手记-3：Mac mini 部署 Open WebUI 教程 🤖</h1><div class="meta">发布时间：2025-03-09 | 分类：服务器, Docker, AI</div><h2>前言 📝</h2><p>在前两篇文章中，我们已经搭建了基础的 Docker 环境并部署了一些实用服务。这次我们将探索如何在 Mac mini 上部署 Open WebUI，这是一个强大的开源 AI 模型管理和使用界面，支持运行各种大语言模型，让我们能够在本地搭建属于自己的 AI 助手。</p><h2>准备工作 🛠️</h2><div class="tip"><strong>提示：</strong>确保你的 Mac mini 有足够的内存（建议 16GB 以上）和存储空间（建议 256GB 以上）。</div><h3>1. 创建工作目录</h3><pre><code class="bash">mkdir -p ~/docker/open-webui
+cd ~/docker/open-webui</code></pre><h3>2. 创建配置文件</h3><pre><code class="yaml"># docker-compose.yml
+version: '3'
 services:
-  homebridge:
-    image: oznu/homebridge:latest
-    container_name: homebridge
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: open-webui
     restart: unless-stopped
-    network_mode: host
+    ports:
+      - "8080:8080"
     environment:
-      - TZ=Asia/Shanghai
-      - PGID=1000
-      - PUID=1000
-      - HOMEBRIDGE_CONFIG_UI=1
-      - HOMEBRIDGE_CONFIG_UI_PORT=8581
+      - OLLAMA_API_HOST=http://ollama:11434
+      - WEBUI_SECRET_KEY=your-secret-key
     volumes:
-      - ./config:/homebridge</code></pre><h3>2. 启动服务</h3><pre><code class="bash">docker-compose up -d</code></pre><h2>基础配置 ⚙️</h2><h3>1. 访问控制面板</h3><ul><li>打开 <code>http://localhost:8581</code></li><li>默认用户名：admin</li><li>默认密码：admin</li></ul><h3>2. 添加插件</h3><p>推荐安装以下插件：</p><ul><li>homebridge-xiaomi-roborock-vacuum</li><li>homebridge-mi-air-purifier</li><li>homebridge-broadlink-rm</li></ul><h2>设备接入 🔌</h2><h3>1. 小米设备</h3><pre><code class="json">{
-    "platform": "MiRobotVacuum",
-    "devices": [
-        {
-            "name": "扫地机器人",
-            "ip": "192.168.1.100",
-            "token": "your-device-token",
-            "model": "roborock.vacuum.s7"
-        }
-    ]
-}</code></pre><h3>2. BroadLink 遥控器</h3><pre><code class="json">{
-    "platform": "BroadlinkRM",
-    "name": "客厅空调",
-    "host": "192.168.1.200",
-    "mac": "your-device-mac",
-    "type": "RM4"
-}</code></pre><h2>自动化场景 🎯</h2><h3>1. 早晨唤醒</h3><pre><code class="javascript">// 自动化示例
-{
-    "name": "早晨唤醒",
-    "triggers": [
-        {
-            "type": "time",
-            "time": "07:00"
-        }
-    ],
-    "actions": [
-        {
-            "type": "device",
-            "device": "卧室窗帘",
-            "action": "open"
-        },
-        {
-            "type": "delay",
-            "duration": 300
-        },
-        {
-            "type": "device",
-            "device": "扫地机器人",
-            "action": "start"
-        }
-    ]
-}</code></pre><h2>性能优化 🚀</h2><ul><li>使用有线网络连接</li><li>合理设置设备轮询间隔</li><li>启用设备缓存</li><li>优化日志级别</li></ul><h2>常见问题 💡</h2><h3>1. 设备离线</h3><ul><li>检查网络连接</li><li>验证设备 IP 是否变化</li><li>确认设备 token 正确</li></ul><h3>2. 自动化失效</h3><ul><li>检查触发条件</li><li>验证设备状态</li><li>查看系统日志</li></ul><h2>后续优化 🎯</h2><ul><li>接入更多设备类型</li><li>设置备份方案</li><li>优化自动化逻辑</li><li>添加场景联动</li></ul><a href="/" class="back-to-home">返回首页 🏠</a><script>hljs.highlightAll();</script></body></html> 
+      - ./data:/data
+    depends_on:
+      - ollama
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    restart: unless-stopped
+    ports:
+      - "11434:11434"
+    volumes:
+      - ./ollama:/root/.ollama</code></pre><h2>部署步骤 🚀</h2><h3>1. 启动服务</h3><pre><code class="bash">docker-compose up -d</code></pre><h3>2. 检查服务状态</h3><pre><code class="bash">docker ps | grep webui
+docker logs -f open-webui</code></pre><h2>基础配置 ⚙️</h2><h3>1. 访问 Web 界面</h3><p>打开浏览器访问 <code>http://localhost:8080</code>，首次访问需要设置管理员账号和密码。</p><h3>2. 下载模型</h3><pre><code class="bash"># 在终端中下载模型
+docker exec -it ollama pull llama2
+docker exec -it ollama pull mistral
+docker exec -it ollama pull codellama</code></pre><h2>进阶配置 🔧</h2><h3>1. 自定义模型配置</h3><pre><code class="yaml"># modelfile
+FROM llama2
+
+PARAMETER temperature 0.7
+PARAMETER top_p 0.9
+PARAMETER top_k 50
+
+SYSTEM You are a helpful AI assistant.</code></pre><h2>性能优化 🚄</h2><h3>1. 显存管理</h3><pre><code class="yaml"># 在 docker-compose.yml 中添加显存限制
+services:
+  ollama:
+    environment:
+      - CUDA_MEMORY_LIMIT=8G</code></pre><h3>2. 模型量化</h3><pre><code class="bash"># 使用量化版本的模型以减少内存占用
+docker exec -it ollama pull llama2:7b-q4</code></pre><h2>常见问题 💡</h2><h3>1. 内存管理</h3><ul><li>使用量化模型减少内存占用</li><li>及时清理未使用的模型</li><li>监控系统资源使用情况</li></ul><h3>2. API 访问问题</h3><ul><li>检查端口配置</li><li>确认防火墙设置</li><li>验证 API 密钥配置</li></ul><h2>后续计划 📈</h2><p>在下一篇文章中，我们将探讨：</p><ul><li>如何使用 FastAPI 构建 AI 服务 API</li><li>如何实现模型热加载和动态切换</li><li>如何优化大规模并发请求处理</li><li>如何集成向量数据库实现知识库问答</li></ul><a href="/" class="back-to-home">返回首页 🏠</a><script>hljs.highlightAll();</script></body></html>
