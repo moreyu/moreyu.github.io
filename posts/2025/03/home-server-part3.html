@@ -432,12 +432,24 @@
 
         /* 渐变文字效果 */
         .gradient-text {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .gradient-text span {
             background: linear-gradient(45deg, #FF375F, #FF453A);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
             animation: gradient 3s ease infinite;
             background-size: 200% 200%;
+        }
+
+        .gradient-text .emoji {
+            color: initial;
+            font-size: 1.2em;
         }
 
         @keyframes gradient {
@@ -876,7 +888,18 @@ services:
 
         // 添加渐变文字效果
         document.querySelectorAll('h1, h2').forEach(heading => {
-            heading.classList.add('gradient-text');
+            // 如果标题中包含 emoji（通常在末尾）
+            const text = heading.textContent;
+            const matches = text.match(/(.*?)([\u{1F300}-\u{1F9FF}]|[\u{2700}-\u{27BF}]|[\u{1F000}-\u{1F02F}]|[\u{1F0A0}-\u{1F0FF}]|[\u{1F100}-\u{1F64F}]|[\u{1F680}-\u{1F6FF}]|[\u{1F910}-\u{1F96B}]|[\u{1F980}-\u{1F9E0}]|[🏠📝🤔🛠️🚀⚙️🎯💡❓📅]*)$/u);
+            
+            if (matches) {
+                const [_, textContent, emoji] = matches;
+                heading.innerHTML = `<span>${textContent}</span><span class="emoji">${emoji}</span>`;
+                heading.classList.add('gradient-text');
+            } else {
+                heading.innerHTML = `<span>${text}</span>`;
+                heading.classList.add('gradient-text');
+            }
         });
     </script>
 </body>
