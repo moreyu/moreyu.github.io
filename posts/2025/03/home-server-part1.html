@@ -433,10 +433,27 @@
             position: relative;
             border-radius: 8px;
             transition: all 0.3s ease;
+            background: linear-gradient(145deg, #1e1e1e, #2a2a2a);
+            box-shadow: inset 0 2px 4px rgba(255,255,255,0.1);
         }
 
-        pre:hover {
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        pre::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.05), transparent);
+            background-size: 200% 200%;
+            animation: shimmer 3s infinite;
+            pointer-events: none;
+            border-radius: 8px;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
         }
 
         .copy-button {
@@ -586,6 +603,113 @@
             0% { left: -100%; }
             20% { left: 100%; }
             100% { left: 100%; }
+        }
+
+        /* 标题装饰 */
+        h2 {
+            position: relative;
+            padding-left: 15px;
+            margin-top: 2em;
+        }
+
+        h2::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background: linear-gradient(to bottom, #FF375F, rgba(255,55,95,0.5));
+            border-radius: 2px;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(to right, #FF375F, transparent);
+        }
+
+        /* 深色模式适配 */
+        @media (prefers-color-scheme: dark) {
+            h2::before {
+                background: linear-gradient(to bottom, #FF453A, rgba(255,69,58,0.5));
+            }
+
+            h2::after {
+                background: linear-gradient(to right, #FF453A, transparent);
+            }
+        }
+
+        /* 引用样式 */
+        blockquote {
+            margin: 20px 0;
+            padding: 20px;
+            background: rgba(255,55,95,0.1);
+            border-left: 4px solid #FF375F;
+            border-radius: 0 8px 8px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        blockquote::before {
+            content: '"';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 4em;
+            color: rgba(255,55,95,0.2);
+            font-family: serif;
+            line-height: 1;
+        }
+
+        blockquote p {
+            margin: 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* 列表样式优化 */
+        ul:not(.toc ul) {
+            list-style: none;
+            padding-left: 1.5em;
+        }
+
+        ul:not(.toc ul) li {
+            position: relative;
+            margin: 0.5em 0;
+        }
+
+        ul:not(.toc ul) li::before {
+            content: '▹';
+            position: absolute;
+            left: -1.5em;
+            color: #FF375F;
+            font-size: 0.8em;
+            transition: transform 0.2s ease;
+        }
+
+        ul:not(.toc ul) li:hover::before {
+            transform: translateX(5px);
+        }
+
+        /* 深色模式适配 */
+        @media (prefers-color-scheme: dark) {
+            blockquote {
+                background: rgba(255,69,58,0.1);
+                border-left-color: #FF453A;
+            }
+
+            blockquote::before {
+                color: rgba(255,69,58,0.2);
+            }
+
+            ul:not(.toc ul) li::before {
+                color: #FF453A;
+            }
         }
   </style>
 </head>
