@@ -150,16 +150,28 @@
             position: fixed;
             right: 20px;
             top: 20px;
-            background: #FF375F;
-            color: white;
+            background: rgba(255, 55, 95, 0.95);
+            color: #ffffff;
             border: none;
-            padding: 8px 12px;
-            border-radius: 20px;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
             cursor: pointer;
-            z-index: 1001;
-            display: none;
-            font-family: "Maple Mono", monospace;
-            font-size: 0.9em;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 2px 8px rgba(255, 55, 95, 0.3);
+            font-size: 1.2em;
+        }
+
+        .toc-toggle:hover {
+            transform: rotate(180deg);
+            background: rgba(255, 55, 95, 1);
+            box-shadow: 0 4px 12px rgba(255, 55, 95, 0.5);
         }
 
         /* 代码复制按钮样式 */
