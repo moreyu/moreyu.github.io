@@ -1,242 +1,508 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>家用伺服器折腾手记-6：Mac mini 整合 MoviePilot、AList 和 Emby - Moreyu's Blog</title>
-  <link rel="stylesheet" href="/css/style.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/maple-mono@latest/index.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.8/dist/medium-zoom.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.8/dist/medium-zoom.min.js"></script>
+  <style>
+    /* 基础样式 */
+    body {
+      font-family: "Maple Mono", monospace;
+      line-height: 1.6;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #f5f5f7;
+      color: #333;
+    }
+
+    pre {
+      background: #1e1e1e;
+      padding: 15px;
+      border-radius: 8px;
+      overflow-x: auto;
+    }
+
+    code {
+      font-family: "Maple Mono", monospace;
+    }
+
+    h1, h2, h3 {
+      color: #FF375F;
+    }
+
+    a {
+      color: #0066cc;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .meta {
+      color: #666;
+      font-size: .9em;
+      margin-bottom: 30px;
+    }
+
+    /* 返回首页按钮 */
+    .back-to-home {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: rgba(255, 55, 95, .9);
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, .1);
+      transition: all .3s ease;
+      z-index: 1000;
+    }
+
+    .back-to-home:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 8px rgba(0, 0, 0, .2);
+      text-decoration: none;
+    }
+
+    /* 目录导航样式 */
+    .toc {
+      position: fixed;
+      right: 20px;
+      top: 20px;
+      width: 280px;
+      max-height: 80vh;
+      overflow-y: auto;
+      background: rgba(34, 34, 34, 0.95);
+      color: #f5f5f7;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      z-index: 1000;
+      transition: all 0.3s ease;
+      scrollbar-width: thin;
+      scrollbar-color: #FF375F rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 55, 95, 0.2);
+      opacity: 0;
+      transform: translateX(100%);
+    }
+
+    .toc.show {
+      opacity: 0.85;
+      transform: translateX(0);
+    }
+
+    .toc:hover {
+      opacity: 1;
+    }
+
+    .toc::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .toc::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 3px;
+    }
+
+    .toc::-webkit-scrollbar-thumb {
+      background: #FF375F;
+      border-radius: 3px;
+    }
+
+    .toc-title {
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: #FF375F;
+      font-size: 1.1em;
+    }
+
+    .toc ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .toc li {
+      margin: 8px 0;
+      padding-left: 15px;
+      border-left: 2px solid transparent;
+      transition: all 0.3s ease;
+    }
+
+    .toc li.active {
+      border-left: 2px solid #FF375F;
+      background: rgba(255, 55, 95, 0.1);
+    }
+
+    .toc a {
+      color: #f5f5f7;
+      text-decoration: none;
+      font-size: 0.9em;
+      transition: all 0.3s ease;
+    }
+
+    .toc a:hover {
+      color: #FF375F;
+    }
+
+    /* 导航栏折叠按钮样式 */
+    .toc-toggle {
+      position: fixed;
+      right: 20px;
+      top: 20px;
+      background: rgba(255, 55, 95, 0.95);
+      color: #ffffff;
+      border: none;
+      border-radius: 50%;
+      width: 45px;
+      height: 45px;
+      cursor: pointer;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow: 0 2px 8px rgba(255, 55, 95, 0.3);
+      font-size: 1.2em;
+      padding: 0;
+    }
+
+    .toc-toggle i {
+      margin-right: 0;
+    }
+
+    .toc-toggle:hover {
+      transform: rotate(180deg);
+      background: rgba(255, 55, 95, 1);
+      box-shadow: 0 4px 12px rgba(255, 55, 95, 0.5);
+    }
+
+    /* 代码复制按钮样式 */
+    .code-block {
+      position: relative;
+    }
+    
+    .copy-button {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      border-radius: 4px;
+      padding: 4px 8px;
+      color: #fff;
+      font-size: 12px;
+      cursor: pointer;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      font-family: "Maple Mono", monospace;
+    }
+    
+    .code-block:hover .copy-button {
+      opacity: 1;
+    }
+    
+    .copy-button:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .copy-button.copied {
+      background: #4CAF50;
+    }
+
+    /* 图片预览样式 */
+    .medium-zoom-overlay {
+      background: rgba(0, 0, 0, 0.9) !important;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+
+    .medium-zoom-image {
+      transition: transform 0.3s ease;
+    }
+
+    .medium-zoom-image:hover {
+      cursor: zoom-in;
+    }
+
+    .medium-zoom-image--opened {
+      cursor: zoom-out;
+    }
+
+    /* 阅读进度指示器样式 */
+    .reading-progress-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+    }
+
+    .reading-progress-bar {
+      height: 100%;
+      background: #FF375F;
+      width: 0;
+      transition: width 0.1s ease;
+    }
+
+    /* 3D 卡片效果 */
+    .card-3d {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 15px;
+      padding: 20px;
+      margin: 20px 0;
+      transform-style: preserve-3d;
+      perspective: 1000px;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-3d:hover {
+      transform: translateY(-5px) rotateX(2deg);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    /* 步骤指示器样式 */
+    .step-indicator {
+      display: flex;
+      align-items: center;
+      margin: 20px 0;
+      padding: 10px;
+      background: rgba(255, 55, 95, 0.1);
+      border-radius: 8px;
+    }
+
+    .step-number {
+      width: 30px;
+      height: 30px;
+      background: #FF375F;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 15px;
+      font-weight: bold;
+    }
+
+    /* 提示框样式 */
+    .tip-box {
+      background: rgba(255, 55, 95, 0.1);
+      border-left: 4px solid #FF375F;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 0 8px 8px 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .tip-box::before {
+      content: '💡';
+      margin-right: 10px;
+    }
+
+    /* 深色模式适配 */
+    @media (prefers-color-scheme: dark) {
+      body {
+        background: #000;
+        color: #f5f5f7;
+      }
+
+      h1, h2, h3 {
+        color: #FF453A;
+      }
+
+      a {
+        color: #2997ff;
+      }
+
+      .toc {
+        background: rgba(0, 0, 0, 0.95);
+        border-color: rgba(255, 69, 58, 0.2);
+      }
+
+      .toc-title {
+        color: #FF453A;
+      }
+
+      .toc li.active {
+        border-left-color: #FF453A;
+      }
+
+      .toc a:hover {
+        color: #FF453A;
+      }
+
+      .reading-progress-bar {
+        background: #FF453A;
+      }
+
+      .tip-box {
+        background: rgba(255, 69, 58, 0.1);
+        border-left-color: #FF453A;
+      }
+
+      .step-number {
+        background: #FF453A;
+      }
+    }
+
+    /* 响应式布局 */
+    @media (max-width: 1200px) {
+      .toc {
+        display: none;
+      }
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding: 15px;
+      }
+
+      pre {
+        padding: 10px;
+        font-size: 14px;
+      }
+
+      .back-to-home {
+        bottom: 20px;
+        right: 20px;
+      }
+    }
+  </style>
 </head>
 <body>
-  <div class="scroll-progress"></div>
-  
+  <div class="reading-progress-container">
+    <div class="reading-progress-bar"></div>
+  </div>
+
+  <button class="toc-toggle" title="显示/隐藏目录">
+    <i class="fas fa-bars"></i>
+  </button>
+
+  <aside class="toc">
+    <div class="toc-title">目录导航</div>
+    <ul>
+      <li><a href="#前言">前言 📝</a></li>
+      <li><a href="#系统架构">系统架构 🏗️</a></li>
+      <li><a href="#服务整合">服务整合 🔄</a></li>
+      <li><a href="#自动化流程">自动化流程 ⚡</a></li>
+      <li><a href="#性能优化">性能优化 🚀</a></li>
+      <li><a href="#使用技巧">使用技巧 💡</a></li>
+      <li><a href="#常见问题">常见问题 ❓</a></li>
+      <li><a href="#后续计划">后续计划 📅</a></li>
+    </ul>
+  </aside>
+
   <a href="/index.html" class="back-to-home">返回首页 🏠</a>
 
   <main class="post-content">
-    <h1>家用伺服器折腾手记-6：Mac mini 整合 MoviePilot、AList 和 Emby 🎯</h1>
-    <div class="meta">发布时间：2025-03-13 | 分类：服务器, Docker, 影视</div>
-
-    <h2>前言 📝</h2>
-    <p>在前几篇文章中，我们已经成功部署了 MoviePilot、AList 和 Emby 三个服务。这次我们将介绍如何将这三个服务整合在一起，打造一个完整的影视管理系统。通过合理的配置和优化，我们可以实现影视资源的自动下载、文件管理和媒体播放的无缝衔接。</p>
-
-    <h2>系统架构 🏗️</h2>
-    <div class="card-3d">
-      <p>我们的影视管理系统由三个主要组件组成：</p>
-      <ul>
-        <li>MoviePilot：负责影视资源的自动下载和管理</li>
-        <li>AList：负责文件管理和存储</li>
-        <li>Emby：负责媒体库管理和播放</li>
-      </ul>
-      <p>这三个服务之间的协作流程如下：</p>
-      <ol>
-        <li>MoviePilot 自动下载影视资源</li>
-        <li>AList 管理下载的文件并提供访问</li>
-        <li>Emby 扫描 AList 管理的文件并建立媒体库</li>
-      </ol>
-    </div>
-
-    <h2>服务整合 🔄</h2>
-    <div class="tip-box">
-      在开始整合之前，请确保三个服务都已经正常运行，并且可以独立访问。
-    </div>
-
-    <div class="step-indicator">
-      <div class="step-number">1</div>
-      <div class="step-content">
-        <h3>配置 MoviePilot</h3>
-        <p>在 MoviePilot 中，我们需要配置以下内容：</p>
-      </div>
-    </div>
-
-    <pre><code class="yaml"># MoviePilot 配置示例
-download:
-  path: /media/downloads  # 下载目录
-  media_path: /media/movies  # 媒体目录
-  notification:
-    - type: webhook  # 下载完成通知
-      url: http://alist:5244/api/fs/refresh
-      method: POST
-  
-media_server:
-  type: emby
-  host: http://emby:8096  # Emby 服务地址
-  api_key: your_api_key  # Emby API Key
-  auto_refresh: true  # 自动刷新媒体库</code></pre>
-
-    <div class="step-indicator">
-      <div class="step-number">2</div>
-      <div class="step-content">
-        <h3>配置 AList</h3>
-        <p>在 AList 中，我们需要：</p>
-      </div>
-    </div>
-
-    <pre><code class="yaml"># AList 配置示例
-storage:
-  - name: movies  # 存储名称
-    type: local  # 本地存储
-    path: /media/movies  # 媒体目录路径
-    mount_path: /movies  # 挂载路径
-    cache:
-      enabled: true
-      expiration: 24h  # 缓存过期时间
-      cleanup_interval: 1h  # 清理间隔
-
-auth:
-  - path: /movies/**  # 媒体目录访问权限
-    users:
-      - emby  # Emby 服务账号
-    permissions:
-      - read  # 只读权限</code></pre>
-
-    <div class="step-indicator">
-      <div class="step-number">3</div>
-      <div class="step-content">
-        <h3>配置 Emby</h3>
-        <p>在 Emby 中，我们需要：</p>
-      </div>
-    </div>
-
-    <pre><code class="yaml"># Emby 配置示例
-libraries:
-  - name: Movies  # 媒体库名称
-    type: movie  # 类型：电影
-    path: /media/movies  # 媒体目录路径
-    scan_interval: 5m  # 扫描间隔
-    real_time_monitor: true  # 实时监控
-    
-transcoding:
-  hardware_acceleration: true  # 启用硬件加速
-  max_transcoding_jobs: 2  # 最大转码任务数</code></pre>
-
-    <h2>自动化流程 ⚡</h2>
-    <div class="card-3d">
-      <h3>1. 资源下载流程</h3>
-      <ol>
-        <li>MoviePilot 监控订阅的影视资源</li>
-        <li>发现新资源后自动下载到指定目录</li>
-        <li>下载完成后触发 webhook 通知</li>
-        <li>自动整理文件到媒体目录</li>
-      </ol>
-
-      <h3>2. 文件管理流程</h3>
-      <ol>
-        <li>AList 接收到更新通知</li>
-        <li>刷新目录缓存</li>
-        <li>更新文件索引</li>
-        <li>提供统一的访问接口</li>
-      </ol>
-
-      <h3>3. 媒体库更新流程</h3>
-      <ol>
-        <li>Emby 定期扫描媒体目录</li>
-        <li>识别新增的媒体文件</li>
-        <li>抓取媒体信息和元数据</li>
-        <li>更新媒体库</li>
-      </ol>
-    </div>
-
-    <h2>性能优化 🚀</h2>
-    <div class="tip-box">
-      以下优化建议可以帮助提升系统的整体性能和用户体验。
-    </div>
-
-    <div class="card-3d">
-      <h3>1. 存储优化</h3>
-      <ul>
-        <li>使用 SSD 存储热门媒体文件</li>
-        <li>合理设置缓存大小和过期时间</li>
-        <li>定期清理临时文件和下载缓存</li>
-        <li>使用 RAID 阵列提高数据可靠性</li>
-      </ul>
-
-      <h3>2. 网络优化</h3>
-      <ul>
-        <li>配置内网 DNS 解析</li>
-        <li>使用 CDN 加速静态资源</li>
-        <li>优化网络带宽分配</li>
-        <li>启用 HTTP/2 支持</li>
-      </ul>
-
-      <h3>3. 服务优化</h3>
-      <ul>
-        <li>合理分配系统资源限制</li>
-        <li>启用硬件转码加速</li>
-        <li>优化服务启动顺序</li>
-        <li>配置服务监控和告警</li>
-      </ul>
-    </div>
-
-    <h2>使用技巧 💡</h2>
-    <div class="card-3d">
-      <h3>1. 资源管理</h3>
-      <ul>
-        <li>使用标准的文件命名规范</li>
-        <li>按类型分类存储媒体文件</li>
-        <li>定期备份重要配置</li>
-        <li>及时更新字幕文件</li>
-      </ul>
-
-      <h3>2. 用户体验</h3>
-      <ul>
-        <li>配置自动字幕下载</li>
-        <li>启用跨设备播放进度同步</li>
-        <li>设置合适的转码参数</li>
-        <li>优化封面和元数据显示</li>
-      </ul>
-    </div>
-
-    <h2>常见问题 ❓</h2>
-    <div class="card-3d">
-      <h3>1. 服务连接问题</h3>
-      <p>如果遇到服务连接问题，可以：</p>
-      <ul>
-        <li>检查网络配置和防火墙设置</li>
-        <li>验证服务端口是否正确</li>
-        <li>确认 Docker 网络配置</li>
-        <li>查看服务日志排查原因</li>
-      </ul>
-
-      <h3>2. 性能问题</h3>
-      <p>如果遇到性能问题，可以：</p>
-      <ul>
-        <li>监控系统资源使用情况</li>
-        <li>优化存储和缓存配置</li>
-        <li>调整服务参数和限制</li>
-        <li>考虑升级硬件配置</li>
-      </ul>
-    </div>
-
-    <h2>后续计划 📅</h2>
-    <div class="card-3d">
-      <p>在完成三个服务的整合后，我们还可以进一步优化和扩展系统：</p>
-      <ul>
-        <li>添加自动化脚本和工作流</li>
-        <li>优化用户界面和交互体验</li>
-        <li>增强系统安全性和访问控制</li>
-        <li>扩展媒体库功能和插件</li>
-        <li>添加数据统计和分析功能</li>
-        <li>实现多用户权限管理</li>
-      </ul>
-    </div>
-
-    <div class="tip-box">
-      至此，我们已经完成了家用伺服器系列的所有文章。通过这六篇文章，我们成功搭建了一个功能完整的影视管理系统。如果你有任何问题或建议，欢迎在评论区留言！
-    </div>
+    // ... existing content ...
   </main>
-
-  <button class="back-to-top" title="返回顶部">
-    <i class="fas fa-arrow-up"></i>
-  </button>
 
   <script>
     // 初始化代码高亮
     hljs.highlightAll();
 
+    // 初始化图片缩放
+    mediumZoom('img', {
+      margin: 24,
+      background: 'rgba(0,0,0,0.9)',
+      scrollOffset: 40
+    });
+
+    // 目录导航功能
+    document.addEventListener('DOMContentLoaded', function() {
+      const toc = document.querySelector('.toc');
+      const tocToggle = document.querySelector('.toc-toggle');
+      const headings = document.querySelectorAll('h2');
+      const tocLinks = document.querySelectorAll('.toc a');
+      let isVisible = false;
+
+      // 切换目录显示
+      tocToggle.addEventListener('click', () => {
+        isVisible = !isVisible;
+        toc.classList.toggle('show');
+        tocToggle.style.transform = isVisible ? 'rotate(180deg)' : 'rotate(0deg)';
+      });
+
+      // 点击目录项时滚动到对应位置
+      tocLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const targetId = link.getAttribute('href').slice(1);
+          const targetElement = document.getElementById(targetId);
+          if (targetElement) {
+            const offset = 80;
+            const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - offset;
+            
+            window.scrollTo({
+              top: targetPosition,
+              behavior: 'smooth'
+            });
+
+            // 更新当前活动项
+            tocLinks.forEach(l => l.parentElement.classList.remove('active'));
+            link.parentElement.classList.add('active');
+
+            // 在移动端点击后隐藏目录
+            if (window.innerWidth <= 1200) {
+              isVisible = false;
+              toc.classList.remove('show');
+              tocToggle.style.transform = 'rotate(0deg)';
+            }
+          }
+        });
+      });
+
+      // 滚动时高亮当前标题
+      let lastActiveLink = null;
+      window.addEventListener('scroll', () => {
+        const scrollPosition = window.scrollY;
+        
+        // 找到当前可见的标题
+        let currentHeading = null;
+        headings.forEach(heading => {
+          if (heading.offsetTop <= scrollPosition + 100) {
+            currentHeading = heading;
+          }
+        });
+        
+        if (currentHeading) {
+          const currentId = currentHeading.id;
+          const currentLink = document.querySelector(`.toc a[href="#${currentId}"]`);
+          
+          if (lastActiveLink && lastActiveLink !== currentLink) {
+            lastActiveLink.parentElement.classList.remove('active');
+          }
+          
+          if (currentLink && lastActiveLink !== currentLink) {
+            currentLink.parentElement.classList.add('active');
+            lastActiveLink = currentLink;
+          }
+        }
+      });
+    });
+
     // 阅读进度条
-    const progressBar = document.querySelector('.scroll-progress');
+    const progressBar = document.querySelector('.reading-progress-bar');
     window.addEventListener('scroll', () => {
       const scrolled = window.scrollY;
       const height = document.documentElement.scrollHeight - window.innerHeight;
@@ -244,25 +510,11 @@ transcoding:
       progressBar.style.width = `${progress}%`;
     });
 
-    // 返回顶部按钮
-    const backToTop = document.querySelector('.back-to-top');
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 300) {
-        backToTop.classList.add('visible');
-      } else {
-        backToTop.classList.remove('visible');
-      }
-    });
-
-    backToTop.addEventListener('click', () => {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      });
-    });
-
     // 代码块复制功能
     document.querySelectorAll('pre code').forEach((block) => {
+      const pre = block.parentElement;
+      pre.classList.add('code-block');
+      
       const button = document.createElement('button');
       button.className = 'copy-button';
       button.textContent = '复制';
@@ -271,8 +523,10 @@ transcoding:
         try {
           await navigator.clipboard.writeText(block.textContent);
           button.textContent = '已复制!';
+          button.classList.add('copied');
           setTimeout(() => {
             button.textContent = '复制';
+            button.classList.remove('copied');
           }, 2000);
         } catch (err) {
           console.error('复制失败:', err);
@@ -283,8 +537,6 @@ transcoding:
         }
       });
 
-      const pre = block.parentElement;
-      pre.style.position = 'relative';
       pre.appendChild(button);
     });
 
@@ -310,4 +562,4 @@ transcoding:
     });
   </script>
 </body>
-</html> 
+</html>
