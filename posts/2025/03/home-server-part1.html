@@ -379,6 +379,187 @@
                 gap: 10px;
             }
         }
+
+        /* 阅读进度指示器动画 */
+        @keyframes progress-glow {
+            0% { box-shadow: 0 0 5px var(--theme-color); }
+            50% { box-shadow: 0 0 15px var(--theme-color); }
+            100% { box-shadow: 0 0 5px var(--theme-color); }
+        }
+
+        .reading-progress {
+            animation: progress-glow 2s ease-in-out infinite;
+        }
+
+        /* 图片悬停效果 */
+        img {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        img:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        /* 代码块优化 */
+        pre {
+            position: relative;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        pre:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .copy-button {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        pre:hover .copy-button {
+            opacity: 1;
+        }
+
+        /* 导航栏优化 */
+        .toc {
+            transition: all 0.3s ease;
+            opacity: 0.85;
+        }
+
+        .toc:hover {
+            opacity: 1;
+            transform: translateX(-5px);
+        }
+
+        .toc-toggle {
+            position: fixed;
+            right: 20px;
+            top: 20px;
+            background: var(--theme-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .toc-toggle:hover {
+            transform: rotate(180deg);
+        }
+
+        /* 响应式布局 */
+        @media (min-width: 1201px) {
+            .toc {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+
+            .toc.show {
+                transform: translateX(0);
+                opacity: 0.85;
+            }
+
+            .toc-toggle {
+                display: block;
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .toc {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+
+            .toc.show {
+                transform: translateX(0);
+                opacity: 0.85;
+            }
+
+            .toc-toggle {
+                display: block;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+                padding-bottom: 80px;
+            }
+            
+            .share-container {
+                position: fixed;
+                left: 20px;
+                top: auto;
+                bottom: 20px;
+                transform: none;
+                flex-direction: row;
+                gap: 10px;
+            }
+
+            .back-to-home {
+                bottom: 20px;
+                right: 20px;
+            }
+        }
+
+        /* 文章内容动画 */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1, h2, h3, p {
+            animation: fadeInUp 0.5s ease-out forwards;
+            opacity: 0;
+        }
+
+        h1 { animation-delay: 0.1s; }
+        h2 { animation-delay: 0.2s; }
+        h3 { animation-delay: 0.3s; }
+        p { animation-delay: 0.4s; }
+
+        /* 代码高亮动画 */
+        code {
+            position: relative;
+            overflow: hidden;
+        }
+
+        code::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            animation: code-shine 3s infinite;
+        }
+
+        @keyframes code-shine {
+            0% { left: -100%; }
+            20% { left: 100%; }
+            100% { left: 100%; }
+        }
   </style>
 </head>
 <body>
@@ -632,37 +813,23 @@ if __name__ == "__main__":
         });
 
         // 代码复制功能
-        document.addEventListener('DOMContentLoaded', function() {
-            document.querySelectorAll('pre').forEach(block => {
-                const wrapper = document.createElement('div');
-                wrapper.className = 'code-block';
-                block.parentNode.insertBefore(wrapper, block);
-                wrapper.appendChild(block);
-      
-      const button = document.createElement('button');
-      button.className = 'copy-button';
-      button.textContent = '复制';
-                wrapper.appendChild(button);
-      
-      button.addEventListener('click', async () => {
+        document.querySelectorAll('pre').forEach(block => {
+            const button = block.querySelector('.copy-button');
+            if (button) {
+                button.addEventListener('click', async () => {
                     const code = block.querySelector('code').innerText;
-                    try {
-        await navigator.clipboard.writeText(code);
-                        button.textContent = '已复制！';
-                        button.classList.add('copied');
-                        setTimeout(() => {
-                            button.textContent = '复制';
-                            button.classList.remove('copied');
-                        }, 2000);
-                    } catch (err) {
-                        console.error('复制失败:', err);
-                        button.textContent = '复制失败';
-        setTimeout(() => {
-          button.textContent = '复制';
-        }, 2000);
-                    }
+                    await navigator.clipboard.writeText(code);
+                    
+                    const originalText = button.innerHTML;
+                    button.innerHTML = '✓ 已复制';
+                    button.style.background = '#4CAF50';
+                    
+                    setTimeout(() => {
+                        button.innerHTML = originalText;
+                        button.style.background = '';
+                    }, 2000);
                 });
-            });
+            }
         });
 
         // 图片预览功能
@@ -718,6 +885,33 @@ if __name__ == "__main__":
                 alert('复制失败，请手动复制链接');
             }
         }
-  </script>
+
+        // 更新导航栏显示逻辑
+        document.addEventListener('DOMContentLoaded', function() {
+            const toc = document.querySelector('.toc');
+            const tocToggle = document.querySelector('.toc-toggle');
+            let isVisible = false;
+
+            // 添加点击事件
+            tocToggle.addEventListener('click', function() {
+                isVisible = !isVisible;
+                toc.classList.toggle('show', isVisible);
+                tocToggle.style.transform = isVisible ? 'rotate(180deg)' : 'rotate(0deg)';
+            });
+
+            // 添加滚动监听
+            let lastScrollTop = 0;
+            window.addEventListener('scroll', function() {
+                const st = window.pageYOffset || document.documentElement.scrollTop;
+                if (st > lastScrollTop && isVisible) {
+                    // 向下滚动时自动隐藏
+                    isVisible = false;
+                    toc.classList.remove('show');
+                    tocToggle.style.transform = 'rotate(0deg)';
+                }
+                lastScrollTop = st <= 0 ? 0 : st;
+            });
+        });
+    </script>
 </body>
 </html> 
