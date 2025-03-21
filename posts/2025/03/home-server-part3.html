@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>家用伺服器折腾手记-3：Mac mini 部署 Open WebUI 教程 - Moreyu's Blog</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/maple-mono@latest/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.8/dist/medium-zoom.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.8/dist/medium-zoom.min.js"></script>
+    <style>
+        /* 基础样式 */
+        body {
+            font-family: "Maple Mono", monospace;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f7;
+            color: #333;
+        }
+
+        /* 图片样式优化 */
+        img {
+            max-width: 100%;
+            height: auto !important;
+            border-radius: 8px;
+            margin: 20px auto;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            object-fit: contain;
+            display: block;
+        }
+
+        img:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            img {
+                box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+            }
+            
+            img:hover {
+                box-shadow: 0 8px 24px rgba(255, 255, 255, 0.2);
+            }
+        }
+
+        pre {
+            background: #1e1e1e;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+
+        code {
+            font-family: "Maple Mono", monospace;
+        }
+
+        h1, h2, h3 {
+            color: #FF375F;
+        }
+
+        /* 返回首页按钮 */
+        .back-to-home {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255, 55, 95, .9);
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, .1);
+            transition: all .3s ease;
+            z-index: 1000;
+            text-decoration: none;
+        }
+
+        .back-to-home:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, .2);
+            text-decoration: none;
+        }
+
+        /* 目录导航样式 */
+        .toc {
+            position: fixed;
+            right: -300px;
+            top: 20px;
+            width: 280px;
+            max-height: 80vh;
+            overflow-y: auto;
+            background: rgba(34, 34, 34, 0.95);
+            color: #f5f5f7;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: 1000;
+            transition: all 0.3s ease;
+            scrollbar-width: thin;
+            scrollbar-color: #FF375F rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 55, 95, 0.2);
+            opacity: 0;
+            transform: translateX(100%);
+        }
+
+        .toc.show {
+            right: 20px;
+            opacity: 0.85;
+            transform: translateX(0);
+        }
+
+        .toc:hover {
+            opacity: 1;
+        }
+
+        .toc-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #FF375F;
+            font-size: 1.1em;
+        }
+
+        .toc ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .toc li {
+            margin: 8px 0;
+            padding-left: 15px;
+            border-left: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .toc li.active {
+            border-left: 2px solid #FF375F;
+            background: rgba(255, 55, 95, 0.1);
+        }
+
+        .toc a {
+            color: #f5f5f7;
+            text-decoration: none;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+        }
+
+        .toc a:hover {
+            color: #FF375F;
+        }
+
+        /* 导航栏折叠按钮样式 */
+        .toc-toggle {
+            position: fixed;
+            right: 20px;
+            top: 20px;
+            background: rgba(255, 55, 95, 0.85);
+            color: #ffffff;
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            cursor: pointer;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 2px 8px rgba(255, 55, 95, 0.3);
+            font-size: 1.2em;
+            padding: 0;
+        }
+
+        .toc-toggle:hover {
+            transform: rotate(180deg);
+            background: rgba(255, 55, 95, 1);
+            box-shadow: 0 4px 12px rgba(255, 55, 95, 0.5);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .toc-toggle {
+                background: rgba(255, 69, 58, 0.85);
+            }
+            
+            .toc-toggle:hover {
+                background: rgba(255, 69, 58, 1);
+            }
+        }
+
+        /* 分享按钮样式 */
+        .share-container {
+            position: fixed;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 1000;
+        }
+
+        .share-button {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255, 55, 95, 0.9);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .share-button:hover {
+            transform: scale(1.1);
+            background: rgba(255, 55, 95, 1);
+        }
+
+        .share-button i {
+            font-size: 1.2em;
+        }
+
+        /* 阅读进度指示器样式 */
+        .reading-progress-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .reading-progress-bar {
+            height: 100%;
+            background: #FF375F;
+            width: 0;
+            transition: width 0.1s ease;
+        }
+
+        /* 深色模式适配 */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background: #000;
+                color: #f5f5f7;
+            }
+
+            h1, h2, h3 {
+                color: #FF453A;
+            }
+
+            .toc {
+                background: rgba(0, 0, 0, 0.95);
+                color: #f5f5f7;
+                border: 1px solid rgba(255, 69, 58, 0.2);
+            }
+
+            .toc a {
+                color: #f5f5f7;
+            }
+
+            .toc a:hover {
+                color: #FF453A;
+            }
+
+            .toc-title {
+                color: #FF453A;
+            }
+
+            .toc li.active {
+                border-left-color: #FF453A;
+                background: rgba(255, 69, 58, 0.1);
+            }
+
+            .toc-toggle {
+                background: #FF453A;
+            }
+
+            .reading-progress-container {
+                background: rgba(255, 255, 255, 0.1);
+            }
+
+            .reading-progress-bar {
+                background: #FF453A;
+            }
+
+            .share-button {
+                background: rgba(255, 69, 58, 0.9);
+            }
+
+            .share-button:hover {
+                background: rgba(255, 69, 58, 1);
+            }
+        }
+
+        /* 响应式布局 */
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+                padding-bottom: 80px;
+            }
+
+            pre {
+                padding: 10px;
+                font-size: 14px;
+            }
+
+            .back-to-home {
+                bottom: 20px;
+                right: 20px;
+            }
+
+            .share-container {
+                position: fixed;
+                left: 20px;
+                top: auto;
+                bottom: 20px;
+                transform: none;
+                flex-direction: row;
+                gap: 10px;
+            }
+        }
+
+        /* 代码块优化 */
+        pre {
+            position: relative;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            background: linear-gradient(145deg, #1e1e1e, #2a2a2a);
+            box-shadow: inset 0 2px 4px rgba(255,255,255,0.1);
+        }
+
+        pre::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.05), transparent);
+            background-size: 200% 200%;
+            animation: shimmer 3s infinite;
+            pointer-events: none;
+            border-radius: 8px;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="reading-progress-container">
+        <div class="reading-progress-bar"></div>
+    </div>
+
+    <button class="toc-toggle" title="显示/隐藏目录">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <div class="share-container">
+        <button class="share-button" title="分享到微信">
+            <i class="fab fa-weixin"></i>
+        </button>
+        <button class="share-button" title="分享到微博">
+            <i class="fab fa-weibo"></i>
+        </button>
+        <button class="share-button" title="复制链接">
+            <i class="fas fa-link"></i>
+        </button>
+    </div>
+
+    <a href="/index.html" class="back-to-home">返回首页 🏠</a>
+
+    <aside class="toc">
+        <div class="toc-title">目录导航</div>
+        <ul>
+            <li><a href="#前言-📝">前言 📝</a></li>
+            <li><a href="#为什么选择-Open-WebUI-🤔">为什么选择 Open WebUI 🤔</a></li>
+            <li><a href="#环境准备-🛠️">环境准备 🛠️</a></li>
+            <li><a href="#部署-Open-WebUI-🚀">部署 Open WebUI 🚀</a></li>
+            <li><a href="#基础配置-⚙️">基础配置 ⚙️</a></li>
+            <li><a href="#进阶设置-🎯">进阶设置 🎯</a></li>
+            <li><a href="#使用技巧-💡">使用技巧 💡</a></li>
+            <li><a href="#常见问题-❓">常见问题 ❓</a></li>
+            <li><a href="#后续计划-📅">后续计划 📅</a></li>
+        </ul>
+    </aside>
+
+    <main class="post-content">
+        <h1>家用伺服器折腾手记-3：Mac mini 部署 Open WebUI 教程 🖥️</h1>
+        <div class="meta">发布时间：2025-03-09 | 分类：服务器, Docker, AI</div>
+
+        <h2 id="前言-📝">前言 📝</h2>
+        <p>在前两篇文章中，我们已经在 Mac mini 上搭建了 Docker 环境并部署了 MoviePilot。这次我们将探索如何部署 Open WebUI，这是一个强大的本地 AI 模型管理和使用界面，可以帮助我们更好地使用和管理各种 AI 模型。</p>
+
+        <h2 id="为什么选择-Open-WebUI-🤔">为什么选择 Open WebUI 🤔</h2>
+        <p>相比其他 AI 模型管理工具，Open WebUI 具有以下优势：</p>
+        <ul>
+            <li>完全开源，社区活跃</li>
+            <li>支持多种 AI 模型和框架</li>
+            <li>界面美观，操作直观</li>
+            <li>资源占用低，性能优秀</li>
+            <li>支持 Docker 部署</li>
+            <li>可扩展性强</li>
+        </ul>
+
+        <h2 id="环境准备-🛠️">环境准备 🛠️</h2>
+        <h3>1. 创建工作目录</h3>
+        <pre><code class="bash">mkdir -p ~/docker/open-webui/{config,models}
+cd ~/docker/open-webui</code></pre>
+
+        <h2 id="部署-Open-WebUI-🚀">部署 Open WebUI 🚀</h2>
+        <p>我们将使用 Docker Compose 来部署 Open WebUI：</p>
+
+        <h2 id="基础配置-⚙️">基础配置 ⚙️</h2>
+        <p>部署完成后的基础配置说明...</p>
+
+        <h2 id="进阶设置-🎯">进阶设置 🎯</h2>
+        <p>进阶设置和优化方案...</p>
+
+        <h2 id="使用技巧-💡">使用技巧 💡</h2>
+        <p>实用的使用技巧和建议...</p>
+
+        <h2 id="常见问题-❓">常见问题 ❓</h2>
+        <p>常见问题的解决方案...</p>
+
+        <h2 id="后续计划-📅">后续计划 📅</h2>
+        <p>在完成 Open WebUI 的部署和配置后，我们还可以进一步优化和扩展系统：</p>
+        <ul>
+            <li>集成更多 AI 模型和工具</li>
+            <li>优化模型加载和运行性能</li>
+            <li>添加自动化工作流程</li>
+            <li>配置 API 接口服务</li>
+            <li>实现多用户管理</li>
+            <li>探索更多应用场景</li>
+        </ul>
+
+        <p>在下一篇文章中，我们将介绍如何使用 Open WebUI 搭建个人 AI 助手，敬请期待！</p>
+    </main>
+
+    <script>
+        // 初始化代码高亮
+        hljs.highlightAll();
+
+        // 初始化图片缩放
+        mediumZoom('img', {
+            margin: 24,
+            background: 'rgba(0,0,0,0.9)',
+            scrollOffset: 40
+        });
+
+        // 目录导航功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const toc = document.querySelector('.toc');
+            const tocToggle = document.querySelector('.toc-toggle');
+            const headings = document.querySelectorAll('h2');
+            const tocLinks = document.querySelectorAll('.toc a');
+            let isVisible = false;
+
+            // 切换目录显示
+            tocToggle.addEventListener('click', () => {
+                isVisible = !isVisible;
+                toc.classList.toggle('show');
+                tocToggle.style.transform = isVisible ? 'rotate(180deg)' : 'rotate(0deg)';
+            });
+
+            // 点击目录项时滚动到对应位置
+            tocLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = link.getAttribute('href').slice(1);
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        const offset = 80;
+                        const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - offset;
+                        
+                        window.scrollTo({
+                            top: targetPosition,
+                            behavior: 'smooth'
+                        });
+
+                        // 更新当前活动项
+                        tocLinks.forEach(l => l.parentElement.classList.remove('active'));
+                        link.parentElement.classList.add('active');
+
+                        // 在移动端点击后隐藏目录
+                        if (window.innerWidth <= 1200) {
+                            isVisible = false;
+                            toc.classList.remove('show');
+                            tocToggle.style.transform = 'rotate(0deg)';
+                        }
+                    }
+                });
+            });
+
+            // 滚动时高亮当前标题
+            let lastActiveLink = null;
+            window.addEventListener('scroll', () => {
+                const scrollPosition = window.scrollY;
+                
+                // 找到当前可见的标题
+                let currentHeading = null;
+                headings.forEach(heading => {
+                    if (heading.offsetTop <= scrollPosition + 100) {
+                        currentHeading = heading;
+                    }
+                });
+                
+                if (currentHeading) {
+                    const currentId = currentHeading.id;
+                    const currentLink = document.querySelector(`.toc a[href="#${currentId}"]`);
+                    
+                    if (lastActiveLink && lastActiveLink !== currentLink) {
+                        lastActiveLink.parentElement.classList.remove('active');
+                    }
+                    
+                    if (currentLink && lastActiveLink !== currentLink) {
+                        currentLink.parentElement.classList.add('active');
+                        lastActiveLink = currentLink;
+                    }
+                }
+
+                // 向下滚动时自动隐藏目录
+                if (scrollPosition > 100 && isVisible) {
+                    isVisible = false;
+                    toc.classList.remove('show');
+                    tocToggle.style.transform = 'rotate(0deg)';
+                }
+            });
+        });
+
+        // 阅读进度条
+        const progressBar = document.querySelector('.reading-progress-bar');
+        window.addEventListener('scroll', () => {
+            const scrolled = window.scrollY;
+            const height = document.documentElement.scrollHeight - window.innerHeight;
+            const progress = (scrolled / height) * 100;
+            progressBar.style.width = `${progress}%`;
+        });
+
+        // 分享功能
+        document.querySelectorAll('.share-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const type = this.title.split('到')[1];
+                if (type === '微信') {
+                    alert('请截图分享到微信');
+                } else if (type === '微博') {
+                    const url = encodeURIComponent(window.location.href);
+                    const title = encodeURIComponent(document.title);
+                    window.open(`http://service.weibo.com/share/share.php?url=${url}&title=${title}`);
+                } else if (type === '复制链接') {
+                    navigator.clipboard.writeText(window.location.href)
+                        .then(() => alert('链接已复制到剪贴板'))
+                        .catch(err => console.error('复制失败:', err));
+                }
+            });
+        });
+    </script>
+</body>
+</html> 
