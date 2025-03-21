@@ -386,6 +386,98 @@
         right: 20px;
       }
     }
+
+    /* 分享按钮样式 */
+    .share-button {
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      background: rgba(255, 55, 95, .9);
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, .1);
+      transition: all .3s ease;
+      z-index: 1000;
+      cursor: pointer;
+      border: none;
+      font-family: "Maple Mono", monospace;
+    }
+
+    .share-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 8px rgba(0, 0, 0, .2);
+    }
+
+    .share-button.copied {
+      background: #4CAF50;
+    }
+
+    /* 进度条模块样式 */
+    .progress-module {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(34, 34, 34, 0.95);
+      color: #f5f5f7;
+      padding: 10px 20px;
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      z-index: 1000;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid rgba(255, 55, 95, 0.2);
+      opacity: 1;
+    }
+
+    .progress-module.hidden {
+      opacity: 0;
+      transform: translate(-50%, -100%);
+    }
+
+    .progress-module .icon {
+      font-size: 1.2em;
+      color: #FF375F;
+    }
+
+    .progress-module .text {
+      font-size: 0.9em;
+    }
+
+    /* 功能模块样式 */
+    .function-module {
+      display: inline-block;
+      background: rgba(255, 55, 95, 0.1);
+      color: #FF375F;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.9em;
+      margin-right: 8px;
+      margin-bottom: 8px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .progress-module {
+        background: rgba(0, 0, 0, 0.95);
+        border-color: rgba(255, 69, 58, 0.2);
+      }
+
+      .progress-module .icon {
+        color: #FF453A;
+      }
+
+      .function-module {
+        background: rgba(255, 69, 58, 0.1);
+        color: #FF453A;
+      }
+    }
   </style>
 </head>
 <body>
@@ -393,8 +485,17 @@
     <div class="reading-progress-bar"></div>
   </div>
 
+  <div class="progress-module">
+    <i class="fas fa-book-reader icon"></i>
+    <span class="text">阅读进度：0%</span>
+  </div>
+
   <button class="toc-toggle" title="显示/隐藏目录">
     <i class="fas fa-bars"></i>
+  </button>
+
+  <button class="share-button" title="分享文章">
+    <i class="fas fa-share-alt"></i> 分享
   </button>
 
   <aside class="toc">
@@ -414,7 +515,7 @@
   <a href="/index.html" class="back-to-home">返回首页 🏠</a>
 
   <main class="post-content">
-    <h1>家用伺服器折腾手记-6：Mac mini 整合 MoviePilot、AList 和 Emby</h1>
+    <h1>家用伺服器折腾手记-6：Mac mini 整合 MoviePilot、AList 和 Emby 🎬</h1>
     
     <div class="meta">
       发布于 2025-03-01 | 更新于 2025-03-01 | 分类：技术
@@ -423,6 +524,11 @@
     <div class="card-3d">
       <h2 id="前言">前言 📝</h2>
       <p>在前面的文章中，我们已经成功搭建了 MoviePilot、AList 和 Emby 这三个服务。现在，是时候将它们整合在一起，打造一个完整的家庭媒体中心了。本文将详细介绍如何让这三个服务协同工作，以及一些实用的自动化配置和优化技巧。</p>
+      <div>
+        <span class="function-module">🔧 配置教程</span>
+        <span class="function-module">📺 媒体服务器</span>
+        <span class="function-module">🚀 性能优化</span>
+      </div>
     </div>
 
     <div class="card-3d">
@@ -659,13 +765,50 @@ services:
       });
     });
 
-    // 阅读进度条
+    // 阅读进度条和模块
     const progressBar = document.querySelector('.reading-progress-bar');
+    const progressModule = document.querySelector('.progress-module');
+    const progressText = progressModule.querySelector('.text');
+    let progressTimeout;
+
     window.addEventListener('scroll', () => {
       const scrolled = window.scrollY;
       const height = document.documentElement.scrollHeight - window.innerHeight;
       const progress = (scrolled / height) * 100;
+      
       progressBar.style.width = `${progress}%`;
+      progressText.textContent = `阅读进度：${Math.round(progress)}%`;
+      
+      // 显示进度模块
+      progressModule.classList.remove('hidden');
+      
+      // 清除之前的定时器
+      clearTimeout(progressTimeout);
+      
+      // 设置新的定时器
+      progressTimeout = setTimeout(() => {
+        progressModule.classList.add('hidden');
+      }, 2000);
+    });
+
+    // 分享功能
+    const shareButton = document.querySelector('.share-button');
+    shareButton.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(window.location.href);
+        shareButton.innerHTML = '<i class="fas fa-check"></i> 已复制链接';
+        shareButton.classList.add('copied');
+        setTimeout(() => {
+          shareButton.innerHTML = '<i class="fas fa-share-alt"></i> 分享';
+          shareButton.classList.remove('copied');
+        }, 2000);
+      } catch (err) {
+        console.error('复制失败:', err);
+        shareButton.textContent = '复制失败';
+        setTimeout(() => {
+          shareButton.innerHTML = '<i class="fas fa-share-alt"></i> 分享';
+        }, 2000);
+      }
     });
 
     // 代码块复制功能
