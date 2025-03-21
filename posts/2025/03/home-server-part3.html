@@ -64,13 +64,19 @@
             color: #FF375F;
         }
 
+        h1, h2 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
         h2 {
             position: relative;
             padding-left: 15px;
             margin-top: 2em;
-            margin-bottom: 1em;
+            margin-bottom: 0.5em;
             max-width: 800px;
-            width: calc(100% - 40px);  /* 考虑到页面的 padding */
+            width: calc(100% - 40px);
         }
 
         h2::before {
@@ -87,7 +93,7 @@
         h2::after {
             content: '';
             position: absolute;
-            bottom: -1em;
+            bottom: -0.3em;
             left: 0;
             width: 100%;
             height: 1px;
@@ -943,7 +949,6 @@ services:
         // 添加渐变文字效果
         document.querySelectorAll('h1, h2').forEach(heading => {
             const text = heading.textContent;
-            const emojiRegex = /([🖥️📝🤔🛠️🚀⚙️🎯💡❓📅]+)$/;
             const matches = text.match(/(.*?)\s*([🖥️📝🤔🛠️🚀⚙️🎯💡❓📅]+)$/);
             
             if (matches) {
@@ -951,14 +956,6 @@ services:
                 heading.innerHTML = `<span class="gradient-text">${textContent.trim()}</span><span class="emoji">${emoji}</span>`;
             } else {
                 heading.innerHTML = `<span class="gradient-text">${text}</span>`;
-            }
-            
-            // 确保 emoji 样式正确
-            const emojiSpan = heading.querySelector('.emoji');
-            if (emojiSpan) {
-                emojiSpan.style.display = 'inline-block';
-                emojiSpan.style.marginLeft = heading.tagName === 'H1' ? '10px' : '8px';
-                emojiSpan.style.verticalAlign = 'middle';
             }
         });
   </script>
