@@ -1,1 +1,234 @@
- 
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>家用伺服器折腾手记-6：Mac mini 整合 MoviePilot、AList 和 Emby - Moreyu's Blog</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/maple-mono@latest/index.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.8/dist/medium-zoom.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.8/dist/medium-zoom.min.js"></script>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="scroll-progress"></div>
+  
+  <a href="/index.html" class="back-to-home">返回首页 🏠</a>
+
+  <main class="post-content">
+    <h1>家用伺服器折腾手记-6：Mac mini 整合 MoviePilot、AList 和 Emby 🎯</h1>
+    <div class="meta">发布时间：2025-03-13 | 分类：服务器, Docker, 影视</div>
+
+    <h2>前言 📝</h2>
+    <p>在前几篇文章中，我们已经成功部署了 MoviePilot、AList 和 Emby 三个服务。这次我们将介绍如何将这三个服务整合在一起，打造一个完整的影视管理系统。通过合理的配置和优化，我们可以实现影视资源的自动下载、文件管理和媒体播放的无缝衔接。</p>
+
+    <h2>系统架构 🏗️</h2>
+    <div class="card-3d">
+      <p>我们的影视管理系统由三个主要组件组成：</p>
+      <ul>
+        <li>MoviePilot：负责影视资源的自动下载和管理</li>
+        <li>AList：负责文件管理和存储</li>
+        <li>Emby：负责媒体库管理和播放</li>
+      </ul>
+      <p>这三个服务之间的协作流程如下：</p>
+      <ol>
+        <li>MoviePilot 自动下载影视资源</li>
+        <li>AList 管理下载的文件并提供访问</li>
+        <li>Emby 扫描 AList 管理的文件并建立媒体库</li>
+      </ol>
+    </div>
+
+    <h2>服务整合 🔄</h2>
+    <div class="tip-box">
+      在开始整合之前，请确保三个服务都已经正常运行，并且可以独立访问。
+    </div>
+
+    <h3>1. 配置 MoviePilot</h3>
+    <p>在 MoviePilot 中，我们需要配置以下内容：</p>
+    <pre><code class="yaml"># MoviePilot 配置示例
+download:
+  path: /media/downloads  # 下载目录
+  media_path: /media/movies  # 媒体目录
+  notification:
+    - type: webhook  # 下载完成通知
+      url: http://alist:5244/api/fs/refresh
+      method: POST
+  
+media_server:
+  type: emby
+  host: http://emby:8096  # Emby 服务地址
+  api_key: your_api_key  # Emby API Key
+  auto_refresh: true  # 自动刷新媒体库</code></pre>
+
+    <h3>2. 配置 AList</h3>
+    <p>在 AList 中，我们需要：</p>
+    <pre><code class="yaml"># AList 配置示例
+storage:
+  - name: movies  # 存储名称
+    type: local  # 本地存储
+    path: /media/movies  # 媒体目录路径
+    mount_path: /movies  # 挂载路径
+    cache:
+      enabled: true
+      expiration: 24h  # 缓存过期时间
+      cleanup_interval: 1h  # 清理间隔
+
+auth:
+  - path: /movies/**  # 媒体目录访问权限
+    users:
+      - emby  # Emby 服务账号
+    permissions:
+      - read  # 只读权限</code></pre>
+
+    <h3>3. 配置 Emby</h3>
+    <p>在 Emby 中，我们需要：</p>
+    <pre><code class="yaml"># Emby 配置示例
+libraries:
+  - name: Movies  # 媒体库名称
+    type: movie  # 类型：电影
+    path: /media/movies  # 媒体目录路径
+    scan_interval: 5m  # 扫描间隔
+    real_time_monitor: true  # 实时监控
+    
+transcoding:
+  hardware_acceleration: true  # 启用硬件加速
+  max_transcoding_jobs: 2  # 最大转码任务数</code></pre>
+
+    <h2>自动化流程 ⚡</h2>
+    <div class="card-3d">
+      <h3>1. 资源下载流程</h3>
+      <ol>
+        <li>MoviePilot 监控订阅的影视资源</li>
+        <li>发现新资源后自动下载到指定目录</li>
+        <li>下载完成后触发 webhook 通知</li>
+        <li>自动整理文件到媒体目录</li>
+      </ol>
+
+      <h3>2. 文件管理流程</h3>
+      <ol>
+        <li>AList 接收到更新通知</li>
+        <li>刷新目录缓存</li>
+        <li>更新文件索引</li>
+        <li>提供统一的访问接口</li>
+      </ol>
+
+      <h3>3. 媒体库更新流程</h3>
+      <ol>
+        <li>Emby 定期扫描媒体目录</li>
+        <li>识别新增的媒体文件</li>
+        <li>抓取媒体信息和元数据</li>
+        <li>更新媒体库</li>
+      </ol>
+    </div>
+
+    <h2>性能优化 🚀</h2>
+    <div class="tip-box">
+      以下优化建议可以帮助提升系统的整体性能和用户体验。
+    </div>
+
+    <h3>1. 存储优化</h3>
+    <ul>
+      <li>使用 SSD 存储热门媒体文件</li>
+      <li>合理设置缓存大小和过期时间</li>
+      <li>定期清理临时文件和下载缓存</li>
+      <li>使用 RAID 阵列提高数据可靠性</li>
+    </ul>
+
+    <h3>2. 网络优化</h3>
+    <ul>
+      <li>配置内网 DNS 解析</li>
+      <li>使用 CDN 加速静态资源</li>
+      <li>优化网络带宽分配</li>
+      <li>启用 HTTP/2 支持</li>
+    </ul>
+
+    <h3>3. 服务优化</h3>
+    <ul>
+      <li>合理分配系统资源限制</li>
+      <li>启用硬件转码加速</li>
+      <li>优化服务启动顺序</li>
+      <li>配置服务监控和告警</li>
+    </ul>
+
+    <h2>使用技巧 💡</h2>
+    <div class="card-3d">
+      <h3>1. 资源管理</h3>
+      <ul>
+        <li>使用标准的文件命名规范</li>
+        <li>按类型分类存储媒体文件</li>
+        <li>定期备份重要配置</li>
+        <li>及时更新字幕文件</li>
+      </ul>
+
+      <h3>2. 用户体验</h3>
+      <ul>
+        <li>配置自动字幕下载</li>
+        <li>启用跨设备播放进度同步</li>
+        <li>设置合适的转码参数</li>
+        <li>优化封面和元数据显示</li>
+      </ul>
+    </div>
+
+    <h2>常见问题 ❓</h2>
+    <div class="card-3d">
+      <h3>1. 服务连接问题</h3>
+      <p>如果遇到服务连接问题，可以：</p>
+      <ul>
+        <li>检查网络配置和防火墙设置</li>
+        <li>验证服务端口是否正确</li>
+        <li>确认 Docker 网络配置</li>
+        <li>查看服务日志排查原因</li>
+      </ul>
+
+      <h3>2. 性能问题</h3>
+      <p>如果遇到性能问题，可以：</p>
+      <ul>
+        <li>监控系统资源使用情况</li>
+        <li>优化存储和缓存配置</li>
+        <li>调整服务参数和限制</li>
+        <li>考虑升级硬件配置</li>
+      </ul>
+    </div>
+
+    <h2>后续计划 📅</h2>
+    <div class="card-3d">
+      <p>在完成三个服务的整合后，我们还可以进一步优化和扩展系统：</p>
+      <ul>
+        <li>添加自动化脚本和工作流</li>
+        <li>优化用户界面和交互体验</li>
+        <li>增强系统安全性和访问控制</li>
+        <li>扩展媒体库功能和插件</li>
+        <li>添加数据统计和分析功能</li>
+        <li>实现多用户权限管理</li>
+      </ul>
+    </div>
+
+    <div class="tip-box">
+      至此，我们已经完成了家用伺服器系列的所有文章。通过这六篇文章，我们成功搭建了一个功能完整的影视管理系统。如果你有任何问题或建议，欢迎在评论区留言！
+    </div>
+  </main>
+
+  <script>
+    // 初始化代码高亮
+    hljs.highlightAll();
+
+    // 初始化图片缩放
+    mediumZoom('img', {
+      margin: 24,
+      background: 'rgba(0,0,0,0.9)',
+      scrollOffset: 40
+    });
+
+    // 阅读进度条
+    const progressBar = document.querySelector('.scroll-progress');
+    window.addEventListener('scroll', () => {
+      const scrolled = window.scrollY;
+      const height = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = (scrolled / height) * 100;
+      progressBar.style.width = `${progress}%`;
+    });
+  </script>
+</body>
+</html> 

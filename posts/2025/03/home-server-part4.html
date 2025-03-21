@@ -178,7 +178,7 @@
         .toc ul {
             list-style: none;
             padding: 0;
-            margin: 0;
+      margin: 0;
         }
 
         .toc li {
@@ -225,7 +225,7 @@
             -webkit-backdrop-filter: blur(10px);
             box-shadow: 0 2px 8px rgba(255, 55, 95, 0.3);
             font-size: 1.2em;
-            padding: 0;
+      padding: 0;
         }
 
         .toc-toggle:hover {
@@ -283,13 +283,13 @@
 
         /* 阅读进度指示器样式 */
         .reading-progress-container {
-            position: fixed;
-            top: 0;
+      position: fixed;
+      top: 0;
             left: 0;
             width: 100%;
             height: 3px;
             background: rgba(0, 0, 0, 0.1);
-            z-index: 1000;
+      z-index: 1000;
         }
 
         .reading-progress-bar {
@@ -400,17 +400,17 @@
         }
 
         pre::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
             height: 100%;
             background: linear-gradient(45deg, transparent, rgba(255,255,255,0.05), transparent);
             background-size: 200% 200%;
             animation: shimmer 3s infinite;
             pointer-events: none;
-            border-radius: 8px;
+      border-radius: 8px;
         }
 
         /* 代码语言标签 */
@@ -430,24 +430,24 @@
 
         /* 代码复制按钮 */
         .code-copy-button {
-            position: absolute;
+      position: absolute;
             top: 8px;
             right: 60px;
             background: rgba(255, 255, 255, 0.1);
             border: none;
-            border-radius: 4px;
+      border-radius: 4px;
             padding: 4px 8px;
-            color: #fff;
+      color: #fff;
             font-size: 12px;
-            cursor: pointer;
+      cursor: pointer;
             transition: all 0.3s ease;
-            opacity: 0;
+      opacity: 0;
             transform: translateX(10px);
             z-index: 2;
-        }
-
+    }
+    
         pre:hover .code-copy-button {
-            opacity: 1;
+      opacity: 1;
             transform: translateX(0);
         }
 
@@ -560,18 +560,18 @@
         /* 新增：文件树样式 */
         .file-tree {
             background: rgba(255, 255, 255, 0.05);
-            border-radius: 8px;
+      border-radius: 8px;
             padding: 15px;
             margin: 20px 0;
             font-family: "Maple Mono", monospace;
         }
 
         .file-tree ul {
-            list-style: none;
+      list-style: none;
             padding-left: 20px;
-            margin: 0;
-        }
-
+      margin: 0;
+    }
+    
         .file-tree li {
             position: relative;
             padding: 4px 0;
@@ -638,14 +638,14 @@
             }
             .step-number {
                 background: #FF453A;
-            }
-        }
+      }
+    }
   </style>
 </head>
 <body>
     <div class="reading-progress-container">
-        <div class="reading-progress-bar"></div>
-    </div>
+    <div class="reading-progress-bar"></div>
+  </div>
 
     <button class="toc-toggle" title="显示/隐藏目录">
         <i class="fas fa-bars"></i>
@@ -665,7 +665,7 @@
 
     <a href="/index.html" class="back-to-home">返回首页 🏠</a>
 
-    <aside class="toc">
+  <aside class="toc">
         <div class="toc-title">目录导航</div>
         <ul>
             <li><a href="#前言-📝">前言 📝</a></li>
@@ -677,8 +677,8 @@
             <li><a href="#使用技巧-💡">使用技巧 💡</a></li>
             <li><a href="#常见问题-❓">常见问题 ❓</a></li>
             <li><a href="#后续计划-📅">后续计划 📅</a></li>
-        </ul>
-    </aside>
+    </ul>
+  </aside>
 
     <main class="post-content">
         <h1>家用伺服器折腾手记-4：Mac mini 部署 AList 服务 📁</h1>
@@ -869,7 +869,7 @@ services:
         </div>
     </main>
 
-    <script>
+  <script>
         // 初始化代码高亮
         hljs.highlightAll();
 
@@ -988,20 +988,20 @@ services:
         });
 
         // 为代码块添加复制按钮和语言标签
-        document.querySelectorAll('pre code').forEach((block) => {
+    document.querySelectorAll('pre code').forEach((block) => {
             // 获取语言
             const language = block.className.replace('language-', '');
             block.parentElement.setAttribute('data-language', language);
       
             // 创建复制按钮
-            const button = document.createElement('button');
+      const button = document.createElement('button');
             button.className = 'code-copy-button';
-            button.textContent = '复制';
+      button.textContent = '复制';
       
-            button.addEventListener('click', async () => {
+      button.addEventListener('click', async () => {
                 try {
                     await navigator.clipboard.writeText(block.textContent);
-                    button.textContent = '已复制!';
+        button.textContent = '已复制!';
                     button.classList.add('copied');
                     setTimeout(() => {
                         button.textContent = '复制';
@@ -1010,14 +1010,14 @@ services:
                 } catch (err) {
                     console.error('复制失败:', err);
                     button.textContent = '复制失败';
-                    setTimeout(() => {
-                        button.textContent = '复制';
-                    }, 2000);
+        setTimeout(() => {
+          button.textContent = '复制';
+        }, 2000);
                 }
-            });
+      });
       
-            block.parentElement.appendChild(button);
-        });
+      block.parentElement.appendChild(button);
+    });
 
         // 3D 卡片效果
         document.querySelectorAll('.card-3d').forEach(card => {
@@ -1049,7 +1049,7 @@ services:
                 const [_, textContent, emoji] = matches;
                 heading.textContent = `${textContent.trim()} ${emoji}`;
             }
-        });
-    </script>
+    });
+  </script>
 </body>
 </html> 

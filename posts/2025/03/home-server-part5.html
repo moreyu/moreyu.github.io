@@ -445,7 +445,7 @@
       transform: translateX(10px);
       z-index: 2;
     }
-
+    
     pre:hover .code-copy-button {
       opacity: 1;
       transform: translateX(0);
@@ -571,7 +571,7 @@
       padding-left: 20px;
       margin: 0;
     }
-
+    
     .file-tree li {
       position: relative;
       padding: 4px 0;
@@ -983,16 +983,16 @@ services:
       // 获取语言
       const language = block.className.replace('language-', '');
       block.parentElement.setAttribute('data-language', language);
-
+      
       // 创建复制按钮
       const button = document.createElement('button');
       button.className = 'code-copy-button';
       button.textContent = '复制';
-
+      
       button.addEventListener('click', async () => {
         try {
           await navigator.clipboard.writeText(block.textContent);
-          button.textContent = '已复制!';
+        button.textContent = '已复制!';
           button.classList.add('copied');
           setTimeout(() => {
             button.textContent = '复制';
@@ -1001,12 +1001,12 @@ services:
         } catch (err) {
           console.error('复制失败:', err);
           button.textContent = '复制失败';
-          setTimeout(() => {
-            button.textContent = '复制';
-          }, 2000);
+        setTimeout(() => {
+          button.textContent = '复制';
+        }, 2000);
         }
       });
-
+      
       block.parentElement.appendChild(button);
     });
 
