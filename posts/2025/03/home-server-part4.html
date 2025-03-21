@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>家用伺服器折腾手记-4：Mac mini 部署 AList 服务 - Moreyu's Blog</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/maple-mono@latest/index.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.8/dist/medium-zoom.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.8/dist/medium-zoom.min.js"></script>
+  <style>
+        /* 基础样式 */
+        body {
+            font-family: "Maple Mono", monospace;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f7;
+            color: #333;
+        }
+
+        /* 图片样式优化 */
+        img {
+            max-width: 100%;
+            height: auto !important;
+            border-radius: 8px;
+            margin: 20px auto;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            object-fit: contain;
+            display: block;
+        }
+
+        img:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            img {
+                box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+            }
+            
+            img:hover {
+                box-shadow: 0 8px 24px rgba(255, 255, 255, 0.2);
+            }
+        }
+
+        pre {
+            background: #1e1e1e;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+
+        code {
+            font-family: "Maple Mono", monospace;
+        }
+
+        h1, h2, h3 {
+            color: #FF375F;
+        }
+
+        h1, h2 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h2 {
+            position: relative;
+            padding-left: 15px;
+            margin-top: 2em;
+            margin-bottom: 0.5em;
+            max-width: 800px;
+            width: calc(100% - 40px);
+        }
+
+        h2::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background: linear-gradient(to bottom, #FF375F, rgba(255,55,95,0.5));
+            border-radius: 2px;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -0.3em;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(to right, #FF375F, transparent);
+        }
+
+        /* 深色模式适配 */
+        @media (prefers-color-scheme: dark) {
+            h2::before {
+                background: linear-gradient(to bottom, #FF453A, rgba(255,69,58,0.5));
+            }
+
+            h2::after {
+                background: linear-gradient(to right, #FF453A, transparent);
+            }
+        }
+
+        /* 返回首页按钮 */
+        .back-to-home {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255, 55, 95, .9);
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, .1);
+            transition: all .3s ease;
+            z-index: 1000;
+            text-decoration: none;
+        }
+
+        .back-to-home:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, .2);
+            text-decoration: none;
+        }
+
+        /* 目录导航样式 */
+        .toc {
+            position: fixed;
+            right: -300px;
+            top: 20px;
+            width: 280px;
+            max-height: 80vh;
+            overflow-y: auto;
+            background: rgba(34, 34, 34, 0.95);
+            color: #f5f5f7;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: 1000;
+            transition: all 0.3s ease;
+            scrollbar-width: thin;
+            scrollbar-color: #FF375F rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 55, 95, 0.2);
+            opacity: 0;
+            transform: translateX(100%);
+        }
+
+        .toc.show {
+            right: 20px;
+            opacity: 0.85;
+            transform: translateX(0);
+        }
+
+        .toc:hover {
+            opacity: 1;
+        }
+    
+        .toc-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #FF375F;
+            font-size: 1.1em;
+        }
+
+        .toc ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .toc li {
+            margin: 8px 0;
+            padding-left: 15px;
+            border-left: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .toc li.active {
+            border-left: 2px solid #FF375F;
+            background: rgba(255, 55, 95, 0.1);
+        }
+
+        .toc a {
+            color: #f5f5f7;
+            text-decoration: none;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+        }
+
+        .toc a:hover {
+            color: #FF375F;
+        }
+
+        /* 导航栏折叠按钮样式 */
+        .toc-toggle {
+            position: fixed;
+            right: 20px;
+            top: 20px;
+            background: rgba(255, 55, 95, 0.85);
+            color: #ffffff;
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            cursor: pointer;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 2px 8px rgba(255, 55, 95, 0.3);
+            font-size: 1.2em;
+            padding: 0;
+        }
+
+        .toc-toggle:hover {
+            transform: rotate(180deg);
+            background: rgba(255, 55, 95, 1);
+            box-shadow: 0 4px 12px rgba(255, 55, 95, 0.5);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .toc-toggle {
+                background: rgba(255, 69, 58, 0.85);
+            }
+            
+            .toc-toggle:hover {
+                background: rgba(255, 69, 58, 1);
+            }
+        }
+
+        /* 分享按钮样式 */
+        .share-container {
+            position: fixed;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 1000;
+        }
+
+        .share-button {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255, 55, 95, 0.9);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .share-button:hover {
+            transform: scale(1.1);
+            background: rgba(255, 55, 95, 1);
+        }
+
+        .share-button i {
+            font-size: 1.2em;
+        }
+
+        /* 阅读进度指示器样式 */
+        .reading-progress-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .reading-progress-bar {
+            height: 100%;
+            background: #FF375F;
+            width: 0;
+            transition: width 0.1s ease;
+        }
+
+        /* 深色模式适配 */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background: #000;
+                color: #f5f5f7;
+            }
+
+            h1, h2, h3 {
+                color: #FF453A;
+            }
+
+            .toc {
+                background: rgba(0, 0, 0, 0.95);
+                color: #f5f5f7;
+                border: 1px solid rgba(255, 69, 58, 0.2);
+            }
+
+            .toc a {
+                color: #f5f5f7;
+            }
+
+            .toc a:hover {
+                color: #FF453A;
+            }
+    
+            .toc-title {
+                color: #FF453A;
+            }
+
+            .toc li.active {
+                border-left-color: #FF453A;
+                background: rgba(255, 69, 58, 0.1);
+            }
+
+            .toc-toggle {
+                background: #FF453A;
+            }
+
+            .reading-progress-container {
+                background: rgba(255, 255, 255, 0.1);
+            }
+
+            .reading-progress-bar {
+                background: #FF453A;
+            }
+
+            .share-button {
+                background: rgba(255, 69, 58, 0.9);
+            }
+
+            .share-button:hover {
+                background: rgba(255, 69, 58, 1);
+            }
+        }
+
+        /* 响应式布局 */
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+                padding-bottom: 80px;
+            }
+
+            pre {
+                padding: 10px;
+                font-size: 14px;
+            }
+
+            .back-to-home {
+                bottom: 20px;
+                right: 20px;
+            }
+
+            .share-container {
+                position: fixed;
+                left: 20px;
+                top: auto;
+                bottom: 20px;
+                transform: none;
+                flex-direction: row;
+                gap: 10px;
+            }
+        }
+
+        /* 代码块优化 */
+        pre {
+            position: relative;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            background: linear-gradient(145deg, #1e1e1e, #2a2a2a);
+            box-shadow: inset 0 2px 4px rgba(255,255,255,0.1);
+            margin: 20px 0;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+
+        pre:hover {
+            transform: translateY(-5px) rotateX(2deg);
+            box-shadow: 0 15px 25px rgba(0,0,0,0.2);
+        }
+
+        pre::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.05), transparent);
+            background-size: 200% 200%;
+            animation: shimmer 3s infinite;
+            pointer-events: none;
+            border-radius: 8px;
+        }
+
+        /* 代码语言标签 */
+        pre::after {
+            content: attr(data-language);
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: #FF375F;
+            color: white;
+            padding: 2px 8px;
+            font-size: 12px;
+            border-radius: 0 8px 0 8px;
+            opacity: 0.9;
+            text-transform: uppercase;
+        }
+
+        /* 代码复制按钮 */
+        .code-copy-button {
+            position: absolute;
+            top: 8px;
+            right: 60px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 4px;
+            padding: 4px 8px;
+            color: #fff;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateX(10px);
+            z-index: 2;
+        }
+
+        pre:hover .code-copy-button {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .code-copy-button:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .code-copy-button.copied {
+            background: #4CAF50;
+        }
+
+        /* 3D 卡片效果 */
+        .card-3d {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-3d:hover {
+            transform: translateY(-5px) rotateX(2deg);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        /* 渐变文字效果 */
+        .gradient-text {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .gradient-text span {
+            background: linear-gradient(45deg, #FF375F, #FF453A);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: gradient 3s ease infinite;
+            background-size: 200% 200%;
+        }
+
+        .gradient-text .emoji {
+            color: initial;
+            font-size: 1.2em;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* 提示框样式 */
+        .tip-box {
+            background: rgba(255, 55, 95, 0.1);
+            border-left: 4px solid #FF375F;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tip-box::before {
+            content: '💡';
+            margin-right: 10px;
+        }
+
+        .tip-box::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.05), transparent);
+            transform: translateX(-100%);
+            animation: shine 2s infinite;
+        }
+
+        @keyframes shine {
+            100% { transform: translateX(100%); }
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .tip-box {
+                background: rgba(255, 69, 58, 0.1);
+                border-left-color: #FF453A;
+            }
+        }
+
+        /* 标题 emoji 样式 */
+        h1 .emoji {
+            display: inline-block;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
+
+        h2 .emoji {
+            display: inline-block;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+
+        /* 新增：文件树样式 */
+        .file-tree {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px 0;
+            font-family: "Maple Mono", monospace;
+        }
+
+        .file-tree ul {
+            list-style: none;
+            padding-left: 20px;
+            margin: 0;
+        }
+
+        .file-tree li {
+            position: relative;
+            padding: 4px 0;
+        }
+
+        .file-tree li::before {
+            content: '├─';
+            position: absolute;
+            left: -20px;
+            color: #FF375F;
+        }
+
+        .file-tree li:last-child::before {
+            content: '└─';
+        }
+
+        .file-tree .folder {
+            color: #FF375F;
+        }
+
+        .file-tree .file {
+            color: #666;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .file-tree {
+                background: rgba(0, 0, 0, 0.2);
+            }
+            .file-tree .file {
+                color: #999;
+            }
+        }
+
+        /* 新增：步骤指示器样式 */
+        .step-indicator {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+            padding: 10px;
+            background: rgba(255, 55, 95, 0.1);
+            border-radius: 8px;
+        }
+
+        .step-number {
+            width: 30px;
+            height: 30px;
+            background: #FF375F;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-weight: bold;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .step-indicator {
+                background: rgba(255, 69, 58, 0.1);
+            }
+            .step-number {
+                background: #FF453A;
+            }
+        }
+  </style>
+</head>
+<body>
+    <div class="reading-progress-container">
+        <div class="reading-progress-bar"></div>
+    </div>
+
+    <button class="toc-toggle" title="显示/隐藏目录">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <div class="share-container">
+        <button class="share-button" title="分享到微信">
+            <i class="fab fa-weixin"></i>
+        </button>
+        <button class="share-button" title="分享到微博">
+            <i class="fab fa-weibo"></i>
+        </button>
+        <button class="share-button" title="复制链接">
+            <i class="fas fa-link"></i>
+        </button>
+    </div>
+
+    <a href="/index.html" class="back-to-home">返回首页 🏠</a>
+
+    <aside class="toc">
+        <div class="toc-title">目录导航</div>
+        <ul>
+            <li><a href="#前言-📝">前言 📝</a></li>
+            <li><a href="#为什么选择-AList-🤔">为什么选择 AList 🤔</a></li>
+            <li><a href="#环境准备-🛠️">环境准备 🛠️</a></li>
+            <li><a href="#部署-AList-🚀">部署 AList 🚀</a></li>
+            <li><a href="#基础配置-⚙️">基础配置 ⚙️</a></li>
+            <li><a href="#进阶设置-🎯">进阶设置 🎯</a></li>
+            <li><a href="#使用技巧-💡">使用技巧 💡</a></li>
+            <li><a href="#常见问题-❓">常见问题 ❓</a></li>
+            <li><a href="#后续计划-📅">后续计划 📅</a></li>
+        </ul>
+    </aside>
+
+    <main class="post-content">
+        <h1>家用伺服器折腾手记-4：Mac mini 部署 AList 服务 📁</h1>
+        <div class="meta">发布时间：2025-03-10 | 分类：服务器, Docker, 文件管理</div>
+
+        <h2 id="前言-📝">前言 📝</h2>
+        <p>在前几篇文章中，我们已经在 Mac mini 上搭建了 Docker 环境并部署了多个服务。这次我们将探索如何部署 AList，这是一个强大的文件管理工具，支持多种存储方式，包括本地存储、网盘、对象存储等。AList 不仅提供了美观的 Web 界面，还支持 WebDAV、FTP 等协议，是一个功能丰富的文件管理解决方案。</p>
+
+        <h2 id="为什么选择-AList-🤔">为什么选择 AList 🤔</h2>
+        <div class="card-3d">
+            <p>相比其他文件管理工具，AList 具有以下优势：</p>
+            <ul>
+                <li>支持多种存储方式</li>
+                <li>界面美观，操作直观</li>
+                <li>资源占用低，性能优秀</li>
+                <li>支持 Docker 部署</li>
+                <li>可扩展性强</li>
+                <li>支持 WebDAV、FTP 等协议</li>
+                <li>支持文件预览</li>
+                <li>支持多用户管理</li>
+                <li>支持文件加密</li>
+                <li>支持在线播放</li>
+            </ul>
+        </div>
+
+        <h2 id="环境准备-🛠️">环境准备 🛠️</h2>
+        <div class="tip-box">
+            在开始部署之前，请确保你已经安装了 Docker 和 Docker Compose。如果还没有安装，可以参考第一篇文章中的安装步骤。
+        </div>
+
+        <h3>1. 确认 Docker 环境</h3>
+        <p>首先确保你的 Docker 环境正常运行：</p>
+        <pre><code class="bash">docker --version
+docker compose version</code></pre>
+
+        <h3>2. 创建工作目录</h3>
+        <pre><code class="bash">mkdir -p ~/docker/alist/{config,data}
+cd ~/docker/alist</code></pre>
+
+        <h3>3. 拉取最新镜像</h3>
+        <pre><code class="bash">docker pull xhofe/alist:latest</code></pre>
+
+        <h2 id="部署-AList-🚀">部署 AList 🚀</h2>
+        <div class="tip-box">
+            以下配置已经过优化，适用于大多数使用场景。如果你有特殊需求，可以参考进阶设置部分进行调整。
+        </div>
+
+        <h3>1. 创建 Docker Compose 配置</h3>
+        <p>在工作目录下创建 <code>docker-compose.yml</code> 文件：</p>
+        <pre><code class="yaml">version: '3'
+services:
+  alist:
+    container_name: alist
+    image: xhofe/alist:latest
+    ports:
+      - "5244:5244"
+    volumes:
+      - ./config:/opt/alist/config
+      - ./data:/opt/alist/data
+    environment:
+      - PUID=0
+      - PGID=0
+      - TZ=Asia/Shanghai
+    restart: always</code></pre>
+
+        <h3>2. 启动服务</h3>
+        <pre><code class="bash">docker compose up -d</code></pre>
+
+        <p>启动后，可以通过 <code>http://localhost:5244</code> 访问 AList 界面。</p>
+
+        <h2 id="基础配置-⚙️">基础配置 ⚙️</h2>
+        <div class="card-3d">
+            <h3>1. 初始账户设置</h3>
+            <p>首次访问时需要注意以下几点：</p>
+            <ul>
+                <li>默认管理员账户：admin</li>
+                <li>默认密码：123456</li>
+                <li>首次登录后请立即修改密码</li>
+                <li>建议开启两步验证</li>
+            </ul>
+        </div>
+
+        <h3>2. 存储管理</h3>
+        <div class="tip-box">
+            添加存储时，建议先使用本地存储进行测试，确保基本功能正常后再添加其他存储。
+        </div>
+        <p>AList 支持多种存储方式，包括：</p>
+        <ul>
+            <li>本地存储</li>
+            <li>阿里云盘</li>
+            <li>百度网盘</li>
+            <li>OneDrive</li>
+            <li>Google Drive</li>
+            <li>对象存储（S3、OSS等）</li>
+            <li>FTP</li>
+            <li>WebDAV</li>
+        </ul>
+
+        <h2 id="进阶设置-🎯">进阶设置 🎯</h2>
+        <div class="card-3d">
+            <h3>1. 反向代理</h3>
+            <p>如果你使用 Nginx 作为反向代理，可以添加以下配置：</p>
+            <pre><code class="nginx">location /alist/ {
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+    proxy_pass http://localhost:5244/;
+}</code></pre>
+        </div>
+
+        <div class="tip-box">
+            启用 HTTPS 可以保护你的数据安全，建议在生产环境中使用。
+        </div>
+
+        <h3>2. 文件预览</h3>
+        <p>AList 支持多种文件格式的预览，包括：</p>
+        <ul>
+            <li>图片（jpg、png、gif等）</li>
+            <li>视频（mp4、webm等）</li>
+            <li>音频（mp3、wav等）</li>
+            <li>文档（pdf、doc、docx等）</li>
+            <li>代码文件</li>
+        </ul>
+
+        <h3>3. 自动更新</h3>
+        <p>可以使用 Watchtower 自动更新容器：</p>
+        <pre><code class="bash">docker run --rm \
+  --volume /var/run/docker.sock:/var/run/docker.sock \
+  containrrr/watchtower \
+  --run-once alist</code></pre>
+
+        <h2 id="使用技巧-💡">使用技巧 💡</h2>
+        <div class="card-3d">
+            <h3>1. 文件管理</h3>
+            <ul>
+                <li>使用快捷键提高操作效率</li>
+                <li>合理设置文件权限</li>
+                <li>定期清理临时文件</li>
+                <li>使用文件加密保护敏感数据</li>
+            </ul>
+
+            <h3>2. 性能优化</h3>
+            <ul>
+                <li>合理设置缓存策略</li>
+                <li>使用 CDN 加速</li>
+                <li>优化文件索引</li>
+                <li>监控系统资源使用情况</li>
+            </ul>
+        </div>
+
+        <h2 id="常见问题-❓">常见问题 ❓</h2>
+        <div class="card-3d">
+            <h3>1. 连接问题</h3>
+            <p>如果遇到连接错误，通常是因为容器无法正常启动。可以尝试以下解决方案：</p>
+            <ul>
+                <li>检查端口是否被占用</li>
+                <li>检查配置文件权限</li>
+                <li>查看容器日志</li>
+                <li>重启 Docker 服务</li>
+            </ul>
+
+            <h3>2. 性能问题</h3>
+            <p>如果遇到性能问题，可以：</p>
+            <ul>
+                <li>检查系统资源使用情况</li>
+                <li>优化存储配置</li>
+                <li>调整缓存设置</li>
+                <li>使用 SSD 存储</li>
+            </ul>
+        </div>
+
+        <h2 id="后续计划-📅">后续计划 📅</h2>
+        <div class="card-3d">
+            <p>在完成 AList 的部署和配置后，我们还可以进一步优化和扩展系统：</p>
+            <ul>
+                <li>集成更多存储服务</li>
+                <li>优化文件预览功能</li>
+                <li>添加自动化备份</li>
+                <li>配置监控告警</li>
+                <li>实现多用户管理</li>
+                <li>探索更多应用场景</li>
+            </ul>
+        </div>
+
+        <div class="tip-box">
+            在下一篇文章中，我们将介绍如何使用 AList 搭建个人文件管理系统，包括存储配置、权限管理、文件预览等内容，敬请期待！
+        </div>
+    </main>
+
+    <script>
+        // 初始化代码高亮
+        hljs.highlightAll();
+
+        // 初始化图片缩放
+        mediumZoom('img', {
+            margin: 24,
+            background: 'rgba(0,0,0,0.9)',
+            scrollOffset: 40
+        });
+
+        // 目录导航功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const toc = document.querySelector('.toc');
+            const tocToggle = document.querySelector('.toc-toggle');
+            const headings = document.querySelectorAll('h2');
+            const tocLinks = document.querySelectorAll('.toc a');
+            let isVisible = false;
+
+            // 切换目录显示
+            tocToggle.addEventListener('click', () => {
+                isVisible = !isVisible;
+                toc.classList.toggle('show');
+                tocToggle.style.transform = isVisible ? 'rotate(180deg)' : 'rotate(0deg)';
+            });
+
+            // 点击目录项时滚动到对应位置
+            tocLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = link.getAttribute('href').slice(1);
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        const offset = 80;
+                        const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - offset;
+                        
+                        window.scrollTo({
+                            top: targetPosition,
+                            behavior: 'smooth'
+                        });
+
+                        // 更新当前活动项
+                        tocLinks.forEach(l => l.parentElement.classList.remove('active'));
+                        link.parentElement.classList.add('active');
+
+                        // 在移动端点击后隐藏目录
+                        if (window.innerWidth <= 1200) {
+                            isVisible = false;
+                            toc.classList.remove('show');
+                            tocToggle.style.transform = 'rotate(0deg)';
+                        }
+                    }
+                });
+            });
+
+            // 滚动时高亮当前标题
+            let lastActiveLink = null;
+            window.addEventListener('scroll', () => {
+                const scrollPosition = window.scrollY;
+                
+                // 找到当前可见的标题
+                let currentHeading = null;
+                headings.forEach(heading => {
+                    if (heading.offsetTop <= scrollPosition + 100) {
+                        currentHeading = heading;
+                    }
+                });
+                
+                if (currentHeading) {
+                    const currentId = currentHeading.id;
+                    const currentLink = document.querySelector(`.toc a[href="#${currentId}"]`);
+                    
+                    if (lastActiveLink && lastActiveLink !== currentLink) {
+                        lastActiveLink.parentElement.classList.remove('active');
+                    }
+                    
+                    if (currentLink && lastActiveLink !== currentLink) {
+                        currentLink.parentElement.classList.add('active');
+                        lastActiveLink = currentLink;
+                    }
+                }
+
+                // 向下滚动时自动隐藏目录
+                if (scrollPosition > 100 && isVisible) {
+                    isVisible = false;
+                    toc.classList.remove('show');
+                    tocToggle.style.transform = 'rotate(0deg)';
+                }
+            });
+        });
+
+        // 阅读进度条
+        const progressBar = document.querySelector('.reading-progress-bar');
+        window.addEventListener('scroll', () => {
+            const scrolled = window.scrollY;
+            const height = document.documentElement.scrollHeight - window.innerHeight;
+            const progress = (scrolled / height) * 100;
+            progressBar.style.width = `${progress}%`;
+        });
+
+        // 分享功能
+        document.querySelectorAll('.share-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const type = this.title.split('到')[1];
+                if (type === '微信') {
+                    alert('请截图分享到微信');
+                } else if (type === '微博') {
+                    const url = encodeURIComponent(window.location.href);
+                    const title = encodeURIComponent(document.title);
+                    window.open(`http://service.weibo.com/share/share.php?url=${url}&title=${title}`);
+                } else if (type === '复制链接') {
+                    navigator.clipboard.writeText(window.location.href)
+                        .then(() => alert('链接已复制到剪贴板'))
+                        .catch(err => console.error('复制失败:', err));
+                }
+            });
+        });
+
+        // 为代码块添加复制按钮和语言标签
+        document.querySelectorAll('pre code').forEach((block) => {
+            // 获取语言
+            const language = block.className.replace('language-', '');
+            block.parentElement.setAttribute('data-language', language);
+      
+            // 创建复制按钮
+            const button = document.createElement('button');
+            button.className = 'code-copy-button';
+            button.textContent = '复制';
+      
+            button.addEventListener('click', async () => {
+                try {
+                    await navigator.clipboard.writeText(block.textContent);
+                    button.textContent = '已复制!';
+                    button.classList.add('copied');
+                    setTimeout(() => {
+                        button.textContent = '复制';
+                        button.classList.remove('copied');
+                    }, 2000);
+                } catch (err) {
+                    console.error('复制失败:', err);
+                    button.textContent = '复制失败';
+                    setTimeout(() => {
+                        button.textContent = '复制';
+                    }, 2000);
+                }
+            });
+      
+            block.parentElement.appendChild(button);
+        });
+
+        // 3D 卡片效果
+        document.querySelectorAll('.card-3d').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = (y - centerY) / 20;
+                const rotateY = (centerX - x) / 20;
+                
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
+            });
+        });
+
+        // 添加渐变文字效果
+        document.querySelectorAll('h1, h2').forEach(heading => {
+            const text = heading.textContent;
+            const matches = text.match(/(.*?)\s*([🖥️📝🤔🛠️🚀⚙️🎯💡❓📅📁]+)$/);
+            
+            if (matches) {
+                const [_, textContent, emoji] = matches;
+                heading.textContent = `${textContent.trim()} ${emoji}`;
+            }
+        });
+    </script>
+</body>
+</html> 
