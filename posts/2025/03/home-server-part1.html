@@ -319,10 +319,10 @@
             }
         }
 
-        /* 移动端适配 */
-    @media (max-width: 1200px) {
-      .toc {
-        display: none;
+        /* 响应式布局 */
+        @media (max-width: 1200px) {
+            .toc {
+                display: none;
                 right: -300px;
             }
 
@@ -333,6 +333,16 @@
 
             .toc-toggle {
                 display: block;
+            }
+        }
+
+        @media (min-width: 1201px) {
+            .toc {
+                display: block;
+            }
+
+            .toc-toggle {
+                display: none;
             }
         }
 
