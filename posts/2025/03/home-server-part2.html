@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>家用伺服器折腾手记-2：Mac mini 部署 MoviePilot 教程 - Moreyu's Blog</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/maple-mono@latest/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.8/dist/medium-zoom.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.8/dist/medium-zoom.min.js"></script>
+    <style>
+        /* 基础样式 */
+        body {
+            font-family: "Maple Mono", monospace;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f7;
+            color: #333;
+        }
+
+        pre {
+            position: relative;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            background: linear-gradient(145deg, #1e1e1e, #2a2a2a);
+            box-shadow: inset 0 2px 4px rgba(255,255,255,0.1);
+        }
+
+        pre::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.05), transparent);
+            background-size: 200% 200%;
+            animation: shimmer 3s infinite;
+            pointer-events: none;
+            border-radius: 8px;
+        }
+
+        code {
+            font-family: "Maple Mono", monospace;
+            position: relative;
+            overflow: hidden;
+        }
+
+        h1, h2, h3 {
+            color: #FF375F;
+        }
+
+        /* 标题装饰 */
+        h2 {
+            position: relative;
+            padding-left: 15px;
+            margin-top: 2em;
+        }
+
+        h2::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background: linear-gradient(to bottom, #FF375F, rgba(255,55,95,0.5));
+            border-radius: 2px;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(to right, #FF375F, transparent);
+        }
+
+        /* 引用样式 */
+        blockquote {
+            margin: 20px 0;
+            padding: 20px;
+            background: rgba(255,55,95,0.1);
+            border-left: 4px solid #FF375F;
+            border-radius: 0 8px 8px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        blockquote::before {
+            content: '"';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 4em;
+            color: rgba(255,55,95,0.2);
+            font-family: serif;
+            line-height: 1;
+        }
+
+        blockquote p {
+            margin: 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* 列表样式 */
+        ul:not(.toc ul) {
+            list-style: none;
+            padding-left: 1.5em;
+        }
+
+        ul:not(.toc ul) li {
+            position: relative;
+            margin: 0.5em 0;
+        }
+
+        ul:not(.toc ul) li::before {
+            content: '▹';
+            position: absolute;
+            left: -1.5em;
+            color: #FF375F;
+            font-size: 0.8em;
+            transition: transform 0.2s ease;
+        }
+
+        ul:not(.toc ul) li:hover::before {
+            transform: translateX(5px);
+        }
+
+        /* 图片样式 */
+        img {
+            max-width: 100%;
+            border-radius: 8px;
+            margin: 20px 0;
+            opacity: 0;
+            transition: opacity 0.5s ease, transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        img.loaded {
+            opacity: 1;
+        }
+
+        img:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        /* 其他样式保持与第一篇文章相同 */
+        .reading-progress-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: rgba(255, 55, 95, 0.1);
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <div class="reading-progress-container">
+        <div class="reading-progress-bar"></div>
+    </div>
+
+    <div class="share-container">
+        <button class="share-button" title="分享到微信" onclick="shareToWeChat()">
+            <i class="fab fa-weixin"></i>
+        </button>
+        <button class="share-button" title="分享到微博" onclick="shareToWeibo()">
+            <i class="fab fa-weibo"></i>
+        </button>
+        <button class="share-button" title="复制链接" onclick="copyLink()">
+            <i class="fas fa-link"></i>
+        </button>
+    </div>
+
+    <button class="toc-toggle" title="显示/隐藏目录">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <aside class="toc">
+        <div class="toc-title">📚 目录</div>
+        <ul>
+            <li><a href="#前言-📝">前言 📝</a></li>
+            <li><a href="#为什么选择-MoviePilot-🤔">为什么选择 MoviePilot 🤔</a></li>
+            <li><a href="#环境准备-🛠️">环境准备 🛠️</a></li>
+            <li><a href="#部署-MoviePilot-🚀">部署 MoviePilot 🚀</a></li>
+            <li><a href="#基础配置-⚙️">基础配置 ⚙️</a></li>
+            <li><a href="#进阶设置-🎯">进阶设置 🎯</a></li>
+            <li><a href="#使用技巧-💡">使用技巧 💡</a></li>
+            <li><a href="#常见问题-❓">常见问题 ❓</a></li>
+        </ul>
+    </aside>
+
+    <main class="post-content">
+        <h1>家用伺服器折腾手记-2：Mac mini 部署 MoviePilot 教程 🎬</h1>
+        <div class="meta">发布时间：2025-03-08 | 分类：服务器, Docker, 影视</div>
+
+        <h2 id="前言-📝">前言 📝</h2>
+        <p>在上一篇文章中，我们成功在 Mac mini 上搭建了 Docker 环境。这次我们将继续探索，使用 Docker 部署 MoviePilot，这是一个强大的电影管理工具，可以帮助我们自动下载和管理电影资源。MoviePilot 是 NAStool 的 Python 重制版，提供了更好的性能和更多的功能。</p>
+
+        <h2 id="为什么选择-MoviePilot-🤔">为什么选择 MoviePilot 🤔</h2>
+        <p>相比其他影视管理工具，MoviePilot 具有以下优势：</p>
+        <ul>
+            <li>完全开源，持续更新维护</li>
+            <li>支持多种下载器和媒体服务器</li>
+            <li>智能识别电影和剧集信息</li>
+            <li>支持订阅和自动下载</li>
+            <li>界面美观，操作简单</li>
+            <li>支持 Docker 部署，方便管理</li>
+        </ul>
+
+        <img src="/img/moviepilot-dashboard.png" alt="MoviePilot 仪表盘界面" title="MoviePilot 的美观界面">
+
+        <h2 id="环境准备-🛠️">环境准备 🛠️</h2>
+        <h3>1. 创建工作目录</h3>
+        <pre><code class="bash">mkdir -p ~/docker/moviepilot/{config,media}
+cd ~/docker/moviepilot</code></pre>
+
+        <h3>2. 准备 Docker Compose 配置</h3>
+        <pre><code class="yaml">version: '3'
+services:
+  moviepilot:
+    image: jxxghp/moviepilot:latest
+    container_name: moviepilot
+    hostname: moviepilot
+    network_mode: bridge
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./config:/config
+      - ./media:/media
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - UMASK=022
+      - TZ=Asia/Shanghai
+      - MOVIEPILOT_AUTO_UPDATE=true
+    restart: unless-stopped</code></pre>
+
+        <h2 id="部署-MoviePilot-🚀">部署 MoviePilot 🚀</h2>
+        <h3>1. 启动服务</h3>
+        <pre><code class="bash">docker-compose up -d</code></pre>
+
+        <p>启动后，访问 <code>http://localhost:3000</code> 进入 MoviePilot 的 Web 界面。首次访问需要设置管理员账号和密码。</p>
+
+        <img src="/img/moviepilot-login.png" alt="MoviePilot 登录界面" title="首次登录需要设置管理员账号">
+
+        <h2 id="基础配置-⚙️">基础配置 ⚙️</h2>
+        <h3>1. 站点配置</h3>
+        <p>MoviePilot 支持多个资源站点，需要配置站点的 Cookie 信息：</p>
+        <pre><code class="yaml"># config/sites.yaml
+sites:
+  - name: "站点名称"
+    url: "站点地址"
+    cookie: "站点Cookie"
+    ua: "浏览器 User-Agent"</code></pre>
+
+        <h3>2. 下载器配置</h3>
+        <p>支持多种下载器，这里以 qBittorrent 为例：</p>
+        <pre><code class="yaml"># config/downloaders.yaml
+qbittorrent:
+  host: "http://localhost:8080"
+  username: "admin"
+  password: "adminadmin"
+  category: "电影"</code></pre>
+
+        <img src="/img/moviepilot-settings.png" alt="MoviePilot 设置界面" title="下载器和媒体库配置">
+
+        <h2 id="进阶设置-🎯">进阶设置 🎯</h2>
+        <h3>1. 媒体库整理</h3>
+        <p>配置媒体库路径和命名规则：</p>
+        <pre><code class="yaml"># config/media.yaml
+library:
+  movie:
+    path: "/media/电影"
+    format: "{title} ({year})/[{resolution}]{title}.{ext}"
+  tv:
+    path: "/media/剧集"
+    format: "{title}/Season {season}/{title} - S{season:02d}E{episode:02d}.{ext}"</code></pre>
+
+        <h3>2. 订阅规则</h3>
+        <p>设置自动下载的规则：</p>
+        <pre><code class="yaml"># config/subscribe.yaml
+rules:
+  - name: "最新电影"
+    type: "电影"
+    resolution: ["1080p", "2160p"]
+    include: ["WEB-DL", "BluRay"]
+    exclude: ["HC", "CAM"]
+    size_limit: "40GB"</code></pre>
+
+        <h2 id="使用技巧-💡">使用技巧 💡</h2>
+        <ul>
+            <li>使用豆瓣想看功能自动订阅新电影</li>
+            <li>配置微信通知，及时获知下载进度</li>
+            <li>设置定时刷新，自动检查更新</li>
+            <li>使用过滤规则，避免下载广告资源</li>
+        </ul>
+
+        <h2 id="常见问题-❓">常见问题 ❓</h2>
+        <h3>1. 无法启动容器</h3>
+        <pre><code class="bash"># 检查日志
+docker logs moviepilot
+
+# 检查权限
+sudo chown -R 1000:1000 ~/docker/moviepilot/config</code></pre>
+
+        <h3>2. 下载失败</h3>
+        <ul>
+            <li>检查下载器连接是否正常</li>
+            <li>确认站点 Cookie 是否有效</li>
+            <li>查看是否符合过滤规则</li>
+        </ul>
+
+        <a href="/" class="back-to-home">返回首页 🏠</a>
+    </main>
+
+    <script>
+        // 初始化代码高亮
+        hljs.highlightAll();
+
+        // 初始化图片缩放
+        mediumZoom('img', {
+            margin: 24,
+            background: 'rgba(0,0,0,0.9)',
+            scrollOffset: 40
+        });
+
+        // 图片加载动画
+        document.querySelectorAll('img').forEach(img => {
+            img.onload = () => img.classList.add('loaded');
+        });
+
+        // 阅读进度条
+        const progressBar = document.querySelector('.reading-progress-bar');
+        window.addEventListener('scroll', () => {
+            const scrolled = window.scrollY;
+            const height = document.documentElement.scrollHeight - window.innerHeight;
+            const progress = (scrolled / height) * 100;
+            progressBar.style.width = `${progress}%`;
+        });
+
+        // 目录切换
+        const tocToggle = document.querySelector('.toc-toggle');
+        const toc = document.querySelector('.toc');
+        tocToggle.addEventListener('click', () => {
+            toc.classList.toggle('show');
+        });
+
+        // 分享功能
+        function shareToWeChat() {
+            alert('请截图分享到微信');
+        }
+
+        function shareToWeibo() {
+            const url = encodeURIComponent(window.location.href);
+            const title = encodeURIComponent(document.title);
+            window.open(`http://service.weibo.com/share/share.php?url=${url}&title=${title}`);
+        }
+
+        function copyLink() {
+            navigator.clipboard.writeText(window.location.href)
+                .then(() => alert('链接已复制到剪贴板'))
+                .catch(err => console.error('复制失败:', err));
+        }
+    </script>
+</body>
+</html> 
