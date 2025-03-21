@@ -298,19 +298,27 @@
 
         /* 返回首页按钮样式 */
         .back-to-home {
-            display: inline-block;
-            margin-top: 40px;
-            padding: 10px 20px;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
             background: #FF375F;
             color: white;
             text-decoration: none;
-            border-radius: 20px;
+            border-radius: 50%;
             transition: all 0.3s ease;
             box-shadow: 0 2px 8px rgba(255, 55, 95, 0.3);
+            z-index: 100;
+            padding: 0;
+            margin: 0;
         }
 
         .back-to-home:hover {
-            transform: translateY(-2px);
+            transform: scale(1.1);
             box-shadow: 0 4px 12px rgba(255, 55, 95, 0.4);
         }
 
@@ -480,7 +488,9 @@ sudo chown -R 1000:1000 ~/docker/moviepilot/config</code></pre>
             <li>查看是否符合过滤规则</li>
         </ul>
 
-        <a href="/index.html" class="back-to-home">返回首页 🏠</a>
+        <a href="/index.html" class="back-to-home" title="返回首页">
+            <i class="fas fa-home"></i>
+        </a>
     </main>
 
     <script>
