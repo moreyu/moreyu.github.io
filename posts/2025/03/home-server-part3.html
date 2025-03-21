@@ -342,6 +342,14 @@
             transition: all 0.3s ease;
             background: linear-gradient(145deg, #1e1e1e, #2a2a2a);
             box-shadow: inset 0 2px 4px rgba(255,255,255,0.1);
+            margin: 20px 0;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+
+        pre:hover {
+            transform: translateY(-5px) rotateX(2deg);
+            box-shadow: 0 15px 25px rgba(0,0,0,0.2);
         }
 
         pre::before {
@@ -358,9 +366,123 @@
             border-radius: 8px;
         }
 
-        @keyframes shimmer {
-            0% { background-position: -200% 0; }
-            100% { background-position: 200% 0; }
+        /* 代码语言标签 */
+        pre::after {
+            content: attr(data-language);
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: #FF375F;
+            color: white;
+            padding: 2px 8px;
+            font-size: 12px;
+            border-radius: 0 8px 0 8px;
+            opacity: 0.9;
+            text-transform: uppercase;
+        }
+
+        /* 代码复制按钮 */
+        .code-copy-button {
+            position: absolute;
+            top: 8px;
+            right: 60px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 4px;
+            padding: 4px 8px;
+            color: #fff;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateX(10px);
+            z-index: 2;
+        }
+
+        pre:hover .code-copy-button {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .code-copy-button:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .code-copy-button.copied {
+            background: #4CAF50;
+        }
+
+        /* 3D 卡片效果 */
+        .card-3d {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-3d:hover {
+            transform: translateY(-5px) rotateX(2deg);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        /* 渐变文字效果 */
+        .gradient-text {
+            background: linear-gradient(45deg, #FF375F, #FF453A);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: gradient 3s ease infinite;
+            background-size: 200% 200%;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* 提示框样式 */
+        .tip-box {
+            background: rgba(255, 55, 95, 0.1);
+            border-left: 4px solid #FF375F;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tip-box::before {
+            content: '💡';
+            margin-right: 10px;
+        }
+
+        .tip-box::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.05), transparent);
+            transform: translateX(-100%);
+            animation: shine 2s infinite;
+        }
+
+        @keyframes shine {
+            100% { transform: translateX(100%); }
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .tip-box {
+                background: rgba(255, 69, 58, 0.1);
+                border-left-color: #FF453A;
+            }
         }
     </style>
 </head>
@@ -410,21 +532,27 @@
         <p>在前两篇文章中，我们已经在 Mac mini 上搭建了 Docker 环境并部署了 MoviePilot。这次我们将探索如何部署 Open WebUI，这是一个强大的本地 AI 模型管理和使用界面。Open WebUI 是一个完全离线运行的、可扩展的自托管 AI 平台，支持 Ollama 和 OpenAI 兼容的 API，并内置了 RAG（检索增强生成）推理引擎，是一个功能丰富的 AI 部署解决方案。</p>
 
         <h2 id="为什么选择-Open-WebUI-🤔">为什么选择 Open WebUI 🤔</h2>
-        <p>相比其他 AI 模型管理工具，Open WebUI 具有以下优势：</p>
-        <ul>
-            <li>完全开源，社区活跃</li>
-            <li>支持多种 AI 模型和框架</li>
-            <li>界面美观，操作直观</li>
-            <li>资源占用低，性能优秀</li>
-            <li>支持 Docker 部署</li>
-            <li>可扩展性强</li>
-            <li>完全离线运行，保护隐私</li>
-            <li>内置 RAG 推理引擎</li>
-            <li>支持多用户管理</li>
-            <li>支持 GPU 加速</li>
-        </ul>
+        <div class="card-3d">
+            <p>相比其他 AI 模型管理工具，Open WebUI 具有以下优势：</p>
+            <ul>
+                <li>完全开源，社区活跃</li>
+                <li>支持多种 AI 模型和框架</li>
+                <li>界面美观，操作直观</li>
+                <li>资源占用低，性能优秀</li>
+                <li>支持 Docker 部署</li>
+                <li>可扩展性强</li>
+                <li>完全离线运行，保护隐私</li>
+                <li>内置 RAG 推理引擎</li>
+                <li>支持多用户管理</li>
+                <li>支持 GPU 加速</li>
+            </ul>
+        </div>
 
         <h2 id="环境准备-🛠️">环境准备 🛠️</h2>
+        <div class="tip-box">
+            在开始部署之前，请确保你已经安装了 Docker 和 Docker Compose。如果还没有安装，可以参考第一篇文章中的安装步骤。
+        </div>
+
         <h3>1. 确认 Docker 环境</h3>
         <p>首先确保你的 Docker 环境正常运行：</p>
         <pre><code class="bash">docker --version
@@ -438,6 +566,10 @@ cd ~/docker/open-webui</code></pre>
         <pre><code class="bash">docker pull ghcr.io/open-webui/open-webui:main</code></pre>
 
         <h2 id="部署-Open-WebUI-🚀">部署 Open WebUI 🚀</h2>
+        <div class="tip-box">
+            以下配置已经过优化，适用于大多数使用场景。如果你有特殊需求，可以参考进阶设置部分进行调整。
+        </div>
+
         <h3>1. 创建 Docker Compose 配置</h3>
         <p>在工作目录下创建 <code>docker-compose.yml</code> 文件：</p>
         <pre><code class="yaml">version: '3'
@@ -464,22 +596,28 @@ volumes:
         <p>启动后，可以通过 <code>http://localhost:3000</code> 访问 Open WebUI 界面。</p>
 
         <h2 id="基础配置-⚙️">基础配置 ⚙️</h2>
-        <h3>1. 初始账户设置</h3>
-        <p>首次访问时需要注意以下几点：</p>
-        <ul>
-            <li>第一个创建的账户将自动获得管理员权限</li>
-            <li>后续注册的用户默认为"待审核"状态</li>
-            <li>所有数据（包括登录信息）都存储在本地</li>
-            <li>所有模型默认为私有，需要手动设置共享权限</li>
-        </ul>
+        <div class="card-3d">
+            <h3>1. 初始账户设置</h3>
+            <p>首次访问时需要注意以下几点：</p>
+            <ul>
+                <li>第一个创建的账户将自动获得管理员权限</li>
+                <li>后续注册的用户默认为"待审核"状态</li>
+                <li>所有数据（包括登录信息）都存储在本地</li>
+                <li>所有模型默认为私有，需要手动设置共享权限</li>
+            </ul>
+        </div>
 
         <h3>2. 连接 Ollama</h3>
+        <div class="tip-box">
+            确保 Ollama 服务已经启动并正常运行，否则 Open WebUI 将无法连接到模型服务。
+        </div>
         <p>Open WebUI 默认会尝试连接本地的 Ollama 服务（端口 11434）。如果你的 Ollama 运行在其他位置，需要修改 <code>OLLAMA_BASE_URL</code> 环境变量。</p>
 
         <h2 id="进阶设置-🎯">进阶设置 🎯</h2>
-        <h3>1. GPU 支持</h3>
-        <p>如果你的设备有 NVIDIA GPU，可以通过以下方式启用 GPU 支持：</p>
-        <pre><code class="yaml">version: '3'
+        <div class="card-3d">
+            <h3>1. GPU 支持</h3>
+            <p>如果你的设备有 NVIDIA GPU，可以通过以下方式启用 GPU 支持：</p>
+            <pre><code class="yaml">version: '3'
 services:
   open-webui:
     # ... 其他配置 ...
@@ -490,6 +628,11 @@ services:
             - driver: nvidia
               count: all
               capabilities: [gpu]</code></pre>
+        </div>
+
+        <div class="tip-box">
+            离线模式可以防止系统尝试从网络下载模型，适合在安全要求较高的环境中使用。
+        </div>
 
         <h3>2. 离线模式</h3>
         <p>如果你希望完全离线运行，可以设置环境变量：</p>
@@ -504,52 +647,60 @@ services:
   --run-once open-webui</code></pre>
 
         <h2 id="使用技巧-💡">使用技巧 💡</h2>
-        <h3>1. 模型管理</h3>
-        <ul>
-            <li>使用模型组功能组织不同类型的模型</li>
-            <li>为常用模型设置快捷方式</li>
-            <li>合理设置模型的共享权限</li>
-            <li>定期清理不再使用的模型</li>
-        </ul>
+        <div class="card-3d">
+            <h3>1. 模型管理</h3>
+            <ul>
+                <li>使用模型组功能组织不同类型的模型</li>
+                <li>为常用模型设置快捷方式</li>
+                <li>合理设置模型的共享权限</li>
+                <li>定期清理不再使用的模型</li>
+            </ul>
 
-        <h3>2. 性能优化</h3>
-        <ul>
-            <li>根据设备性能选择合适大小的模型</li>
-            <li>使用量化版本减少内存占用</li>
-            <li>适当调整并发请求数</li>
-            <li>监控系统资源使用情况</li>
-        </ul>
+            <h3>2. 性能优化</h3>
+            <ul>
+                <li>根据设备性能选择合适大小的模型</li>
+                <li>使用量化版本减少内存占用</li>
+                <li>适当调整并发请求数</li>
+                <li>监控系统资源使用情况</li>
+            </ul>
+        </div>
 
         <h2 id="常见问题-❓">常见问题 ❓</h2>
-        <h3>1. 连接问题</h3>
-        <p>如果遇到连接错误，通常是因为容器无法访问 Ollama 服务。可以尝试以下解决方案：</p>
-        <ul>
-            <li>使用 <code>--network=host</code> 参数启动容器</li>
-            <li>检查防火墙设置</li>
-            <li>确认 Ollama 服务正常运行</li>
-        </ul>
+        <div class="card-3d">
+            <h3>1. 连接问题</h3>
+            <p>如果遇到连接错误，通常是因为容器无法访问 Ollama 服务。可以尝试以下解决方案：</p>
+            <ul>
+                <li>使用 <code>--network=host</code> 参数启动容器</li>
+                <li>检查防火墙设置</li>
+                <li>确认 Ollama 服务正常运行</li>
+            </ul>
 
-        <h3>2. 性能问题</h3>
-        <p>如果遇到性能问题，可以：</p>
-        <ul>
-            <li>检查系统资源使用情况</li>
-            <li>适当调整模型参数</li>
-            <li>考虑使用量化版本的模型</li>
-            <li>优化并发请求数量</li>
-        </ul>
+            <h3>2. 性能问题</h3>
+            <p>如果遇到性能问题，可以：</p>
+            <ul>
+                <li>检查系统资源使用情况</li>
+                <li>适当调整模型参数</li>
+                <li>考虑使用量化版本的模型</li>
+                <li>优化并发请求数量</li>
+            </ul>
+        </div>
 
         <h2 id="后续计划-📅">后续计划 📅</h2>
-        <p>在完成 Open WebUI 的部署和配置后，我们还可以进一步优化和扩展系统：</p>
-        <ul>
-            <li>集成更多 AI 模型和工具</li>
-            <li>优化模型加载和运行性能</li>
-            <li>添加自动化工作流程</li>
-            <li>配置 API 接口服务</li>
-            <li>实现多用户管理</li>
-            <li>探索更多应用场景</li>
-        </ul>
+        <div class="card-3d">
+            <p>在完成 Open WebUI 的部署和配置后，我们还可以进一步优化和扩展系统：</p>
+            <ul>
+                <li>集成更多 AI 模型和工具</li>
+                <li>优化模型加载和运行性能</li>
+                <li>添加自动化工作流程</li>
+                <li>配置 API 接口服务</li>
+                <li>实现多用户管理</li>
+                <li>探索更多应用场景</li>
+            </ul>
+        </div>
 
-        <p>在下一篇文章中，我们将介绍如何使用 Open WebUI 搭建个人 AI 助手，包括模型选择、参数调优、提示词设计等内容，敬请期待！</p>
+        <div class="tip-box">
+            在下一篇文章中，我们将介绍如何使用 Open WebUI 搭建个人 AI 助手，包括模型选择、参数调优、提示词设计等内容，敬请期待！
+        </div>
     </main>
 
     <script>
@@ -668,6 +819,64 @@ services:
                         .catch(err => console.error('复制失败:', err));
                 }
             });
+        });
+
+        // 为代码块添加复制按钮和语言标签
+        document.querySelectorAll('pre code').forEach((block) => {
+            // 获取语言
+            const language = block.className.replace('language-', '');
+            block.parentElement.setAttribute('data-language', language);
+            
+            // 创建复制按钮
+            const button = document.createElement('button');
+            button.className = 'code-copy-button';
+            button.textContent = '复制';
+            
+            button.addEventListener('click', async () => {
+                try {
+                    await navigator.clipboard.writeText(block.textContent);
+                    button.textContent = '已复制!';
+                    button.classList.add('copied');
+                    setTimeout(() => {
+                        button.textContent = '复制';
+                        button.classList.remove('copied');
+                    }, 2000);
+                } catch (err) {
+                    console.error('复制失败:', err);
+                    button.textContent = '复制失败';
+                    setTimeout(() => {
+                        button.textContent = '复制';
+                    }, 2000);
+                }
+            });
+            
+            block.parentElement.appendChild(button);
+        });
+
+        // 3D 卡片效果
+        document.querySelectorAll('.card-3d').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = (y - centerY) / 20;
+                const rotateY = (centerX - x) / 20;
+                
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
+            });
+        });
+
+        // 添加渐变文字效果
+        document.querySelectorAll('h1, h2').forEach(heading => {
+            heading.classList.add('gradient-text');
         });
     </script>
 </body>
