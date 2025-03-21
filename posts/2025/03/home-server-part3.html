@@ -64,14 +64,20 @@
             color: #FF375F;
         }
 
-        /* 标题下横线样式 */
+        h2 {
+            position: relative;
+            margin-bottom: 2em;
+            padding-bottom: 0.5em;
+        }
+
         h2::after {
             content: "";
-            display: block;
+            position: absolute;
+            left: 0;
+            bottom: 0;
             width: 100%;
             height: 2px;
             background: linear-gradient(90deg, rgba(255, 55, 95, 0.8), transparent);
-            margin-top: 5px;
             border-radius: 2px;
         }
 

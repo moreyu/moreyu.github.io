@@ -76,7 +76,7 @@
 
         /* 目录导航样式 */
         .toc {
-            position: fixed;
+      position: fixed;
             right: 20px;
             top: 20px;
             width: 280px;
@@ -89,7 +89,7 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            z-index: 1000;
+      z-index: 1000;
             transition: all 0.3s ease;
             scrollbar-width: thin;
             scrollbar-color: #FF375F rgba(255, 255, 255, 0.1);
@@ -271,7 +271,7 @@
             color: white;
             cursor: pointer;
             transition: all 0.3s ease;
-            display: flex;
+      display: flex;
             align-items: center;
             justify-content: center;
             backdrop-filter: blur(10px);
@@ -314,9 +314,9 @@
 
             .toc a:hover {
                 color: #FF453A;
-            }
-
-            .toc-title {
+    }
+    
+    .toc-title {
                 color: #FF453A;
             }
 
@@ -359,7 +359,7 @@
             }
 
             .toc-toggle {
-                display: block;
+      display: block;
             }
         }
 
@@ -371,9 +371,9 @@
             .toc-toggle {
                 display: none;
             }
-        }
+    }
 
-        @media (max-width: 768px) {
+    @media (max-width: 768px) {
             body {
                 padding: 15px;
                 padding-bottom: 80px;
@@ -514,11 +514,11 @@
 
             .toc-toggle {
                 display: block;
-            }
-        }
+      }
+    }
 
-        @media (max-width: 1200px) {
-            .toc {
+    @media (max-width: 1200px) {
+      .toc {
                 transform: translateX(100%);
                 opacity: 0;
             }
@@ -709,8 +709,8 @@
 
             ul:not(.toc ul) li::before {
                 color: #FF453A;
-            }
-        }
+      }
+    }
   </style>
 </head>
 <body>
@@ -980,19 +980,19 @@ if __name__ == "__main__":
         document.querySelectorAll('pre').forEach(block => {
             const button = block.querySelector('.copy-button');
             if (button) {
-                button.addEventListener('click', async () => {
+      button.addEventListener('click', async () => {
                     const code = block.querySelector('code').innerText;
-                    await navigator.clipboard.writeText(code);
+        await navigator.clipboard.writeText(code);
                     
                     const originalText = button.innerHTML;
                     button.innerHTML = '✓ 已复制';
                     button.style.background = '#4CAF50';
                     
-                    setTimeout(() => {
+        setTimeout(() => {
                         button.innerHTML = originalText;
                         button.style.background = '';
-                    }, 2000);
-                });
+        }, 2000);
+      });
             }
         });
 
@@ -1075,7 +1075,7 @@ if __name__ == "__main__":
                 }
                 lastScrollTop = st <= 0 ? 0 : st;
             });
-        });
-    </script>
+    });
+  </script>
 </body>
 </html> 

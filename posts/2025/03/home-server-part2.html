@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html lang="zh-CN" data-theme="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>家用伺服器折腾手记-2：Mac mini 部署 MoviePilot 教程 - Moreyu's Blog</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/maple-mono@latest/index.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/maple-mono@latest/index.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.8/dist/medium-zoom.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.8/dist/medium-zoom.min.js"></script>
-    <style>
+  <style>
         /* 基础样式 */
         body {
             font-family: "Maple Mono", monospace;
@@ -52,8 +52,8 @@
         pre {
             background: #1e1e1e;
             padding: 15px;
-            border-radius: 8px;
-            overflow-x: auto;
+      border-radius: 8px;
+      overflow-x: auto;
         }
 
         code {
@@ -70,7 +70,7 @@
             bottom: 20px;
             right: 20px;
             background: rgba(255, 55, 95, .9);
-            color: #fff;
+      color: #fff;
             padding: 10px 20px;
             border-radius: 20px;
             backdrop-filter: blur(10px);
@@ -107,7 +107,7 @@
             scrollbar-width: thin;
             scrollbar-color: #FF375F rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(255, 55, 95, 0.2);
-            opacity: 0;
+      opacity: 0;
             transform: translateX(100%);
         }
 
@@ -118,9 +118,9 @@
         }
 
         .toc:hover {
-            opacity: 1;
-        }
-
+      opacity: 1;
+    }
+    
         .toc-title {
             font-weight: bold;
             margin-bottom: 10px;
@@ -203,7 +203,7 @@
             left: 20px;
             top: 50%;
             transform: translateY(-50%);
-            display: flex;
+      display: flex;
             flex-direction: column;
             gap: 10px;
             z-index: 1000;
@@ -218,7 +218,7 @@
             color: white;
             cursor: pointer;
             transition: all 0.3s ease;
-            display: flex;
+      display: flex;
             align-items: center;
             justify-content: center;
             backdrop-filter: blur(10px);
@@ -236,13 +236,13 @@
 
         /* 阅读进度指示器样式 */
         .reading-progress-container {
-            position: fixed;
+      position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 3px;
             background: rgba(0, 0, 0, 0.1);
-            z-index: 1000;
+      z-index: 1000;
         }
 
         .reading-progress-bar {
@@ -263,7 +263,7 @@
                 color: #FF453A;
             }
 
-            .toc {
+    .toc {
                 background: rgba(0, 0, 0, 0.95);
                 color: #f5f5f7;
                 border: 1px solid rgba(255, 69, 58, 0.2);
@@ -275,9 +275,9 @@
 
             .toc a:hover {
                 color: #FF453A;
-            }
-
-            .toc-title {
+    }
+    
+    .toc-title {
                 color: #FF453A;
             }
 
@@ -308,7 +308,7 @@
         }
 
         /* 响应式布局 */
-        @media (max-width: 768px) {
+    @media (max-width: 768px) {
             body {
                 padding: 15px;
                 padding-bottom: 80px;
@@ -361,13 +361,13 @@
         @keyframes shimmer {
             0% { background-position: -200% 0; }
             100% { background-position: 200% 0; }
-        }
-    </style>
+    }
+  </style>
 </head>
 <body>
     <div class="reading-progress-container">
-        <div class="reading-progress-bar"></div>
-    </div>
+    <div class="reading-progress-bar"></div>
+  </div>
 
     <button class="toc-toggle" title="显示/隐藏目录">
         <i class="fas fa-bars"></i>
@@ -387,7 +387,7 @@
 
     <a href="/index.html" class="back-to-home">返回首页 🏠</a>
 
-    <aside class="toc">
+  <aside class="toc">
         <div class="toc-title">目录导航</div>
         <ul>
             <li><a href="#前言-📝">前言 📝</a></li>
@@ -399,8 +399,8 @@
             <li><a href="#使用技巧-💡">使用技巧 💡</a></li>
             <li><a href="#常见问题-❓">常见问题 ❓</a></li>
             <li><a href="#后续计划-📅">后续计划 📅</a></li>
-        </ul>
-    </aside>
+    </ul>
+  </aside>
 
     <main class="post-content">
         <h1>家用伺服器折腾手记-2：Mac mini 部署 MoviePilot 教程 🎬</h1>
@@ -538,7 +538,7 @@ sudo chown -R 1000:1000 ~/docker/moviepilot/config</code></pre>
         <p>在下一篇文章中，我们将介绍如何部署和配置 Emby 媒体服务器，敬请期待！</p>
     </main>
 
-    <script>
+  <script>
         // 初始化代码高亮
         hljs.highlightAll();
 
@@ -654,7 +654,7 @@ sudo chown -R 1000:1000 ~/docker/moviepilot/config</code></pre>
                         .catch(err => console.error('复制失败:', err));
                 }
             });
-        });
-    </script>
+    });
+  </script>
 </body>
 </html> 
