@@ -392,27 +392,58 @@
       position: fixed;
       bottom: 80px;
       right: 20px;
-      background: rgba(255, 55, 95, .9);
-      color: #fff;
+      background: rgba(34, 34, 34, 0.95);
+      color: #f5f5f7;
       padding: 10px 20px;
       border-radius: 20px;
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
-      box-shadow: 0 4px 6px rgba(0, 0, 0, .1);
-      transition: all .3s ease;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
       z-index: 1000;
       cursor: pointer;
       border: none;
       font-family: "Maple Mono", monospace;
+      border: 1px solid rgba(255, 55, 95, 0.2);
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
     .share-button:hover {
       transform: translateY(-2px);
-      box-shadow: 0 6px 8px rgba(0, 0, 0, .2);
+      box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+      background: rgba(34, 34, 34, 0.98);
     }
 
     .share-button.copied {
-      background: #4CAF50;
+      background: rgba(76, 175, 80, 0.95);
+    }
+
+    .share-button i {
+      font-size: 1.1em;
+    }
+
+    /* 小标题修饰 */
+    h3::before {
+      content: "# ";
+      color: #FF375F;
+      font-weight: bold;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .share-button {
+        background: rgba(0, 0, 0, 0.95);
+        border-color: rgba(255, 69, 58, 0.2);
+      }
+
+      .share-button:hover {
+        background: rgba(0, 0, 0, 0.98);
+      }
+
+      h3::before {
+        color: #FF453A;
+      }
     }
 
     /* 进度条模块样式 */
@@ -495,7 +526,8 @@
   </button>
 
   <button class="share-button" title="分享文章">
-    <i class="fas fa-share-alt"></i> 分享
+    <i class="fas fa-share-alt"></i>
+    <span>分享文章</span>
   </button>
 
   <aside class="toc">
@@ -700,8 +732,18 @@ services:
       const tocLinks = document.querySelectorAll('.toc a');
       let isVisible = false;
 
+      // 点击其他区域关闭目录
+      document.addEventListener('click', (e) => {
+        if (!toc.contains(e.target) && !tocToggle.contains(e.target) && isVisible) {
+          isVisible = false;
+          toc.classList.remove('show');
+          tocToggle.style.transform = 'rotate(0deg)';
+        }
+      });
+
       // 切换目录显示
-      tocToggle.addEventListener('click', () => {
+      tocToggle.addEventListener('click', (e) => {
+        e.stopPropagation(); // 阻止事件冒泡
         isVisible = !isVisible;
         toc.classList.toggle('show');
         tocToggle.style.transform = isVisible ? 'rotate(180deg)' : 'rotate(0deg)';
@@ -711,6 +753,7 @@ services:
       tocLinks.forEach(link => {
         link.addEventListener('click', (e) => {
           e.preventDefault();
+          e.stopPropagation(); // 阻止事件冒泡
           const targetId = link.getAttribute('href').slice(1);
           const targetElement = document.getElementById(targetId);
           if (targetElement) {
@@ -796,17 +839,19 @@ services:
     shareButton.addEventListener('click', async () => {
       try {
         await navigator.clipboard.writeText(window.location.href);
-        shareButton.innerHTML = '<i class="fas fa-check"></i> 已复制链接';
+        const originalContent = shareButton.innerHTML;
+        shareButton.innerHTML = '<i class="fas fa-check"></i><span>链接已复制</span>';
         shareButton.classList.add('copied');
         setTimeout(() => {
-          shareButton.innerHTML = '<i class="fas fa-share-alt"></i> 分享';
+          shareButton.innerHTML = originalContent;
           shareButton.classList.remove('copied');
         }, 2000);
       } catch (err) {
         console.error('复制失败:', err);
-        shareButton.textContent = '复制失败';
+        const originalContent = shareButton.innerHTML;
+        shareButton.innerHTML = '<i class="fas fa-times"></i><span>复制失败</span>';
         setTimeout(() => {
-          shareButton.innerHTML = '<i class="fas fa-share-alt"></i> 分享';
+          shareButton.innerHTML = originalContent;
         }, 2000);
       }
     });
