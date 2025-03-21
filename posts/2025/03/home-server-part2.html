@@ -169,7 +169,7 @@
             position: fixed;
             right: 20px;
             top: 20px;
-            background: rgba(255, 55, 95, 0.95);
+            background: rgba(255, 55, 95, 0.8);
             color: #ffffff;
             border: none;
             border-radius: 50%;
@@ -181,16 +181,16 @@
             align-items: center;
             justify-content: center;
             transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             box-shadow: 0 2px 8px rgba(255, 55, 95, 0.3);
             font-size: 1.2em;
             padding: 0;
         }
 
         .toc-toggle:hover {
-            transform: rotate(180deg);
-            background: rgba(255, 55, 95, 1);
+            transform: rotate(180deg) scale(1.1);
+            background: rgba(255, 55, 95, 0.9);
             box-shadow: 0 4px 12px rgba(255, 55, 95, 0.5);
         }
 
@@ -395,6 +395,7 @@
             <li><a href="#进阶设置-🎯">进阶设置 🎯</a></li>
             <li><a href="#使用技巧-💡">使用技巧 💡</a></li>
             <li><a href="#常见问题-❓">常见问题 ❓</a></li>
+            <li><a href="#后续计划-📅">后续计划 📅</a></li>
         </ul>
     </aside>
 
@@ -519,6 +520,19 @@ sudo chown -R 1000:1000 ~/docker/moviepilot/config</code></pre>
             <li>确认站点 Cookie 是否有效</li>
             <li>查看是否符合过滤规则</li>
         </ul>
+
+        <h2 id="后续计划-📅">后续计划 📅</h2>
+        <p>在完成 MoviePilot 的部署和配置后，我们还可以进一步优化和扩展系统：</p>
+        <ul>
+            <li>集成 Emby 或 Jellyfin 媒体服务器，提供更好的观看体验</li>
+            <li>配置 Nginx 反向代理，实现外网访问</li>
+            <li>添加 Overseerr 用户请求系统</li>
+            <li>设置自动备份和监控</li>
+            <li>优化存储空间管理</li>
+            <li>探索更多自动化工具和插件</li>
+        </ul>
+
+        <p>在下一篇文章中，我们将介绍如何部署和配置 Emby 媒体服务器，敬请期待！</p>
     </main>
 
     <script>
