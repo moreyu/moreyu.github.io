@@ -162,6 +162,159 @@
             background: rgba(255, 55, 95, 0.1);
             z-index: 1000;
         }
+
+        /* 目录导航样式 */
+        .toc {
+            position: fixed;
+            top: 20px;
+            right: -300px;
+            width: 280px;
+            max-height: calc(100vh - 40px);
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 8px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            transition: right 0.3s ease;
+            overflow-y: auto;
+            z-index: 100;
+        }
+
+        .toc.show {
+            right: 20px;
+        }
+
+        .toc-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #FF375F;
+        }
+
+        .toc ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .toc ul ul {
+            padding-left: 1.5em;
+        }
+
+        .toc a {
+            display: block;
+            padding: 5px 0;
+            color: #333;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            font-size: 0.9em;
+            border-radius: 4px;
+        }
+
+        .toc a:hover {
+            color: #FF375F;
+            background: rgba(255, 55, 95, 0.1);
+            padding-left: 10px;
+        }
+
+        .toc-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            border: none;
+            border-radius: 50%;
+            background: #FF375F;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 101;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(255, 55, 95, 0.3);
+        }
+
+        .toc-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(255, 55, 95, 0.4);
+        }
+
+        /* 滚动条样式 */
+        .toc::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .toc::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 3px;
+        }
+
+        .toc::-webkit-scrollbar-thumb {
+            background: rgba(255, 55, 95, 0.5);
+            border-radius: 3px;
+        }
+
+        .toc::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 55, 95, 0.7);
+        }
+
+        /* 分享按钮样式 */
+        .share-container {
+            position: fixed;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 100;
+        }
+
+        .share-button {
+            width: 40px;
+            height: 40px;
+            border: none;
+            border-radius: 50%;
+            background: #FF375F;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(255, 55, 95, 0.3);
+        }
+
+        .share-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(255, 55, 95, 0.4);
+        }
+
+        /* 返回首页按钮样式 */
+        .back-to-home {
+            display: inline-block;
+            margin-top: 40px;
+            padding: 10px 20px;
+            background: #FF375F;
+            color: white;
+            text-decoration: none;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(255, 55, 95, 0.3);
+        }
+
+        .back-to-home:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 55, 95, 0.4);
+        }
+
+        /* 阅读进度条样式 */
+        .reading-progress-bar {
+            height: 100%;
+            width: 0;
+            background: #FF375F;
+            transition: width 0.1s ease;
+        }
     </style>
 </head>
 <body>
