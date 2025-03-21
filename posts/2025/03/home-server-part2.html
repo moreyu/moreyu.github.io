@@ -176,7 +176,7 @@
             right: -300px;
             width: 280px;
             max-height: calc(100vh - 40px);
-            background: rgba(255, 255, 255, 0.95);
+            background: #fff;
             border-radius: 8px;
             box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
             padding: 20px;
@@ -194,6 +194,9 @@
             font-weight: bold;
             margin-bottom: 15px;
             color: #FF375F;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .toc ul {
@@ -267,11 +270,10 @@
         /* 分享按钮样式 */
         .share-container {
             position: fixed;
+            bottom: 20px;
             left: 20px;
-            top: 50%;
-            transform: translateY(-50%);
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             gap: 10px;
             z-index: 100;
         }
@@ -313,8 +315,6 @@
             transition: all 0.3s ease;
             box-shadow: 0 2px 8px rgba(255, 55, 95, 0.3);
             z-index: 100;
-            padding: 0;
-            margin: 0;
         }
 
         .back-to-home:hover {
@@ -337,15 +337,18 @@
     </div>
 
     <div class="share-container">
-        <button class="share-button" title="分享到微信" onclick="shareToWeChat()">
+        <button class="share-button" title="分享到微信">
             <i class="fab fa-weixin"></i>
         </button>
-        <button class="share-button" title="分享到微博" onclick="shareToWeibo()">
+        <button class="share-button" title="分享到微博">
             <i class="fab fa-weibo"></i>
         </button>
-        <button class="share-button" title="复制链接" onclick="copyLink()">
+        <button class="share-button" title="复制链接">
             <i class="fas fa-link"></i>
         </button>
+        <a href="/index.html" class="back-to-home" title="返回首页">
+            <i class="fas fa-home"></i>
+        </a>
     </div>
 
     <button class="toc-toggle" title="显示/隐藏目录">
@@ -353,7 +356,10 @@
     </button>
 
     <aside class="toc">
-        <div class="toc-title">📚 目录</div>
+        <div class="toc-title">
+            <i class="fas fa-list-ul"></i>
+            目录导航
+        </div>
         <ul>
             <li><a href="#前言-📝">前言 📝</a></li>
             <li><a href="#为什么选择-MoviePilot-🤔">为什么选择 MoviePilot 🤔</a></li>
@@ -487,10 +493,6 @@ sudo chown -R 1000:1000 ~/docker/moviepilot/config</code></pre>
             <li>确认站点 Cookie 是否有效</li>
             <li>查看是否符合过滤规则</li>
         </ul>
-
-        <a href="/index.html" class="back-to-home" title="返回首页">
-            <i class="fas fa-home"></i>
-        </a>
     </main>
 
     <script>
@@ -502,10 +504,7 @@ sudo chown -R 1000:1000 ~/docker/moviepilot/config</code></pre>
             margin: 24,
             background: 'rgba(0,0,0,0.9)',
             scrollOffset: 40,
-            container: {
-                width: '100%',
-                height: '100%'
-            }
+            container: null
         });
 
         // 阅读进度条
@@ -525,21 +524,41 @@ sudo chown -R 1000:1000 ~/docker/moviepilot/config</code></pre>
         });
 
         // 分享功能
-        function shareToWeChat() {
-            alert('请截图分享到微信');
+        document.querySelectorAll('.share-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const type = this.title.split('到')[1];
+                if (type === '微信') {
+                    alert('请截图分享到微信');
+                } else if (type === '微博') {
+                    const url = encodeURIComponent(window.location.href);
+                    const title = encodeURIComponent(document.title);
+                    window.open(`http://service.weibo.com/share/share.php?url=${url}&title=${title}`);
+                } else if (type === '复制链接') {
+                    navigator.clipboard.writeText(window.location.href)
+                        .then(() => alert('链接已复制到剪贴板'))
+                        .catch(err => console.error('复制失败:', err));
+                }
+            });
+        });
+
+        // 主题切换
+        const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+        const currentTheme = localStorage.getItem('theme');
+        if (currentTheme === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        } else if (currentTheme === 'light') {
+            document.documentElement.setAttribute('data-theme', 'light');
         }
 
-        function shareToWeibo() {
-            const url = encodeURIComponent(window.location.href);
-            const title = encodeURIComponent(document.title);
-            window.open(`http://service.weibo.com/share/share.php?url=${url}&title=${title}`);
-        }
-
-        function copyLink() {
-            navigator.clipboard.writeText(window.location.href)
-                .then(() => alert('链接已复制到剪贴板'))
-                .catch(err => console.error('复制失败:', err));
-        }
+        prefersDarkScheme.addListener((e) => {
+            if (!localStorage.getItem('theme')) {
+                if (e.matches) {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                } else {
+                    document.documentElement.setAttribute('data-theme', 'light');
+                }
+            }
+        });
     </script>
 </body>
 </html> 
