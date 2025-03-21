@@ -69,6 +69,8 @@
             padding-left: 15px;
             margin-top: 2em;
             margin-bottom: 1em;
+            max-width: 800px;
+            width: calc(100% - 40px);  /* 考虑到页面的 padding */
         }
 
         h2::before {
@@ -940,32 +942,24 @@ services:
 
         // 添加渐变文字效果
         document.querySelectorAll('h1, h2').forEach(heading => {
-            // 如果标题中包含 emoji（通常在末尾）
             const text = heading.textContent;
+            const emojiRegex = /([🖥️📝🤔🛠️🚀⚙️🎯💡❓📅]+)$/;
+            const matches = text.match(/(.*?)\s*([🖥️📝🤔🛠️🚀⚙️🎯💡❓📅]+)$/);
             
-            // 专门处理大标题，因为它包含特殊的 emoji
-            if (heading.tagName === 'H1') {
-                // 大标题中的 emoji 是 🖥️ 这种形式
-                const matches = text.match(/(.*?)(\s*[🖥️📝🤔🛠️🚀⚙️🎯💡❓📅].*)$/);
-                if (matches) {
-                    const [_, textContent, emoji] = matches;
-                    heading.innerHTML = `<span>${textContent}</span><span class="emoji">${emoji}</span>`;
-                } else {
-                    heading.innerHTML = `<span>${text}</span>`;
-                }
+            if (matches) {
+                const [_, textContent, emoji] = matches;
+                heading.innerHTML = `<span class="gradient-text">${textContent.trim()}</span><span class="emoji">${emoji}</span>`;
             } else {
-                // 小标题的处理保持不变
-                const words = text.trim().split(/\s+/);
-                const lastWord = words.pop();
-                const textContent = words.join(' ') + (words.length > 0 ? ' ' : '');
-                
-                if (/\p{Emoji}/u.test(lastWord)) {
-                    heading.innerHTML = `<span>${textContent}</span><span class="emoji">${lastWord}</span>`;
-                } else {
-                    heading.innerHTML = `<span>${text}</span>`;
-                }
+                heading.innerHTML = `<span class="gradient-text">${text}</span>`;
             }
-            heading.classList.add('gradient-text');
+            
+            // 确保 emoji 样式正确
+            const emojiSpan = heading.querySelector('.emoji');
+            if (emojiSpan) {
+                emojiSpan.style.display = 'inline-block';
+                emojiSpan.style.marginLeft = heading.tagName === 'H1' ? '10px' : '8px';
+                emojiSpan.style.verticalAlign = 'middle';
+            }
         });
   </script>
 </body>
