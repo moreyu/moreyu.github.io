@@ -388,40 +388,53 @@
     }
 
     /* 分享按钮样式 */
-    .share-container {
-      position: fixed;
-      left: 20px;
-      top: 50%;
-      transform: translateY(-50%);
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      z-index: 1000;
-    }
-
     .share-button {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      border: none;
-      background: rgba(255, 55, 95, 0.9);
-      color: white;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      position: fixed;
+      bottom: 20px;
+      right: 80px;
+      background: rgba(255, 55, 95, .9);
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 20px;
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, .1);
+      transition: all .3s ease;
+      z-index: 1000;
+      cursor: pointer;
+      border: none;
+      font-family: "Maple Mono", monospace;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9em;
     }
 
     .share-button:hover {
-      transform: scale(1.1);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 8px rgba(0, 0, 0, .2);
       background: rgba(255, 55, 95, 1);
     }
 
     .share-button i {
-      font-size: 1.2em;
+      font-size: 1.1em;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .share-button {
+        background: rgba(255, 69, 58, 0.9);
+      }
+
+      .share-button:hover {
+        background: rgba(255, 69, 58, 1);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .share-button {
+        bottom: 20px;
+        right: 80px;
+      }
     }
 
     /* 标题装饰 */
@@ -453,14 +466,6 @@
     }
 
     @media (prefers-color-scheme: dark) {
-      .share-button {
-        background: rgba(255, 69, 58, 0.9);
-      }
-
-      .share-button:hover {
-        background: rgba(255, 69, 58, 1);
-      }
-
       h2::before {
         background: linear-gradient(to bottom, #FF453A, rgba(255,69,58,0.5));
       }
@@ -592,11 +597,6 @@
     <div class="card-3d">
       <h2 id="前言">前言 📝</h2>
       <p>在前面的文章中，我们已经成功搭建了 MoviePilot、AList 和 Emby 这三个服务。现在，是时候将它们整合在一起，打造一个完整的家庭媒体中心了。本文将详细介绍如何让这三个服务协同工作，以及一些实用的自动化配置和优化技巧。</p>
-      <div>
-        <span class="function-module">🔧 配置教程</span>
-        <span class="function-module">📺 媒体服务器</span>
-        <span class="function-module">🚀 性能优化</span>
-      </div>
     </div>
 
     <div class="card-3d">
@@ -746,6 +746,14 @@ services:
         <li>优化媒体库分类</li>
         <li>添加用户活动统计</li>
       </ul>
+    </div>
+
+    <div class="card-3d">
+      <div>
+        <span class="function-module">🔧 配置教程</span>
+        <span class="function-module">📺 媒体服务器</span>
+        <span class="function-module">🚀 性能优化</span>
+      </div>
     </div>
   </main>
 
