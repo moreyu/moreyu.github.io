@@ -613,23 +613,23 @@
   <aside class="toc">
     <div class="toc-title">📚 目录</div>
     <ul>
-      <li><a href="#前言">前言 📝</a></li>
-<li><a href="#环境准备">环境准备 🛠️</a></li>
-<li><a href="#部署青龙面板">部署青龙面板 🚀</a></li>
-<li><a href="#配置青龙面板">配置青龙面板 ⚙️</a></li>
-<li><a href="#实用脚本示例">实用脚本示例 📜</a></li>
-<li><a href="#性能优化建议">性能优化建议 🚀</a></li>
-<li><a href="#常见问题与解决方案">常见问题与解决方案 💡</a></li>
-<li><a href="#后续计划">后续计划 🎯</a></li>
+      <li><a href="#前言-📝">前言 📝</a></li>
+      <li><a href="#环境准备-🛠️">环境准备 🛠️</a></li>
+      <li><a href="#部署青龙面板-🚀">部署青龙面板 🚀</a></li>
+      <li><a href="#配置青龙面板-⚙️">配置青龙面板 ⚙️</a></li>
+      <li><a href="#实用脚本示例-📜">实用脚本示例 📜</a></li>
+      <li><a href="#性能优化建议-🚀">性能优化建议 🚀</a></li>
+      <li><a href="#常见问题与解决方案-💡">常见问题与解决方案 💡</a></li>
+      <li><a href="#后续计划-🎯">后续计划 🎯</a></li>
     </ul>
   </aside>
 
     <main class="post-content">
         <h1>家用伺服器折腾手记-1：Mac mini 搭建青龙面板教程 🖥️</h1>
         <div class="meta">发布时间：2025-03-07 | 分类：服务器, Docker, 自动化</div>
-        <h2>前言 📝</h2>
+        <h2 id="前言-📝">前言 📝</h2>
         <p>最近入手了一台 Mac mini M2，除了日常使用外，我还想把它变成一台家用服务器。考虑到 Mac mini 的性能强大、功耗低、噪音小等优点，它非常适合作为 24/7 运行的家用服务器。这篇文章将详细介绍如何在 Mac mini 上搭建 Docker 环境并运行青龙面板。</p>
-        <h2>环境准备 🛠️</h2>
+        <h2 id="环境准备-🛠️">环境准备 🛠️</h2>
         <h3>1. 安装 Homebrew</h3>
         <pre><code class="bash">/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</code></pre>
         <p>安装完成后，确保将 Homebrew 添加到 PATH 中。对于 Apple Silicon Mac，通常需要添加以下路径：</p>
@@ -641,7 +641,7 @@ eval "$(/opt/homebrew/bin/brew shellenv)"</code></pre>
         <h3>3. 创建工作目录</h3>
         <pre><code class="bash">mkdir -p ~/docker/qinglong
 cd ~/docker/qinglong</code></pre>
-        <h2>部署青龙面板 🚀</h2>
+        <h2 id="部署青龙面板-🚀">部署青龙面板 🚀</h2>
         <h3>1. 创建 docker-compose.yml</h3>
         <pre><code class="yaml">version: '3'
 services:
@@ -661,7 +661,7 @@ services:
         <pre><code class="bash">docker-compose up -d</code></pre>
         <p>使用以下命令检查容器状态：</p>
         <pre><code class="bash">docker ps | grep qinglong</code></pre>
-        <h2>配置青龙面板 ⚙️</h2>
+        <h2 id="配置青龙面板-⚙️">配置青龙面板 ⚙️</h2>
         <h3>1. 初始化配置</h3>
         <p>访问 <code>http://localhost:5700</code> 进行初始化配置：</p>
         <ul>
@@ -677,7 +677,7 @@ npm install -g typescript ts-node
 # Python 依赖
 pip3 install requests
 pip3 install PyExecJS</code></pre>
-        <h2>实用脚本示例 📜</h2>
+        <h2 id="实用脚本示例-📜">实用脚本示例 📜</h2>
         <h3>1. 系统监控脚本</h3>
         <pre><code class="javascript">// monitor.js
 const os = require('os');
@@ -744,14 +744,14 @@ def backup():
 
 if __name__ == "__main__":
     backup()</code></pre>
-        <h2>性能优化建议 🚀</h2>
+        <h2 id="性能优化建议-🚀">性能优化建议 🚀</h2>
         <ul>
             <li>合理设置定时任务间隔，避免任务重叠执行</li>
             <li>定期清理日志文件和临时文件</li>
             <li>使用 <code>cron</code> 表达式优化任务执行时间</li>
             <li>对于资源密集型任务，建议在低峰期执行</li>
         </ul>
-        <h2>常见问题与解决方案 💡</h2>
+        <h2 id="常见问题与解决方案-💡">常见问题与解决方案 💡</h2>
         <h3>1. 容器无法启动</h3>
         <ul>
             <li>检查端口 5700 是否被占用：<code>lsof -i:5700</code></li>
@@ -764,7 +764,7 @@ if __name__ == "__main__":
             <li>查看错误日志：<code>docker exec -it qinglong cat /ql/log/[脚本名称].log</code></li>
             <li>确认环境变量配置正确</li>
         </ul>
-        <h2>后续计划 🎯</h2>
+        <h2 id="后续计划-🎯">后续计划 🎯</h2>
         <p>这是家用服务器系列的第一篇文章，后续我们将继续探索更多有趣的应用场景：</p>
         <ul>
             <li>搭建 Homebridge 实现智能家居集成</li>
@@ -783,12 +783,15 @@ if __name__ == "__main__":
         document.addEventListener('DOMContentLoaded', function() {
             const toc = document.querySelector('.toc');
             const tocToggle = document.querySelector('.toc-toggle');
-            const headings = document.querySelectorAll('h2, h3');
+            const headings = document.querySelectorAll('h2');
             const tocLinks = document.querySelectorAll('.toc a');
+            let isVisible = false;
 
             // 切换目录显示
             tocToggle.addEventListener('click', () => {
+                isVisible = !isVisible;
                 toc.classList.toggle('show');
+                tocToggle.style.transform = isVisible ? 'rotate(180deg)' : 'rotate(0deg)';
             });
 
             // 点击目录项时滚动到对应位置
@@ -798,13 +801,23 @@ if __name__ == "__main__":
                     const targetId = link.getAttribute('href').slice(1);
                     const targetElement = document.getElementById(targetId);
                     if (targetElement) {
+                        const offset = 80; // 设置偏移量，避免标题被顶部遮挡
+                        const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - offset;
+                        
                         window.scrollTo({
-                            top: targetElement.offsetTop - 20,
+                            top: targetPosition,
                             behavior: 'smooth'
                         });
+
+                        // 更新当前活动项
+                        tocLinks.forEach(l => l.parentElement.classList.remove('active'));
+                        link.parentElement.classList.add('active');
+
                         // 在移动端点击后隐藏目录
                         if (window.innerWidth <= 1200) {
+                            isVisible = false;
                             toc.classList.remove('show');
+                            tocToggle.style.transform = 'rotate(0deg)';
                         }
                     }
                 });
@@ -827,11 +840,11 @@ if __name__ == "__main__":
                     const currentId = currentHeading.id;
                     const currentLink = document.querySelector(`.toc a[href="#${currentId}"]`);
                     
-                    if (lastActiveLink) {
+                    if (lastActiveLink && lastActiveLink !== currentLink) {
                         lastActiveLink.parentElement.classList.remove('active');
                     }
                     
-                    if (currentLink) {
+                    if (currentLink && lastActiveLink !== currentLink) {
                         currentLink.parentElement.classList.add('active');
                         lastActiveLink = currentLink;
                     }
