@@ -64,6 +64,23 @@
             color: #FF375F;
         }
 
+        /* 标题下横线样式 */
+        h2::after {
+            content: "";
+            display: block;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(255, 55, 95, 0.8), transparent);
+            margin-top: 5px;
+            border-radius: 2px;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            h2::after {
+                background: linear-gradient(90deg, rgba(255, 69, 58, 0.8), transparent);
+            }
+        }
+
         /* 返回首页按钮 */
         .back-to-home {
             position: fixed;
@@ -890,17 +907,28 @@ services:
         document.querySelectorAll('h1, h2').forEach(heading => {
             // 如果标题中包含 emoji（通常在末尾）
             const text = heading.textContent;
-            // 更精确的 emoji 检测
-            let lastChar = text.trim().split(/\s+/).pop().slice(-2);
-            if (/\p{Emoji}/u.test(lastChar)) {
-                // 简单方法，将最后一个词组作为可能包含emoji的部分
+            
+            // 专门处理大标题，因为它包含特殊的 emoji
+            if (heading.tagName === 'H1') {
+                // 大标题中的 emoji 是 🖥️ 这种形式
+                const matches = text.match(/(.*?)(\s*[🖥️📝🤔🛠️🚀⚙️🎯💡❓📅].*)$/);
+                if (matches) {
+                    const [_, textContent, emoji] = matches;
+                    heading.innerHTML = `<span>${textContent}</span><span class="emoji">${emoji}</span>`;
+                } else {
+                    heading.innerHTML = `<span>${text}</span>`;
+                }
+            } else {
+                // 小标题的处理保持不变
                 const words = text.trim().split(/\s+/);
                 const lastWord = words.pop();
                 const textContent = words.join(' ') + (words.length > 0 ? ' ' : '');
                 
-                heading.innerHTML = `<span>${textContent}</span><span class="emoji">${lastWord}</span>`;
-            } else {
-                heading.innerHTML = `<span>${text}</span>`;
+                if (/\p{Emoji}/u.test(lastWord)) {
+                    heading.innerHTML = `<span>${textContent}</span><span class="emoji">${lastWord}</span>`;
+                } else {
+                    heading.innerHTML = `<span>${text}</span>`;
+                }
             }
             heading.classList.add('gradient-text');
         });
