@@ -953,9 +953,7 @@ services:
             
             if (matches) {
                 const [_, textContent, emoji] = matches;
-                heading.innerHTML = `<span class="gradient-text">${textContent.trim()}</span><span class="emoji">${emoji}</span>`;
-            } else {
-                heading.innerHTML = `<span class="gradient-text">${text}</span>`;
+                heading.textContent = `${textContent.trim()} ${emoji}`;
             }
         });
   </script>
