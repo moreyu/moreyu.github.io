@@ -1,57 +1,63 @@
 <!DOCTYPE html>
-<html lang="zh-CN" data-theme="dark">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>家用伺服器折腾手记-2：Mac mini 部署 MoviePilot 教程 - Moreyu's Blog</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/maple-mono@latest/index.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.8/dist/medium-zoom.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.8/dist/medium-zoom.min.js"></script>
     <style>
-        /* 基础样式 */
+        :root {
+            --primary-color: #FF375F;
+            --text-color: #333;
+            --bg-color: #f5f5f7;
+            --code-bg: #1a1a1a;
+            --border-color: #ddd;
+            --shadow-color: rgba(0,0,0,0.1);
+            --hover-shadow: rgba(0,0,0,0.2);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --text-color: #e0e0e0;
+                --bg-color: #1a1a1a;
+                --code-bg: #2a2a2a;
+                --border-color: #333;
+                --shadow-color: rgba(255,255,255,0.1);
+                --hover-shadow: rgba(255,255,255,0.2);
+            }
+        }
+
         body {
             font-family: "Maple Mono", monospace;
             line-height: 1.6;
             max-width: 800px;
             margin: 0 auto;
             padding: 20px;
-            background: #f5f5f7;
-            color: #333;
+            background: var(--bg-color);
+            color: var(--text-color);
         }
 
         pre {
             position: relative;
             border-radius: 8px;
-            transition: all 0.3s ease;
-            background: linear-gradient(145deg, #1e1e1e, #2a2a2a);
-            box-shadow: inset 0 2px 4px rgba(255,255,255,0.1);
-        }
-
-        pre::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.05), transparent);
-            background-size: 200% 200%;
-            animation: shimmer 3s infinite;
-            pointer-events: none;
-            border-radius: 8px;
+            background: var(--code-bg);
+            padding: 1em;
+            overflow-x: auto;
+            box-shadow: inset 0 2px 4px var(--shadow-color);
         }
 
         code {
             font-family: "Maple Mono", monospace;
-            position: relative;
-            overflow: hidden;
+            color: var(--text-color);
         }
 
         h1, h2, h3 {
-            color: #FF375F;
+            color: var(--primary-color);
         }
 
         /* 标题装饰 */
@@ -68,7 +74,7 @@
             top: 0;
             height: 100%;
             width: 4px;
-            background: linear-gradient(to bottom, #FF375F, rgba(255,55,95,0.5));
+            background: linear-gradient(to bottom, var(--primary-color), rgba(255,55,95,0.5));
             border-radius: 2px;
         }
 
@@ -139,34 +145,19 @@
             max-width: 100%;
             border-radius: 8px;
             margin: 20px 0;
-            opacity: 1;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            background: white;
-            padding: 10px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            display: block;
+            transition: transform 0.3s ease;
+            box-shadow: 0 4px 12px var(--shadow-color);
         }
 
         img:hover {
             transform: scale(1.02);
-            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+            box-shadow: 0 8px 24px var(--hover-shadow);
         }
 
         .post-content img {
             width: 100%;
             height: auto;
             margin: 2em 0;
-        }
-
-        /* 其他样式保持与第一篇文章相同 */
-        .reading-progress-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: rgba(255, 55, 95, 0.1);
-            z-index: 1000;
         }
 
         /* 目录导航样式 */
@@ -176,9 +167,9 @@
             right: -300px;
             width: 280px;
             max-height: calc(100vh - 40px);
-            background: #fff;
+            background: var(--bg-color);
             border-radius: 8px;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 12px var(--shadow-color);
             padding: 20px;
             transition: right 0.3s ease;
             overflow-y: auto;
@@ -193,7 +184,7 @@
             font-size: 1.2em;
             font-weight: bold;
             margin-bottom: 15px;
-            color: #FF375F;
+            color: var(--primary-color);
             display: flex;
             align-items: center;
             gap: 8px;
@@ -211,7 +202,7 @@
         .toc a {
             display: block;
             padding: 5px 0;
-            color: #333;
+            color: var(--text-color);
             text-decoration: none;
             transition: all 0.2s ease;
             font-size: 0.9em;
@@ -219,115 +210,103 @@
         }
 
         .toc a:hover {
-            color: #FF375F;
-            background: rgba(255, 55, 95, 0.1);
+            color: var(--primary-color);
+            background: rgba(255,55,95,0.1);
             padding-left: 10px;
         }
 
+        /* 功能按钮基础样式 */
+        .action-button {
+            width: 40px;
+            height: 40px;
+            border: none;
+            border-radius: 50%;
+            background: var(--primary-color);
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(255,55,95,0.3);
+            z-index: 100;
+        }
+
+        .action-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(255,55,95,0.4);
+        }
+
+        /* 目录切换按钮 */
         .toc-toggle {
             position: fixed;
             top: 20px;
             right: 20px;
-            width: 40px;
-            height: 40px;
-            border: none;
-            border-radius: 50%;
-            background: #FF375F;
-            color: white;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 101;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 8px rgba(255, 55, 95, 0.3);
+            composes: action-button;
         }
 
-        .toc-toggle:hover {
-            transform: scale(1.1);
-            box-shadow: 0 4px 12px rgba(255, 55, 95, 0.4);
-        }
-
-        /* 滚动条样式 */
-        .toc::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .toc::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.1);
-            border-radius: 3px;
-        }
-
-        .toc::-webkit-scrollbar-thumb {
-            background: rgba(255, 55, 95, 0.5);
-            border-radius: 3px;
-        }
-
-        .toc::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 55, 95, 0.7);
-        }
-
-        /* 分享按钮样式 */
+        /* 分享按钮容器 */
         .share-container {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            display: flex;
-            flex-direction: row;
-            gap: 10px;
-            z-index: 100;
-        }
-
-        .share-button {
-            width: 40px;
-            height: 40px;
-            border: none;
-            border-radius: 50%;
-            background: #FF375F;
-            color: white;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 8px rgba(255, 55, 95, 0.3);
-        }
-
-        .share-button:hover {
-            transform: scale(1.1);
-            box-shadow: 0 4px 12px rgba(255, 55, 95, 0.4);
-        }
-
-        /* 返回首页按钮样式 */
-        .back-to-home {
             position: fixed;
             bottom: 20px;
             right: 20px;
             display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            background: #FF375F;
-            color: white;
-            text-decoration: none;
-            border-radius: 50%;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 8px rgba(255, 55, 95, 0.3);
+            gap: 10px;
             z-index: 100;
         }
 
-        .back-to-home:hover {
-            transform: scale(1.1);
-            box-shadow: 0 4px 12px rgba(255, 55, 95, 0.4);
+        /* 返回首页按钮 */
+        .back-to-home {
+            composes: action-button;
+            text-decoration: none;
         }
 
-        /* 阅读进度条样式 */
+        /* 阅读进度条 */
+        .reading-progress-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: rgba(255,55,95,0.1);
+            z-index: 1000;
+        }
+
         .reading-progress-bar {
             height: 100%;
             width: 0;
-            background: #FF375F;
+            background: var(--primary-color);
             transition: width 0.1s ease;
+        }
+
+        /* 滚动条样式 */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-color);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255,55,95,0.7);
+        }
+
+        /* 文章元信息 */
+        .meta {
+            color: var(--text-color);
+            opacity: 0.8;
+            margin-bottom: 2em;
+            padding: 10px;
+            border-radius: 8px;
+            background: rgba(255,55,95,0.1);
+            display: inline-block;
         }
     </style>
 </head>
@@ -336,28 +315,28 @@
         <div class="reading-progress-bar"></div>
     </div>
 
+    <button class="toc-toggle action-button" title="显示/隐藏目录">
+        <i class="fas fa-list"></i>
+    </button>
+
     <div class="share-container">
-        <button class="share-button" title="分享到微信">
+        <button class="action-button" title="分享到微信">
             <i class="fab fa-weixin"></i>
         </button>
-        <button class="share-button" title="分享到微博">
+        <button class="action-button" title="分享到微博">
             <i class="fab fa-weibo"></i>
         </button>
-        <button class="share-button" title="复制链接">
+        <button class="action-button" title="复制链接">
             <i class="fas fa-link"></i>
         </button>
-        <a href="/index.html" class="back-to-home" title="返回首页">
+        <a href="/index.html" class="action-button back-to-home" title="返回首页">
             <i class="fas fa-home"></i>
         </a>
     </div>
 
-    <button class="toc-toggle" title="显示/隐藏目录">
-        <i class="fas fa-bars"></i>
-    </button>
-
     <aside class="toc">
         <div class="toc-title">
-            <i class="fas fa-list-ul"></i>
+            <i class="fas fa-list"></i>
             目录导航
         </div>
         <ul>
@@ -503,8 +482,7 @@ sudo chown -R 1000:1000 ~/docker/moviepilot/config</code></pre>
         mediumZoom('img', {
             margin: 24,
             background: 'rgba(0,0,0,0.9)',
-            scrollOffset: 40,
-            container: null
+            scrollOffset: 40
         });
 
         // 阅读进度条
@@ -524,7 +502,7 @@ sudo chown -R 1000:1000 ~/docker/moviepilot/config</code></pre>
         });
 
         // 分享功能
-        document.querySelectorAll('.share-button').forEach(button => {
+        document.querySelectorAll('.share-container .action-button').forEach(button => {
             button.addEventListener('click', function() {
                 const type = this.title.split('到')[1];
                 if (type === '微信') {
@@ -541,23 +519,10 @@ sudo chown -R 1000:1000 ~/docker/moviepilot/config</code></pre>
             });
         });
 
-        // 主题切换
+        // 主题跟随系统
         const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
-        const currentTheme = localStorage.getItem('theme');
-        if (currentTheme === 'dark') {
-            document.documentElement.setAttribute('data-theme', 'dark');
-        } else if (currentTheme === 'light') {
-            document.documentElement.setAttribute('data-theme', 'light');
-        }
-
         prefersDarkScheme.addListener((e) => {
-            if (!localStorage.getItem('theme')) {
-                if (e.matches) {
-                    document.documentElement.setAttribute('data-theme', 'dark');
-                } else {
-                    document.documentElement.setAttribute('data-theme', 'light');
-                }
-            }
+            document.body.classList.toggle('dark-theme', e.matches);
         });
     </script>
 </body>
