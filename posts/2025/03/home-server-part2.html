@@ -90,7 +90,7 @@
         /* 目录导航样式 */
         .toc {
             position: fixed;
-            right: 20px;
+            right: -300px;
             top: 20px;
             width: 280px;
             max-height: 80vh;
@@ -107,25 +107,18 @@
             scrollbar-width: thin;
             scrollbar-color: #FF375F rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(255, 55, 95, 0.2);
-            display: none;
+            opacity: 0;
+            transform: translateX(100%);
         }
 
         .toc.show {
-            display: block;
+            right: 20px;
+            opacity: 0.85;
+            transform: translateX(0);
         }
 
-        .toc::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .toc::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 3px;
-        }
-
-        .toc::-webkit-scrollbar-thumb {
-            background: #FF375F;
-            border-radius: 3px;
+        .toc:hover {
+            opacity: 1;
         }
 
         .toc-title {
@@ -169,7 +162,7 @@
             position: fixed;
             right: 20px;
             top: 20px;
-            background: rgba(255, 55, 95, 0.8);
+            background: rgba(255, 55, 95, 0.85);
             color: #ffffff;
             border: none;
             border-radius: 50%;
@@ -181,17 +174,27 @@
             align-items: center;
             justify-content: center;
             transition: all 0.3s ease;
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             box-shadow: 0 2px 8px rgba(255, 55, 95, 0.3);
             font-size: 1.2em;
             padding: 0;
         }
 
         .toc-toggle:hover {
-            transform: rotate(180deg) scale(1.1);
-            background: rgba(255, 55, 95, 0.9);
+            transform: rotate(180deg);
+            background: rgba(255, 55, 95, 1);
             box-shadow: 0 4px 12px rgba(255, 55, 95, 0.5);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .toc-toggle {
+                background: rgba(255, 69, 58, 0.85);
+            }
+            
+            .toc-toggle:hover {
+                background: rgba(255, 69, 58, 1);
+            }
         }
 
         /* 分享按钮样式 */
@@ -546,6 +549,86 @@ sudo chown -R 1000:1000 ~/docker/moviepilot/config</code></pre>
             scrollOffset: 40
         });
 
+        // 目录导航功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const toc = document.querySelector('.toc');
+            const tocToggle = document.querySelector('.toc-toggle');
+            const headings = document.querySelectorAll('h2');
+            const tocLinks = document.querySelectorAll('.toc a');
+            let isVisible = false;
+
+            // 切换目录显示
+            tocToggle.addEventListener('click', () => {
+                isVisible = !isVisible;
+                toc.classList.toggle('show');
+                tocToggle.style.transform = isVisible ? 'rotate(180deg)' : 'rotate(0deg)';
+            });
+
+            // 点击目录项时滚动到对应位置
+            tocLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = link.getAttribute('href').slice(1);
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        const offset = 80;
+                        const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - offset;
+                        
+                        window.scrollTo({
+                            top: targetPosition,
+                            behavior: 'smooth'
+                        });
+
+                        // 更新当前活动项
+                        tocLinks.forEach(l => l.parentElement.classList.remove('active'));
+                        link.parentElement.classList.add('active');
+
+                        // 在移动端点击后隐藏目录
+                        if (window.innerWidth <= 1200) {
+                            isVisible = false;
+                            toc.classList.remove('show');
+                            tocToggle.style.transform = 'rotate(0deg)';
+                        }
+                    }
+                });
+            });
+
+            // 滚动时高亮当前标题
+            let lastActiveLink = null;
+            window.addEventListener('scroll', () => {
+                const scrollPosition = window.scrollY;
+                
+                // 找到当前可见的标题
+                let currentHeading = null;
+                headings.forEach(heading => {
+                    if (heading.offsetTop <= scrollPosition + 100) {
+                        currentHeading = heading;
+                    }
+                });
+                
+                if (currentHeading) {
+                    const currentId = currentHeading.id;
+                    const currentLink = document.querySelector(`.toc a[href="#${currentId}"]`);
+                    
+                    if (lastActiveLink && lastActiveLink !== currentLink) {
+                        lastActiveLink.parentElement.classList.remove('active');
+                    }
+                    
+                    if (currentLink && lastActiveLink !== currentLink) {
+                        currentLink.parentElement.classList.add('active');
+                        lastActiveLink = currentLink;
+                    }
+                }
+
+                // 向下滚动时自动隐藏目录
+                if (scrollPosition > 100 && isVisible) {
+                    isVisible = false;
+                    toc.classList.remove('show');
+                    tocToggle.style.transform = 'rotate(0deg)';
+                }
+            });
+        });
+
         // 阅读进度条
         const progressBar = document.querySelector('.reading-progress-bar');
         window.addEventListener('scroll', () => {
@@ -553,13 +636,6 @@ sudo chown -R 1000:1000 ~/docker/moviepilot/config</code></pre>
             const height = document.documentElement.scrollHeight - window.innerHeight;
             const progress = (scrolled / height) * 100;
             progressBar.style.width = `${progress}%`;
-        });
-
-        // 目录切换
-        const tocToggle = document.querySelector('.toc-toggle');
-        const toc = document.querySelector('.toc');
-        tocToggle.addEventListener('click', () => {
-            toc.classList.toggle('show');
         });
 
         // 分享功能
