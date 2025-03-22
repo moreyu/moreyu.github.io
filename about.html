@@ -356,6 +356,173 @@
       font-size: 0.9rem;
       opacity: 0.8;
     }
+
+    /* 终端风格自我介绍 */
+    .terminal {
+      background: #1e1e1e;
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin: 2rem 0;
+      font-family: 'Maple Mono', monospace;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .terminal::before {
+      content: '● ● ●';
+      position: absolute;
+      top: 0.5rem;
+      left: 1rem;
+      color: #666;
+      letter-spacing: 0.5rem;
+    }
+
+    .terminal-content {
+      margin-top: 1rem;
+      color: #0f0;
+      line-height: 1.6;
+    }
+
+    .terminal-line {
+      display: block;
+      white-space: nowrap;
+      overflow: hidden;
+      animation: typing 3s steps(60, end);
+    }
+
+    .terminal-prompt {
+      color: #0f0;
+    }
+
+    .terminal-output {
+      color: #fff;
+      margin-left: 1rem;
+    }
+
+    @keyframes typing {
+      from { width: 0 }
+      to { width: 100% }
+    }
+
+    /* GitHub 贡献统计 */
+    .github-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin: 2rem 0;
+    }
+
+    .github-stat {
+      background: var(--card-bg);
+      padding: 1rem;
+      border-radius: var(--radius);
+      text-align: center;
+      box-shadow: var(--shadow);
+      transition: all 0.3s ease;
+    }
+
+    .github-stat:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .github-stat-number {
+      font-size: 2rem;
+      color: var(--primary);
+      font-weight: bold;
+      margin: 0.5rem 0;
+    }
+
+    .github-stat-label {
+      color: var(--text);
+      font-size: 0.9rem;
+    }
+
+    /* 技术栈雷达图 */
+    .tech-radar {
+      width: 100%;
+      max-width: 500px;
+      margin: 2rem auto;
+      position: relative;
+    }
+
+    /* 代码片段展示 */
+    .code-snippet {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 1rem;
+      margin: 1rem 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .code-snippet pre {
+      margin: 0;
+      padding: 1rem;
+      overflow-x: auto;
+      font-family: 'Maple Mono', monospace;
+      background: #1e1e1e;
+      color: #fff;
+      border-radius: var(--radius);
+    }
+
+    .code-snippet-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+      padding: 0.5rem;
+      background: rgba(var(--primary-rgb), 0.1);
+      border-radius: var(--radius);
+    }
+
+    .code-snippet-title {
+      color: var(--primary);
+      font-weight: bold;
+    }
+
+    .code-snippet-lang {
+      background: var(--primary);
+      color: white;
+      padding: 0.2rem 0.5rem;
+      border-radius: var(--radius);
+      font-size: 0.8rem;
+    }
+
+    /* 访问统计 */
+    .visit-stats {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin: 2rem 0;
+      flex-wrap: wrap;
+    }
+
+    .visit-stat {
+      background: var(--card-bg);
+      padding: 1rem 2rem;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .visit-stat:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .visit-number {
+      font-size: 1.5rem;
+      color: var(--primary);
+      font-weight: bold;
+    }
+
+    .visit-label {
+      color: var(--text);
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+    }
   </style>
 </head>
 <body>
@@ -537,6 +704,83 @@
         <span>Oracle Java 认证</span>
       </div>
     </div>
+
+    <div class="terminal">
+      <div class="terminal-content">
+        <span class="terminal-line">
+          <span class="terminal-prompt">$ whoami</span>
+          <span class="terminal-output">moreyu</span>
+        </span>
+        <span class="terminal-line">
+          <span class="terminal-prompt">$ cat /etc/profile</span>
+          <span class="terminal-output">
+            全栈开发工程师 | 云原生技术专家 | 开源爱好者
+          </span>
+        </span>
+        <span class="terminal-line">
+          <span class="terminal-prompt">$ uptime</span>
+          <span class="terminal-output">8年开发经验，专注于云原生和全栈开发</span>
+        </span>
+      </div>
+    </div>
+
+    <h3 class="gradient-text">📊 GitHub 统计</h3>
+    <div class="github-stats">
+      <div class="github-stat">
+        <div class="github-stat-number">2.5k+</div>
+        <div class="github-stat-label">代码提交</div>
+      </div>
+      <div class="github-stat">
+        <div class="github-stat-number">50+</div>
+        <div class="github-stat-label">开源项目</div>
+      </div>
+      <div class="github-stat">
+        <div class="github-stat-number">1k+</div>
+        <div class="github-stat-label">Stars 获得</div>
+      </div>
+      <div class="github-stat">
+        <div class="github-stat-number">100+</div>
+        <div class="github-stat-label">技术文章</div>
+      </div>
+    </div>
+
+    <h3 class="gradient-text">💻 最近提交</h3>
+    <div class="code-snippet">
+      <div class="code-snippet-header">
+        <span class="code-snippet-title">feat: implement cloud-native deployment pipeline</span>
+        <span class="code-snippet-lang">TypeScript</span>
+      </div>
+      <pre><code>async function deployToCloud() {
+  const config = await loadConfig();
+  const cluster = new K8sCluster(config);
+  
+  console.log('🚀 Starting deployment...');
+  await cluster.deploy({
+    namespace: 'production',
+    replicas: 3,
+    autoScale: true,
+    monitoring: true
+  });
+  
+  console.log('✨ Deployment successful!');
+}</code></pre>
+    </div>
+
+    <h3 class="gradient-text">📈 访问统计</h3>
+    <div class="visit-stats">
+      <div class="visit-stat">
+        <div class="visit-number" id="total-visits">--</div>
+        <div class="visit-label">总访问量</div>
+      </div>
+      <div class="visit-stat">
+        <div class="visit-number" id="today-visits">--</div>
+        <div class="visit-label">今日访问</div>
+      </div>
+      <div class="visit-stat">
+        <div class="visit-number" id="online-users">--</div>
+        <div class="visit-label">当前在线</div>
+      </div>
+    </div>
   </div>
 
   <footer class="footer">
@@ -603,6 +847,21 @@
     // 页面加载完成后立即计算一次并开始定时更新
     calculateRuntime();
     setInterval(calculateRuntime, 1000);
+
+    // 模拟访问统计数据
+    function updateVisitStats() {
+      document.getElementById('total-visits').textContent = '12,345';
+      document.getElementById('today-visits').textContent = '123';
+      document.getElementById('online-users').textContent = Math.floor(Math.random() * 20 + 1);
+    }
+
+    // 更新在线用户数
+    setInterval(() => {
+      document.getElementById('online-users').textContent = Math.floor(Math.random() * 20 + 1);
+    }, 5000);
+
+    // 初始化访问统计
+    updateVisitStats();
   </script>
 </body>
 </html> 
