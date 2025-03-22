@@ -337,52 +337,32 @@
     }
 
     .footer {
-      background: var(--card-bg);
-      padding: 2rem 0;
+      text-align: center;
+      padding: 2rem;
       margin-top: 4rem;
+      background: var(--card-bg);
       box-shadow: var(--shadow);
     }
 
-    .footer-content {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 2rem;
-      padding: 0 2rem;
-    }
-
-    .footer-section {
+    .footer p {
       color: var(--text);
-    }
-
-    .footer-section h4 {
-      color: var(--primary);
       margin-bottom: 1rem;
     }
 
-    .footer-links {
+    .footer .social-links {
       display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
+      justify-content: center;
+      gap: 2rem;
     }
 
-    .footer-links a {
+    .footer .social-links a {
       color: var(--text);
       text-decoration: none;
       transition: color 0.3s ease;
     }
 
-    .footer-links a:hover {
+    .footer .social-links a:hover {
       color: var(--primary);
-    }
-
-    .footer-bottom {
-      text-align: center;
-      padding-top: 2rem;
-      margin-top: 2rem;
-      border-top: 1px solid var(--border);
-      color: var(--text);
     }
   </style>
 </head>
@@ -568,27 +548,10 @@
   </div>
 
   <footer class="footer">
-    <div class="footer-content">
-      <div class="footer-section">
-        <h4>关于本站</h4>
-        <p>分享技术，记录生活</p>
-        <p>本站已运行 <span id="runtime">计算中...</span></p>
-      </div>
-      <div class="footer-section">
-        <h4>联系方式</h4>
-        <div class="footer-links">
-          <a href="https://github.com/moreyu" target="_blank"><i class="fab fa-github"></i> GitHub</a>
-          <a href="mailto:your@email.com"><i class="fas fa-envelope"></i> Email</a>
-        </div>
-      </div>
-      <div class="footer-section">
-        <h4>站点信息</h4>
-        <p>访问量：<span id="visits">--</span></p>
-        <p>最后更新：<span id="lastUpdated">2024-03-21</span></p>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <p>&copy; 2024 Moreyu's Blog. All rights reserved.</p>
+    <p>&copy; 2024 Moreyu's Blog 🎉 | 本站已稳定运行 <span id="runtime">计算中...</span> ⚡️</p>
+    <div class="social-links">
+      <a href="https://github.com/moreyu" target="_blank"><i class="fab fa-github"></i> GitHub 🐱</a>
+      <a href="mailto:your@email.com"><i class="fas fa-envelope"></i> Email ✉️</a>
     </div>
   </footer>
 
