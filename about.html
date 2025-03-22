@@ -8,62 +8,33 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="stylesheet" href="/css/style.css">
   <style>
-    /* 页面容器 */
     .container {
       max-width: 800px;
       margin: 0 auto;
       padding: 2rem 1rem;
     }
 
-    /* 头像样式 */
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 2rem;
+      margin: 2rem 0;
+      box-shadow: var(--shadow);
+    }
+
     .avatar-container {
       position: relative;
       width: 150px;
       height: 150px;
       margin: 0 auto 2rem;
-      perspective: 1000px;
-    }
-
-    .avatar-inner {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      transform-style: preserve-3d;
-      transition: transform 0.8s;
-    }
-
-    .avatar-container:hover .avatar-inner {
-      transform: rotateY(180deg);
-    }
-
-    .avatar-front, .avatar-back {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      backface-visibility: hidden;
-      border-radius: 50%;
-      border: 3px solid var(--primary);
-    }
-
-    .avatar-front {
-      overflow: hidden;
-    }
-
-    .avatar-back {
-      background: var(--primary);
-      transform: rotateY(180deg);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2rem;
-      color: white;
     }
 
     .avatar {
       width: 100%;
       height: 100%;
-      object-fit: cover;
       border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--primary);
       animation: float 6s ease-in-out infinite;
     }
 
@@ -88,104 +59,14 @@
       to { transform: rotate(360deg); }
     }
 
-    /* 个人简介 */
     .bio {
       text-align: center;
       font-size: 1.1rem;
       line-height: 1.8;
       margin: 2rem 0;
       color: var(--text);
-      position: relative;
-      padding: 2rem;
-      background: var(--card-bg);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
     }
 
-    .bio::before {
-      content: '"';
-      position: absolute;
-      top: 0;
-      left: 1rem;
-      font-size: 4rem;
-      color: var(--primary);
-      opacity: 0.2;
-      font-family: serif;
-    }
-
-    /* 技能卡片 */
-    .skills-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 1.5rem;
-      margin: 2rem 0;
-    }
-
-    .skill-card {
-      background: var(--card-bg);
-      border-radius: var(--radius);
-      padding: 1.5rem;
-      box-shadow: var(--shadow);
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .skill-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 5px;
-      background: linear-gradient(90deg, var(--primary), var(--primary-light));
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform 0.3s ease;
-    }
-
-    .skill-card:hover {
-      transform: translateY(-5px);
-      box-shadow: var(--shadow-hover);
-    }
-
-    .skill-card:hover::before {
-      transform: scaleX(1);
-    }
-
-    .skill-icon {
-      font-size: 2.5rem;
-      color: var(--primary);
-      margin-bottom: 1rem;
-      transition: transform 0.3s ease;
-    }
-
-    .skill-card:hover .skill-icon {
-      transform: scale(1.1);
-    }
-
-    .skill-level {
-      height: 4px;
-      background: var(--border);
-      border-radius: 2px;
-      margin-top: 1rem;
-      overflow: hidden;
-    }
-
-    .skill-progress {
-      height: 100%;
-      background: var(--primary);
-      border-radius: 2px;
-      transform-origin: left;
-      animation: progress 1s ease-out forwards;
-    }
-
-    @keyframes progress {
-      from { transform: scaleX(0); }
-      to { transform: scaleX(1); }
-    }
-
-    /* 社交链接 */
     .social-links {
       display: flex;
       justify-content: center;
@@ -205,39 +86,14 @@
       font-size: 1.5rem;
       transition: all 0.3s ease;
       box-shadow: var(--shadow);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .social-link::before {
-      content: '';
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background: var(--primary);
-      transform: translateY(100%);
-      transition: transform 0.3s ease;
-    }
-
-    .social-link i {
-      position: relative;
-      z-index: 1;
-      transition: color 0.3s ease;
     }
 
     .social-link:hover {
       transform: translateY(-5px);
-    }
-
-    .social-link:hover::before {
-      transform: translateY(0);
-    }
-
-    .social-link:hover i {
+      background: var(--primary);
       color: white;
     }
 
-    /* 统计数据 */
     .stats {
       display: flex;
       justify-content: center;
@@ -247,38 +103,68 @@
 
     .stat-item {
       text-align: center;
-      padding: 1.5rem;
+      padding: 1rem;
       background: var(--card-bg);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
-      transition: all 0.3s ease;
-      min-width: 150px;
-    }
-
-    .stat-item:hover {
-      transform: translateY(-5px);
-      box-shadow: var(--shadow-hover);
+      min-width: 120px;
     }
 
     .stat-number {
-      font-size: 2.5rem;
+      font-size: 2rem;
       color: var(--primary);
       font-weight: bold;
       margin-bottom: 0.5rem;
-      background: linear-gradient(45deg, var(--primary), var(--primary-light));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
     }
 
     .stat-label {
       color: var(--text);
-      font-size: 1.1rem;
     }
 
-    /* 时间线 */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+
+    .skill-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      box-shadow: var(--shadow);
+      transition: all 0.3s ease;
+    }
+
+    .skill-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .skill-icon {
+      font-size: 2rem;
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+
+    .skill-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    .skill-tag {
+      background: rgba(var(--primary-rgb), 0.1);
+      color: var(--primary);
+      padding: 0.2rem 0.6rem;
+      border-radius: var(--radius);
+      font-size: 0.9rem;
+    }
+
     .timeline {
       position: relative;
-      margin: 4rem 0;
+      margin: 3rem 0;
       padding: 2rem 0;
     }
 
@@ -314,35 +200,17 @@
       border-radius: var(--radius);
       box-shadow: var(--shadow);
       position: relative;
-      transition: all 0.3s ease;
-    }
-
-    .timeline-content:hover {
-      transform: scale(1.02);
-      box-shadow: var(--shadow-hover);
     }
 
     .timeline-content::before {
       content: "";
       position: absolute;
       top: 50%;
-      width: 20px;
-      height: 20px;
+      width: 16px;
+      height: 16px;
       background: var(--primary);
       border-radius: 50%;
-      border: 4px solid var(--bg);
-      box-shadow: 0 0 0 4px rgba(var(--primary-rgb), 0.2);
-    }
-
-    .timeline-content h3 {
-      color: var(--primary);
-      margin-bottom: 0.5rem;
-      font-size: 1.5rem;
-    }
-
-    .timeline-content p {
-      margin: 0;
-      line-height: 1.6;
+      border: 3px solid var(--bg);
     }
 
     .timeline-content.left {
@@ -355,12 +223,12 @@
     }
 
     .timeline-content.left::before {
-      right: -60px;
+      right: -58px;
       transform: translateY(-50%);
     }
 
     .timeline-content.right::before {
-      left: -60px;
+      left: -58px;
       transform: translateY(-50%);
     }
 
@@ -412,45 +280,6 @@
         width: 100%;
       }
     }
-
-    /* 新增：技能标签 */
-    .skill-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-top: 1rem;
-    }
-
-    .skill-tag {
-      background: rgba(var(--primary-rgb), 0.1);
-      color: var(--primary);
-      padding: 0.2rem 0.6rem;
-      border-radius: var(--radius);
-      font-size: 0.9rem;
-    }
-
-    /* 新增：页面标题动画 */
-    .page-title {
-      text-align: center;
-      margin-bottom: 2rem;
-      position: relative;
-    }
-
-    .page-title::after {
-      content: '';
-      position: absolute;
-      bottom: -10px;
-      left: 50%;
-      width: 100px;
-      height: 3px;
-      background: var(--primary);
-      transform: translateX(-50%) scaleX(0);
-      animation: titleLine 0.5s ease forwards 0.5s;
-    }
-
-    @keyframes titleLine {
-      to { transform: translateX(-50%) scaleX(1); }
-    }
   </style>
 </head>
 <body>
@@ -460,9 +289,7 @@
   </button>
 
   <div class="container">
-    <div class="page-title">
-      <h1 class="gradient-text">关于我 ✨</h1>
-    </div>
+    <h1 class="gradient-text">关于我 ✨</h1>
 
     <nav class="nav">
       <a href="/"><i class="fas fa-home"></i> 首页 🏠</a>
@@ -471,50 +298,45 @@
       <a href="/about"><i class="fas fa-user"></i> 关于 👋</a>
     </nav>
 
-    <div class="avatar-container">
-      <div class="avatar-inner">
-        <div class="avatar-front">
-          <img src="/img/Avatar.gif" alt="Moreyu" class="avatar">
+    <div class="card">
+      <div class="avatar-container">
+        <img src="/img/Avatar.gif" alt="Moreyu" class="avatar">
+        <div class="avatar-ring"></div>
+      </div>
+
+      <div class="bio">
+        <p>👋 嗨，我是 Moreyu</p>
+        <p>🌟 一个热爱技术的开发者</p>
+        <p>💻 专注于服务器运维、Docker 容器化和自动化部署</p>
+        <p>📝 喜欢分享技术经验，记录学习心得</p>
+        <p>🎯 致力于构建高效、稳定的家庭服务器解决方案</p>
+      </div>
+
+      <div class="social-links">
+        <a href="https://github.com/moreyu" class="social-link" target="_blank" title="GitHub">
+          <i class="fab fa-github"></i>
+        </a>
+        <a href="mailto:contact@example.com" class="social-link" title="Email">
+          <i class="fas fa-envelope"></i>
+        </a>
+        <a href="#" class="social-link" title="Twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </div>
+
+      <div class="stats">
+        <div class="stat-item">
+          <div class="stat-number">6</div>
+          <div class="stat-label">文章数量 📝</div>
         </div>
-        <div class="avatar-back">
-          <span>👋</span>
+        <div class="stat-item">
+          <div class="stat-number" id="uptime">计算中...</div>
+          <div class="stat-label">运行天数 ⚡️</div>
         </div>
-      </div>
-      <div class="avatar-ring"></div>
-    </div>
-
-    <div class="bio">
-      <p>👋 嗨，我是 Moreyu</p>
-      <p>🌟 一个热爱技术的开发者</p>
-      <p>💻 专注于服务器运维、Docker 容器化和自动化部署</p>
-      <p>📝 喜欢分享技术经验，记录学习心得</p>
-      <p>🎯 致力于构建高效、稳定的家庭服务器解决方案</p>
-    </div>
-
-    <div class="social-links">
-      <a href="https://github.com/moreyu" class="social-link" target="_blank" title="GitHub">
-        <i class="fab fa-github"></i>
-      </a>
-      <a href="mailto:contact@example.com" class="social-link" title="Email">
-        <i class="fas fa-envelope"></i>
-      </a>
-      <a href="#" class="social-link" title="Twitter">
-        <i class="fab fa-twitter"></i>
-      </a>
-    </div>
-
-    <div class="stats">
-      <div class="stat-item">
-        <div class="stat-number">6</div>
-        <div class="stat-label">文章数量 📝</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-number" id="uptime">计算中...</div>
-        <div class="stat-label">运行天数 ⚡️</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-number">42</div>
-        <div class="stat-label">文章标签 🏷️</div>
+        <div class="stat-item">
+          <div class="stat-number">42</div>
+          <div class="stat-label">文章标签 🏷️</div>
+        </div>
       </div>
     </div>
 
@@ -523,9 +345,6 @@
         <div class="skill-icon">🐳</div>
         <h3>容器化部署</h3>
         <p>熟练使用 Docker 和 Docker Compose 进行服务部署和管理</p>
-        <div class="skill-level">
-          <div class="skill-progress" style="transform: scaleX(0.9);"></div>
-        </div>
         <div class="skill-tags">
           <span class="skill-tag">Docker</span>
           <span class="skill-tag">Compose</span>
@@ -536,9 +355,6 @@
         <div class="skill-icon">⚙️</div>
         <h3>自动化运维</h3>
         <p>构建自动化工作流，提升运维效率</p>
-        <div class="skill-level">
-          <div class="skill-progress" style="transform: scaleX(0.85);"></div>
-        </div>
         <div class="skill-tags">
           <span class="skill-tag">Shell</span>
           <span class="skill-tag">Python</span>
@@ -549,9 +365,6 @@
         <div class="skill-icon">🎬</div>
         <h3>影视管理</h3>
         <p>搭建家庭影院系统，实现媒体资源的智能管理</p>
-        <div class="skill-level">
-          <div class="skill-progress" style="transform: scaleX(0.95);"></div>
-        </div>
         <div class="skill-tags">
           <span class="skill-tag">Emby</span>
           <span class="skill-tag">MoviePilot</span>
@@ -562,9 +375,6 @@
         <div class="skill-icon">🤖</div>
         <h3>AI 应用</h3>
         <p>探索 AI 技术在自动化场景中的应用</p>
-        <div class="skill-level">
-          <div class="skill-progress" style="transform: scaleX(0.75);"></div>
-        </div>
         <div class="skill-tags">
           <span class="skill-tag">ChatGPT</span>
           <span class="skill-tag">自动化</span>
