@@ -592,16 +592,27 @@
       observer.observe(card);
     });
 
-    // 计算运行时间
+    // 计算网站运行时间
     function calculateRuntime() {
-      const startDate = new Date('2022-01-01');
-      const now = new Date();
-      const runtime = Math.floor((now - startDate) / (1000 * 60 * 60 * 24));
-      document.getElementById('runtime').textContent = `${runtime} 天`;
+      const startTime = new Date('2018-09-09').getTime();
+      const now = new Date().getTime();
+      const diff = now - startTime;
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+      // 更新页脚的运行时间
+      const runtimeElement = document.getElementById('runtime');
+      if (runtimeElement) {
+        runtimeElement.textContent = `${days} 天 ${hours} 小时 ${minutes} 分 ${seconds} 秒`;
+      }
     }
 
+    // 页面加载完成后立即计算一次并开始定时更新
     calculateRuntime();
-    setInterval(calculateRuntime, 1000 * 60 * 60);
+    setInterval(calculateRuntime, 1000);
   </script>
 </body>
 </html> 
