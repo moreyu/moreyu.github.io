@@ -18,10 +18,6 @@ body {
     padding-bottom: 80px;
 }
 
-footer {
-    margin-top: auto;
-}
-
 h1,h2 {
     background: linear-gradient(120deg,var(--gradient-start),var(--gradient-end));
     -webkit-background-clip: text;
