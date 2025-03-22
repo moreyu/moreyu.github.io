@@ -105,6 +105,137 @@
     @keyframes blink {
       50% { opacity: 0; }
     }
+
+    /* 博主简介卡片样式 */
+    .author-card {
+      background: var(--bg);
+      border-radius: var(--radius);
+      padding: 2rem;
+      margin: 2rem 0;
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      transition: all 0.3s ease;
+    }
+
+    .author-avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--primary);
+    }
+
+    .author-info h3 {
+      margin: 0;
+      color: var(--primary);
+    }
+
+    .author-info p {
+      margin: 0.5rem 0;
+      opacity: 0.8;
+    }
+
+    /* 统计卡片样式 */
+    .stats-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin: 2rem 0;
+    }
+
+    .stat-card {
+      background: var(--bg);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .stat-number {
+      font-size: 2rem;
+      color: var(--primary);
+      font-weight: bold;
+    }
+
+    .stat-label {
+      margin-top: 0.5rem;
+      opacity: 0.8;
+    }
+
+    /* 最近访客样式 */
+    .visitors-card {
+      background: var(--bg);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin: 2rem 0;
+    }
+
+    .visitors-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .visitor {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .visitor-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    /* 网站状态卡片样式 */
+    .status-card {
+      background: var(--bg);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin: 2rem 0;
+    }
+
+    .status-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .status-item:last-child {
+      border-bottom: none;
+    }
+
+    .status-label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .status-value {
+      color: var(--primary);
+    }
+
+    @media (max-width: 768px) {
+      .author-card {
+        flex-direction: column;
+        text-align: center;
+        padding: 1.5rem;
+      }
+      
+      .stats-container {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 </head>
 <body>
@@ -128,6 +259,90 @@
   
   <div class="typing-effect"></div>
   
+  <!-- 博主简介卡片 -->
+  <div class="card author-card">
+    <img src="https://avatars.githubusercontent.com/u/moreyu" alt="博主头像" class="author-avatar">
+    <div class="author-info">
+      <h3>Moreyu</h3>
+      <p>👋 嗨，我是 Moreyu，一个热爱技术的开发者</p>
+      <p>🌟 专注于服务器运维、Docker 容器化和自动化部署</p>
+      <p>💡 分享技术经验，记录学习心得</p>
+    </div>
+  </div>
+
+  <!-- 统计信息 -->
+  <div class="stats-container">
+    <div class="stat-card">
+      <div class="stat-number">6</div>
+      <div class="stat-label">文章数量 📝</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">999</div>
+      <div class="stat-label">运行天数 ⚡️</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">1024</div>
+      <div class="stat-label">访问人数 👥</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">42</div>
+      <div class="stat-label">文章标签 🏷️</div>
+    </div>
+  </div>
+
+  <!-- 网站状态卡片 -->
+  <div class="card status-card">
+    <h3>网站状态 📊</h3>
+    <div class="status-item">
+      <div class="status-label">
+        <i class="fas fa-server"></i>
+        服务器状态
+      </div>
+      <div class="status-value">运行中 ✅</div>
+    </div>
+    <div class="status-item">
+      <div class="status-label">
+        <i class="fas fa-tachometer-alt"></i>
+        响应时间
+      </div>
+      <div class="status-value">42ms ⚡️</div>
+    </div>
+    <div class="status-item">
+      <div class="status-label">
+        <i class="fas fa-clock"></i>
+        最后更新
+      </div>
+      <div class="status-value">2025-03-13 🕒</div>
+    </div>
+  </div>
+
+  <!-- 最近访客 -->
+  <div class="card visitors-card">
+    <h3>最近访客 👥</h3>
+    <div class="visitors-list">
+      <div class="visitor">
+        <img src="https://avatars.githubusercontent.com/u/1" alt="访客头像" class="visitor-avatar">
+        <span>访客1</span>
+      </div>
+      <div class="visitor">
+        <img src="https://avatars.githubusercontent.com/u/2" alt="访客头像" class="visitor-avatar">
+        <span>访客2</span>
+      </div>
+      <div class="visitor">
+        <img src="https://avatars.githubusercontent.com/u/3" alt="访客头像" class="visitor-avatar">
+        <span>访客3</span>
+      </div>
+      <div class="visitor">
+        <img src="https://avatars.githubusercontent.com/u/4" alt="访客头像" class="visitor-avatar">
+        <span>访客4</span>
+      </div>
+      <div class="visitor">
+        <img src="https://avatars.githubusercontent.com/u/5" alt="访客头像" class="visitor-avatar">
+        <span>访客5</span>
+      </div>
+    </div>
+  </div>
+
   <div class="card featured-card">
     <img src="https://picsum.photos/800/400" alt="特色文章">
     <div class="featured-content">
@@ -424,12 +639,54 @@
 
     // 页面加载动画
     function addFadeInEffect() {
-      const elements = document.querySelectorAll('.post, .featured-card, .tag');
+      const elements = document.querySelectorAll('.post, .featured-card, .tag, .author-card, .stat-card, .status-card, .visitors-card');
       elements.forEach((el, index) => {
         el.classList.add('fade-in');
         el.style.animationDelay = `${index * 0.1}s`;
       });
     }
+
+    // 统计数字动画
+    function animateNumbers() {
+      const numbers = document.querySelectorAll('.stat-number');
+      numbers.forEach(number => {
+        const target = parseInt(number.textContent);
+        let current = 0;
+        const increment = target / 50;
+        const duration = 1500;
+        const interval = duration / 50;
+        
+        const counter = setInterval(() => {
+          current += increment;
+          if (current >= target) {
+            current = target;
+            clearInterval(counter);
+          }
+          number.textContent = Math.floor(current);
+        }, interval);
+      });
+    }
+
+    // 状态卡片实时更新
+    function updateStatus() {
+      const responseTime = document.querySelector('.status-value');
+      setInterval(() => {
+        const time = Math.floor(Math.random() * 20 + 30);
+        responseTime.textContent = `${time}ms ⚡️`;
+      }, 5000);
+    }
+
+    // 访客卡片悬停效果
+    document.querySelectorAll('.visitor').forEach(visitor => {
+      visitor.addEventListener('mouseenter', () => {
+        visitor.style.transform = 'scale(1.1)';
+        visitor.style.transition = 'transform 0.3s ease';
+      });
+      
+      visitor.addEventListener('mouseleave', () => {
+        visitor.style.transform = 'scale(1)';
+      });
+    });
 
     // 鼠标移动视差效果
     function addParallaxEffect() {
@@ -488,11 +745,31 @@
     }
 
     // 初始化所有效果
-    window.addEventListener('load', () => {
-      cycleMessages();
+    document.addEventListener('DOMContentLoaded', () => {
       addFadeInEffect();
+      animateNumbers();
+      updateStatus();
+      cycleMessages();
       addParallaxEffect();
     });
+
+    // 深色模式适配
+    const darkModeStyles = `
+      @media (prefers-color-scheme: dark) {
+        .author-card, .stat-card, .status-card, .visitors-card {
+          background: rgba(255, 255, 255, 0.05);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .status-item {
+          border-color: rgba(255, 255, 255, 0.1);
+        }
+      }
+    `;
+    
+    const styleSheet = document.createElement('style');
+    styleSheet.textContent = darkModeStyles;
+    document.head.appendChild(styleSheet);
   </script>
 </body>
 </html>
