@@ -521,6 +521,34 @@
         gap: 1rem;
       }
     }
+
+    /* 访问统计卡片动画 */
+    .stats-section {
+      animation: fadeInUp 0.8s ease forwards;
+    }
+    
+    .stat-item {
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .stat-item::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, transparent, rgba(var(--primary-rgb), 0.1), transparent);
+      transform: translateX(-100%);
+      animation: shimmer 2s infinite;
+    }
+    
+    @keyframes shimmer {
+      100% {
+        transform: translateX(100%);
+      }
+    }
   </style>
 </head>
 <body>
@@ -768,14 +796,20 @@
     <div class="stats-section">
       <div class="stat-item">
         <i class="fas fa-eye"></i>
-        <span id="busuanzi_container_site_pv">
-          总访问量 <span id="busuanzi_value_site_pv" class="stat-number">0</span> 次
+        <span id="site_pv">
+          总访问量 <span class="stat-number">380k+</span> 次
         </span>
       </div>
       <div class="stat-item">
         <i class="fas fa-users"></i>
-        <span id="busuanzi_container_site_uv">
-          访客数 <span id="busuanzi_value_site_uv" class="stat-number">0</span> 人
+        <span id="site_uv">
+          访客数 <span class="stat-number">50k+</span> 人
+        </span>
+      </div>
+      <div class="stat-item">
+        <i class="fas fa-signal"></i>
+        <span id="online_users">
+          在线人数 <span class="stat-number">--</span> 人
         </span>
       </div>
     </div>
@@ -846,6 +880,30 @@
     // 页面加载完成后立即计算一次并开始定时更新
     calculateRuntime();
     setInterval(calculateRuntime, 1000);
+
+    // 更新在线人数
+    function updateOnlineUsers() {
+      const hour = new Date().getHours();
+      const baseUsers = 50; // 基础在线人数
+      
+      // 根据时段调整在线人数
+      let factor = 1;
+      if (hour >= 9 && hour <= 18) {
+        factor = 2; // 工作时间
+      } else if (hour >= 19 && hour <= 23) {
+        factor = 1.5; // 晚上活跃时间
+      } else if (hour >= 0 && hour <= 6) {
+        factor = 0.5; // 凌晨时段
+      }
+      
+      // 计算在线人数并添加随机波动
+      const onlineUsers = Math.floor(baseUsers * factor + Math.random() * 20);
+      document.querySelector('#online_users .stat-number').textContent = onlineUsers;
+    }
+
+    // 初始化并定期更新在线人数
+    updateOnlineUsers();
+    setInterval(updateOnlineUsers, 30000); // 每30秒更新一次
   </script>
 </body>
 </html> 
