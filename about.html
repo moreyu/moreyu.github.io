@@ -8,20 +8,182 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="stylesheet" href="/css/style.css">
   <style>
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 2rem 1rem;
+    /* 技能卡片样式 */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin: 2rem 0;
     }
 
-    .card {
+    .skill-card {
       background: var(--card-bg);
       border-radius: var(--radius);
-      padding: 2rem;
-      margin: 2rem 0;
+      padding: 1.5rem;
       box-shadow: var(--shadow);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
     }
 
+    .skill-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .skill-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, transparent 95%, var(--primary) 95%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .skill-card:hover::before {
+      opacity: 0.1;
+    }
+
+    .skill-icon {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: var(--primary);
+    }
+
+    /* 时间线样式 */
+    .timeline {
+      position: relative;
+      max-width: 1000px;
+      margin: 3rem auto;
+      padding: 2rem 0;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 2px;
+      height: 100%;
+      background: linear-gradient(to bottom, var(--primary), var(--primary-light));
+      top: 0;
+    }
+
+    .timeline-item {
+      margin: 3rem 0;
+      position: relative;
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .timeline-item:nth-child(even) {
+      justify-content: flex-start;
+    }
+
+    .timeline-content {
+      background: var(--card-bg);
+      padding: 1.5rem;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      position: relative;
+      width: calc(50% - 4rem);
+      transition: all 0.3s ease;
+    }
+
+    .timeline-content:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .timeline-content::before {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: var(--primary);
+      border-radius: 50%;
+      border: 4px solid var(--bg);
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .timeline-item:nth-child(odd) .timeline-content {
+      margin-right: 4rem;
+    }
+
+    .timeline-item:nth-child(even) .timeline-content {
+      margin-left: 4rem;
+    }
+
+    .timeline-item:nth-child(odd) .timeline-content::before {
+      right: -3.5rem;
+    }
+
+    .timeline-item:nth-child(even) .timeline-content::before {
+      left: -3.5rem;
+    }
+
+    .timeline-content h4 {
+      color: var(--primary);
+      font-size: 1.4rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .timeline-content h5 {
+      color: var(--text);
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+      opacity: 0.9;
+    }
+
+    .timeline-content p {
+      color: var(--text);
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+
+    .timeline-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    .timeline-tag {
+      background: var(--primary);
+      color: white;
+      padding: 0.3rem 0.8rem;
+      border-radius: var(--radius);
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+
+    @media (max-width: 768px) {
+      .timeline::before {
+        left: 1rem;
+      }
+
+      .timeline-item {
+        justify-content: flex-start !important;
+      }
+
+      .timeline-content {
+        width: calc(100% - 3rem);
+        margin-left: 3rem !important;
+        margin-right: 0 !important;
+      }
+
+      .timeline-content::before {
+        left: -2.5rem !important;
+        right: auto !important;
+      }
+    }
+
+    /* 头像动画 */
     .avatar-container {
       position: relative;
       width: 150px;
@@ -59,14 +221,7 @@
       to { transform: rotate(360deg); }
     }
 
-    .bio {
-      text-align: center;
-      font-size: 1.1rem;
-      line-height: 1.8;
-      margin: 2rem 0;
-      color: var(--text);
-    }
-
+    /* 社交链接动画 */
     .social-links {
       display: flex;
       justify-content: center;
@@ -75,6 +230,7 @@
     }
 
     .social-link {
+      position: relative;
       width: 50px;
       height: 50px;
       border-radius: 50%;
@@ -89,264 +245,39 @@
     }
 
     .social-link:hover {
-      transform: translateY(-5px);
-      background: var(--primary);
-      color: white;
-    }
-
-    .stats {
-      display: flex;
-      justify-content: center;
-      gap: 2rem;
-      margin: 2rem 0;
-    }
-
-    .stat-item {
-      text-align: center;
-      padding: 1rem;
-      background: var(--card-bg);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      min-width: 120px;
-    }
-
-    .stat-number {
-      font-size: 2rem;
-      color: var(--primary);
-      font-weight: bold;
-      margin-bottom: 0.5rem;
-    }
-
-    .stat-label {
-      color: var(--text);
-    }
-
-    .skills-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 1.5rem;
-      margin: 2rem 0;
-    }
-
-    .skill-card {
-      background: var(--card-bg);
-      border-radius: var(--radius);
-      padding: 1.5rem;
-      box-shadow: var(--shadow);
-      transition: all 0.3s ease;
-    }
-
-    .skill-card:hover {
-      transform: translateY(-5px);
+      transform: translateY(-5px) scale(1.1);
       box-shadow: var(--shadow-hover);
     }
 
-    .skill-icon {
-      font-size: 2rem;
-      color: var(--primary);
-      margin-bottom: 1rem;
+    .social-link::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border-radius: 50%;
+      background: linear-gradient(45deg, var(--primary), var(--primary-light));
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: -1;
     }
 
-    .skill-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-top: 1rem;
+    .social-link:hover::before {
+      opacity: 0.2;
     }
 
     .skill-tag {
-      background: rgba(var(--primary-rgb), 0.1);
-      color: var(--primary);
-      padding: 0.2rem 0.6rem;
-      border-radius: var(--radius);
-      font-size: 0.9rem;
-    }
-
-    .timeline {
-      position: relative;
-      margin: 3rem 0;
-      padding: 2rem 0;
-    }
-
-    .timeline::before {
-      content: "";
-      position: absolute;
-      left: 50%;
-      width: 2px;
-      height: 100%;
-      background: linear-gradient(to bottom, var(--primary), var(--primary-light));
-      transform: translateX(-50%);
-    }
-
-    .timeline-item {
-      margin: 3rem 0;
-      position: relative;
-      opacity: 0;
-      transform: translateY(20px);
-      transition: all 0.5s ease;
-    }
-
-    .timeline-item.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .timeline-content {
-      width: 45%;
-      padding: 1.5rem;
-      background: var(--card-bg);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      position: relative;
-      transition: all 0.3s ease;
-    }
-
-    .timeline-content:hover {
-      transform: translateY(-5px);
-      box-shadow: var(--shadow-hover);
-    }
-
-    .timeline-content.left {
-      margin-left: 0;
-      margin-right: auto;
-    }
-
-    .timeline-content.right {
-      margin-left: auto;
-      margin-right: 0;
-    }
-
-    .timeline-content::before {
-      content: "";
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      background: var(--primary);
-      border-radius: 50%;
-      border: 4px solid var(--bg);
-      top: 50%;
-      transform: translateY(-50%);
-    }
-
-    .timeline-content.left::before {
-      right: -60px;
-    }
-
-    .timeline-content.right::before {
-      left: -60px;
-    }
-
-    .timeline-content h4 {
-      color: var(--primary);
-      font-size: 1.4rem;
-      margin-bottom: 0.5rem;
-    }
-
-    .timeline-content h5 {
-      color: var(--text);
-      font-size: 1.2rem;
-      margin-bottom: 1rem;
-      opacity: 0.9;
-    }
-
-    .timeline-content p {
-      color: var(--text);
-      line-height: 1.6;
-      margin-bottom: 1rem;
-    }
-
-    .timeline-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-top: 1rem;
-    }
-
-    .timeline-tag {
       background: var(--primary);
       color: white;
       padding: 0.3rem 0.8rem;
       border-radius: var(--radius);
       font-size: 0.9rem;
-    }
-
-    @media (max-width: 768px) {
-      .timeline::before {
-        left: 20px;
-      }
-
-      .timeline-item {
-        margin: 3rem 0;
-      }
-
-      .timeline-content {
-        width: calc(100% - 60px);
-        margin-left: 60px !important;
-      }
-
-      .timeline-content::before {
-        left: -40px !important;
-      }
-
-      .timeline-content.left,
-      .timeline-content.right {
-        margin-left: 60px;
-        margin-right: 0;
-      }
-    }
-
-    .skill-level {
-      height: 4px;
-      background: var(--border);
-      border-radius: 2px;
-      margin-top: 1rem;
-    }
-
-    .level-bar {
-      height: 100%;
-      background: var(--primary);
-      border-radius: 2px;
-      transition: width 1s ease-out;
-    }
-
-    .certifications {
-      display: flex;
-      justify-content: center;
-      gap: 2rem;
-      margin: 2rem 0;
-      flex-wrap: wrap;
-    }
-
-    .cert-item {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      color: var(--text);
-      background: var(--card-bg);
-      padding: 1rem;
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
+      opacity: 0.9;
       transition: all 0.3s ease;
     }
 
-    .cert-item:hover {
-      transform: translateY(-5px);
-      box-shadow: var(--shadow-hover);
-    }
-
-    .cert-item i {
-      color: var(--primary);
-      font-size: 1.2rem;
-    }
-
-    h4, h5 {
-      color: var(--primary);
-      margin: 0.5rem 0;
-    }
-
-    h5 {
-      font-size: 1.1rem;
-      opacity: 0.9;
+    .skill-tag.lang {
+      background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+      box-shadow: 0 2px 4px rgba(255, 107, 107, 0.2);
+      font-weight: 500;
     }
   </style>
 </head>
@@ -355,269 +286,155 @@
   <button class="theme-toggle" aria-label="切换主题">
     <i class="fas fa-moon"></i>
   </button>
+  
+  <h1 class="gradient-text">关于我 ✨</h1>
+  
+  <nav class="nav">
+    <a href="/"><i class="fas fa-home"></i> 首页 🏠</a>
+    <a href="/archives"><i class="fas fa-archive"></i> 归档 📚</a>
+    <a href="/categories"><i class="fas fa-folder"></i> 分类 📂</a>
+    <a href="/about"><i class="fas fa-user"></i> 关于 👋</a>
+  </nav>
 
-  <div class="container">
-    <h1 class="gradient-text">关于我 ✨</h1>
+  <div class="card">
+    <div class="avatar-container">
+      <img src="https://picsum.photos/150" alt="头像" class="avatar">
+      <div class="avatar-ring"></div>
+    </div>
 
-    <nav class="nav">
-      <a href="/"><i class="fas fa-home"></i> 首页 🏠</a>
-      <a href="/archives"><i class="fas fa-archive"></i> 归档 📚</a>
-      <a href="/categories"><i class="fas fa-folder"></i> 分类 📂</a>
-      <a href="/about"><i class="fas fa-user"></i> 关于 👋</a>
-    </nav>
+    <h2 class="gradient-text">👋 你好，我是 Moreyu</h2>
+    <p>热爱技术，热爱生活。在这里分享我的技术探索和生活感悟。</p>
 
-    <div class="card">
-      <div class="avatar-container">
-        <img src="/img/Avatar.gif" alt="头像" class="avatar">
-        <div class="avatar-ring"></div>
-      </div>
+    <div class="social-links">
+      <a href="https://github.com/moreyu" class="social-link" target="_blank">
+        <i class="fab fa-github"></i>
+      </a>
+      <a href="mailto:your@email.com" class="social-link">
+        <i class="fas fa-envelope"></i>
+      </a>
+      <a href="#" class="social-link">
+        <i class="fab fa-twitter"></i>
+      </a>
+    </div>
 
-      <h2 class="gradient-text">👋 你好，我是 Moreyu</h2>
-      <p class="bio">热爱技术，热爱生活。专注于全栈开发和云原生技术，致力于用技术改变生活。喜欢探索新技术，分享学习心得。在这里记录我的技术探索和生活感悟。</p>
-
-      <div class="social-links">
-        <a href="https://github.com/moreyu" class="social-link" target="_blank" title="GitHub">
-          <i class="fab fa-github"></i>
-        </a>
-        <a href="mailto:your@email.com" class="social-link" title="Email">
-          <i class="fas fa-envelope"></i>
-        </a>
-        <a href="#" class="social-link" title="Twitter">
-          <i class="fab fa-twitter"></i>
-        </a>
-        <a href="#" class="social-link" title="LinkedIn">
-          <i class="fab fa-linkedin"></i>
-        </a>
-      </div>
-
-      <div class="stats">
-        <div class="stat-item">
-          <i class="fas fa-code"></i>
-          <span>8年开发经验</span>
-        </div>
-        <div class="stat-item">
-          <i class="fas fa-project-diagram"></i>
-          <span>50+项目经验</span>
-        </div>
-        <div class="stat-item">
-          <i class="fas fa-book"></i>
-          <span>100+技术文章</span>
+    <h3 class="gradient-text">🎯 技能专长</h3>
+    <div class="skills-grid">
+      <div class="skill-card">
+        <i class="fas fa-code skill-icon"></i>
+        <h4>前端开发</h4>
+        <div class="skill-tags">
+          <span class="skill-tag lang">React</span>
+          <span class="skill-tag lang">Vue</span>
+          <span class="skill-tag lang">TypeScript</span>
+          <span class="skill-tag">Next.js</span>
+          <span class="skill-tag">Tailwind</span>
         </div>
       </div>
-
-      <h3 class="gradient-text">🎯 技能专长</h3>
-      <div class="skills-grid">
-        <div class="skill-card">
-          <i class="fas fa-code skill-icon"></i>
-          <h4>前端开发</h4>
-          <div class="skill-tags">
-            <span class="skill-tag">React</span>
-            <span class="skill-tag">Vue</span>
-            <span class="skill-tag">TypeScript</span>
-            <span class="skill-tag">Next.js</span>
-            <span class="skill-tag">Tailwind</span>
-          </div>
-          <div class="skill-level">
-            <div class="level-bar" style="width: 95%"></div>
-          </div>
-        </div>
-        <div class="skill-card">
-          <i class="fas fa-server skill-icon"></i>
-          <h4>后端开发</h4>
-          <div class="skill-tags">
-            <span class="skill-tag">Node.js</span>
-            <span class="skill-tag">Python</span>
-            <span class="skill-tag">Go</span>
-            <span class="skill-tag">Java</span>
-            <span class="skill-tag">Spring</span>
-          </div>
-          <div class="skill-level">
-            <div class="level-bar" style="width: 90%"></div>
-          </div>
-        </div>
-        <div class="skill-card">
-          <i class="fas fa-database skill-icon"></i>
-          <h4>数据库</h4>
-          <div class="skill-tags">
-            <span class="skill-tag">MySQL</span>
-            <span class="skill-tag">MongoDB</span>
-            <span class="skill-tag">Redis</span>
-            <span class="skill-tag">PostgreSQL</span>
-          </div>
-          <div class="skill-level">
-            <div class="level-bar" style="width: 85%"></div>
-          </div>
-        </div>
-        <div class="skill-card">
-          <i class="fas fa-cloud skill-icon"></i>
-          <h4>云原生技术</h4>
-          <div class="skill-tags">
-            <span class="skill-tag">Docker</span>
-            <span class="skill-tag">K8s</span>
-            <span class="skill-tag">AWS</span>
-            <span class="skill-tag">微服务</span>
-          </div>
-          <div class="skill-level">
-            <div class="level-bar" style="width: 88%"></div>
-          </div>
-        </div>
-        <div class="skill-card">
-          <i class="fas fa-robot skill-icon"></i>
-          <h4>AI & 机器学习</h4>
-          <div class="skill-tags">
-            <span class="skill-tag">PyTorch</span>
-            <span class="skill-tag">TensorFlow</span>
-            <span class="skill-tag">LLM</span>
-            <span class="skill-tag">NLP</span>
-          </div>
-          <div class="skill-level">
-            <div class="level-bar" style="width: 80%"></div>
-          </div>
-        </div>
-        <div class="skill-card">
-          <i class="fas fa-tools skill-icon"></i>
-          <h4>开发工具</h4>
-          <div class="skill-tags">
-            <span class="skill-tag">Git</span>
-            <span class="skill-tag">VS Code</span>
-            <span class="skill-tag">CI/CD</span>
-            <span class="skill-tag">Linux</span>
-          </div>
-          <div class="skill-level">
-            <div class="level-bar" style="width: 92%"></div>
-          </div>
+      <div class="skill-card">
+        <i class="fas fa-server skill-icon"></i>
+        <h4>后端开发</h4>
+        <div class="skill-tags">
+          <span class="skill-tag lang">Node.js</span>
+          <span class="skill-tag lang">Python</span>
+          <span class="skill-tag lang">Go</span>
+          <span class="skill-tag lang">Java</span>
+          <span class="skill-tag">Spring</span>
         </div>
       </div>
-
-      <h3 class="gradient-text">📚 学习与工作经历</h3>
-      <div class="timeline">
-        <div class="timeline-item">
-          <div class="timeline-content">
-            <h4>2025</h4>
-            <h5>高级云原生工程师</h5>
-            <p>专注于云原生技术和微服务架构，主导多个大型项目的架构设计和实现。深入研究 Kubernetes、服务网格等技术，并在团队中推广最佳实践。</p>
-            <div class="timeline-tags">
-              <span class="timeline-tag">云原生</span>
-              <span class="timeline-tag">架构设计</span>
-              <span class="timeline-tag">团队管理</span>
-            </div>
-          </div>
-        </div>
-        <div class="timeline-item">
-          <div class="timeline-content">
-            <h4>2024</h4>
-            <h5>AI 应用研究</h5>
-            <p>深入研究 AI 技术在实际业务中的应用。开发了多个基于大语言模型的应用，并探索 AI 在开发流程中的创新应用。</p>
-            <div class="timeline-tags">
-              <span class="timeline-tag">AI</span>
-              <span class="timeline-tag">LLM</span>
-              <span class="timeline-tag">创新</span>
-            </div>
-          </div>
-        </div>
-        <div class="timeline-item">
-          <div class="timeline-content">
-            <h4>2022-2023</h4>
-            <h5>全栈开发工程师</h5>
-            <p>负责企业级应用的全栈开发，使用 React、Node.js 和微服务架构构建高可用系统。同时开始探索云原生技术，并在项目中实践。</p>
-            <div class="timeline-tags">
-              <span class="timeline-tag">全栈开发</span>
-              <span class="timeline-tag">微服务</span>
-              <span class="timeline-tag">高可用</span>
-            </div>
-          </div>
-        </div>
-        <div class="timeline-item">
-          <div class="timeline-content">
-            <h4>2020-2021</h4>
-            <h5>后端开发工程师</h5>
-            <p>专注于后端服务开发，使用 Java 和 Spring 框架构建企业级应用。期间也开始学习前端技术，为转向全栈开发打下基础。</p>
-            <div class="timeline-tags">
-              <span class="timeline-tag">后端开发</span>
-              <span class="timeline-tag">Java</span>
-              <span class="timeline-tag">Spring</span>
-            </div>
-          </div>
-        </div>
-        <div class="timeline-item">
-          <div class="timeline-content">
-            <h4>2018-2019</h4>
-            <h5>初入编程世界</h5>
-            <p>开始系统学习编程，主要学习 Python 和 Web 开发基础。参与多个开源项目，培养了对技术的热情和基本的工程实践能力。</p>
-            <div class="timeline-tags">
-              <span class="timeline-tag">编程启蒙</span>
-              <span class="timeline-tag">开源贡献</span>
-              <span class="timeline-tag">持续学习</span>
-            </div>
-          </div>
+      <div class="skill-card">
+        <i class="fas fa-database skill-icon"></i>
+        <h4>数据库</h4>
+        <div class="skill-tags">
+          <span class="skill-tag">MySQL</span>
+          <span class="skill-tag">MongoDB</span>
+          <span class="skill-tag">Redis</span>
+          <span class="skill-tag">PostgreSQL</span>
         </div>
       </div>
+      <div class="skill-card">
+        <i class="fas fa-cloud skill-icon"></i>
+        <h4>云服务</h4>
+        <div class="skill-tags">
+          <span class="skill-tag">Docker</span>
+          <span class="skill-tag">K8s</span>
+          <span class="skill-tag">AWS</span>
+          <span class="skill-tag">微服务</span>
+        </div>
+      </div>
+    </div>
 
-      <h3 class="gradient-text">🏆 获得认证</h3>
-      <div class="certifications">
-        <div class="cert-item">
-          <i class="fas fa-award"></i>
-          <span>AWS 解决方案架构师认证</span>
+    <h3 class="gradient-text">📚 学习经历</h3>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-content">
+          <h4>2025</h4>
+          <p>开始学习云原生技术</p>
         </div>
-        <div class="cert-item">
-          <i class="fas fa-award"></i>
-          <span>Kubernetes CKA 认证</span>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-content">
+          <h4>2024</h4>
+          <p>深入研究 AI 技术</p>
         </div>
-        <div class="cert-item">
-          <i class="fas fa-award"></i>
-          <span>Oracle Java 认证</span>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-content">
+          <h4>2023</h4>
+          <p>开始写技术博客</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-content">
+          <h4>2022</h4>
+          <p>开始学习编程</p>
         </div>
       </div>
     </div>
   </div>
 
   <footer>
-    <div class="footer-content">
-      <p>© 2018-2025 More Yu 🌟</p>
-      <p>本站已稳定运行 <span id="runtime">计算中...</span> 🚀</p>
-      <p>Powered by GitHub Pages ⚡️ | Made with 💖 by Moreyu</p>
+    <p>&copy; 2025 Moreyu's Blog 🎉 | 本站已稳定运行 999 天 ⚡️</p>
+    <div class="social-links">
+      <a href="https://github.com/moreyu" target="_blank"><i class="fab fa-github"></i> GitHub 🐱</a>
+      <a href="mailto:your@email.com"><i class="fas fa-envelope"></i> Email ✉️</a>
     </div>
   </footer>
+
+  <div class="floating-menu">
+    <button class="floating-btn" title="返回顶部" aria-label="返回顶部">
+      <i class="fas fa-arrow-up"></i>
+    </button>
+    <button class="floating-btn" title="分享" aria-label="分享">
+      <i class="fas fa-share-alt"></i>
+    </button>
+  </div>
 
   <script src="/js/theme.js"></script>
   <script src="/js/scroll.js"></script>
   <script>
-    // 计算网站运行时间
-    function calculateRuntime() {
-      const startTime = new Date('2018-09-09').getTime();
-      const now = new Date().getTime();
-      const diff = now - startTime;
+    // 返回顶部按钮
+    document.querySelector('.floating-btn').addEventListener('click', () => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
 
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-      const runtimeElement = document.getElementById('runtime');
-      if (runtimeElement) {
-        runtimeElement.textContent = `${days} 天 ${hours} 小时 ${minutes} 分 ${seconds} 秒`;
-      }
-
-      const uptimeElement = document.getElementById('uptime');
-      if (uptimeElement) {
-        uptimeElement.textContent = days;
-      }
-    }
-
-    calculateRuntime();
-    setInterval(calculateRuntime, 1000);
-
-    // 添加时间线动画
+    // 技能卡片动画
+    const skillCards = document.querySelectorAll('.skill-card');
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
         }
       });
     }, { threshold: 0.1 });
 
-    document.querySelectorAll('.timeline-item').forEach(item => {
-      observer.observe(item);
+    skillCards.forEach(card => {
+      card.style.opacity = '0';
+      card.style.transform = 'translateY(20px)';
+      observer.observe(card);
     });
   </script>
 </body>
