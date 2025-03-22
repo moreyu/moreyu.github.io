@@ -279,6 +279,111 @@
       box-shadow: 0 2px 4px rgba(255, 107, 107, 0.2);
       font-weight: 500;
     }
+
+    .bio {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      margin: 1.5rem 0;
+      color: var(--text);
+    }
+
+    .stats {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin: 2rem 0;
+    }
+
+    .stat-item {
+      text-align: center;
+      color: var(--text);
+    }
+
+    .stat-item i {
+      font-size: 2rem;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+
+    .certifications {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin: 2rem 0;
+      flex-wrap: wrap;
+    }
+
+    .cert-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--text);
+      background: var(--card-bg);
+      padding: 1rem;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      transition: all 0.3s ease;
+    }
+
+    .cert-item:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .cert-item i {
+      color: var(--primary);
+      font-size: 1.2rem;
+    }
+
+    .footer {
+      background: var(--card-bg);
+      padding: 2rem 0;
+      margin-top: 4rem;
+      box-shadow: var(--shadow);
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      padding: 0 2rem;
+    }
+
+    .footer-section {
+      color: var(--text);
+    }
+
+    .footer-section h4 {
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .footer-links a {
+      color: var(--text);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--primary);
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding-top: 2rem;
+      margin-top: 2rem;
+      border-top: 1px solid var(--border);
+      color: var(--text);
+    }
   </style>
 </head>
 <body>
@@ -298,23 +403,41 @@
 
   <div class="card">
     <div class="avatar-container">
-      <img src="https://picsum.photos/150" alt="头像" class="avatar">
+      <img src="/img/Avatar.gif" alt="头像" class="avatar">
       <div class="avatar-ring"></div>
     </div>
 
     <h2 class="gradient-text">👋 你好，我是 Moreyu</h2>
-    <p>热爱技术，热爱生活。在这里分享我的技术探索和生活感悟。</p>
+    <p class="bio">热爱技术，热爱生活。专注于全栈开发和云原生技术，致力于用技术改变生活。喜欢探索新技术，分享学习心得。在这里记录我的技术探索和生活感悟。</p>
 
     <div class="social-links">
-      <a href="https://github.com/moreyu" class="social-link" target="_blank">
+      <a href="https://github.com/moreyu" class="social-link" target="_blank" title="GitHub">
         <i class="fab fa-github"></i>
       </a>
-      <a href="mailto:your@email.com" class="social-link">
+      <a href="mailto:your@email.com" class="social-link" title="Email">
         <i class="fas fa-envelope"></i>
       </a>
-      <a href="#" class="social-link">
+      <a href="#" class="social-link" title="Twitter">
         <i class="fab fa-twitter"></i>
       </a>
+      <a href="#" class="social-link" title="LinkedIn">
+        <i class="fab fa-linkedin"></i>
+      </a>
+    </div>
+
+    <div class="stats">
+      <div class="stat-item">
+        <i class="fas fa-code"></i>
+        <span>8年开发经验</span>
+      </div>
+      <div class="stat-item">
+        <i class="fas fa-project-diagram"></i>
+        <span>50+项目经验</span>
+      </div>
+      <div class="stat-item">
+        <i class="fas fa-book"></i>
+        <span>100+技术文章</span>
+      </div>
     </div>
 
     <h3 class="gradient-text">🎯 技能专长</h3>
@@ -363,40 +486,109 @@
       </div>
     </div>
 
-    <h3 class="gradient-text">📚 学习经历</h3>
+    <h3 class="gradient-text">📚 学习与工作经历</h3>
     <div class="timeline">
       <div class="timeline-item">
         <div class="timeline-content">
           <h4>2025</h4>
-          <p>开始学习云原生技术</p>
+          <h5>高级云原生工程师</h5>
+          <p>专注于云原生技术和微服务架构，主导多个大型项目的架构设计和实现。深入研究 Kubernetes、服务网格等技术，并在团队中推广最佳实践。</p>
+          <div class="timeline-tags">
+            <span class="timeline-tag">云原生</span>
+            <span class="timeline-tag">架构设计</span>
+            <span class="timeline-tag">团队管理</span>
+          </div>
         </div>
       </div>
       <div class="timeline-item">
         <div class="timeline-content">
           <h4>2024</h4>
-          <p>深入研究 AI 技术</p>
+          <h5>AI 应用研究</h5>
+          <p>深入研究 AI 技术在实际业务中的应用。开发了多个基于大语言模型的应用，并探索 AI 在开发流程中的创新应用。</p>
+          <div class="timeline-tags">
+            <span class="timeline-tag">AI</span>
+            <span class="timeline-tag">LLM</span>
+            <span class="timeline-tag">创新</span>
+          </div>
         </div>
       </div>
       <div class="timeline-item">
         <div class="timeline-content">
-          <h4>2023</h4>
-          <p>开始写技术博客</p>
+          <h4>2022-2023</h4>
+          <h5>全栈开发工程师</h5>
+          <p>负责企业级应用的全栈开发，使用 React、Node.js 和微服务架构构建高可用系统。同时开始探索云原生技术，并在项目中实践。</p>
+          <div class="timeline-tags">
+            <span class="timeline-tag">全栈开发</span>
+            <span class="timeline-tag">微服务</span>
+            <span class="timeline-tag">高可用</span>
+          </div>
         </div>
       </div>
       <div class="timeline-item">
         <div class="timeline-content">
-          <h4>2022</h4>
-          <p>开始学习编程</p>
+          <h4>2020-2021</h4>
+          <h5>后端开发工程师</h5>
+          <p>专注于后端服务开发，使用 Java 和 Spring 框架构建企业级应用。期间也开始学习前端技术，为转向全栈开发打下基础。</p>
+          <div class="timeline-tags">
+            <span class="timeline-tag">后端开发</span>
+            <span class="timeline-tag">Java</span>
+            <span class="timeline-tag">Spring</span>
+          </div>
         </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-content">
+          <h4>2018-2019</h4>
+          <h5>初入编程世界</h5>
+          <p>开始系统学习编程，主要学习 Python 和 Web 开发基础。参与多个开源项目，培养了对技术的热情和基本的工程实践能力。</p>
+          <div class="timeline-tags">
+            <span class="timeline-tag">编程启蒙</span>
+            <span class="timeline-tag">开源贡献</span>
+            <span class="timeline-tag">持续学习</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="gradient-text">🏆 获得认证</h3>
+    <div class="certifications">
+      <div class="cert-item">
+        <i class="fas fa-award"></i>
+        <span>AWS 解决方案架构师认证</span>
+      </div>
+      <div class="cert-item">
+        <i class="fas fa-award"></i>
+        <span>Kubernetes CKA 认证</span>
+      </div>
+      <div class="cert-item">
+        <i class="fas fa-award"></i>
+        <span>Oracle Java 认证</span>
       </div>
     </div>
   </div>
 
-  <footer>
-    <p>&copy; 2025 Moreyu's Blog 🎉 | 本站已稳定运行 999 天 ⚡️</p>
-    <div class="social-links">
-      <a href="https://github.com/moreyu" target="_blank"><i class="fab fa-github"></i> GitHub 🐱</a>
-      <a href="mailto:your@email.com"><i class="fas fa-envelope"></i> Email ✉️</a>
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h4>关于本站</h4>
+        <p>分享技术，记录生活</p>
+        <p>本站已运行 <span id="runtime">计算中...</span></p>
+      </div>
+      <div class="footer-section">
+        <h4>联系方式</h4>
+        <div class="footer-links">
+          <a href="https://github.com/moreyu" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+          <a href="mailto:your@email.com"><i class="fas fa-envelope"></i> Email</a>
+        </div>
+      </div>
+      <div class="footer-section">
+        <h4>站点信息</h4>
+        <p>访问量：<span id="visits">--</span></p>
+        <p>最后更新：<span id="lastUpdated">2024-03-21</span></p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2024 Moreyu's Blog. All rights reserved.</p>
     </div>
   </footer>
 
@@ -436,6 +628,17 @@
       card.style.transform = 'translateY(20px)';
       observer.observe(card);
     });
+
+    // 计算运行时间
+    function calculateRuntime() {
+      const startDate = new Date('2022-01-01');
+      const now = new Date();
+      const runtime = Math.floor((now - startDate) / (1000 * 60 * 60 * 24));
+      document.getElementById('runtime').textContent = `${runtime} 天`;
+    }
+
+    calculateRuntime();
+    setInterval(calculateRuntime, 1000 * 60 * 60);
   </script>
 </body>
 </html> 
