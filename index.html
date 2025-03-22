@@ -133,6 +133,7 @@
       transition: all 0.3s ease;
       border: none;
       outline: none;
+      z-index: 1001;
     }
 
     .dock-minimize:hover {
@@ -140,12 +141,12 @@
     }
 
     .articles-dock.minimized {
-      transform: translate(-50%, calc(100% + 2rem));
+      transform: translate(-50%, calc(100% - 30px));
     }
 
     .articles-dock.minimized .dock-minimize {
-      transform: rotate(180deg) translateY(-50%);
-      top: 50%;
+      transform: rotate(180deg);
+      top: 0;
     }
 
     @media (max-width: 768px) {
