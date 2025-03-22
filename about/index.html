@@ -7,30 +7,28 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/maple-mono@latest/index.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
         <link rel="stylesheet" href="/css/style.css">
+        <link rel="stylesheet" href="/css/about.css">
         <style>
-            body {
-                font-family: "Maple Mono",monospace;
-                line-height: 1.8;
+            .about-content {
                 max-width: 800px;
                 margin: 0 auto;
                 padding: 20px;
-                background: #f5f5f7;
-                color: #333
+                padding-bottom: 80px;
             }
 
             h1,h2 {
-                background: linear-gradient(120deg,#FF375F,#40C8E0);
+                background: linear-gradient(120deg,var(--gradient-start),var(--gradient-end));
                 -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent
+                -webkit-text-fill-color: transparent;
             }
 
             a {
-                color: #0066cc;
-                text-decoration: none
+                color: var(--primary);
+                text-decoration: none;
             }
 
             a:hover {
-                text-decoration: underline
+                text-decoration: underline;
             }
 
             .container {
@@ -38,6 +36,7 @@
                 padding: 2rem;
                 border-radius: 16px;
                 box-shadow: var(--shadow);
+                margin: 2rem 0;
                 margin: 2rem 0
             }
 
@@ -228,121 +227,123 @@
         </style>
     </head>
     <body>
-        <div class="container">
-            <div class="profile">
-                <img src="/img/Avatar.gif" alt="Moreyu" class="avatar">
-                <h1>Moreyu</h1>
-                <p>👋 嗨，我是 Moreyu，一个热爱技术、追求极客生活的全栈开发者</p>
+        <div class="about-content">
+            <div class="container">
+                <div class="profile">
+                    <img src="/img/Avatar.gif" alt="Moreyu" class="avatar">
+                    <h1>Moreyu</h1>
+                    <p>👋 嗨，我是 Moreyu，一个热爱技术、追求极客生活的全栈开发者</p>
+                </div>
+                <div class="quote">"用技术改变生活，用创意实现梦想 ✨"</div>
+                <h2>关于我 👨‍💻</h2>
+                <p>作为一名全栈开发工程师，我热衷于探索新技术和自动化解决方案。我相信技术不仅能够提升效率，更能够创造价值，改善生活。在工作之余，我喜欢折腾各种好玩的技术项目，比如搭建家庭服务器、开发自动化工具等。</p>
+                <div class="social-links">
+                    <a href="https://github.com/moreyu" class="social-link" target="_blank">
+                        <i class="fab fa-github"></i>
+                        GitHub
+                    </a>
+                    <a href="mailto:your@email.com" class="social-link">
+                        <i class="fas fa-envelope"></i>
+                        Email
+                    </a>
+                </div>
+                <h2>技术栈 🛠️</h2>
+                <div class="skills">
+                    <div class="skill">
+                        前端开发<br>
+                        React / Vue / Next.js<br>TypeScript / Tailwind
+                    </div>
+                    <div class="skill">
+                        后端开发<br>
+                        Python / Go / Node.js<br>Java / PHP / Ruby
+                    </div>
+                    <div class="skill">
+                        DevOps<br>
+                        Docker / K8s / CI/CD<br>Nginx / Jenkins
+                    </div>
+                    <div class="skill">
+                        数据库<br>
+                        MySQL / PostgreSQL<br>MongoDB / Redis
+                    </div>
+                    <div class="skill">
+                        云原生<br>
+                        AWS / Terraform<br>微服务 / ServiceMesh
+                    </div>
+                    <div class="skill">
+                        AI 开发<br>
+                        LangChain / FastAPI<br>PyTorch / TensorFlow
+                    </div>
+                </div>
+                <h2>成长历程 🚀</h2>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-content left">
+                            <h3>2025 至今</h3>
+                            <p>专注于 AI 应用开发，探索大语言模型应用，构建智能化解决方案</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-content right">
+                            <h3>2024</h3>
+                            <p>深入云原生技术，主导微服务架构转型，实现全链路监控</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-content left">
+                            <h3>2023</h3>
+                            <p>系统学习 DevOps 和云原生技术，推动自动化部署和容器化实践</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-content right">
+                            <h3>2022</h3>
+                            <p>全栈开发进阶，主导多个大型项目，采用前后端分离架构</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-content left">
+                            <h3>2021</h3>
+                            <p>专注后端开发，深入学习分布式系统和高并发架构</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-content right">
+                            <h3>2020</h3>
+                            <p>开始接触前端开发，学习现代前端框架和工具链</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-content left">
+                            <h3>2019</h3>
+                            <p>进入互联网行业，担任初级开发工程师，专注基础架构</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-content right">
+                            <h3>2018</h3>
+                            <p>开始系统学习编程，接触 Python 和 Web 开发基础</p>
+                        </div>
+                    </div>
+                </div>
+                <h2>博客初衷 📝</h2>
+                <p>创建这个博客的目的是记录学习过程中的心得体会，分享技术实践经验。我相信知识分享不仅能帮助他人，也能促进自己的成长。在这里，我会分享：</p>
+                <ul>
+                    <li>🔧 技术教程和最佳实践</li>
+                    <li>💡 项目经验和解决方案</li>
+                    <li>📚 学习笔记和技术总结</li>
+                    <li>🎯 个人成长和经验分享</li>
+                </ul>
+                <h2>联系我 📮</h2>
+                <p>如果你对我的文章有任何问题或建议，欢迎通过以下方式联系我：</p>
+                <ul>
+                    <li>📧 Email: your@email.com</li>
+                    <li>
+                        💬 GitHub: <a href="https://github.com/moreyu">@moreyu</a>
+                    </li>
+                </ul>
             </div>
-            <div class="quote">"用技术改变生活，用创意实现梦想 ✨"</div>
-            <h2>关于我 👨‍💻</h2>
-            <p>作为一名全栈开发工程师，我热衷于探索新技术和自动化解决方案。我相信技术不仅能够提升效率，更能够创造价值，改善生活。在工作之余，我喜欢折腾各种好玩的技术项目，比如搭建家庭服务器、开发自动化工具等。</p>
-            <div class="social-links">
-                <a href="https://github.com/moreyu" class="social-link" target="_blank">
-                    <i class="fab fa-github"></i>
-                    GitHub
-                </a>
-                <a href="mailto:your@email.com" class="social-link">
-                    <i class="fas fa-envelope"></i>
-                    Email
-                </a>
-            </div>
-            <h2>技术栈 🛠️</h2>
-            <div class="skills">
-                <div class="skill">
-                    前端开发<br>
-                    React / Vue / Next.js<br>TypeScript / Tailwind
-                </div>
-                <div class="skill">
-                    后端开发<br>
-                    Python / Go / Node.js<br>Java / PHP / Ruby
-                </div>
-                <div class="skill">
-                    DevOps<br>
-                    Docker / K8s / CI/CD<br>Nginx / Jenkins
-                </div>
-                <div class="skill">
-                    数据库<br>
-                    MySQL / PostgreSQL<br>MongoDB / Redis
-                </div>
-                <div class="skill">
-                    云原生<br>
-                    AWS / Terraform<br>微服务 / ServiceMesh
-                </div>
-                <div class="skill">
-                    AI 开发<br>
-                    LangChain / FastAPI<br>PyTorch / TensorFlow
-                </div>
-            </div>
-            <h2>成长历程 🚀</h2>
-            <div class="timeline">
-                <div class="timeline-item">
-                    <div class="timeline-content left">
-                        <h3>2025 至今</h3>
-                        <p>专注于 AI 应用开发，探索大语言模型应用，构建智能化解决方案</p>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-content right">
-                        <h3>2024</h3>
-                        <p>深入云原生技术，主导微服务架构转型，实现全链路监控</p>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-content left">
-                        <h3>2023</h3>
-                        <p>系统学习 DevOps 和云原生技术，推动自动化部署和容器化实践</p>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-content right">
-                        <h3>2022</h3>
-                        <p>全栈开发进阶，主导多个大型项目，采用前后端分离架构</p>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-content left">
-                        <h3>2021</h3>
-                        <p>专注后端开发，深入学习分布式系统和高并发架构</p>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-content right">
-                        <h3>2020</h3>
-                        <p>开始接触前端开发，学习现代前端框架和工具链</p>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-content left">
-                        <h3>2019</h3>
-                        <p>进入互联网行业，担任初级开发工程师，专注基础架构</p>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-content right">
-                        <h3>2018</h3>
-                        <p>开始系统学习编程，接触 Python 和 Web 开发基础</p>
-                    </div>
-                </div>
-            </div>
-            <h2>博客初衷 📝</h2>
-            <p>创建这个博客的目的是记录学习过程中的心得体会，分享技术实践经验。我相信知识分享不仅能帮助他人，也能促进自己的成长。在这里，我会分享：</p>
-            <ul>
-                <li>🔧 技术教程和最佳实践</li>
-                <li>💡 项目经验和解决方案</li>
-                <li>📚 学习笔记和技术总结</li>
-                <li>🎯 个人成长和经验分享</li>
-            </ul>
-            <h2>联系我 📮</h2>
-            <p>如果你对我的文章有任何问题或建议，欢迎通过以下方式联系我：</p>
-            <ul>
-                <li>📧 Email: your@email.com</li>
-                <li>
-                    💬 GitHub: <a href="https://github.com/moreyu">@moreyu</a>
-                </li>
-            </ul>
+            <a href="/" class="back-to-home">返回首页 🏠</a>
         </div>
-        <a href="/" class="back-to-home">返回首页 🏠</a>
 
         <footer>
             <div class="footer-content">
