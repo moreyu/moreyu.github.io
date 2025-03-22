@@ -609,7 +609,7 @@
       <div class="stat-label">运行天数 ⚡️</div>
     </div>
     <div class="stat-card">
-      <div id="visitors" class="stat-number">1024</div>
+      <div id="visitors" class="stat-number">386,524</div>
       <div class="stat-label">访问人数 👥</div>
     </div>
     <div class="stat-card">
@@ -1135,18 +1135,18 @@
     }
 
     // 访客数量动态增长
-    let visitorCount = 1024;
+    let visitorCount = 386524;  // 更合理的初始访客数
 
     function updateVisitorsCount() {
       const visitorsElement = document.getElementById('visitors');
       if (!visitorsElement) return;
 
-      // 随机增加1-3个访客
-      const increment = Math.floor(Math.random() * 3) + 1;
+      // 随机增加5-15个访客
+      const increment = Math.floor(Math.random() * 11) + 5;
       const targetCount = visitorCount + increment;
       
       // 使用动画效果更新数字
-      const duration = 1000; // 1秒动画
+      const duration = 2000; // 2秒动画
       const frames = 60;
       const step = increment / frames;
       let currentCount = visitorCount;
@@ -1157,14 +1157,15 @@
           currentCount = targetCount;
           clearInterval(animation);
         }
-        visitorsElement.textContent = Math.floor(currentCount);
+        // 格式化数字，添加千位分隔符
+        visitorsElement.textContent = Math.floor(currentCount).toLocaleString();
       }, duration / frames);
       
       visitorCount = targetCount;
     }
 
-    // 每30-60秒随机增加访客数
-    setInterval(updateVisitorsCount, Math.random() * 30000 + 30000);
+    // 每15-30秒随机增加访客数
+    setInterval(updateVisitorsCount, Math.random() * 15000 + 15000);
 
     // 初始化所有效果
     document.addEventListener('DOMContentLoaded', () => {
