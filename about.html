@@ -346,23 +346,15 @@
 
     .footer p {
       color: var(--text);
-      margin-bottom: 1rem;
+      margin: 0.5rem 0;
+      font-size: 1rem;
+      line-height: 1.6;
     }
 
-    .footer .social-links {
-      display: flex;
-      justify-content: center;
-      gap: 2rem;
-    }
-
-    .footer .social-links a {
-      color: var(--text);
-      text-decoration: none;
-      transition: color 0.3s ease;
-    }
-
-    .footer .social-links a:hover {
-      color: var(--primary);
+    .footer p:last-child {
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      opacity: 0.8;
     }
   </style>
 </head>
@@ -548,11 +540,9 @@
   </div>
 
   <footer class="footer">
-    <p>&copy; 2024 Moreyu's Blog 🎉 | 本站已稳定运行 <span id="runtime">计算中...</span> ⚡️</p>
-    <div class="social-links">
-      <a href="https://github.com/moreyu" target="_blank"><i class="fab fa-github"></i> GitHub 🐱</a>
-      <a href="mailto:your@email.com"><i class="fas fa-envelope"></i> Email ✉️</a>
-    </div>
+    <p>&copy; 2018-2025 More Yu 🌟</p>
+    <p>本站已稳定运行 <span id="runtime">计算中...</span> 🚀</p>
+    <p>Powered by GitHub Pages ⚡️ | Made with 💖 by Moreyu</p>
   </footer>
 
   <div class="floating-menu">
