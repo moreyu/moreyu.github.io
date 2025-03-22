@@ -280,6 +280,60 @@
         width: 100%;
       }
     }
+
+    .skill-level {
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      margin-top: 1rem;
+    }
+
+    .level-bar {
+      height: 100%;
+      background: var(--primary);
+      border-radius: 2px;
+      transition: width 1s ease-out;
+    }
+
+    .certifications {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin: 2rem 0;
+      flex-wrap: wrap;
+    }
+
+    .cert-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--text);
+      background: var(--card-bg);
+      padding: 1rem;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      transition: all 0.3s ease;
+    }
+
+    .cert-item:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .cert-item i {
+      color: var(--primary);
+      font-size: 1.2rem;
+    }
+
+    h4, h5 {
+      color: var(--primary);
+      margin: 0.5rem 0;
+    }
+
+    h5 {
+      font-size: 1.1rem;
+      opacity: 0.9;
+    }
   </style>
 </head>
 <body>
@@ -300,148 +354,204 @@
 
     <div class="card">
       <div class="avatar-container">
-        <img src="/img/Avatar.gif" alt="Moreyu" class="avatar">
+        <img src="/img/Avatar.gif" alt="头像" class="avatar">
         <div class="avatar-ring"></div>
       </div>
 
-      <div class="bio">
-        <p>👋 嗨，我是 Moreyu</p>
-        <p>🌟 一个热爱技术的开发者</p>
-        <p>💻 专注于服务器运维、Docker 容器化和自动化部署</p>
-        <p>📝 喜欢分享技术经验，记录学习心得</p>
-        <p>🎯 致力于构建高效、稳定的家庭服务器解决方案</p>
-      </div>
+      <h2 class="gradient-text">👋 你好，我是 Moreyu</h2>
+      <p class="bio">热爱技术，热爱生活。专注于全栈开发和云原生技术，致力于用技术改变生活。喜欢探索新技术，分享学习心得。在这里记录我的技术探索和生活感悟。</p>
 
       <div class="social-links">
         <a href="https://github.com/moreyu" class="social-link" target="_blank" title="GitHub">
           <i class="fab fa-github"></i>
         </a>
-        <a href="mailto:contact@example.com" class="social-link" title="Email">
+        <a href="mailto:your@email.com" class="social-link" title="Email">
           <i class="fas fa-envelope"></i>
         </a>
         <a href="#" class="social-link" title="Twitter">
           <i class="fab fa-twitter"></i>
         </a>
+        <a href="#" class="social-link" title="LinkedIn">
+          <i class="fab fa-linkedin"></i>
+        </a>
       </div>
 
       <div class="stats">
         <div class="stat-item">
-          <div class="stat-number">6</div>
-          <div class="stat-label">文章数量 📝</div>
+          <i class="fas fa-code"></i>
+          <span>8年开发经验</span>
         </div>
         <div class="stat-item">
-          <div class="stat-number" id="uptime">计算中...</div>
-          <div class="stat-label">运行天数 ⚡️</div>
+          <i class="fas fa-project-diagram"></i>
+          <span>50+项目经验</span>
         </div>
         <div class="stat-item">
-          <div class="stat-number">42</div>
-          <div class="stat-label">文章标签 🏷️</div>
+          <i class="fas fa-book"></i>
+          <span>100+技术文章</span>
         </div>
       </div>
-    </div>
 
-    <div class="skills-grid">
-      <div class="skill-card">
-        <div class="skill-icon">🐳</div>
-        <h3>容器化部署</h3>
-        <p>熟练使用 Docker 和 Docker Compose 进行服务部署和管理</p>
-        <div class="skill-tags">
-          <span class="skill-tag">Docker</span>
-          <span class="skill-tag">Compose</span>
-          <span class="skill-tag">容器化</span>
+      <h3 class="gradient-text">🎯 技能专长</h3>
+      <div class="skills-grid">
+        <div class="skill-card">
+          <i class="fas fa-code skill-icon"></i>
+          <h4>前端开发</h4>
+          <div class="skill-tags">
+            <span class="skill-tag">React</span>
+            <span class="skill-tag">Vue</span>
+            <span class="skill-tag">TypeScript</span>
+            <span class="skill-tag">Next.js</span>
+            <span class="skill-tag">Tailwind</span>
+          </div>
+          <div class="skill-level">
+            <div class="level-bar" style="width: 95%"></div>
+          </div>
+        </div>
+        <div class="skill-card">
+          <i class="fas fa-server skill-icon"></i>
+          <h4>后端开发</h4>
+          <div class="skill-tags">
+            <span class="skill-tag">Node.js</span>
+            <span class="skill-tag">Python</span>
+            <span class="skill-tag">Go</span>
+            <span class="skill-tag">Java</span>
+            <span class="skill-tag">Spring</span>
+          </div>
+          <div class="skill-level">
+            <div class="level-bar" style="width: 90%"></div>
+          </div>
+        </div>
+        <div class="skill-card">
+          <i class="fas fa-database skill-icon"></i>
+          <h4>数据库</h4>
+          <div class="skill-tags">
+            <span class="skill-tag">MySQL</span>
+            <span class="skill-tag">MongoDB</span>
+            <span class="skill-tag">Redis</span>
+            <span class="skill-tag">PostgreSQL</span>
+          </div>
+          <div class="skill-level">
+            <div class="level-bar" style="width: 85%"></div>
+          </div>
+        </div>
+        <div class="skill-card">
+          <i class="fas fa-cloud skill-icon"></i>
+          <h4>云原生技术</h4>
+          <div class="skill-tags">
+            <span class="skill-tag">Docker</span>
+            <span class="skill-tag">K8s</span>
+            <span class="skill-tag">AWS</span>
+            <span class="skill-tag">微服务</span>
+          </div>
+          <div class="skill-level">
+            <div class="level-bar" style="width: 88%"></div>
+          </div>
+        </div>
+        <div class="skill-card">
+          <i class="fas fa-robot skill-icon"></i>
+          <h4>AI & 机器学习</h4>
+          <div class="skill-tags">
+            <span class="skill-tag">PyTorch</span>
+            <span class="skill-tag">TensorFlow</span>
+            <span class="skill-tag">LLM</span>
+            <span class="skill-tag">NLP</span>
+          </div>
+          <div class="skill-level">
+            <div class="level-bar" style="width: 80%"></div>
+          </div>
+        </div>
+        <div class="skill-card">
+          <i class="fas fa-tools skill-icon"></i>
+          <h4>开发工具</h4>
+          <div class="skill-tags">
+            <span class="skill-tag">Git</span>
+            <span class="skill-tag">VS Code</span>
+            <span class="skill-tag">CI/CD</span>
+            <span class="skill-tag">Linux</span>
+          </div>
+          <div class="skill-level">
+            <div class="level-bar" style="width: 92%"></div>
+          </div>
         </div>
       </div>
-      <div class="skill-card">
-        <div class="skill-icon">⚙️</div>
-        <h3>自动化运维</h3>
-        <p>构建自动化工作流，提升运维效率</p>
-        <div class="skill-tags">
-          <span class="skill-tag">Shell</span>
-          <span class="skill-tag">Python</span>
-          <span class="skill-tag">自动化</span>
-        </div>
-      </div>
-      <div class="skill-card">
-        <div class="skill-icon">🎬</div>
-        <h3>影视管理</h3>
-        <p>搭建家庭影院系统，实现媒体资源的智能管理</p>
-        <div class="skill-tags">
-          <span class="skill-tag">Emby</span>
-          <span class="skill-tag">MoviePilot</span>
-          <span class="skill-tag">AList</span>
-        </div>
-      </div>
-      <div class="skill-card">
-        <div class="skill-icon">🤖</div>
-        <h3>AI 应用</h3>
-        <p>探索 AI 技术在自动化场景中的应用</p>
-        <div class="skill-tags">
-          <span class="skill-tag">ChatGPT</span>
-          <span class="skill-tag">自动化</span>
-          <span class="skill-tag">效率工具</span>
-        </div>
-      </div>
-    </div>
 
-    <div class="timeline">
-      <div class="timeline-item">
-        <div class="timeline-content left">
-          <h3>2025</h3>
-          <p>开始探索 AI 技术在自动化运维中的应用，构建智能化的家庭服务器管理系统</p>
-          <div class="timeline-tags">
-            <span class="timeline-tag">AI</span>
-            <span class="timeline-tag">自动化</span>
+      <h3 class="gradient-text">📚 学习与工作经历</h3>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-content">
+            <h4>2025</h4>
+            <h5>高级云原生工程师</h5>
+            <p>专注于云原生技术和微服务架构，主导多个大型项目的架构设计和实现。深入研究 Kubernetes、服务网格等技术，并在团队中推广最佳实践。</p>
+            <div class="timeline-tags">
+              <span class="timeline-tag">云原生</span>
+              <span class="timeline-tag">架构设计</span>
+              <span class="timeline-tag">团队管理</span>
+            </div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-content">
+            <h4>2024</h4>
+            <h5>AI 应用研究</h5>
+            <p>深入研究 AI 技术在实际业务中的应用。开发了多个基于大语言模型的应用，并探索 AI 在开发流程中的创新应用。</p>
+            <div class="timeline-tags">
+              <span class="timeline-tag">AI</span>
+              <span class="timeline-tag">LLM</span>
+              <span class="timeline-tag">创新</span>
+            </div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-content">
+            <h4>2022-2023</h4>
+            <h5>全栈开发工程师</h5>
+            <p>负责企业级应用的全栈开发，使用 React、Node.js 和微服务架构构建高可用系统。同时开始探索云原生技术，并在项目中实践。</p>
+            <div class="timeline-tags">
+              <span class="timeline-tag">全栈开发</span>
+              <span class="timeline-tag">微服务</span>
+              <span class="timeline-tag">高可用</span>
+            </div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-content">
+            <h4>2020-2021</h4>
+            <h5>后端开发工程师</h5>
+            <p>专注于后端服务开发，使用 Java 和 Spring 框架构建企业级应用。期间也开始学习前端技术，为转向全栈开发打下基础。</p>
+            <div class="timeline-tags">
+              <span class="timeline-tag">后端开发</span>
+              <span class="timeline-tag">Java</span>
+              <span class="timeline-tag">Spring</span>
+            </div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-content">
+            <h4>2018-2019</h4>
+            <h5>初入编程世界</h5>
+            <p>开始系统学习编程，主要学习 Python 和 Web 开发基础。参与多个开源项目，培养了对技术的热情和基本的工程实践能力。</p>
+            <div class="timeline-tags">
+              <span class="timeline-tag">编程启蒙</span>
+              <span class="timeline-tag">开源贡献</span>
+              <span class="timeline-tag">持续学习</span>
+            </div>
           </div>
         </div>
       </div>
-      <div class="timeline-item">
-        <div class="timeline-content right">
-          <h3>2024</h3>
-          <p>构建完整的家庭服务器解决方案，整合 MoviePilot、AList 和 Emby 等服务</p>
-          <div class="timeline-tags">
-            <span class="timeline-tag">服务器</span>
-            <span class="timeline-tag">媒体</span>
-          </div>
+
+      <h3 class="gradient-text">🏆 获得认证</h3>
+      <div class="certifications">
+        <div class="cert-item">
+          <i class="fas fa-award"></i>
+          <span>AWS 解决方案架构师认证</span>
         </div>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-content left">
-          <h3>2023</h3>
-          <p>深入学习容器化技术和自动化部署，掌握 Docker 和自动化运维技能</p>
-          <div class="timeline-tags">
-            <span class="timeline-tag">Docker</span>
-            <span class="timeline-tag">运维</span>
-          </div>
+        <div class="cert-item">
+          <i class="fas fa-award"></i>
+          <span>Kubernetes CKA 认证</span>
         </div>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-content right">
-          <h3>2022</h3>
-          <p>开始记录技术博客，分享学习经验和技术心得，建立个人技术品牌</p>
-          <div class="timeline-tags">
-            <span class="timeline-tag">博客</span>
-            <span class="timeline-tag">分享</span>
-          </div>
-        </div>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-content left">
-          <h3>2021</h3>
-          <p>接触家庭服务器领域，开始探索 NAS 和媒体服务器的搭建</p>
-          <div class="timeline-tags">
-            <span class="timeline-tag">NAS</span>
-            <span class="timeline-tag">探索</span>
-          </div>
-        </div>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-content right">
-          <h3>2020</h3>
-          <p>开始系统学习 Linux 系统和服务器运维知识</p>
-          <div class="timeline-tags">
-            <span class="timeline-tag">Linux</span>
-            <span class="timeline-tag">基础</span>
-          </div>
+        <div class="cert-item">
+          <i class="fas fa-award"></i>
+          <span>Oracle Java 认证</span>
         </div>
       </div>
     </div>
