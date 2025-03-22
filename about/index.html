@@ -373,5 +373,36 @@
             </ul>
         </div>
         <a href="/" class="back-to-home">返回首页 🏠</a>
+
+        <footer>
+            <div class="footer-content">
+                <p>© 2018-2025 More Yu 🌟</p>
+                <p>本站已稳定运行 <span id="runtime">计算中...</span> 🚀</p>
+                <p>Powered by GitHub Pages ⚡️ | Made with 💖 by Moreyu</p>
+            </div>
+        </footer>
+
+        <script>
+        // 计算网站运行时间
+        function calculateRuntime() {
+            const startTime = new Date('2018-09-09').getTime();
+            const now = new Date().getTime();
+            const diff = now - startTime;
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            const runtimeElement = document.getElementById('runtime');
+            if (runtimeElement) {
+                runtimeElement.textContent = `${days} 天 ${hours} 小时 ${minutes} 分 ${seconds} 秒`;
+            }
+        }
+
+        // 页面加载完成后立即计算一次并开始定时更新
+        calculateRuntime();
+        setInterval(calculateRuntime, 1000);
+        </script>
     </body>
 </html>
