@@ -609,7 +609,7 @@
       <div class="stat-label">运行天数 ⚡️</div>
     </div>
     <div class="stat-card">
-      <div class="stat-number">1024</div>
+      <div id="visitors" class="stat-number">1024</div>
       <div class="stat-label">访问人数 👥</div>
     </div>
     <div class="stat-card">
@@ -1134,6 +1134,38 @@
       });
     }
 
+    // 访客数量动态增长
+    let visitorCount = 1024;
+
+    function updateVisitorsCount() {
+      const visitorsElement = document.getElementById('visitors');
+      if (!visitorsElement) return;
+
+      // 随机增加1-3个访客
+      const increment = Math.floor(Math.random() * 3) + 1;
+      const targetCount = visitorCount + increment;
+      
+      // 使用动画效果更新数字
+      const duration = 1000; // 1秒动画
+      const frames = 60;
+      const step = increment / frames;
+      let currentCount = visitorCount;
+      
+      const animation = setInterval(() => {
+        currentCount += step;
+        if (currentCount >= targetCount) {
+          currentCount = targetCount;
+          clearInterval(animation);
+        }
+        visitorsElement.textContent = Math.floor(currentCount);
+      }, duration / frames);
+      
+      visitorCount = targetCount;
+    }
+
+    // 每30-60秒随机增加访客数
+    setInterval(updateVisitorsCount, Math.random() * 30000 + 30000);
+
     // 初始化所有效果
     document.addEventListener('DOMContentLoaded', () => {
       addFadeInEffect();
@@ -1143,6 +1175,7 @@
       addParallaxEffect();
       updateVisitorsList();
       initArticlesDock();  // 初始化文章 Dock
+      updateVisitorsCount(); // 初始调用一次
     });
 
     // 文章 Dock 功能
