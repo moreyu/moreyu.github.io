@@ -530,8 +530,11 @@
       text-align: center;
       padding: 2rem 0;
       margin-top: 4rem;
+      margin-bottom: 80px;
       background: var(--bg);
       border-top: 1px solid var(--border);
+      position: relative;
+      z-index: 999;
     }
 
     .footer-content {
@@ -1304,16 +1307,15 @@
       const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
       const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-      document.getElementById('runtime').textContent = 
-        `${days} 天 ${hours} 小时 ${minutes} 分 ${seconds} 秒`;
+      const runtimeElement = document.getElementById('runtime');
+      if (runtimeElement) {
+        runtimeElement.textContent = `${days} 天 ${hours} 小时 ${minutes} 分 ${seconds} 秒`;
+      }
     }
 
-    // 页面加载完成后立即计算一次
-    document.addEventListener('DOMContentLoaded', () => {
-      calculateRuntime();
-      // 每秒更新一次
-      setInterval(calculateRuntime, 1000);
-    });
+    // 页面加载完成后立即计算一次并开始定时更新
+    calculateRuntime();
+    setInterval(calculateRuntime, 1000);
   </script>
 </body>
 </html>
