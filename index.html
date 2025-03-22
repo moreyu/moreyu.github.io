@@ -605,7 +605,7 @@
       <div class="stat-label">文章数量 📝</div>
     </div>
     <div class="stat-card">
-      <div class="stat-number">999</div>
+      <div id="uptime" class="stat-number">计算中...</div>
       <div class="stat-label">运行天数 ⚡️</div>
     </div>
     <div class="stat-card">
@@ -1317,9 +1317,16 @@
       const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
       const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
+      // 更新页脚的运行时间
       const runtimeElement = document.getElementById('runtime');
       if (runtimeElement) {
         runtimeElement.textContent = `${days} 天 ${hours} 小时 ${minutes} 分 ${seconds} 秒`;
+      }
+
+      // 更新统计卡片的运行天数
+      const uptimeElement = document.getElementById('uptime');
+      if (uptimeElement) {
+        uptimeElement.textContent = days;
       }
     }
 
