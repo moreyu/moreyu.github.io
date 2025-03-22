@@ -319,27 +319,8 @@
   <!-- 最近访客 -->
   <div class="card visitors-card">
     <h3>最近访客 👥</h3>
-    <div class="visitors-list">
-      <div class="visitor">
-        <img src="https://avatars.githubusercontent.com/u/1" alt="访客头像" class="visitor-avatar">
-        <span>小兔子</span>
-      </div>
-      <div class="visitor">
-        <img src="https://avatars.githubusercontent.com/u/2" alt="访客头像" class="visitor-avatar">
-        <span>科技迷</span>
-      </div>
-      <div class="visitor">
-        <img src="https://avatars.githubusercontent.com/u/3" alt="访客头像" class="visitor-avatar">
-        <span>Docker达人</span>
-      </div>
-      <div class="visitor">
-        <img src="https://avatars.githubusercontent.com/u/4" alt="访客头像" class="visitor-avatar">
-        <span>云端漫步</span>
-      </div>
-      <div class="visitor">
-        <img src="https://avatars.githubusercontent.com/u/5" alt="访客头像" class="visitor-avatar">
-        <span>代码诗人</span>
-      </div>
+    <div class="visitors-list" id="visitors-list">
+      <!-- 访客列表将由 JavaScript 动态生成 -->
     </div>
   </div>
 
@@ -751,7 +732,72 @@
       updateStatus();
       cycleMessages();
       addParallaxEffect();
+      updateVisitorsList();  // 添加访客列表更新
     });
+
+    // 访客名称生成
+    const firstNames = ['小', '大', '老', '阿', '开心', '快乐', '聪明', '勇敢', '智慧', '文艺'];
+    const lastNames = ['码农', '攻城狮', '程序猿', '极客', '工程师', '技术控', '创客', '开发者', '架构师', '运维'];
+    const techNames = ['Docker', 'Linux', 'Python', 'Java', 'Go', 'Vue', 'React', 'Node', 'AI', 'Cloud'];
+    const suffixes = ['达人', '专家', '大师', '高手', '迷', '控', '侠', '客', '帝', '王'];
+
+    function generateVisitorName() {
+      const nameTypes = [
+        // 类型1：小/大/老/阿 + 技术名
+        () => firstNames.slice(0, 4)[Math.floor(Math.random() * 4)] + 
+              techNames[Math.floor(Math.random() * techNames.length)],
+        // 类型2：技术名 + 达人/专家/大师
+        () => techNames[Math.floor(Math.random() * techNames.length)] + 
+              suffixes.slice(0, 3)[Math.floor(Math.random() * 3)],
+        // 类型3：开心/快乐/聪明 + 码农/工程师
+        () => firstNames.slice(4)[Math.floor(Math.random() * (firstNames.length - 4))] + 
+              lastNames[Math.floor(Math.random() * lastNames.length)],
+        // 类型4：随机组合
+        () => lastNames[Math.floor(Math.random() * lastNames.length)] + 
+              suffixes[Math.floor(Math.random() * suffixes.length)]
+      ];
+      
+      return nameTypes[Math.floor(Math.random() * nameTypes.length)]();
+    }
+
+    // 生成随机头像URL
+    function generateAvatarUrl() {
+      const randomId = Math.floor(Math.random() * 1000) + 1;
+      return `https://avatars.githubusercontent.com/u/${randomId}`;
+    }
+
+    // 更新访客列表
+    function updateVisitorsList() {
+      const visitorsList = document.getElementById('visitors-list');
+      visitorsList.innerHTML = '';
+      
+      const usedNames = new Set();
+      for (let i = 0; i < 5; i++) {
+        let visitorName;
+        do {
+          visitorName = generateVisitorName();
+        } while (usedNames.has(visitorName));
+        usedNames.add(visitorName);
+        
+        const visitor = document.createElement('div');
+        visitor.className = 'visitor';
+        visitor.innerHTML = `
+          <img src="${generateAvatarUrl()}" alt="访客头像" class="visitor-avatar">
+          <span>${visitorName}</span>
+        `;
+        visitorsList.appendChild(visitor);
+
+        // 添加悬停效果
+        visitor.addEventListener('mouseenter', () => {
+          visitor.style.transform = 'scale(1.1)';
+          visitor.style.transition = 'transform 0.3s ease';
+        });
+        
+        visitor.addEventListener('mouseleave', () => {
+          visitor.style.transform = 'scale(1)';
+        });
+      }
+    }
 
     // 深色模式适配
     const darkModeStyles = `
