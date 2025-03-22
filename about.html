@@ -21,14 +21,49 @@
       width: 150px;
       height: 150px;
       margin: 0 auto 2rem;
+      perspective: 1000px;
+    }
+
+    .avatar-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      transition: transform 0.8s;
+    }
+
+    .avatar-container:hover .avatar-inner {
+      transform: rotateY(180deg);
+    }
+
+    .avatar-front, .avatar-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 50%;
+      border: 3px solid var(--primary);
+    }
+
+    .avatar-front {
+      overflow: hidden;
+    }
+
+    .avatar-back {
+      background: var(--primary);
+      transform: rotateY(180deg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      color: white;
     }
 
     .avatar {
       width: 100%;
       height: 100%;
-      border-radius: 50%;
       object-fit: cover;
-      border: 3px solid var(--primary);
+      border-radius: 50%;
       animation: float 6s ease-in-out infinite;
     }
 
@@ -60,6 +95,22 @@
       line-height: 1.8;
       margin: 2rem 0;
       color: var(--text);
+      position: relative;
+      padding: 2rem;
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .bio::before {
+      content: '"';
+      position: absolute;
+      top: 0;
+      left: 1rem;
+      font-size: 4rem;
+      color: var(--primary);
+      opacity: 0.2;
+      font-family: serif;
     }
 
     /* 技能卡片 */
@@ -76,6 +127,21 @@
       padding: 1.5rem;
       box-shadow: var(--shadow);
       transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .skill-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(90deg, var(--primary), var(--primary-light));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s ease;
     }
 
     .skill-card:hover {
@@ -83,10 +149,40 @@
       box-shadow: var(--shadow-hover);
     }
 
+    .skill-card:hover::before {
+      transform: scaleX(1);
+    }
+
     .skill-icon {
-      font-size: 2rem;
+      font-size: 2.5rem;
       color: var(--primary);
       margin-bottom: 1rem;
+      transition: transform 0.3s ease;
+    }
+
+    .skill-card:hover .skill-icon {
+      transform: scale(1.1);
+    }
+
+    .skill-level {
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      margin-top: 1rem;
+      overflow: hidden;
+    }
+
+    .skill-progress {
+      height: 100%;
+      background: var(--primary);
+      border-radius: 2px;
+      transform-origin: left;
+      animation: progress 1s ease-out forwards;
+    }
+
+    @keyframes progress {
+      from { transform: scaleX(0); }
+      to { transform: scaleX(1); }
     }
 
     /* 社交链接 */
@@ -109,11 +205,35 @@
       font-size: 1.5rem;
       transition: all 0.3s ease;
       box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .social-link::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: var(--primary);
+      transform: translateY(100%);
+      transition: transform 0.3s ease;
+    }
+
+    .social-link i {
+      position: relative;
+      z-index: 1;
+      transition: color 0.3s ease;
     }
 
     .social-link:hover {
       transform: translateY(-5px);
-      background: var(--primary);
+    }
+
+    .social-link:hover::before {
+      transform: translateY(0);
+    }
+
+    .social-link:hover i {
       color: white;
     }
 
@@ -127,23 +247,38 @@
 
     .stat-item {
       text-align: center;
+      padding: 1.5rem;
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      transition: all 0.3s ease;
+      min-width: 150px;
+    }
+
+    .stat-item:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-hover);
     }
 
     .stat-number {
-      font-size: 2rem;
+      font-size: 2.5rem;
       color: var(--primary);
       font-weight: bold;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(45deg, var(--primary), var(--primary-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
     .stat-label {
-      margin-top: 0.5rem;
       color: var(--text);
+      font-size: 1.1rem;
     }
 
     /* 时间线 */
     .timeline {
       position: relative;
-      margin: 3rem 0;
+      margin: 4rem 0;
       padding: 2rem 0;
     }
 
@@ -162,6 +297,14 @@
       justify-content: center;
       margin: 2rem 0;
       position: relative;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.5s ease;
+    }
+
+    .timeline-item.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     .timeline-content {
@@ -171,21 +314,40 @@
       border-radius: var(--radius);
       box-shadow: var(--shadow);
       position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .timeline-content:hover {
+      transform: scale(1.02);
+      box-shadow: var(--shadow-hover);
     }
 
     .timeline-content::before {
       content: "";
       position: absolute;
       top: 50%;
-      width: 16px;
-      height: 16px;
+      width: 20px;
+      height: 20px;
       background: var(--primary);
       border-radius: 50%;
-      border: 3px solid var(--bg);
+      border: 4px solid var(--bg);
+      box-shadow: 0 0 0 4px rgba(var(--primary-rgb), 0.2);
+    }
+
+    .timeline-content h3 {
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+      font-size: 1.5rem;
+    }
+
+    .timeline-content p {
+      margin: 0;
+      line-height: 1.6;
     }
 
     .timeline-content.left {
       margin-right: 55%;
+      text-align: right;
     }
 
     .timeline-content.right {
@@ -193,13 +355,28 @@
     }
 
     .timeline-content.left::before {
-      right: -58px;
+      right: -60px;
       transform: translateY(-50%);
     }
 
     .timeline-content.right::before {
-      left: -58px;
+      left: -60px;
       transform: translateY(-50%);
+    }
+
+    .timeline-tags {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 1rem;
+      justify-content: flex-end;
+    }
+
+    .timeline-tag {
+      background: var(--primary);
+      color: white;
+      padding: 0.2rem 0.6rem;
+      border-radius: var(--radius);
+      font-size: 0.9rem;
     }
 
     @media (max-width: 768px) {
@@ -214,10 +391,15 @@
       .timeline-content {
         width: calc(100% - 64px);
         margin: 0 0 0 64px !important;
+        text-align: left !important;
       }
 
       .timeline-content::before {
         left: -42px !important;
+      }
+
+      .timeline-tags {
+        justify-content: flex-start;
       }
 
       .stats {
@@ -225,6 +407,49 @@
         align-items: center;
         gap: 1.5rem;
       }
+
+      .stat-item {
+        width: 100%;
+      }
+    }
+
+    /* 新增：技能标签 */
+    .skill-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    .skill-tag {
+      background: rgba(var(--primary-rgb), 0.1);
+      color: var(--primary);
+      padding: 0.2rem 0.6rem;
+      border-radius: var(--radius);
+      font-size: 0.9rem;
+    }
+
+    /* 新增：页面标题动画 */
+    .page-title {
+      text-align: center;
+      margin-bottom: 2rem;
+      position: relative;
+    }
+
+    .page-title::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      width: 100px;
+      height: 3px;
+      background: var(--primary);
+      transform: translateX(-50%) scaleX(0);
+      animation: titleLine 0.5s ease forwards 0.5s;
+    }
+
+    @keyframes titleLine {
+      to { transform: translateX(-50%) scaleX(1); }
     }
   </style>
 </head>
@@ -235,7 +460,9 @@
   </button>
 
   <div class="container">
-    <h1 class="gradient-text">关于我 ✨</h1>
+    <div class="page-title">
+      <h1 class="gradient-text">关于我 ✨</h1>
+    </div>
 
     <nav class="nav">
       <a href="/"><i class="fas fa-home"></i> 首页 🏠</a>
@@ -245,7 +472,14 @@
     </nav>
 
     <div class="avatar-container">
-      <img src="/img/Avatar.gif" alt="Moreyu" class="avatar">
+      <div class="avatar-inner">
+        <div class="avatar-front">
+          <img src="/img/Avatar.gif" alt="Moreyu" class="avatar">
+        </div>
+        <div class="avatar-back">
+          <span>👋</span>
+        </div>
+      </div>
       <div class="avatar-ring"></div>
     </div>
 
@@ -254,16 +488,17 @@
       <p>🌟 一个热爱技术的开发者</p>
       <p>💻 专注于服务器运维、Docker 容器化和自动化部署</p>
       <p>📝 喜欢分享技术经验，记录学习心得</p>
+      <p>🎯 致力于构建高效、稳定的家庭服务器解决方案</p>
     </div>
 
     <div class="social-links">
-      <a href="https://github.com/moreyu" class="social-link" target="_blank">
+      <a href="https://github.com/moreyu" class="social-link" target="_blank" title="GitHub">
         <i class="fab fa-github"></i>
       </a>
-      <a href="mailto:contact@example.com" class="social-link">
+      <a href="mailto:contact@example.com" class="social-link" title="Email">
         <i class="fas fa-envelope"></i>
       </a>
-      <a href="#" class="social-link">
+      <a href="#" class="social-link" title="Twitter">
         <i class="fab fa-twitter"></i>
       </a>
     </div>
@@ -288,21 +523,53 @@
         <div class="skill-icon">🐳</div>
         <h3>容器化部署</h3>
         <p>熟练使用 Docker 和 Docker Compose 进行服务部署和管理</p>
+        <div class="skill-level">
+          <div class="skill-progress" style="transform: scaleX(0.9);"></div>
+        </div>
+        <div class="skill-tags">
+          <span class="skill-tag">Docker</span>
+          <span class="skill-tag">Compose</span>
+          <span class="skill-tag">容器化</span>
+        </div>
       </div>
       <div class="skill-card">
         <div class="skill-icon">⚙️</div>
         <h3>自动化运维</h3>
         <p>构建自动化工作流，提升运维效率</p>
+        <div class="skill-level">
+          <div class="skill-progress" style="transform: scaleX(0.85);"></div>
+        </div>
+        <div class="skill-tags">
+          <span class="skill-tag">Shell</span>
+          <span class="skill-tag">Python</span>
+          <span class="skill-tag">自动化</span>
+        </div>
       </div>
       <div class="skill-card">
         <div class="skill-icon">🎬</div>
         <h3>影视管理</h3>
         <p>搭建家庭影院系统，实现媒体资源的智能管理</p>
+        <div class="skill-level">
+          <div class="skill-progress" style="transform: scaleX(0.95);"></div>
+        </div>
+        <div class="skill-tags">
+          <span class="skill-tag">Emby</span>
+          <span class="skill-tag">MoviePilot</span>
+          <span class="skill-tag">AList</span>
+        </div>
       </div>
       <div class="skill-card">
         <div class="skill-icon">🤖</div>
         <h3>AI 应用</h3>
         <p>探索 AI 技术在自动化场景中的应用</p>
+        <div class="skill-level">
+          <div class="skill-progress" style="transform: scaleX(0.75);"></div>
+        </div>
+        <div class="skill-tags">
+          <span class="skill-tag">ChatGPT</span>
+          <span class="skill-tag">自动化</span>
+          <span class="skill-tag">效率工具</span>
+        </div>
       </div>
     </div>
 
@@ -310,25 +577,61 @@
       <div class="timeline-item">
         <div class="timeline-content left">
           <h3>2025</h3>
-          <p>开始探索 AI 技术在自动化运维中的应用</p>
+          <p>开始探索 AI 技术在自动化运维中的应用，构建智能化的家庭服务器管理系统</p>
+          <div class="timeline-tags">
+            <span class="timeline-tag">AI</span>
+            <span class="timeline-tag">自动化</span>
+          </div>
         </div>
       </div>
       <div class="timeline-item">
         <div class="timeline-content right">
           <h3>2024</h3>
-          <p>构建完整的家庭服务器解决方案</p>
+          <p>构建完整的家庭服务器解决方案，整合 MoviePilot、AList 和 Emby 等服务</p>
+          <div class="timeline-tags">
+            <span class="timeline-tag">服务器</span>
+            <span class="timeline-tag">媒体</span>
+          </div>
         </div>
       </div>
       <div class="timeline-item">
         <div class="timeline-content left">
           <h3>2023</h3>
-          <p>深入学习容器化技术和自动化部署</p>
+          <p>深入学习容器化技术和自动化部署，掌握 Docker 和自动化运维技能</p>
+          <div class="timeline-tags">
+            <span class="timeline-tag">Docker</span>
+            <span class="timeline-tag">运维</span>
+          </div>
         </div>
       </div>
       <div class="timeline-item">
         <div class="timeline-content right">
           <h3>2022</h3>
-          <p>开始记录技术博客，分享学习经验</p>
+          <p>开始记录技术博客，分享学习经验和技术心得，建立个人技术品牌</p>
+          <div class="timeline-tags">
+            <span class="timeline-tag">博客</span>
+            <span class="timeline-tag">分享</span>
+          </div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-content left">
+          <h3>2021</h3>
+          <p>接触家庭服务器领域，开始探索 NAS 和媒体服务器的搭建</p>
+          <div class="timeline-tags">
+            <span class="timeline-tag">NAS</span>
+            <span class="timeline-tag">探索</span>
+          </div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-content right">
+          <h3>2020</h3>
+          <p>开始系统学习 Linux 系统和服务器运维知识</p>
+          <div class="timeline-tags">
+            <span class="timeline-tag">Linux</span>
+            <span class="timeline-tag">基础</span>
+          </div>
         </div>
       </div>
     </div>
@@ -369,6 +672,19 @@
 
     calculateRuntime();
     setInterval(calculateRuntime, 1000);
+
+    // 添加时间线动画
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.timeline-item').forEach(item => {
+      observer.observe(item);
+    });
   </script>
 </body>
 </html> 
