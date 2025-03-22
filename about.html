@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/maple-mono@latest/index.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/about.css">
   <style>
     /* 技能卡片样式 */
     .skills-grid {
@@ -56,76 +57,92 @@
     /* 时间线样式 */
     .timeline {
       position: relative;
-      max-width: 800px;
-      margin: 2rem auto;
+      margin: 3rem 0;
       padding: 2rem 0;
     }
 
     .timeline::before {
-      content: '';
+      content: "";
       position: absolute;
       left: 50%;
-      transform: translateX(-50%);
       width: 2px;
       height: 100%;
-      background: var(--primary);
-      opacity: 0.3;
+      background: linear-gradient(to bottom,var(--gradient-start),var(--gradient-end));
+      transform: translateX(-50%);
     }
 
     .timeline-item {
+      display: flex;
+      justify-content: center;
+      margin: 2rem 0;
       position: relative;
-      margin-bottom: 2rem;
-      width: 50%;
-      padding-right: 2rem;
-      opacity: 0;
-      transform: translateX(-50px);
-      animation: slideInRight 0.8s ease forwards;
-    }
-
-    .timeline-item:nth-child(even) {
-      margin-left: 50%;
-      padding-right: 0;
-      padding-left: 2rem;
-      animation: slideInLeft 0.8s ease forwards;
     }
 
     .timeline-content {
-      background: var(--card-bg);
+      width: 45%;
       padding: 1.5rem;
-      border-radius: var(--radius);
+      border-radius: 8px;
+      background: var(--card-bg);
       box-shadow: var(--shadow);
       position: relative;
     }
 
     .timeline-content::before {
-      content: '';
+      content: "";
       position: absolute;
-      right: -10px;
-      top: 20px;
-      width: 20px;
-      height: 20px;
+      top: 50%;
+      width: 16px;
+      height: 16px;
       background: var(--primary);
       border-radius: 50%;
-      box-shadow: 0 0 0 4px var(--card-bg);
+      border: 3px solid var(--bg);
+      box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.3);
     }
 
-    .timeline-item:nth-child(even) .timeline-content::before {
-      right: auto;
-      left: -10px;
+    .timeline-content.left {
+      margin-right: 55%;
     }
 
-    /* 动画效果 */
-    @keyframes slideInRight {
-      to {
-        opacity: 1;
-        transform: translateX(0);
+    .timeline-content.right {
+      margin-left: 55%;
+    }
+
+    .timeline-content.left::before {
+      right: -58px;
+      transform: translateY(-50%);
+    }
+
+    .timeline-content.right::before {
+      left: -58px;
+      transform: translateY(-50%);
+    }
+
+    .timeline-content h3 {
+      margin: 0 0 0.5rem 0;
+      color: var(--primary);
+    }
+
+    .timeline-content p {
+      margin: 0;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 768px) {
+      .timeline::before {
+        left: 32px;
       }
-    }
 
-    @keyframes slideInLeft {
-      to {
-        opacity: 1;
-        transform: translateX(0);
+      .timeline-item {
+        margin: 3rem 0;
+      }
+
+      .timeline-content {
+        width: calc(100% - 64px);
+        margin: 0 0 0 64px !important;
+      }
+
+      .timeline-content::before {
+        left: -42px !important;
       }
     }
 
@@ -338,7 +355,7 @@
 
   <div class="card">
     <div class="avatar-container">
-      <img src="/img/Avatar.gif" alt="头像" class="avatar">
+      <img src="/images/Avatar.gif" alt="头像" class="avatar">
       <div class="avatar-ring"></div>
     </div>
 
@@ -541,10 +558,10 @@
   </div>
 
   <footer>
-    <p>&copy; 2025 Moreyu's Blog 🎉 | 本站已稳定运行 999 天 ⚡️</p>
-    <div class="social-links">
-      <a href="https://github.com/moreyu" target="_blank"><i class="fab fa-github"></i> GitHub 🐱</a>
-      <a href="mailto:your@email.com"><i class="fas fa-envelope"></i> Email ✉️</a>
+    <div class="footer-content">
+      <p>© 2018-2025 More Yu 🌟</p>
+      <p>本站已稳定运行 <span id="runtime">计算中...</span> 🚀</p>
+      <p>Powered by GitHub Pages ⚡️ | Made with 💖 by Moreyu</p>
     </div>
   </footer>
 
@@ -595,6 +612,27 @@
         bar.style.width = width;
       }, 500);
     });
+
+    // 计算网站运行时间
+    function calculateRuntime() {
+      const startTime = new Date('2018-09-09').getTime();
+      const now = new Date().getTime();
+      const diff = now - startTime;
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+      const runtimeElement = document.getElementById('runtime');
+      if (runtimeElement) {
+        runtimeElement.textContent = `${days} 天 ${hours} 小时 ${minutes} 分 ${seconds} 秒`;
+      }
+    }
+
+    // 页面加载完成后立即计算一次并开始定时更新
+    calculateRuntime();
+    setInterval(calculateRuntime, 1000);
   </script>
 </body>
 </html> 
