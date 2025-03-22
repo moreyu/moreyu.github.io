@@ -850,15 +850,33 @@
 
     // 模拟访问统计数据
     function updateVisitStats() {
-      document.getElementById('total-visits').textContent = '12,345';
-      document.getElementById('today-visits').textContent = '123';
-      document.getElementById('online-users').textContent = Math.floor(Math.random() * 20 + 1);
+      // 基于网站开始时间计算预期访问量
+      const startTime = new Date('2018-09-09').getTime();
+      const now = new Date().getTime();
+      const days = Math.floor((now - startTime) / (1000 * 60 * 60 * 24));
+      
+      // 计算总访问量：基础量 + 每天增量 + 随机波动
+      const baseVisits = 500000; // 基础访问量
+      const dailyAverage = 100; // 平均每天访问量
+      const totalVisits = baseVisits + (days * dailyAverage) + Math.floor(Math.random() * 1000);
+      
+      // 计算今日访问量：基于时间和随机因素
+      const hour = new Date().getHours();
+      const baseDaily = 100; // 基础日访问量
+      const hourlyFactor = hour < 8 ? 0.5 : (hour < 22 ? 2 : 1); // 根据时段调整系数
+      const todayVisits = Math.floor(baseDaily * hourlyFactor + Math.random() * 50);
+      
+      // 计算在线用户数：基于今日访问量的合理比例
+      const onlineUsers = Math.floor(todayVisits * 0.1 + Math.random() * 10);
+
+      // 格式化数字显示
+      document.getElementById('total-visits').textContent = totalVisits.toLocaleString();
+      document.getElementById('today-visits').textContent = todayVisits.toLocaleString();
+      document.getElementById('online-users').textContent = onlineUsers;
     }
 
-    // 更新在线用户数
-    setInterval(() => {
-      document.getElementById('online-users').textContent = Math.floor(Math.random() * 20 + 1);
-    }, 5000);
+    // 更频繁地更新统计数据
+    setInterval(updateVisitStats, 3000);
 
     // 初始化访问统计
     updateVisitStats();
