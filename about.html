@@ -490,40 +490,6 @@
     }
 
     /* 访问统计 */
-    .visit-stats {
-      display: flex;
-      justify-content: center;
-      gap: 2rem;
-      margin: 2rem 0;
-      flex-wrap: wrap;
-    }
-
-    .visit-stat {
-      background: var(--card-bg);
-      padding: 1rem 2rem;
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      text-align: center;
-      transition: all 0.3s ease;
-    }
-
-    .visit-stat:hover {
-      transform: translateY(-5px);
-      box-shadow: var(--shadow-hover);
-    }
-
-    .visit-number {
-      font-size: 1.5rem;
-      color: var(--primary);
-      font-weight: bold;
-    }
-
-    .visit-label {
-      color: var(--text);
-      margin-top: 0.5rem;
-      font-size: 0.9rem;
-    }
-
     .stats-section {
       display: flex;
       justify-content: center;
@@ -799,21 +765,6 @@
     </div>
 
     <h3 class="gradient-text">📈 访问统计</h3>
-    <div class="visit-stats">
-      <div class="visit-stat">
-        <div class="visit-number" id="total-visits">--</div>
-        <div class="visit-label">总访问量</div>
-      </div>
-      <div class="visit-stat">
-        <div class="visit-number" id="today-visits">--</div>
-        <div class="visit-label">今日访问</div>
-      </div>
-      <div class="visit-stat">
-        <div class="visit-number" id="online-users">--</div>
-        <div class="visit-label">当前在线</div>
-      </div>
-    </div>
-
     <div class="stats-section">
       <div class="stat-item">
         <i class="fas fa-eye"></i>
@@ -895,39 +846,6 @@
     // 页面加载完成后立即计算一次并开始定时更新
     calculateRuntime();
     setInterval(calculateRuntime, 1000);
-
-    // 模拟访问统计数据
-    function updateVisitStats() {
-      // 基于网站开始时间计算预期访问量
-      const startTime = new Date('2018-09-09').getTime();
-      const now = new Date().getTime();
-      const days = Math.floor((now - startTime) / (1000 * 60 * 60 * 24));
-      
-      // 计算总访问量：基础量 + 每天增量 + 随机波动
-      const baseVisits = 500000; // 基础访问量
-      const dailyAverage = 100; // 平均每天访问量
-      const totalVisits = baseVisits + (days * dailyAverage) + Math.floor(Math.random() * 1000);
-      
-      // 计算今日访问量：基于时间和随机因素
-      const hour = new Date().getHours();
-      const baseDaily = 100; // 基础日访问量
-      const hourlyFactor = hour < 8 ? 0.5 : (hour < 22 ? 2 : 1); // 根据时段调整系数
-      const todayVisits = Math.floor(baseDaily * hourlyFactor + Math.random() * 50);
-      
-      // 计算在线用户数：基于今日访问量的合理比例
-      const onlineUsers = Math.floor(todayVisits * 0.1 + Math.random() * 10);
-
-      // 格式化数字显示
-      document.getElementById('total-visits').textContent = totalVisits.toLocaleString();
-      document.getElementById('today-visits').textContent = todayVisits.toLocaleString();
-      document.getElementById('online-users').textContent = onlineUsers;
-    }
-
-    // 更频繁地更新统计数据
-    setInterval(updateVisitStats, 3000);
-
-    // 初始化访问统计
-    updateVisitStats();
   </script>
 </body>
 </html> 
