@@ -28,6 +28,15 @@ h1,h2 {
     -webkit-text-fill-color: transparent;
 }
 
+a {
+    color: var(--primary);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
 .container {
     background: var(--card-bg);
     padding: 2rem;
@@ -78,6 +87,36 @@ h1,h2 {
     transform: translateY(-2px);
     background: rgba(var(--primary-rgb), 0.2);
     text-decoration: none;
+}
+
+.skills {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(150px,1fr));
+    gap: 1rem;
+    margin: 2rem 0;
+}
+
+.skill {
+    padding: 1rem;
+    border-radius: 8px;
+    background: rgba(var(--primary-rgb), 0.1);
+    text-align: center;
+    transition: all .3s ease;
+}
+
+.skill:hover {
+    transform: translateY(-5px);
+    background: rgba(var(--primary-rgb), 0.2);
+}
+
+.quote {
+    font-style: italic;
+    color: var(--text);
+    text-align: center;
+    margin: 2rem 0;
+    padding: 1rem;
+    border-left: 4px solid var(--primary);
+    opacity: 0.8;
 }
 
 .back-to-home {
