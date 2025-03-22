@@ -525,6 +525,32 @@
         grid-template-columns: 1fr;
       }
     }
+
+    footer {
+      text-align: center;
+      padding: 2rem 0;
+      margin-top: 4rem;
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+    }
+
+    .footer-content {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    .footer-content p {
+      margin: 0.5rem 0;
+      color: var(--text);
+      font-size: 0.9rem;
+    }
+
+    #runtime {
+      font-family: monospace;
+      font-weight: bold;
+      color: var(--primary);
+    }
   </style>
 </head>
 <body>
@@ -774,10 +800,10 @@
   </div>
   
   <footer>
-    <p>&copy; 2025 Moreyu's Blog 🎉 | 本站已稳定运行 999 天 ⚡️</p>
-    <div class="social-links">
-      <a href="https://github.com/moreyu" target="_blank"><i class="fab fa-github"></i> GitHub 🐱</a>
-      <a href="mailto:your@email.com"><i class="fas fa-envelope"></i> Email ✉️</a>
+    <div class="footer-content">
+      <p>© 2018-2024 More Yu</p>
+      <p>本站已稳定运行 <span id="runtime">计算中...</span></p>
+      <p>Powered by GitHub Pages</p>
     </div>
   </footer>
   
@@ -1266,6 +1292,28 @@
     const styleSheet = document.createElement('style');
     styleSheet.textContent = darkModeStyles;
     document.head.appendChild(styleSheet);
+
+    // 计算网站运行时间
+    function calculateRuntime() {
+      const startTime = new Date('2018-09-09').getTime();
+      const now = new Date().getTime();
+      const diff = now - startTime;
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+      document.getElementById('runtime').textContent = 
+        `${days} 天 ${hours} 小时 ${minutes} 分 ${seconds} 秒`;
+    }
+
+    // 页面加载完成后立即计算一次
+    document.addEventListener('DOMContentLoaded', () => {
+      calculateRuntime();
+      // 每秒更新一次
+      setInterval(calculateRuntime, 1000);
+    });
   </script>
 </body>
 </html>
