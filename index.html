@@ -8,6 +8,152 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="stylesheet" href="/css/style.css">
   <style>
+    /* 文章 Dock 样式 */
+    .articles-dock {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(var(--bg-rgb), 0.8);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 1rem;
+      box-shadow: var(--shadow);
+      z-index: 1000;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      max-width: 90%;
+      border: 1px solid var(--border);
+    }
+
+    .dock-tags {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .dock-tag {
+      background: rgba(var(--primary-rgb), 0.1);
+      color: var(--primary);
+      padding: 0.3rem 1rem;
+      border-radius: 15px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
+      user-select: none;
+    }
+
+    .dock-tag:hover {
+      background: var(--primary);
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    .dock-tag.active {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 2px 8px rgba(var(--primary-rgb), 0.3);
+    }
+
+    .dock-articles {
+      display: none;
+      max-height: 300px;
+      overflow-y: auto;
+      padding: 1rem;
+      border-radius: 10px;
+      background: var(--bg);
+      margin-top: 1rem;
+      scrollbar-width: thin;
+      scrollbar-color: var(--primary) transparent;
+    }
+
+    .dock-articles::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .dock-articles::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .dock-articles::-webkit-scrollbar-thumb {
+      background-color: var(--primary);
+      border-radius: 3px;
+    }
+
+    .dock-article {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.8rem;
+      border-radius: 10px;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      color: var(--text);
+    }
+
+    .dock-article:hover {
+      background: rgba(var(--primary-rgb), 0.1);
+      transform: translateX(5px);
+    }
+
+    .dock-article-icon {
+      font-size: 1.5rem;
+      color: var(--primary);
+    }
+
+    .dock-article-info {
+      flex: 1;
+    }
+
+    .dock-article-title {
+      font-weight: bold;
+      margin-bottom: 0.3rem;
+      color: var(--primary);
+    }
+
+    .dock-article-date {
+      font-size: 0.8rem;
+      opacity: 0.7;
+    }
+
+    .dock-minimize {
+      position: absolute;
+      top: -15px;
+      right: 20px;
+      background: var(--primary);
+      color: white;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: none;
+      outline: none;
+    }
+
+    .dock-minimize:hover {
+      transform: scale(1.1);
+    }
+
+    .articles-dock.minimized {
+      transform: translate(-50%, calc(100% + 2rem));
+    }
+
+    .articles-dock.minimized .dock-minimize {
+      transform: rotate(180deg) translateY(-50%);
+      top: 50%;
+    }
+
+    @media (max-width: 768px) {
+      .articles-dock {
+        width: 90%;
+      }
+    }
+
     /* 特色文章卡片样式 */
     .featured-card {
       padding: 0 !important;
@@ -643,6 +789,24 @@
     </button>
   </div>
 
+  <!-- 文章 Dock -->
+  <div class="articles-dock">
+    <button class="dock-minimize" aria-label="最小化">
+      <i class="fas fa-chevron-down"></i>
+    </button>
+    <div class="dock-tags">
+      <span class="dock-tag active" data-tag="all">全部 📚</span>
+      <span class="dock-tag" data-tag="Docker">Docker 🐳</span>
+      <span class="dock-tag" data-tag="自动化">自动化 ⚙️</span>
+      <span class="dock-tag" data-tag="影视">影视 🎬</span>
+      <span class="dock-tag" data-tag="AI">AI 🤖</span>
+      <span class="dock-tag" data-tag="文件管理">文件管理 📁</span>
+    </div>
+    <div class="dock-articles">
+      <!-- 文章列表将由 JavaScript 动态生成 -->
+    </div>
+  </div>
+
   <!-- 脚本引用 -->
   <script src="/js/theme.js"></script>
   <script src="/js/scroll.js"></script>
@@ -937,8 +1101,88 @@
       updateStatus();
       cycleMessages();
       addParallaxEffect();
-      updateVisitorsList();  // 添加访客列表更新
+      updateVisitorsList();
+      initArticlesDock();  // 初始化文章 Dock
     });
+
+    // 文章 Dock 功能
+    function initArticlesDock() {
+      const dock = document.querySelector('.articles-dock');
+      const dockTags = document.querySelectorAll('.dock-tag');
+      const dockArticles = document.querySelector('.dock-articles');
+      const minimizeBtn = document.querySelector('.dock-minimize');
+      const articles = Array.from(document.querySelectorAll('.post')).map(post => ({
+        title: post.querySelector('.post-title a').textContent,
+        link: post.querySelector('.post-title a').href,
+        date: post.querySelector('.post-date').textContent,
+        tags: Array.from(post.querySelectorAll('.tag')).map(tag => tag.textContent.trim())
+      }));
+
+      // 最小化功能
+      minimizeBtn.addEventListener('click', () => {
+        dock.classList.toggle('minimized');
+        if (!dock.classList.contains('minimized')) {
+          // 展开时显示文章列表
+          filterArticles('all');
+        }
+      });
+
+      // 标签点击事件
+      dockTags.forEach(tag => {
+        tag.addEventListener('click', () => {
+          // 更新激活状态
+          dockTags.forEach(t => t.classList.remove('active'));
+          tag.classList.add('active');
+          
+          // 过滤并显示文章
+          const tagName = tag.dataset.tag;
+          filterArticles(tagName);
+          
+          // 展开 Dock
+          dock.classList.remove('minimized');
+          
+          // 添加点击动画
+          tag.style.transform = 'scale(0.95)';
+          setTimeout(() => tag.style.transform = '', 200);
+        });
+      });
+
+      // 过滤文章函数
+      function filterArticles(tagName) {
+        const filteredArticles = tagName === 'all' 
+          ? articles 
+          : articles.filter(article => 
+              article.tags.some(tag => tag.includes(tagName))
+            );
+        
+        // 显示文章列表
+        dockArticles.style.display = 'block';
+        dockArticles.innerHTML = filteredArticles.map(article => `
+          <a href="${article.link}" class="dock-article">
+            <div class="dock-article-icon">📄</div>
+            <div class="dock-article-info">
+              <div class="dock-article-title">${article.title}</div>
+              <div class="dock-article-date">${article.date}</div>
+            </div>
+          </a>
+        `).join('');
+
+        // 添加文章出现动画
+        const articleElements = dockArticles.querySelectorAll('.dock-article');
+        articleElements.forEach((el, index) => {
+          el.style.opacity = '0';
+          el.style.transform = 'translateX(-20px)';
+          setTimeout(() => {
+            el.style.transition = 'all 0.3s ease';
+            el.style.opacity = '1';
+            el.style.transform = 'translateX(0)';
+          }, index * 100);
+        });
+      }
+
+      // 初始显示全部文章
+      filterArticles('all');
+    }
 
     // 访客名称生成
     const firstNames = ['小', '大', '老', '阿', '开心', '快乐', '聪明', '勇敢', '智慧', '文艺'];
