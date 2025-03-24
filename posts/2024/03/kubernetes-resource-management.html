@@ -37,7 +37,7 @@
             <li><a href="#requests-limits">资源请求与限制</a></li>
             <li><a href="#scheduling">调度策略详解</a></li>
             <li><a href="#best-practices">最佳实践</a></li>
-            <li><a href="#summary">总结</a></li>
+            <li><a href="#conclusion">总结</a></li>
         </ul>
     </nav>
 
@@ -46,49 +46,35 @@
         
         <div class="post-meta">
             <span><i class="far fa-calendar"></i> 2024-03-15</span>
-            <span><i class="far fa-clock"></i> 20 分钟阅读</span>
-            <span><i class="fas fa-tag"></i> 云原生</span>
+            <span><i class="far fa-clock"></i> 15 分钟阅读</span>
+            <span><i class="fas fa-tag"></i> Kubernetes</span>
         </div>
 
         <h2 id="introduction">引言</h2>
-        <p>在云原生时代，Kubernetes 已经成为容器编排的事实标准。高效的资源管理和合理的调度策略是构建可靠、高性能容器化应用的基础。本文将深入探讨 Kubernetes 的资源管理机制和调度策略。</p>
+        <p>在云原生时代，Kubernetes 已经成为容器编排的事实标准。本文将深入探讨 Kubernetes 的资源管理机制和调度策略，帮助读者更好地理解和优化其容器化应用。</p>
 
         <h2 id="resource-types">Kubernetes 资源类型</h2>
-        <div class="card-3d">
-            <h3>计算资源</h3>
-            <ul>
-                <li>CPU</li>
-                <li>内存</li>
-                <li>临时存储</li>
-                <li>扩展资源（如 GPU）</li>
-            </ul>
-            <pre><code class="yaml">resources:
-  requests:
-    memory: "64Mi"
-    cpu: "250m"
-  limits:
-    memory: "128Mi"
-    cpu: "500m"</code></pre>
-        </div>
+        <p>Kubernetes 中的资源类型主要包括：</p>
+        <ul>
+            <li>CPU 资源</li>
+            <li>内存资源</li>
+            <li>存储资源</li>
+            <li>网络资源</li>
+        </ul>
 
         <h2 id="requests-limits">资源请求与限制</h2>
         <div class="card-3d">
-            <h3>资源请求（Requests）</h3>
-            <p>Pod 调度时的最小资源保证：</p>
-            <pre><code class="yaml">spec:
+            <pre><code class="yaml">apiVersion: v1
+kind: Pod
+metadata:
+  name: example-pod
+spec:
   containers:
   - name: app
     resources:
       requests:
         memory: "64Mi"
-        cpu: "250m"</code></pre>
-
-            <h3>资源限制（Limits）</h3>
-            <p>容器可以使用的最大资源量：</p>
-            <pre><code class="yaml">spec:
-  containers:
-  - name: app
-    resources:
+        cpu: "250m"
       limits:
         memory: "128Mi"
         cpu: "500m"</code></pre>
@@ -96,50 +82,39 @@
 
         <h2 id="scheduling">调度策略详解</h2>
         <div class="card-3d">
-            <h3>节点亲和性（Node Affinity）</h3>
-            <pre><code class="yaml">affinity:
-  nodeAffinity:
-    requiredDuringSchedulingIgnoredDuringExecution:
-      nodeSelectorTerms:
-      - matchExpressions:
-        - key: kubernetes.io/e2e-az-name
-          operator: In
-          values:
-          - e2e-az1
-          - e2e-az2</code></pre>
-
-            <h3>Pod 亲和性（Pod Affinity）</h3>
-            <pre><code class="yaml">affinity:
-  podAffinity:
-    requiredDuringSchedulingIgnoredDuringExecution:
-    - labelSelector:
-        matchExpressions:
-        - key: security
-          operator: In
-          values:
-          - S1</code></pre>
+            <pre><code class="yaml">apiVersion: v1
+kind: Pod
+metadata:
+  name: example-pod
+spec:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/os
+            operator: In
+            values:
+            - linux</code></pre>
         </div>
 
         <h2 id="best-practices">最佳实践</h2>
-        <div class="card-3d">
-            <p>在生产环境中，建议遵循以下最佳实践：</p>
-            <ul>
-                <li>始终设置资源请求和限制</li>
-                <li>使用命名空间进行资源隔离</li>
-                <li>实施资源配额管理</li>
-                <li>合理使用节点亲和性</li>
-                <li>定期监控资源使用情况</li>
-            </ul>
-        </div>
+        <p>在配置 Kubernetes 资源时，建议遵循以下最佳实践：</p>
+        <ul>
+            <li>合理设置资源请求和限制</li>
+            <li>使用资源配额管理</li>
+            <li>实施水平自动扩缩容</li>
+            <li>监控资源使用情况</li>
+            <li>定期优化资源配置</li>
+        </ul>
 
-        <h2 id="summary">总结</h2>
-        <p>合理的资源管理和调度策略是 Kubernetes 集群稳定运行的基石。通过本文的介绍，我们了解了如何通过资源请求、限制和各种调度策略来优化容器化应用的部署和运行。在实际应用中，需要根据具体场景和需求来制定合适的资源管理策略。</p>
+        <h2 id="conclusion">总结</h2>
+        <p>通过合理配置资源管理和调度策略，可以显著提升 Kubernetes 集群的性能和稳定性。建议根据实际应用需求，持续优化资源配置。</p>
 
         <div class="post-tags">
             <span class="tag">Kubernetes 🚢</span>
             <span class="tag">云原生 ☁️</span>
             <span class="tag">容器编排 🎯</span>
-            <span class="tag">资源管理 ⚙️</span>
         </div>
     </article>
 

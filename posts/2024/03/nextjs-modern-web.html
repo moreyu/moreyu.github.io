@@ -33,12 +33,11 @@
         <div class="toc-title">目录</div>
         <ul>
             <li><a href="#introduction">引言</a></li>
-            <li><a href="#new-features">Next.js 13 新特性</a></li>
+            <li><a href="#new-features">新特性介绍</a></li>
             <li><a href="#app-router">App Router 实践</a></li>
-            <li><a href="#server-components">Server Components 应用</a></li>
+            <li><a href="#server-components">Server Components</a></li>
             <li><a href="#data-fetching">数据获取策略</a></li>
-            <li><a href="#best-practices">最佳实践</a></li>
-            <li><a href="#summary">总结</a></li>
+            <li><a href="#conclusion">总结</a></li>
         </ul>
     </nav>
 
@@ -47,117 +46,98 @@
         
         <div class="post-meta">
             <span><i class="far fa-calendar"></i> 2024-03-10</span>
-            <span><i class="far fa-clock"></i> 18 分钟阅读</span>
-            <span><i class="fas fa-tag"></i> 前端开发</span>
+            <span><i class="far fa-clock"></i> 12 分钟阅读</span>
+            <span><i class="fas fa-tag"></i> Next.js</span>
         </div>
 
         <h2 id="introduction">引言</h2>
-        <p>Next.js 13 带来了革命性的更新，包括 App Router、React Server Components 等重要特性。这些新特性不仅提升了开发体验，还为构建高性能的现代 Web 应用提供了更多可能。</p>
+        <p>Next.js 13 带来了革命性的更新，包括 App Router、React Server Components 等重要特性。本文将深入探讨如何利用这些新特性构建高性能、可扩展的现代 Web 应用。</p>
 
-        <h2 id="new-features">Next.js 13 新特性</h2>
-        <div class="card-3d">
-            <h3>主要更新</h3>
-            <ul>
-                <li>App Router</li>
-                <li>React Server Components</li>
-                <li>改进的数据获取</li>
-                <li>Turbopack（Beta）</li>
-                <li>内置 SEO 优化</li>
-            </ul>
-        </div>
+        <h2 id="new-features">新特性介绍</h2>
+        <p>Next.js 13 的主要新特性包括：</p>
+        <ul>
+            <li>App Router：基于文件系统的路由系统</li>
+            <li>React Server Components：服务端渲染组件</li>
+            <li>改进的数据获取机制</li>
+            <li>优化的图片组件</li>
+            <li>更好的字体优化</li>
+        </ul>
 
         <h2 id="app-router">App Router 实践</h2>
         <div class="card-3d">
-            <h3>基础路由配置</h3>
             <pre><code class="typescript">// app/page.tsx
 export default function Home() {
   return (
     <main>
-      <h1>Welcome to Next.js 13</h1>
-      <p>使用 App Router 构建现代应用</p>
+      <h1>欢迎来到我的博客</h1>
+      <p>使用 Next.js 13 构建</p>
     </main>
-  );
+  )
 }
 
 // app/blog/[slug]/page.tsx
 export default function BlogPost({ params }: { params: { slug: string } }) {
   return (
     <article>
-      <h1>Blog Post: {params.slug}</h1>
+      <h1>博客文章: {params.slug}</h1>
     </article>
-  );
+  )
 }</code></pre>
         </div>
 
-        <h2 id="server-components">Server Components 应用</h2>
+        <h2 id="server-components">Server Components</h2>
         <div class="card-3d">
-            <h3>服务端组件示例</h3>
-            <pre><code class="typescript">// app/components/PostList.tsx
-async function getPosts() {
-  const res = await fetch('https://api.example.com/posts');
-  return res.json();
-}
-
-export default async function PostList() {
-  const posts = await getPosts();
+            <pre><code class="typescript">// app/components/ServerComponent.tsx
+export default async function ServerComponent() {
+  const data = await fetchData()
   
   return (
-    <ul>
-      {posts.map(post => (
-        <li key={post.id}>
-          <h2>{post.title}</h2>
-          <p>{post.excerpt}</p>
-        </li>
-      ))}
-    </ul>
-  );
+    <div>
+      <h2>服务端组件</h2>
+      <p>数据: {data}</p>
+    </div>
+  )
+}
+
+// app/components/ClientComponent.tsx
+'use client'
+
+export default function ClientComponent() {
+  return (
+    <div>
+      <h2>客户端组件</h2>
+      <button onClick={() => alert('点击!')}>点击我</button>
+    </div>
+  )
 }</code></pre>
         </div>
 
         <h2 id="data-fetching">数据获取策略</h2>
         <div class="card-3d">
-            <h3>静态数据获取</h3>
-            <pre><code class="typescript">// app/posts/page.tsx
-export async function generateStaticParams() {
-  const posts = await fetch('https://api.example.com/posts').then(res => res.json());
-  
-  return posts.map(post => ({
-    slug: post.slug,
-  }));
+            <pre><code class="typescript">// 静态数据获取
+async function getStaticData() {
+  const res = await fetch('https://api.example.com/data', {
+    next: { revalidate: 3600 } // 每小时重新验证
+  })
+  return res.json()
 }
 
-export default async function Post({ params }: { params: { slug: string } }) {
-  const post = await fetch(`https://api.example.com/posts/${params.slug}`).then(res => res.json());
-  
-  return (
-    <article>
-      <h1>{post.title}</h1>
-      <div dangerouslySetInnerHTML={{ __html: post.content }} />
-    </article>
-  );
+// 服务端数据获取
+async function getServerData() {
+  const res = await fetch('https://api.example.com/data', {
+    cache: 'no-store' // 禁用缓存
+  })
+  return res.json()
 }</code></pre>
         </div>
 
-        <h2 id="best-practices">最佳实践</h2>
-        <div class="card-3d">
-            <p>在使用 Next.js 13 开发时，建议遵循以下最佳实践：</p>
-            <ul>
-                <li>合理使用服务端组件和客户端组件</li>
-                <li>利用静态生成提升性能</li>
-                <li>实施增量静态再生成（ISR）</li>
-                <li>优化图片和字体加载</li>
-                <li>合理规划路由结构</li>
-            </ul>
-        </div>
-
-        <h2 id="summary">总结</h2>
-        <p>Next.js 13 通过 App Router 和 React Server Components 等创新特性，为现代 Web 应用开发提供了更强大的工具和更好的性能。通过合理运用这些特性，我们可以构建出更快速、更可靠的应用。</p>
+        <h2 id="conclusion">总结</h2>
+        <p>Next.js 13 的新特性为现代 Web 应用开发带来了更多可能性。通过合理使用这些特性，我们可以构建出性能更好、用户体验更佳的应用。</p>
 
         <div class="post-tags">
             <span class="tag">Next.js 🚀</span>
             <span class="tag">React ⚛️</span>
             <span class="tag">前端开发 💻</span>
-            <span class="tag">性能优化 ⚡️</span>
         </div>
     </article>
 
