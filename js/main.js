@@ -920,4 +920,137 @@ document.addEventListener('DOMContentLoaded', () => {
       fn()
     })
   })
+
+  // TOC responsive control
+  function initTOC() {
+    const toc = document.querySelector('.toc');
+    const content = document.querySelector('.post-content');
+    let isVisible = window.innerWidth > 1200;
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    // Toggle TOC visibility based on screen size
+    function updateTOCVisibility() {
+      if (window.innerWidth <= 1200) {
+        toc.style.transform = 'translateX(300px)';
+        isVisible = false;
+      } else {
+        toc.style.transform = 'translateX(0)';
+        isVisible = true;
+      }
+    }
+
+    // Add toggle button
+    const toggleButton = document.createElement('button');
+    toggleButton.className = 'toc-toggle';
+    toggleButton.innerHTML = '📚';
+    toggleButton.style.cssText = `
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+      background: rgba(26, 26, 26, 0.8);
+      border: 1px solid var(--accent-color);
+      color: var(--text-color);
+      padding: 8px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+      display: none;
+    `;
+
+    document.body.appendChild(toggleButton);
+
+    // Toggle TOC on button click
+    toggleButton.addEventListener('click', () => {
+      isVisible = !isVisible;
+      toc.style.transform = isVisible ? 'translateX(0)' : 'translateX(300px)';
+    });
+
+    // Handle touch events for swipe
+    toc.addEventListener('touchstart', (e) => {
+      touchStartX = e.touches[0].clientX;
+    });
+
+    toc.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].clientX;
+      const diff = touchStartX - touchEndX;
+      if (diff > 50) { // Swipe left
+        toc.style.transform = 'translateX(300px)';
+        isVisible = false;
+      }
+    });
+
+    // Update visibility on resize
+    window.addEventListener('resize', updateTOCVisibility);
+
+    // Initial setup
+    updateTOCVisibility();
+
+    // Show/hide toggle button based on screen size
+    function updateToggleButtonVisibility() {
+      toggleButton.style.display = window.innerWidth <= 1200 ? 'block' : 'none';
+    }
+
+    window.addEventListener('resize', updateToggleButtonVisibility);
+    updateToggleButtonVisibility();
+  }
+
+  // Initialize TOC when DOM is loaded
+  document.addEventListener('DOMContentLoaded', initTOC);
+
+  // Code block copy functionality
+  function initCodeBlocks() {
+    document.querySelectorAll('pre code').forEach((codeBlock, index) => {
+      // Create header
+      const header = document.createElement('div');
+      header.className = 'code-header';
+      
+      // Add title
+      const title = document.createElement('span');
+      title.className = 'code-title';
+      title.textContent = `Code Block ${index + 1}`;
+      header.appendChild(title);
+      
+      // Add copy button
+      const copyButton = document.createElement('button');
+      copyButton.className = 'code-copy-button';
+      copyButton.innerHTML = '📋';
+      copyButton.title = '复制代码';
+      header.appendChild(copyButton);
+      
+      // Wrap code block
+      const wrapper = document.createElement('div');
+      wrapper.className = 'code-block';
+      codeBlock.parentNode.insertBefore(wrapper, codeBlock);
+      wrapper.appendChild(header);
+      wrapper.appendChild(codeBlock.parentNode);
+      
+      // Add copy functionality
+      copyButton.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(codeBlock.textContent);
+          copyButton.innerHTML = '✅';
+          setTimeout(() => {
+            copyButton.innerHTML = '📋';
+          }, 2000);
+        } catch (err) {
+          console.error('Failed to copy code:', err);
+          copyButton.innerHTML = '❌';
+          setTimeout(() => {
+            copyButton.innerHTML = '📋';
+          }, 2000);
+        }
+      });
+      
+      // Add line numbers
+      const lines = codeBlock.textContent.split('\n');
+      codeBlock.innerHTML = lines
+        .map(line => `<span>${line}</span>`)
+        .join('\n');
+    });
+  }
+
+  // Initialize code blocks when DOM is loaded
+  document.addEventListener('DOMContentLoaded', initCodeBlocks);
 })
