@@ -30,42 +30,40 @@
     </div>
 
     <nav class="toc">
-        <div class="toc-title">目录</div>
+        <div class="toc-title">📚 目录</div>
         <ul>
-            <li><a href="#introduction">引言</a></li>
-            <li><a href="#new-features">新特性介绍</a></li>
-            <li><a href="#app-router">App Router 实践</a></li>
-            <li><a href="#server-components">Server Components</a></li>
-            <li><a href="#data-fetching">数据获取策略</a></li>
-            <li><a href="#conclusion">总结</a></li>
+            <li><a href="#introduction">前言 📝</a></li>
+            <li><a href="#new-features">新特性介绍 ✨</a></li>
+            <li><a href="#app-router">App Router 实践 🛣️</a></li>
+            <li><a href="#server-components">服务端组件详解 🔄</a></li>
+            <li><a href="#data-fetching">数据获取策略 📊</a></li>
+            <li><a href="#optimization">性能优化建议 🚀</a></li>
+            <li><a href="#best-practices">最佳实践 💡</a></li>
         </ul>
     </nav>
 
     <article class="post-content">
-        <h1>使用 Next.js 13 构建现代 Web 应用</h1>
+        <h1>使用 Next.js 13 构建现代 Web 应用 🚀</h1>
         
-        <div class="post-meta">
-            <span><i class="far fa-calendar"></i> 2024-03-10</span>
-            <span><i class="far fa-clock"></i> 12 分钟阅读</span>
-            <span><i class="fas fa-tag"></i> Next.js</span>
-        </div>
+        <p>发布时间：2024-03-10 | 分类：Next.js, React, 前端开发</p>
 
-        <h2 id="introduction">引言</h2>
+        <h2 id="introduction">前言 📝</h2>
         <p>Next.js 13 带来了革命性的更新，包括 App Router、React Server Components 等重要特性。本文将深入探讨如何利用这些新特性构建高性能、可扩展的现代 Web 应用。</p>
 
-        <h2 id="new-features">新特性介绍</h2>
-        <p>Next.js 13 的主要新特性包括：</p>
+        <h2 id="new-features">新特性介绍 ✨</h2>
+        <h3>1. 核心功能更新</h3>
         <ul>
-            <li>App Router：基于文件系统的路由系统</li>
-            <li>React Server Components：服务端渲染组件</li>
-            <li>改进的数据获取机制</li>
-            <li>优化的图片组件</li>
-            <li>更好的字体优化</li>
+            <li>App Router：基于文件系统的路由系统，更直观的路由管理</li>
+            <li>React Server Components：服务端渲染组件，减少客户端 JavaScript 体积</li>
+            <li>改进的数据获取机制：支持并行数据获取和缓存策略</li>
+            <li>优化的图片组件：自动图片优化和响应式加载</li>
+            <li>更好的字体优化：内置字体优化和加载策略</li>
         </ul>
 
-        <h2 id="app-router">App Router 实践</h2>
+        <h2 id="app-router">App Router 实践 🛣️</h2>
+        <h3>1. 基础路由配置</h3>
         <div class="card-3d">
-            <pre><code class="typescript">// app/page.tsx
+            <pre><code class="typescript"># app/page.tsx - 主页组件
 export default function Home() {
   return (
     <main>
@@ -75,7 +73,7 @@ export default function Home() {
   )
 }
 
-// app/blog/[slug]/page.tsx
+# app/blog/[slug]/page.tsx - 动态路由
 export default function BlogPost({ params }: { params: { slug: string } }) {
   return (
     <article>
@@ -85,9 +83,10 @@ export default function BlogPost({ params }: { params: { slug: string } }) {
 }</code></pre>
         </div>
 
-        <h2 id="server-components">Server Components</h2>
+        <h2 id="server-components">服务端组件详解 🔄</h2>
+        <h3>1. 组件实现示例</h3>
         <div class="card-3d">
-            <pre><code class="typescript">// app/components/ServerComponent.tsx
+            <pre><code class="typescript"># app/components/ServerComponent.tsx
 export default async function ServerComponent() {
   const data = await fetchData()
   
@@ -99,7 +98,7 @@ export default async function ServerComponent() {
   )
 }
 
-// app/components/ClientComponent.tsx
+# app/components/ClientComponent.tsx
 'use client'
 
 export default function ClientComponent() {
@@ -112,9 +111,10 @@ export default function ClientComponent() {
 }</code></pre>
         </div>
 
-        <h2 id="data-fetching">数据获取策略</h2>
+        <h2 id="data-fetching">数据获取策略 📊</h2>
+        <h3>1. 静态数据获取</h3>
         <div class="card-3d">
-            <pre><code class="typescript">// 静态数据获取
+            <pre><code class="typescript"># 静态数据获取示例
 async function getStaticData() {
   const res = await fetch('https://api.example.com/data', {
     next: { revalidate: 3600 } // 每小时重新验证
@@ -122,7 +122,7 @@ async function getStaticData() {
   return res.json()
 }
 
-// 服务端数据获取
+# 服务端数据获取示例
 async function getServerData() {
   const res = await fetch('https://api.example.com/data', {
     cache: 'no-store' // 禁用缓存
@@ -131,8 +131,30 @@ async function getServerData() {
 }</code></pre>
         </div>
 
-        <h2 id="conclusion">总结</h2>
-        <p>Next.js 13 的新特性为现代 Web 应用开发带来了更多可能性。通过合理使用这些特性，我们可以构建出性能更好、用户体验更佳的应用。</p>
+        <h2 id="optimization">性能优化建议 🚀</h2>
+        <h3>1. 代码优化</h3>
+        <ul>
+            <li>合理使用服务端组件和客户端组件</li>
+            <li>实施代码分割和懒加载</li>
+            <li>优化图片和字体加载</li>
+            <li>使用适当的缓存策略</li>
+        </ul>
+
+        <h3>2. 构建优化</h3>
+        <ul>
+            <li>配置构建缓存</li>
+            <li>优化依赖包大小</li>
+            <li>使用生产环境构建</li>
+        </ul>
+
+        <h2 id="best-practices">最佳实践 💡</h2>
+        <ul>
+            <li>遵循文件系统路由约定</li>
+            <li>合理划分组件类型</li>
+            <li>优化数据获取策略</li>
+            <li>实施错误边界处理</li>
+            <li>注意 TypeScript 类型安全</li>
+        </ul>
 
         <div class="post-tags">
             <span class="tag">Next.js 🚀</span>
