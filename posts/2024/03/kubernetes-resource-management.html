@@ -30,39 +30,39 @@
     </div>
 
     <nav class="toc">
-        <div class="toc-title">目录</div>
+        <div class="toc-title">📚 目录</div>
         <ul>
-            <li><a href="#introduction">引言</a></li>
-            <li><a href="#resource-types">Kubernetes 资源类型</a></li>
-            <li><a href="#requests-limits">资源请求与限制</a></li>
-            <li><a href="#scheduling">调度策略详解</a></li>
-            <li><a href="#best-practices">最佳实践</a></li>
-            <li><a href="#conclusion">总结</a></li>
+            <li><a href="#introduction">引言 📝</a></li>
+            <li><a href="#resource-types">Kubernetes 资源类型 🏗️</a></li>
+            <li><a href="#requests-limits">资源请求与限制 ⚖️</a></li>
+            <li><a href="#scheduling">调度策略详解 🎯</a></li>
+            <li><a href="#best-practices">最佳实践 💡</a></li>
+            <li><a href="#conclusion">总结 🎯</a></li>
         </ul>
     </nav>
 
     <article class="post-content">
-        <h1>深入理解 Kubernetes 资源管理与调度策略</h1>
+        <h1>深入理解 Kubernetes 资源管理与调度策略 🚢</h1>
         
         <div class="post-meta">
             <span><i class="far fa-calendar"></i> 2024-03-15</span>
             <span><i class="far fa-clock"></i> 15 分钟阅读</span>
-            <span><i class="fas fa-tag"></i> Kubernetes</span>
+            <span><i class="fas fa-tag"></i> Kubernetes, 云原生, 容器编排</span>
         </div>
 
-        <h2 id="introduction">引言</h2>
+        <h2 id="introduction">引言 📝</h2>
         <p>在云原生时代，Kubernetes 已经成为容器编排的事实标准。本文将深入探讨 Kubernetes 的资源管理机制和调度策略，帮助读者更好地理解和优化其容器化应用。</p>
 
-        <h2 id="resource-types">Kubernetes 资源类型</h2>
+        <h2 id="resource-types">Kubernetes 资源类型 🏗️</h2>
         <p>Kubernetes 中的资源类型主要包括：</p>
         <ul>
-            <li>CPU 资源</li>
-            <li>内存资源</li>
-            <li>存储资源</li>
-            <li>网络资源</li>
+            <li>CPU 资源：可压缩资源，支持超量使用</li>
+            <li>内存资源：不可压缩资源，需要严格控制</li>
+            <li>存储资源：持久化存储和临时存储</li>
+            <li>网络资源：带宽和端口管理</li>
         </ul>
 
-        <h2 id="requests-limits">资源请求与限制</h2>
+        <h2 id="requests-limits">资源请求与限制 ⚖️</h2>
         <div class="card-3d">
             <pre><code class="yaml">apiVersion: v1
 kind: Pod
@@ -80,7 +80,7 @@ spec:
         cpu: "500m"</code></pre>
         </div>
 
-        <h2 id="scheduling">调度策略详解</h2>
+        <h2 id="scheduling">调度策略详解 🎯</h2>
         <div class="card-3d">
             <pre><code class="yaml">apiVersion: v1
 kind: Pod
@@ -98,17 +98,17 @@ spec:
             - linux</code></pre>
         </div>
 
-        <h2 id="best-practices">最佳实践</h2>
+        <h2 id="best-practices">最佳实践 💡</h2>
         <p>在配置 Kubernetes 资源时，建议遵循以下最佳实践：</p>
         <ul>
-            <li>合理设置资源请求和限制</li>
-            <li>使用资源配额管理</li>
-            <li>实施水平自动扩缩容</li>
-            <li>监控资源使用情况</li>
-            <li>定期优化资源配置</li>
+            <li>合理设置资源请求和限制，避免资源浪费</li>
+            <li>使用资源配额管理，确保资源分配的公平性</li>
+            <li>实施水平自动扩缩容，提高资源利用率</li>
+            <li>监控资源使用情况，及时发现异常</li>
+            <li>定期优化资源配置，提升系统性能</li>
         </ul>
 
-        <h2 id="conclusion">总结</h2>
+        <h2 id="conclusion">总结 🎯</h2>
         <p>通过合理配置资源管理和调度策略，可以显著提升 Kubernetes 集群的性能和稳定性。建议根据实际应用需求，持续优化资源配置。</p>
 
         <div class="post-tags">
