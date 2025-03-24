@@ -882,8 +882,8 @@
     setInterval(calculateRuntime, 1000);
 
     // 访问量计数器
-    let visitCount = 386542;
-    let lastIncrementTime = Date.now();
+    let visitCount = parseInt(localStorage.getItem('visitCount')) || 386542;
+    let lastIncrementTime = parseInt(localStorage.getItem('lastIncrementTime')) || Date.now();
     
     function updateVisitCount() {
       const now = Date.now();
@@ -894,7 +894,15 @@
       const randomIncrement = Math.random() * 0.01; // 添加随机波动
       
       visitCount += baseIncrement + randomIncrement;
-      document.querySelector('#site_pv .stat-number').textContent = Math.floor(visitCount);
+      const displayCount = Math.floor(visitCount);
+      
+      // 更新显示
+      document.querySelector('#site_pv .stat-number').textContent = displayCount;
+      
+      // 保存到localStorage
+      localStorage.setItem('visitCount', visitCount.toString());
+      localStorage.setItem('lastIncrementTime', now.toString());
+      
       lastIncrementTime = now;
     }
 
