@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>归档 - Moreyu's Blog ✨</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/maple-mono@latest/index.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    /* 归档时间线样式 */
+    .archives-timeline {
+      position: relative;
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 2rem 0;
+    }
+
+    .archives-timeline::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--primary), var(--primary-light));
+    }
+
+    .year-section {
+      margin-bottom: 3rem;
+      position: relative;
+    }
+
+    .year-title {
+      font-size: 2rem;
+      color: var(--primary);
+      margin-left: 2rem;
+      position: relative;
+      display: inline-block;
+      background: var(--bg);
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .year-title::before {
+      content: '';
+      position: absolute;
+      left: -2.5rem;
+      top: 50%;
+      width: 1rem;
+      height: 1rem;
+      background: var(--primary);
+      border-radius: 50%;
+      transform: translateY(-50%);
+      box-shadow: 0 0 0 4px var(--bg);
+    }
+
+    .month-section {
+      margin: 2rem 0 2rem 3rem;
+    }
+
+    .month-title {
+      font-size: 1.2rem;
+      color: var(--text);
+      margin-bottom: 1rem;
+      opacity: 0.8;
+    }
+
+    .post-item {
+      margin: 1rem 0;
+      padding: 1rem;
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      transition: all 0.3s ease;
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .post-item:hover {
+      transform: translateX(10px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .post-date {
+      font-family: 'Maple Mono', monospace;
+      color: var(--primary);
+      font-size: 0.9rem;
+      min-width: 100px;
+    }
+
+    .post-title {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 500;
+      flex: 1;
+    }
+
+    .post-title:hover {
+      color: var(--primary);
+    }
+
+    .post-category {
+      background: rgba(var(--primary-rgb), 0.1);
+      color: var(--primary);
+      padding: 0.2rem 0.8rem;
+      border-radius: 15px;
+      font-size: 0.9rem;
+    }
+
+    .post-stats {
+      display: flex;
+      gap: 1rem;
+      font-size: 0.9rem;
+      color: var(--text);
+      opacity: 0.7;
+    }
+
+    .post-stats i {
+      color: var(--primary);
+    }
+
+    /* 统计卡片样式 */
+    .archives-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin: 2rem auto;
+      max-width: 800px;
+    }
+
+    .stat-card {
+      background: var(--card-bg);
+      padding: 1.5rem;
+      border-radius: var(--radius);
+      text-align: center;
+      box-shadow: var(--shadow);
+      transition: all 0.3s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .stat-number {
+      font-size: 2rem;
+      color: var(--primary);
+      font-weight: bold;
+      margin: 0.5rem 0;
+    }
+
+    .stat-label {
+      color: var(--text);
+      font-size: 1rem;
+    }
+
+    .stat-icon {
+      font-size: 2rem;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+
+    @media (max-width: 768px) {
+      .archives-timeline {
+        margin: 1rem;
+      }
+      
+      .month-section {
+        margin-left: 2rem;
+      }
+      
+      .post-item {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .post-date {
+        min-width: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="scroll-progress"></div>
+  <button class="theme-toggle" aria-label="切换主题">
+    <i class="fas fa-moon"></i>
+  </button>
+
+  <h1 class="gradient-text">归档 📚</h1>
+
+  <nav class="nav">
+    <a href="/"><i class="fas fa-home"></i> 首页 🏠</a>
+    <a href="/archives"><i class="fas fa-archive"></i> 归档 📚</a>
+    <a href="/categories"><i class="fas fa-folder"></i> 分类 📂</a>
+    <a href="/about"><i class="fas fa-user"></i> 关于 👋</a>
+  </nav>
+
+  <div class="archives-stats">
+    <div class="stat-card">
+      <i class="fas fa-file-alt stat-icon"></i>
+      <div class="stat-number">150+</div>
+      <div class="stat-label">文章总数</div>
+    </div>
+    <div class="stat-card">
+      <i class="fas fa-calendar-alt stat-icon"></i>
+      <div class="stat-number">5</div>
+      <div class="stat-label">年度归档</div>
+    </div>
+    <div class="stat-card">
+      <i class="fas fa-folder stat-icon"></i>
+      <div class="stat-number">12</div>
+      <div class="stat-label">文章分类</div>
+    </div>
+    <div class="stat-card">
+      <i class="fas fa-tags stat-icon"></i>
+      <div class="stat-number">80+</div>
+      <div class="stat-label">标签总数</div>
+    </div>
+  </div>
+
+  <div class="archives-timeline">
+    <div class="year-section">
+      <h2 class="year-title">2024</h2>
+      <div class="month-section">
+        <h3 class="month-title">三月</h3>
+        <div class="post-item">
+          <span class="post-date">03-15</span>
+          <a href="#" class="post-title">深入理解 Kubernetes 资源管理与调度策略</a>
+          <span class="post-category">云原生</span>
+          <div class="post-stats">
+            <span><i class="fas fa-eye"></i> 1.2k</span>
+            <span><i class="fas fa-comment"></i> 23</span>
+          </div>
+        </div>
+        <div class="post-item">
+          <span class="post-date">03-10</span>
+          <a href="#" class="post-title">使用 Next.js 13 构建现代 Web 应用</a>
+          <span class="post-category">前端</span>
+          <div class="post-stats">
+            <span><i class="fas fa-eye"></i> 980</span>
+            <span><i class="fas fa-comment"></i> 15</span>
+          </div>
+        </div>
+      </div>
+      <div class="month-section">
+        <h3 class="month-title">二月</h3>
+        <div class="post-item">
+          <span class="post-date">02-28</span>
+          <a href="#" class="post-title">AI 驱动的代码生成：实践与思考</a>
+          <span class="post-category">AI</span>
+          <div class="post-stats">
+            <span><i class="fas fa-eye"></i> 2.3k</span>
+            <span><i class="fas fa-comment"></i> 45</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="year-section">
+      <h2 class="year-title">2023</h2>
+      <div class="month-section">
+        <h3 class="month-title">十二月</h3>
+        <div class="post-item">
+          <span class="post-date">12-25</span>
+          <a href="#" class="post-title">微服务架构下的数据一致性实践</a>
+          <span class="post-category">架构</span>
+          <div class="post-stats">
+            <span><i class="fas fa-eye"></i> 1.8k</span>
+            <span><i class="fas fa-comment"></i> 32</span>
+          </div>
+        </div>
+        <div class="post-item">
+          <span class="post-date">12-15</span>
+          <a href="#" class="post-title">深入浅出 TypeScript 高级特性</a>
+          <span class="post-category">前端</span>
+          <div class="post-stats">
+            <span><i class="fas fa-eye"></i> 1.5k</span>
+            <span><i class="fas fa-comment"></i> 28</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="year-section">
+      <h2 class="year-title">2022</h2>
+      <div class="month-section">
+        <h3 class="month-title">十一月</h3>
+        <div class="post-item">
+          <span class="post-date">11-20</span>
+          <a href="#" class="post-title">Go 语言并发编程实践</a>
+          <span class="post-category">后端</span>
+          <div class="post-stats">
+            <span><i class="fas fa-eye"></i> 2.1k</span>
+            <span><i class="fas fa-comment"></i> 38</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p>&copy; 2018-2025 More Yu 🌟</p>
+    <p>本站已稳定运行 <span id="runtime">计算中...</span> 🚀</p>
+    <p>Powered by GitHub Pages ⚡️ | Made with 💖 by Moreyu</p>
+  </footer>
+
+  <div class="floating-menu">
+    <button class="floating-btn" title="返回顶部" aria-label="返回顶部">
+      <i class="fas fa-arrow-up"></i>
+    </button>
+  </div>
+
+  <script src="/js/theme.js"></script>
+  <script src="/js/scroll.js"></script>
+  <script>
+    // 计算网站运行时间
+    function calculateRuntime() {
+      const startTime = new Date('2018-09-09').getTime();
+      const now = new Date().getTime();
+      const diff = now - startTime;
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+      const runtimeElement = document.getElementById('runtime');
+      if (runtimeElement) {
+        runtimeElement.textContent = `${days} 天 ${hours} 小时 ${minutes} 分 ${seconds} 秒`;
+      }
+    }
+
+    calculateRuntime();
+    setInterval(calculateRuntime, 1000);
+
+    // 返回顶部
+    document.querySelector('.floating-btn').addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html> 

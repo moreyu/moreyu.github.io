@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>分类 - Moreyu's Blog ✨</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/maple-mono@latest/index.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    /* 分类页面样式 */
+    .categories-container {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+
+    .category-overview {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+
+    .category-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      box-shadow: var(--shadow);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .category-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .category-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(90deg, var(--primary), var(--primary-light));
+    }
+
+    .category-icon {
+      font-size: 2rem;
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+
+    .category-name {
+      font-size: 1.2rem;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+    }
+
+    .category-count {
+      color: var(--primary);
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+
+    .category-description {
+      color: var(--text);
+      font-size: 0.9rem;
+      opacity: 0.8;
+      line-height: 1.5;
+    }
+
+    .category-posts {
+      margin-top: 1rem;
+    }
+
+    .post-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .post-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem;
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      margin-bottom: 1rem;
+      box-shadow: var(--shadow);
+      transition: all 0.3s ease;
+    }
+
+    .post-item:hover {
+      transform: translateX(10px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .post-meta {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-size: 0.9rem;
+      color: var(--text);
+      opacity: 0.8;
+    }
+
+    .post-date {
+      font-family: 'Maple Mono', monospace;
+    }
+
+    .post-title {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 500;
+      flex: 1;
+    }
+
+    .post-title:hover {
+      color: var(--primary);
+    }
+
+    .post-stats {
+      display: flex;
+      gap: 1rem;
+      font-size: 0.9rem;
+    }
+
+    .post-stats i {
+      color: var(--primary);
+    }
+
+    .category-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    .category-tag {
+      background: rgba(var(--primary-rgb), 0.1);
+      color: var(--primary);
+      padding: 0.3rem 0.8rem;
+      border-radius: 15px;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+    }
+
+    .category-tag:hover {
+      background: var(--primary);
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 768px) {
+      .category-overview {
+        grid-template-columns: 1fr;
+      }
+
+      .post-item {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .post-meta {
+        width: 100%;
+        justify-content: space-between;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="scroll-progress"></div>
+  <button class="theme-toggle" aria-label="切换主题">
+    <i class="fas fa-moon"></i>
+  </button>
+
+  <h1 class="gradient-text">分类 📂</h1>
+
+  <nav class="nav">
+    <a href="/"><i class="fas fa-home"></i> 首页 🏠</a>
+    <a href="/archives"><i class="fas fa-archive"></i> 归档 📚</a>
+    <a href="/categories"><i class="fas fa-folder"></i> 分类 📂</a>
+    <a href="/about"><i class="fas fa-user"></i> 关于 👋</a>
+  </nav>
+
+  <div class="categories-container">
+    <div class="category-overview">
+      <div class="category-card">
+        <i class="fas fa-cloud category-icon"></i>
+        <div class="category-name">云原生</div>
+        <div class="category-count">35 篇文章</div>
+        <div class="category-description">
+          探索云原生技术、容器化、微服务架构等相关内容
+        </div>
+        <div class="category-tags">
+          <span class="category-tag">Kubernetes</span>
+          <span class="category-tag">Docker</span>
+          <span class="category-tag">微服务</span>
+        </div>
+      </div>
+
+      <div class="category-card">
+        <i class="fas fa-code category-icon"></i>
+        <div class="category-name">前端开发</div>
+        <div class="category-count">42 篇文章</div>
+        <div class="category-description">
+          现代前端技术栈、框架使用、性能优化等内容
+        </div>
+        <div class="category-tags">
+          <span class="category-tag">React</span>
+          <span class="category-tag">Vue</span>
+          <span class="category-tag">TypeScript</span>
+        </div>
+      </div>
+
+      <div class="category-card">
+        <i class="fas fa-server category-icon"></i>
+        <div class="category-name">后端开发</div>
+        <div class="category-count">38 篇文章</div>
+        <div class="category-description">
+          后端架构设计、API开发、数据库优化等内容
+        </div>
+        <div class="category-tags">
+          <span class="category-tag">Node.js</span>
+          <span class="category-tag">Go</span>
+          <span class="category-tag">Java</span>
+        </div>
+      </div>
+
+      <div class="category-card">
+        <i class="fas fa-robot category-icon"></i>
+        <div class="category-name">人工智能</div>
+        <div class="category-count">25 篇文章</div>
+        <div class="category-description">
+          AI 应用实践、机器学习、深度学习等内容
+        </div>
+        <div class="category-tags">
+          <span class="category-tag">机器学习</span>
+          <span class="category-tag">深度学习</span>
+          <span class="category-tag">NLP</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="category-posts">
+      <h2 class="gradient-text">最新文章</h2>
+      <div class="post-list">
+        <div class="post-item">
+          <div class="post-meta">
+            <span class="post-date">2024-03-15</span>
+            <span class="post-category">云原生</span>
+          </div>
+          <a href="#" class="post-title">深入理解 Kubernetes 资源管理与调度策略</a>
+          <div class="post-stats">
+            <span><i class="fas fa-eye"></i> 1.2k</span>
+            <span><i class="fas fa-comment"></i> 23</span>
+          </div>
+        </div>
+
+        <div class="post-item">
+          <div class="post-meta">
+            <span class="post-date">2024-03-10</span>
+            <span class="post-category">前端</span>
+          </div>
+          <a href="#" class="post-title">使用 Next.js 13 构建现代 Web 应用</a>
+          <div class="post-stats">
+            <span><i class="fas fa-eye"></i> 980</span>
+            <span><i class="fas fa-comment"></i> 15</span>
+          </div>
+        </div>
+
+        <div class="post-item">
+          <div class="post-meta">
+            <span class="post-date">2024-02-28</span>
+            <span class="post-category">AI</span>
+          </div>
+          <a href="#" class="post-title">AI 驱动的代码生成：实践与思考</a>
+          <div class="post-stats">
+            <span><i class="fas fa-eye"></i> 2.3k</span>
+            <span><i class="fas fa-comment"></i> 45</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p>&copy; 2018-2025 More Yu 🌟</p>
+    <p>本站已稳定运行 <span id="runtime">计算中...</span> 🚀</p>
+    <p>Powered by GitHub Pages ⚡️ | Made with 💖 by Moreyu</p>
+  </footer>
+
+  <div class="floating-menu">
+    <button class="floating-btn" title="返回顶部" aria-label="返回顶部">
+      <i class="fas fa-arrow-up"></i>
+    </button>
+  </div>
+
+  <script src="/js/theme.js"></script>
+  <script src="/js/scroll.js"></script>
+  <script>
+    // 计算网站运行时间
+    function calculateRuntime() {
+      const startTime = new Date('2018-09-09').getTime();
+      const now = new Date().getTime();
+      const diff = now - startTime;
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+      const runtimeElement = document.getElementById('runtime');
+      if (runtimeElement) {
+        runtimeElement.textContent = `${days} 天 ${hours} 小时 ${minutes} 分 ${seconds} 秒`;
+      }
+    }
+
+    calculateRuntime();
+    setInterval(calculateRuntime, 1000);
+
+    // 返回顶部
+    document.querySelector('.floating-btn').addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html> 
