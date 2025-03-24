@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/atom-one-dark.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.8/dist/medium-zoom.min.css">
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/theme.css">
 </head>
 <body>
     <div class="reading-progress"></div>
@@ -44,49 +45,57 @@
 
     <article class="post-content">
         <h1>使用 Next.js 13 构建现代 Web 应用 🚀</h1>
-        
-        <p>发布时间：2024-03-10 | 分类：Next.js, React, 前端开发</p>
+
+        <div class="post-meta">
+            <span><i class="far fa-calendar"></i> 2024-03-10</span>
+            <span><i class="fas fa-tag"></i> Next.js, React, 前端开发</span>
+        </div>
 
         <h2 id="introduction">前言 📝</h2>
         <p>Next.js 13 带来了革命性的更新，包括 App Router、React Server Components 等重要特性。本文将深入探讨如何利用这些新特性构建高性能、可扩展的现代 Web 应用。</p>
 
         <h2 id="new-features">新特性介绍 ✨</h2>
-        <h3>1. 核心功能更新</h3>
-        <ul>
-            <li>App Router：基于文件系统的路由系统，更直观的路由管理</li>
-            <li>React Server Components：服务端渲染组件，减少客户端 JavaScript 体积</li>
-            <li>改进的数据获取机制：支持并行数据获取和缓存策略</li>
-            <li>优化的图片组件：自动图片优化和响应式加载</li>
-            <li>更好的字体优化：内置字体优化和加载策略</li>
-        </ul>
+        <div class="card-3d">
+            <h3>1. 核心功能更新</h3>
+            <ul>
+                <li>App Router：基于文件系统的路由系统，更直观的路由管理</li>
+                <li>React Server Components：服务端渲染组件，减少客户端 JavaScript 体积</li>
+                <li>改进的数据获取机制：支持并行数据获取和缓存策略</li>
+                <li>优化的图片组件：自动图片优化和响应式加载</li>
+                <li>更好的字体优化：内置字体优化和加载策略</li>
+            </ul>
+        </div>
 
         <h2 id="app-router">App Router 实践 🛣️</h2>
-        <h3>1. 基础路由配置</h3>
         <div class="card-3d">
-            <pre><code class="typescript"># app/page.tsx - 主页组件
-export default function Home() {
-  return (
-    <main>
-      <h1>欢迎来到我的博客</h1>
-      <p>使用 Next.js 13 构建</p>
-    </main>
-  )
-}
+            <h3>1. 基础路由配置</h3>
+            ```typescript
+            // app/page.tsx - 主页组件
+            export default function Home() {
+              return (
+                <main>
+                  <h1>欢迎来到我的博客</h1>
+                  <p>使用 Next.js 13 构建</p>
+                </main>
+              )
+            }
 
-# app/blog/[slug]/page.tsx - 动态路由
-export default function BlogPost({ params }: { params: { slug: string } }) {
-  return (
-    <article>
-      <h1>博客文章: {params.slug}</h1>
-    </article>
-  )
-}</code></pre>
+            // app/blog/[slug]/page.tsx - 动态路由
+            export default function BlogPost({ params }: { params: { slug: string } }) {
+              return (
+                <article>
+                  <h1>博客文章: {params.slug}</h1>
+                </article>
+              )
+            }
+            ```
         </div>
 
         <h2 id="server-components">服务端组件详解 🔄</h2>
-        <h3>1. 组件实现示例</h3>
         <div class="card-3d">
-            <pre><code class="typescript"># app/components/ServerComponent.tsx
+            <h3>1. 组件实现示例</h3>
+            <pre><code class="typescript">
+// app/components/ServerComponent.tsx
 export default async function ServerComponent() {
   const data = await fetchData()
   
@@ -98,7 +107,7 @@ export default async function ServerComponent() {
   )
 }
 
-# app/components/ClientComponent.tsx
+// app/components/ClientComponent.tsx
 'use client'
 
 export default function ClientComponent() {
@@ -108,53 +117,60 @@ export default function ClientComponent() {
       <button onClick={() => alert('点击!')}>点击我</button>
     </div>
   )
-}</code></pre>
+}
+            </code></pre>
         </div>
 
         <h2 id="data-fetching">数据获取策略 📊</h2>
-        <h3>1. 静态数据获取</h3>
         <div class="card-3d">
-            <pre><code class="typescript"># 静态数据获取示例
-async function getStaticData() {
-  const res = await fetch('https://api.example.com/data', {
-    next: { revalidate: 3600 } // 每小时重新验证
-  })
-  return res.json()
-}
+            <h3>1. 静态数据获取</h3>
+            ```typescript
+            // 静态数据获取示例
+            async function getStaticData() {
+              const res = await fetch('https://api.example.com/data', {
+                next: { revalidate: 3600 } // 每小时重新验证
+              })
+              return res.json()
+            }
 
-# 服务端数据获取示例
-async function getServerData() {
-  const res = await fetch('https://api.example.com/data', {
-    cache: 'no-store' // 禁用缓存
-  })
-  return res.json()
-}</code></pre>
+            // 服务端数据获取示例
+            async function getServerData() {
+              const res = await fetch('https://api.example.com/data', {
+                cache: 'no-store' // 禁用缓存
+              })
+              return res.json()
+            }
+            ```
         </div>
 
         <h2 id="optimization">性能优化建议 🚀</h2>
-        <h3>1. 代码优化</h3>
-        <ul>
-            <li>合理使用服务端组件和客户端组件</li>
-            <li>实施代码分割和懒加载</li>
-            <li>优化图片和字体加载</li>
-            <li>使用适当的缓存策略</li>
-        </ul>
+        <div class="card-3d">
+            <h3>1. 代码优化</h3>
+            <ul>
+                <li>合理使用服务端组件和客户端组件</li>
+                <li>实施代码分割和懒加载</li>
+                <li>优化图片和字体加载</li>
+                <li>使用适当的缓存策略</li>
+            </ul>
 
-        <h3>2. 构建优化</h3>
-        <ul>
-            <li>配置构建缓存</li>
-            <li>优化依赖包大小</li>
-            <li>使用生产环境构建</li>
-        </ul>
+            <h3>2. 构建优化</h3>
+            <ul>
+                <li>配置构建缓存</li>
+                <li>优化依赖包大小</li>
+                <li>使用生产环境构建</li>
+            </ul>
+        </div>
 
         <h2 id="best-practices">最佳实践 💡</h2>
-        <ul>
-            <li>遵循文件系统路由约定</li>
-            <li>合理划分组件类型</li>
-            <li>优化数据获取策略</li>
-            <li>实施错误边界处理</li>
-            <li>注意 TypeScript 类型安全</li>
-        </ul>
+        <div class="card-3d">
+            <ul>
+                <li>遵循文件系统路由约定</li>
+                <li>合理划分组件类型</li>
+                <li>优化数据获取策略</li>
+                <li>实施错误边界处理</li>
+                <li>注意 TypeScript 类型安全</li>
+            </ul>
+        </div>
 
         <div class="post-tags">
             <span class="tag">Next.js 🚀</span>
@@ -166,31 +182,22 @@ async function getServerData() {
     <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/highlight.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.8/dist/medium-zoom.min.js"></script>
     <script>
-        // 代码高亮
         hljs.highlightAll();
-        
-        // 图片放大
         mediumZoom('[data-zoomable]');
-
-        // 阅读进度条
         window.addEventListener('scroll', () => {
             const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
             const scrolled = (window.scrollY / docHeight) * 100;
             document.querySelector('.reading-progress').style.setProperty('--progress', `${scrolled}%`);
         });
-
-        // 分享功能
         function shareToTwitter() {
             const url = encodeURIComponent(window.location.href);
             const text = encodeURIComponent(document.title);
             window.open(`https://twitter.com/intent/tweet?url=${url}&text=${text}`);
         }
-
         function shareToFacebook() {
             const url = encodeURIComponent(window.location.href);
             window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`);
         }
-
         function copyLink() {
             navigator.clipboard.writeText(window.location.href)
                 .then(() => alert('链接已复制到剪贴板！'));

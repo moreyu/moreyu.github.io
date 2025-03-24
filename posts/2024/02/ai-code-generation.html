@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/atom-one-dark.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.8/dist/medium-zoom.min.css">
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/theme.css">
 </head>
 <body>
     <div class="reading-progress"></div>
@@ -41,111 +42,126 @@
         </ul>
     </nav>
 
-    <h1>AI 驱动的代码生成：实践与思考 🤖</h1>
-
-    <p>发布时间：2024-02-28 | 分类：人工智能, 代码生成, 开发工具</p>
-
     <article class="post-content">
+        <h1>AI 驱动的代码生成：实践与思考 🤖</h1>
+
+        <div class="post-meta">
+            <span><i class="far fa-calendar"></i> 2024-02-28</span>
+            <span><i class="fas fa-tag"></i> 人工智能, 代码生成, 开发工具</span>
+        </div>
+
         <h2 id="introduction">前言 📝</h2>
         <p>随着人工智能技术的快速发展，AI 驱动的代码生成工具正在改变开发者的工作方式。本文将探讨这项技术的现状、实践经验以及未来发展方向。</p>
 
         <h2 id="current-state">当前状态 🌟</h2>
-        <h3>1. 主流工具</h3>
-        <ul>
-            <li>GitHub Copilot：基于 OpenAI Codex 的智能编程助手</li>
-            <li>Amazon CodeWhisperer：AWS 推出的代码生成工具</li>
-            <li>Tabnine：基于深度学习的代码补全工具</li>
-            <li>Cursor：新一代 AI 驱动的代码编辑器</li>
-        </ul>
+        <div class="card-3d">
+            <h3>1. 主流工具</h3>
+            <ul>
+                <li>GitHub Copilot：基于 OpenAI Codex 的智能编程助手</li>
+                <li>Amazon CodeWhisperer：AWS 推出的代码生成工具</li>
+                <li>Tabnine：基于深度学习的代码补全工具</li>
+                <li>Cursor：新一代 AI 驱动的代码编辑器</li>
+            </ul>
 
-        <h3>2. 核心技术</h3>
-        <ul>
-            <li>大规模语言模型（LLM）</li>
-            <li>代码语义理解</li>
-            <li>上下文感知补全</li>
-            <li>多语言支持</li>
-        </ul>
+            <h3>2. 核心技术</h3>
+            <ul>
+                <li>大规模语言模型（LLM）</li>
+                <li>代码语义理解</li>
+                <li>上下文感知补全</li>
+                <li>多语言支持</li>
+            </ul>
+        </div>
 
         <h2 id="practical-examples">实践案例 💻</h2>
-        <h3>1. 自动补全示例</h3>
-        ```python
-        def calculate_fibonacci(n: int) -> int:
-            """
-            计算斐波那契数列第n个数
-            """
-            if n <= 0:
-                return 0
-            elif n == 1:
-                return 1
-            else:
-                return calculate_fibonacci(n-1) + calculate_fibonacci(n-2)
+        <div class="card-3d">
+            <h3>1. 自动补全示例</h3>
+            <pre><code class="python">
+def calculate_fibonacci(n: int) -> int:
+    """
+    计算斐波那契数列第n个数
+    """
+    if n <= 0:
+        return 0
+    elif n == 1:
+        return 1
+    else:
+        return calculate_fibonacci(n-1) + calculate_fibonacci(n-2)
 
-        def generate_fibonacci_sequence(length: int) -> list:
-            """
-            生成指定长度的斐波那契数列
-            """
-            return [calculate_fibonacci(i) for i in range(length)]
-        ```
+def generate_fibonacci_sequence(length: int) -> list:
+    """
+    生成指定长度的斐波那契数列
+    """
+    return [calculate_fibonacci(i) for i in range(length)]
+            </code></pre>
+        </div>
 
-        <h3>2. API 调用生成</h3>
-        ```typescript
-        async function fetchUserData(userId: string) {
-          try {
-            const response = await fetch(`/api/users/${userId}`, {
-              headers: {
-                'Authorization': `Bearer ${getToken()}`,
-                'Content-Type': 'application/json'
-              }
-            });
-            
-            if (!response.ok) {
-              throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            
-            const data = await response.json();
-            return data;
-          } catch (error) {
-            console.error('Error fetching user data:', error);
-            throw error;
-          }
-        }
-        ```
+        <div class="card-3d">
+            <h3>2. API 调用生成</h3>
+            <pre><code class="typescript">
+async function fetchUserData(userId: string) {
+  try {
+    const response = await fetch(`/api/users/${userId}`, {
+      headers: {
+        'Authorization': `Bearer ${getToken()}`,
+        'Content-Type': 'application/json'
+      }
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error fetching user data:', error);
+    throw error;
+  }
+}
+            </code></pre>
+        </div>
 
         <h2 id="challenges">挑战与局限 🤔</h2>
-        <h3>1. 技术挑战</h3>
-        <ul>
-            <li>代码质量和可靠性</li>
-            <li>安全性考虑</li>
-            <li>版权和许可问题</li>
-            <li>与现有开发流程的整合</li>
-        </ul>
+        <div class="card-3d">
+            <h3>1. 技术挑战</h3>
+            <ul>
+                <li>代码质量和可靠性</li>
+                <li>安全性考虑</li>
+                <li>版权和许可问题</li>
+                <li>与现有开发流程的整合</li>
+            </ul>
 
-        <h3>2. 使用限制</h3>
-        <ul>
-            <li>上下文理解能力有限</li>
-            <li>特定领域知识缺失</li>
-            <li>复杂逻辑处理不足</li>
-            <li>代码规范遵循问题</li>
-        </ul>
+            <h3>2. 使用限制</h3>
+            <ul>
+                <li>上下文理解能力有限</li>
+                <li>特定领域知识缺失</li>
+                <li>复杂逻辑处理不足</li>
+                <li>代码规范遵循问题</li>
+            </ul>
+        </div>
 
         <h2 id="best-practices">最佳实践 💡</h2>
-        <ul>
-            <li>仔细审查生成的代码</li>
-            <li>结合人工经验判断</li>
-            <li>保持代码风格一致性</li>
-            <li>注意安全性检查</li>
-            <li>持续学习和改进</li>
-        </ul>
+        <div class="card-3d">
+            <ul>
+                <li>仔细审查生成的代码</li>
+                <li>结合人工经验判断</li>
+                <li>保持代码风格一致性</li>
+                <li>注意安全性检查</li>
+                <li>持续学习和改进</li>
+            </ul>
+        </div>
 
         <h2 id="future">未来展望 🔮</h2>
-        <p>AI 代码生成技术正在快速发展，未来可能会在以下方面取得突破：</p>
-        <ul>
-            <li>更深入的代码理解能力</li>
-            <li>更好的上下文感知</li>
-            <li>更强的多语言支持</li>
-            <li>更完善的测试生成</li>
-            <li>更智能的重构建议</li>
-        </ul>
+        <div class="card-3d">
+            <p>AI 代码生成技术正在快速发展，未来可能会在以下方面取得突破：</p>
+            <ul>
+                <li>更深入的代码理解能力</li>
+                <li>更好的上下文感知</li>
+                <li>更强的多语言支持</li>
+                <li>更完善的测试生成</li>
+                <li>更智能的重构建议</li>
+            </ul>
+        </div>
 
         <div class="post-tags">
             <span class="tag">人工智能 🤖</span>

@@ -1,0 +1,145 @@
+/* MagicUI Theme */
+:root {
+    --primary-color: #6d28d9;
+    --secondary-color: #4c1d95;
+    --accent-color: #7c3aed;
+    --background-color: #1a1a1a;
+    --text-color: #e5e5e5;
+    --code-bg: #2d2d2d;
+}
+
+/* Base Styles */
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-family: 'Maple Mono', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Neon Effects */
+.tag {
+    text-shadow: 0 0 5px var(--accent-color);
+    border: 1px solid var(--accent-color);
+    box-shadow: 0 0 10px var(--accent-color);
+    padding: 4px 8px;
+    border-radius: 4px;
+    margin: 0 4px;
+    display: inline-block;
+}
+
+.card-3d {
+    background: var(--code-bg);
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(124, 58, 237, 0.1);
+    transform: perspective(1000px) rotateX(2deg);
+    transition: transform 0.3s ease;
+    margin: 20px 0;
+    padding: 20px;
+}
+
+.card-3d:hover {
+    transform: perspective(1000px) rotateX(0);
+}
+
+/* Navigation */
+.toc {
+    background: rgba(26, 26, 26, 0.8);
+    border-left: 2px solid var(--accent-color);
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 0 8px 8px 0;
+}
+
+.toc-title {
+    color: var(--accent-color);
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+
+/* Buttons */
+.share-button {
+    background: transparent;
+    border: 1px solid var(--accent-color);
+    color: var(--text-color);
+    padding: 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.share-button:hover {
+    background: var(--accent-color);
+    box-shadow: 0 0 10px var(--accent-color);
+}
+
+/* Code Highlighting */
+pre code {
+    background: var(--code-bg) !important;
+    border-radius: 8px;
+    padding: 1em;
+    font-family: 'Maple Mono', monospace;
+}
+
+/* Reading Progress */
+.reading-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(to right, var(--accent-color) var(--progress), transparent 0);
+    z-index: 1000;
+}
+
+/* Links */
+a {
+    color: var(--accent-color);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+a:hover {
+    text-shadow: 0 0 5px var(--accent-color);
+}
+
+/* Headers */
+h1, h2, h3 {
+    color: var(--text-color);
+    margin: 1.5em 0 1em;
+}
+
+h1 {
+    font-size: 2em;
+    border-bottom: 2px solid var(--accent-color);
+    padding-bottom: 0.5em;
+}
+
+h2 {
+    font-size: 1.5em;
+    border-left: 4px solid var(--accent-color);
+    padding-left: 0.5em;
+}
+
+/* Post Meta */
+.post-meta {
+    color: var(--text-color);
+    opacity: 0.8;
+    margin: 1em 0;
+}
+
+/* Back Home Button */
+.back-home {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    padding: 8px 16px;
+    background: rgba(26, 26, 26, 0.8);
+    border: 1px solid var(--accent-color);
+    border-radius: 4px;
+    color: var(--text-color);
+    z-index: 100;
+}
+
+.back-home:hover {
+    background: var(--accent-color);
+    box-shadow: 0 0 10px var(--accent-color);
+} 
