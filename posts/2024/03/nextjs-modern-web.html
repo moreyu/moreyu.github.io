@@ -69,26 +69,26 @@
         <h2 id="app-router">App Router 实践 🛣️</h2>
         <div class="card-3d">
             <h3>1. 基础路由配置</h3>
-            ```typescript
-            // app/page.tsx - 主页组件
-            export default function Home() {
-              return (
-                <main>
-                  <h1>欢迎来到我的博客</h1>
-                  <p>使用 Next.js 13 构建</p>
-                </main>
-              )
-            }
+            <pre><code class="typescript">
+// app/page.tsx - 主页组件
+export default function Home() {
+  return (
+    <main>
+      <h1>欢迎来到我的博客</h1>
+      <p>使用 Next.js 13 构建</p>
+    </main>
+  )
+}
 
-            // app/blog/[slug]/page.tsx - 动态路由
-            export default function BlogPost({ params }: { params: { slug: string } }) {
-              return (
-                <article>
-                  <h1>博客文章: {params.slug}</h1>
-                </article>
-              )
-            }
-            ```
+// app/blog/[slug]/page.tsx - 动态路由
+export default function BlogPost({ params }: { params: { slug: string } }) {
+  return (
+    <article>
+      <h1>博客文章: {params.slug}</h1>
+    </article>
+  )
+}
+            </code></pre>
         </div>
 
         <h2 id="server-components">服务端组件详解 🔄</h2>
@@ -124,23 +124,23 @@ export default function ClientComponent() {
         <h2 id="data-fetching">数据获取策略 📊</h2>
         <div class="card-3d">
             <h3>1. 静态数据获取</h3>
-            ```typescript
-            // 静态数据获取示例
-            async function getStaticData() {
-              const res = await fetch('https://api.example.com/data', {
-                next: { revalidate: 3600 } // 每小时重新验证
-              })
-              return res.json()
-            }
+            <pre><code class="typescript">
+// 静态数据获取示例
+async function getStaticData() {
+  const res = await fetch('https://api.example.com/data', {
+    next: { revalidate: 3600 } // 每小时重新验证
+  })
+  return res.json()
+}
 
-            // 服务端数据获取示例
-            async function getServerData() {
-              const res = await fetch('https://api.example.com/data', {
-                cache: 'no-store' // 禁用缓存
-              })
-              return res.json()
-            }
-            ```
+// 服务端数据获取示例
+async function getServerData() {
+  const res = await fetch('https://api.example.com/data', {
+    cache: 'no-store' // 禁用缓存
+  })
+  return res.json()
+}
+            </code></pre>
         </div>
 
         <h2 id="optimization">性能优化建议 🚀</h2>

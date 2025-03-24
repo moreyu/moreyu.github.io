@@ -74,62 +74,62 @@
         <h2 id="requests-limits">资源配置实践 ⚙️</h2>
         <div class="card-3d">
             <h3>1. 基础配置示例</h3>
-            ```yaml
-            # Pod 资源配置示例
-            apiVersion: v1
-            kind: Pod
-            metadata:
-              name: example-pod
-            spec:
-              containers:
-              - name: app
-                resources:
-                  requests:
-                    memory: "64Mi"
-                    cpu: "250m"
-                  limits:
-                    memory: "128Mi"
-                    cpu: "500m"
-            ```
+            <pre><code class="yaml">
+# Pod 资源配置示例
+apiVersion: v1
+kind: Pod
+metadata:
+  name: example-pod
+spec:
+  containers:
+  - name: app
+    resources:
+      requests:
+        memory: "64Mi"
+        cpu: "250m"
+      limits:
+        memory: "128Mi"
+        cpu: "500m"
+            </code></pre>
         </div>
 
         <div class="card-3d">
             <h3>2. 资源配额管理</h3>
-            ```yaml
-            # 命名空间资源配额
-            apiVersion: v1
-            kind: ResourceQuota
-            metadata:
-              name: compute-quota
-            spec:
-              hard:
-                requests.cpu: "4"
-                requests.memory: "8Gi"
-                limits.cpu: "8"
-                limits.memory: "16Gi"
-            ```
+            <pre><code class="yaml">
+# 命名空间资源配额
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: compute-quota
+spec:
+  hard:
+    requests.cpu: "4"
+    requests.memory: "8Gi"
+    limits.cpu: "8"
+    limits.memory: "16Gi"
+            </code></pre>
         </div>
 
         <h2 id="scheduling">调度策略详解 🚀</h2>
         <div class="card-3d">
             <h3>1. 节点亲和性配置</h3>
-            ```yaml
-            # 节点亲和性示例
-            apiVersion: v1
-            kind: Pod
-            metadata:
-              name: example-pod
-            spec:
-              affinity:
-                nodeAffinity:
-                  requiredDuringSchedulingIgnoredDuringExecution:
-                    nodeSelectorTerms:
-                    - matchExpressions:
-                      - key: kubernetes.io/os
-                        operator: In
-                        values:
-                        - linux
-            ```
+            <pre><code class="yaml">
+# 节点亲和性示例
+apiVersion: v1
+kind: Pod
+metadata:
+  name: example-pod
+spec:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/os
+            operator: In
+            values:
+            - linux
+            </code></pre>
         </div>
 
         <h2 id="monitoring">监控与优化 📊</h2>
