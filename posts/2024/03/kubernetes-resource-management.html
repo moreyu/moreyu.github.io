@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>深入理解 Kubernetes 资源管理与调度策略 - Moreyu's Blog ✨</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/maple-mono@latest/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/atom-one-dark.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.8/dist/medium-zoom.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="reading-progress"></div>
+    
+    <a href="/" class="back-home">
+        <i class="fas fa-home"></i> 返回首页
+    </a>
+
+    <div class="share-menu">
+        <button class="share-button" onclick="shareToTwitter()">
+            <i class="fab fa-twitter"></i>
+        </button>
+        <button class="share-button" onclick="shareToFacebook()">
+            <i class="fab fa-facebook"></i>
+        </button>
+        <button class="share-button" onclick="copyLink()">
+            <i class="fas fa-link"></i>
+        </button>
+    </div>
+
+    <nav class="toc">
+        <div class="toc-title">目录</div>
+        <ul>
+            <li><a href="#introduction">引言</a></li>
+            <li><a href="#resource-types">Kubernetes 资源类型</a></li>
+            <li><a href="#resource-requests">资源请求与限制</a></li>
+            <li><a href="#scheduling">调度策略详解</a></li>
+            <li><a href="#best-practices">最佳实践</a></li>
+            <li><a href="#conclusion">总结</a></li>
+        </ul>
+    </nav>
+
+    <article class="post-content">
+        <h1>深入理解 Kubernetes 资源管理与调度策略</h1>
+        
+        <div class="post-meta">
+            <span><i class="far fa-calendar"></i> 2024-03-15</span>
+            <span><i class="far fa-clock"></i> 15 分钟阅读</span>
+            <span><i class="fas fa-tag"></i> 云原生</span>
+        </div>
+
+        <h2 id="introduction">引言</h2>
+        <p>在云原生时代，Kubernetes 已经成为容器编排的事实标准。高效的资源管理和合理的调度策略是构建可靠、高性能容器化应用的基础。本文将深入探讨 Kubernetes 的资源管理机制和调度策略，帮助读者更好地理解和优化其容器化应用。</p>
+
+        <h2 id="resource-types">Kubernetes 资源类型</h2>
+        <p>Kubernetes 中的资源主要分为两类：可压缩资源（如 CPU）和不可压缩资源（如内存）。理解这两种资源的特性对于制定合理的资源策略至关重要。</p>
+
+        <pre><code class="language-yaml"># Pod 资源配置示例
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.14.2
+    resources:
+      requests:
+        memory: "64Mi"
+        cpu: "250m"
+      limits:
+        memory: "128Mi"
+        cpu: "500m"</code></pre>
+
+        <h2 id="resource-requests">资源请求与限制</h2>
+        <p>资源请求（Requests）和限制（Limits）是 Kubernetes 资源管理的核心概念。合理设置这些值可以确保应用获得足够的资源，同时避免资源浪费。</p>
+
+        <h2 id="scheduling">调度策略详解</h2>
+        <p>Kubernetes 调度器通过一系列的预选（Predicates）和优选（Priorities）规则来决定 Pod 的最佳部署位置。了解这些规则可以帮助我们更好地控制应用的部署。</p>
+
+        <pre><code class="language-yaml"># 节点亲和性配置示例
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/e2e-az-name
+          operator: In
+          values:
+          - e2e-az1
+          - e2e-az2</code></pre>
+
+        <h2 id="best-practices">最佳实践</h2>
+        <p>基于实践经验，这里总结了一些 Kubernetes 资源管理的最佳实践：</p>
+        <ul>
+            <li>始终设置资源请求和限制</li>
+            <li>使用命名空间进行资源隔离</li>
+            <li>实施资源配额管理</li>
+            <li>监控资源使用情况</li>
+        </ul>
+
+        <h2 id="conclusion">总结</h2>
+        <p>合理的资源管理和调度策略是确保 Kubernetes 集群高效运行的关键。通过本文的介绍，相信读者已经对 Kubernetes 的资源管理有了更深入的理解。</p>
+
+        <div class="post-tags">
+            <span class="tag">Kubernetes 🚢</span>
+            <span class="tag">云原生 ☁️</span>
+            <span class="tag">容器编排 🎯</span>
+            <span class="tag">技术架构 🏗️</span>
+        </div>
+    </article>
+
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/highlight.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.8/dist/medium-zoom.min.js"></script>
+    <script>
+        // 代码高亮
+        hljs.highlightAll();
+        
+        // 图片放大
+        mediumZoom('[data-zoomable]');
+
+        // 阅读进度条
+        window.addEventListener('scroll', () => {
+            const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (window.scrollY / docHeight) * 100;
+            document.querySelector('.reading-progress').style.setProperty('--progress', `${scrolled}%`);
+        });
+
+        // 分享功能
+        function shareToTwitter() {
+            const url = encodeURIComponent(window.location.href);
+            const text = encodeURIComponent(document.title);
+            window.open(`https://twitter.com/intent/tweet?url=${url}&text=${text}`);
+        }
+
+        function shareToFacebook() {
+            const url = encodeURIComponent(window.location.href);
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`);
+        }
+
+        function copyLink() {
+            navigator.clipboard.writeText(window.location.href)
+                .then(() => alert('链接已复制到剪贴板！'));
+        }
+    </script>
+</body>
+</html> 

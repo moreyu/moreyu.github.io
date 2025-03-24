@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>使用 Next.js 13 构建现代 Web 应用 - Moreyu's Blog ✨</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/maple-mono@latest/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/atom-one-dark.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.8/dist/medium-zoom.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="reading-progress"></div>
+    
+    <a href="/" class="back-home">
+        <i class="fas fa-home"></i> 返回首页
+    </a>
+
+    <div class="share-menu">
+        <button class="share-button" onclick="shareToTwitter()">
+            <i class="fab fa-twitter"></i>
+        </button>
+        <button class="share-button" onclick="shareToFacebook()">
+            <i class="fab fa-facebook"></i>
+        </button>
+        <button class="share-button" onclick="copyLink()">
+            <i class="fas fa-link"></i>
+        </button>
+    </div>
+
+    <nav class="toc">
+        <div class="toc-title">目录</div>
+        <ul>
+            <li><a href="#introduction">引言</a></li>
+            <li><a href="#new-features">Next.js 13 新特性</a></li>
+            <li><a href="#app-router">App Router 实践</a></li>
+            <li><a href="#server-components">服务器组件详解</a></li>
+            <li><a href="#data-fetching">数据获取策略</a></li>
+            <li><a href="#conclusion">总结与展望</a></li>
+        </ul>
+    </nav>
+
+    <article class="post-content">
+        <h1>使用 Next.js 13 构建现代 Web 应用</h1>
+        
+        <div class="post-meta">
+            <span><i class="far fa-calendar"></i> 2024-03-10</span>
+            <span><i class="far fa-clock"></i> 12 分钟阅读</span>
+            <span><i class="fas fa-tag"></i> 前端开发</span>
+        </div>
+
+        <h2 id="introduction">引言</h2>
+        <p>Next.js 13 带来了革命性的更新，包括 App Router、React Server Components 等重要特性。本文将深入探讨如何利用这些新特性构建高性能、可扩展的现代 Web 应用。</p>
+
+        <h2 id="new-features">Next.js 13 新特性</h2>
+        <p>Next.js 13 引入了多项重要更新，显著改变了应用的构建方式：</p>
+        <ul>
+            <li>基于文件系统的 App Router</li>
+            <li>默认启用的 React Server Components</li>
+            <li>改进的数据获取机制</li>
+            <li>优化的图片组件</li>
+        </ul>
+
+        <h2 id="app-router">App Router 实践</h2>
+        <p>App Router 提供了更直观的路由管理方式，让应用结构更加清晰：</p>
+
+        <pre><code class="language-typescript">// app/blog/[slug]/page.tsx
+export default async function BlogPost({ params }: { params: { slug: string } }) {
+  const post = await getPost(params.slug);
+  return (
+    <article>
+      <h1>{post.title}</h1>
+      <div>{post.content}</div>
+    </article>
+  );
+}</code></pre>
+
+        <h2 id="server-components">服务器组件详解</h2>
+        <p>React Server Components 允许我们在服务器端渲染复杂组件，减少客户端 JavaScript 体积：</p>
+
+        <pre><code class="language-typescript">// app/components/PostList.tsx
+async function PostList() {
+  const posts = await getPosts(); // 直接在服务器端获取数据
+  return (
+    <ul>
+      {posts.map(post => (
+        <li key={post.id}>
+          <h2>{post.title}</h2>
+          <p>{post.excerpt}</p>
+        </li>
+      ))}
+    </ul>
+  );
+}</code></pre>
+
+        <h2 id="data-fetching">数据获取策略</h2>
+        <p>Next.js 13 提供了多种数据获取方式，可以根据需求选择最适合的策略：</p>
+
+        <pre><code class="language-typescript">// 静态数据获取
+export async function generateStaticParams() {
+  const posts = await getPosts();
+  return posts.map(post => ({
+    slug: post.slug
+  }));
+}
+
+// 服务器端数据获取
+async function getData() {
+  const res = await fetch('https://api.example.com/data', {
+    next: { revalidate: 60 } // 每60秒重新验证
+  });
+  return res.json();
+}</code></pre>
+
+        <h2 id="conclusion">总结与展望</h2>
+        <p>Next.js 13 为现代 Web 开发带来了显著的改进，通过合理运用这些新特性，我们可以构建出更高效、更易维护的应用。随着生态系统的不断发展，相信 Next.js 会带来更多令人期待的功能。</p>
+
+        <div class="post-tags">
+            <span class="tag">Next.js 🚀</span>
+            <span class="tag">React ⚛️</span>
+            <span class="tag">前端开发 💻</span>
+            <span class="tag">Web开发 🌐</span>
+        </div>
+    </article>
+
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/highlight.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.8/dist/medium-zoom.min.js"></script>
+    <script>
+        // 代码高亮
+        hljs.highlightAll();
+        
+        // 图片放大
+        mediumZoom('[data-zoomable]');
+
+        // 阅读进度条
+        window.addEventListener('scroll', () => {
+            const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (window.scrollY / docHeight) * 100;
+            document.querySelector('.reading-progress').style.setProperty('--progress', `${scrolled}%`);
+        });
+
+        // 分享功能
+        function shareToTwitter() {
+            const url = encodeURIComponent(window.location.href);
+            const text = encodeURIComponent(document.title);
+            window.open(`https://twitter.com/intent/tweet?url=${url}&text=${text}`);
+        }
+
+        function shareToFacebook() {
+            const url = encodeURIComponent(window.location.href);
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`);
+        }
+
+        function copyLink() {
+            navigator.clipboard.writeText(window.location.href)
+                .then(() => alert('链接已复制到剪贴板！'));
+        }
+    </script>
+</body>
+</html> 
