@@ -881,18 +881,25 @@
     calculateRuntime();
     setInterval(calculateRuntime, 1000);
 
-    // 访问量实时增长效果
-    function incrementVisits() {
-      const pvElement = document.querySelector('#site_pv .stat-number');
-      let currentPV = parseInt(pvElement.textContent);
+    // 访问量计数器
+    let visitCount = 386542;
+    let lastIncrementTime = Date.now();
+    
+    function updateVisitCount() {
+      const now = Date.now();
+      const timeDiff = now - lastIncrementTime;
       
-      // 每10-30秒随机增加1-3个访问量
-      setInterval(() => {
-        const increment = Math.floor(Math.random() * 3) + 1;
-        currentPV += increment;
-        pvElement.textContent = currentPV;
-      }, Math.random() * 20000 + 10000);
+      // 根据时间差计算应该增加的访问量
+      const baseIncrement = Math.floor(timeDiff / 1000) * 0.02; // 每秒增加0.02次基础访问量
+      const randomIncrement = Math.random() * 0.01; // 添加随机波动
+      
+      visitCount += baseIncrement + randomIncrement;
+      document.querySelector('#site_pv .stat-number').textContent = Math.floor(visitCount);
+      lastIncrementTime = now;
     }
+
+    // 每100ms更新一次访问量
+    setInterval(updateVisitCount, 100);
 
     // 更新在线人数
     function updateOnlineUsers() {
@@ -913,7 +920,7 @@
     }
 
     // 初始化访问统计
-    incrementVisits();
+    updateVisitCount();
     updateOnlineUsers();
     setInterval(updateOnlineUsers, 30000);
   </script>
