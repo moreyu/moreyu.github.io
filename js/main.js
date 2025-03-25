@@ -924,6 +924,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // TOC responsive control
   function initTOC() {
     const toc = document.querySelector('.toc');
+    if (!toc) return;
+    
     const content = document.querySelector('.post-content');
     let isVisible = window.innerWidth > 1200;
     let touchStartX = 0;
@@ -931,13 +933,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Toggle TOC visibility based on screen size
     function updateTOCVisibility() {
-      if (window.innerWidth <= 1200) {
-        toc.style.transform = 'translateX(300px)';
-        isVisible = false;
-      } else {
-        toc.style.transform = 'translateX(0)';
-        isVisible = true;
-      }
+        if (window.innerWidth <= 1200) {
+            toc.style.transform = 'translateX(300px)';
+            isVisible = false;
+        } else {
+            toc.style.transform = 'translateX(0)';
+            isVisible = true;
+        }
     }
 
     // Add toggle button
@@ -945,40 +947,40 @@ document.addEventListener('DOMContentLoaded', () => {
     toggleButton.className = 'toc-toggle';
     toggleButton.innerHTML = '📚';
     toggleButton.style.cssText = `
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      z-index: 1000;
-      background: rgba(26, 26, 26, 0.8);
-      border: 1px solid var(--accent-color);
-      color: var(--text-color);
-      padding: 8px 12px;
-      border-radius: 8px;
-      cursor: pointer;
-      backdrop-filter: blur(10px);
-      display: none;
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1000;
+        background: rgba(26, 26, 26, 0.8);
+        border: 1px solid var(--accent-color);
+        color: var(--text-color);
+        padding: 8px 12px;
+        border-radius: 8px;
+        cursor: pointer;
+        backdrop-filter: blur(10px);
+        display: none;
     `;
 
     document.body.appendChild(toggleButton);
 
     // Toggle TOC on button click
     toggleButton.addEventListener('click', () => {
-      isVisible = !isVisible;
-      toc.style.transform = isVisible ? 'translateX(0)' : 'translateX(300px)';
+        isVisible = !isVisible;
+        toc.style.transform = isVisible ? 'translateX(0)' : 'translateX(300px)';
     });
 
     // Handle touch events for swipe
     toc.addEventListener('touchstart', (e) => {
-      touchStartX = e.touches[0].clientX;
+        touchStartX = e.touches[0].clientX;
     });
 
     toc.addEventListener('touchend', (e) => {
-      touchEndX = e.changedTouches[0].clientX;
-      const diff = touchStartX - touchEndX;
-      if (diff > 50) { // Swipe left
-        toc.style.transform = 'translateX(300px)';
-        isVisible = false;
-      }
+        touchEndX = e.changedTouches[0].clientX;
+        const diff = touchStartX - touchEndX;
+        if (diff > 50) { // Swipe left
+            toc.style.transform = 'translateX(300px)';
+            isVisible = false;
+        }
     });
 
     // Update visibility on resize
@@ -989,15 +991,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Show/hide toggle button based on screen size
     function updateToggleButtonVisibility() {
-      toggleButton.style.display = window.innerWidth <= 1200 ? 'block' : 'none';
+        toggleButton.style.display = window.innerWidth <= 1200 ? 'block' : 'none';
     }
 
     window.addEventListener('resize', updateToggleButtonVisibility);
     updateToggleButtonVisibility();
   }
 
-  // Initialize TOC when DOM is loaded
+  // Initialize TOC when DOM is loaded and after each page load
   document.addEventListener('DOMContentLoaded', initTOC);
+  document.addEventListener('pjax:complete', initTOC);
 
   // Code block copy functionality
   function initCodeBlocks() {
@@ -1053,4 +1056,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Initialize code blocks when DOM is loaded
   document.addEventListener('DOMContentLoaded', initCodeBlocks);
+
+  // Sort posts by date
+  function sortPostsByDate() {
+    const recentPosts = document.querySelector('.recent-post-items');
+    if (!recentPosts) return;
+
+    const posts = Array.from(recentPosts.children);
+    
+    posts.sort((a, b) => {
+      const dateA = new Date(a.querySelector('time').getAttribute('datetime'));
+      const dateB = new Date(b.querySelector('time').getAttribute('datetime'));
+      return dateB - dateA;
+    });
+
+    posts.forEach(post => recentPosts.appendChild(post));
+  }
+
+  // Initialize sorting when DOM is loaded and after each page load
+  document.addEventListener('DOMContentLoaded', sortPostsByDate);
+  document.addEventListener('pjax:complete', sortPostsByDate);
 })
