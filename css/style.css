@@ -115,30 +115,7 @@ h1 {
 }
 
 /* 主题切换按钮 */
-.theme-toggle {
-    position: fixed;
-    top: clamp(10px,4vw,20px);
-    right: clamp(10px,4vw,20px);
-    width: clamp(40px,8vw,50px);
-    height: clamp(40px,8vw,50px);
-    padding: 0;
-    border-radius: 50%;
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    cursor: pointer;
-    transition: all .3s ease;
-    z-index: 100;
-    color: var(--text);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    backdrop-filter: blur(10px);
-}
 
-.theme-toggle:hover {
-    transform: scale(1.05);
-    border-color: var(--primary);
-}
 
 /* 卡片样式 */
 .card {
