@@ -404,4 +404,105 @@ footer {
         transition-duration: 0.01ms !important;
         scroll-behavior: auto !important;
     }
+}
+
+/* 分类目录样式 */
+.category-directory {
+  margin: 2rem 0;
+  padding: 2rem;
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+}
+
+.category-section {
+  margin: 1rem 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.category-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: var(--bg);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-bottom: 1px solid var(--border);
+}
+
+.category-header:hover {
+  background: var(--primary);
+  color: white;
+}
+
+.category-header i {
+  font-size: 1.2rem;
+  color: var(--primary);
+}
+
+.category-header:hover i {
+  color: white;
+}
+
+.category-name {
+  font-weight: bold;
+  flex: 1;
+}
+
+.category-count {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.toggle-icon {
+  transition: transform 0.3s ease;
+}
+
+.category-articles {
+  background: var(--card-bg);
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.category-articles.show {
+  max-height: 1000px;
+}
+
+.category-article {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.3s ease;
+}
+
+.category-article:last-child {
+  border-bottom: none;
+}
+
+.category-article:hover {
+  background: var(--bg);
+}
+
+.category-article a {
+  color: var(--text);
+  text-decoration: none;
+  flex: 1;
+  transition: color 0.3s ease;
+}
+
+.category-article a:hover {
+  color: var(--primary);
+}
+
+.article-date {
+  font-size: 0.8rem;
+  color: var(--text);
+  opacity: 0.7;
 } 

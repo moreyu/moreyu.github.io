@@ -68,8 +68,8 @@ const categories = {
   }
 };
 
-// 文章数据
-const articles = [
+// 文章数据 - 从articles.js导入
+const articles = window.allArticles || [
   // 现有文章
   {
     title: '家用伺服器折腾手记-1：Mac mini 搭建青龙面板教程',
