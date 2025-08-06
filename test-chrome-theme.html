@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chrome主题切换测试</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .test-content {
+      padding: 2rem;
+      text-align: center;
+    }
+    .test-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem;
+      margin: 1rem 0;
+      box-shadow: var(--shadow);
+    }
+    .debug-info {
+      background: #f0f0f0;
+      border: 1px solid #ccc;
+      padding: 1rem;
+      margin: 1rem 0;
+      text-align: left;
+      font-family: monospace;
+      font-size: 12px;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+    .debug-info.dark {
+      background: #2a2a2a;
+      color: #fff;
+      border-color: #555;
+    }
+  </style>
+</head>
+<body>
+  <!-- 主题切换按钮 -->
+  <button class="theme-toggle" onclick="toggleTheme()" aria-label="切换主题" title="切换主题">
+    <i class="fas fa-moon"></i>
+  </button>
+
+  <div class="test-content">
+    <h1 class="gradient-text">Chrome主题切换测试页面</h1>
+    
+    <div class="test-card">
+      <h2>浏览器信息</h2>
+      <p>User Agent: <span id="user-agent"></span></p>
+      <p>是否Chrome: <span id="is-chrome"></span></p>
+      <p>当前主题: <span id="current-theme">light</span></p>
+    </div>
+
+    <div class="test-card">
+      <h2>CSS变量状态</h2>
+      <p>背景色: <span id="bg-color">#fbfbfd</span></p>
+      <p>文字色: <span id="text-color">#1d1d1f</span></p>
+      <p>主色调: <span id="primary-color">#FF375F</span></p>
+    </div>
+
+    <div class="test-card">
+      <h2>测试操作</h2>
+      <button onclick="checkTheme()">检查主题状态</button>
+      <button onclick="forceTheme('light')">强制浅色主题</button>
+      <button onclick="forceTheme('dark')">强制深色主题</button>
+      <button onclick="clearStorage()">清除存储</button>
+    </div>
+
+    <div class="test-card">
+      <h2>调试信息</h2>
+      <div id="debug-log" class="debug-info"></div>
+    </div>
+  </div>
+
+  <script src="/js/theme.js"></script>
+  <script>
+    // 调试日志
+    const debugLog = document.getElementById('debug-log');
+    const originalLog = console.log;
+    const originalWarn = console.warn;
+    const originalError = console.error;
+
+    function addToDebug(message, type = 'log') {
+      const timestamp = new Date().toLocaleTimeString();
+      const logEntry = document.createElement('div');
+      logEntry.style.color = type === 'error' ? '#ff4444' : type === 'warn' ? '#ffaa00' : '#00aa00';
+      logEntry.textContent = `[${timestamp}] ${message}`;
+      debugLog.appendChild(logEntry);
+      debugLog.scrollTop = debugLog.scrollHeight;
+    }
+
+    console.log = function(...args) {
+      originalLog.apply(console, args);
+      addToDebug(args.join(' '), 'log');
+    };
+
+    console.warn = function(...args) {
+      originalWarn.apply(console, args);
+      addToDebug(args.join(' '), 'warn');
+    };
+
+    console.error = function(...args) {
+      originalError.apply(console, args);
+      addToDebug(args.join(' '), 'error');
+    };
+
+    // 页面初始化
+    function initPage() {
+      document.getElementById('user-agent').textContent = navigator.userAgent;
+      document.getElementById('is-chrome').textContent = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor) ? '是' : '否';
+      
+      // 监听主题变化
+      document.addEventListener('themechange', (e) => {
+        console.log('Theme change event:', e.detail);
+        updateDisplay();
+      });
+      
+      updateDisplay();
+    }
+
+    function updateDisplay() {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      const computedStyle = getComputedStyle(document.documentElement);
+      
+      document.getElementById('current-theme').textContent = currentTheme;
+      document.getElementById('bg-color').textContent = computedStyle.getPropertyValue('--bg');
+      document.getElementById('text-color').textContent = computedStyle.getPropertyValue('--text');
+      document.getElementById('primary-color').textContent = computedStyle.getPropertyValue('--primary');
+      
+      // 更新调试区域主题
+      const debugInfo = document.getElementById('debug-log');
+      if (currentTheme === 'dark') {
+        debugInfo.classList.add('dark');
+      } else {
+        debugInfo.classList.remove('dark');
+      }
+    }
+
+    function checkTheme() {
+      console.log('Manual theme check triggered');
+      updateDisplay();
+    }
+
+    function forceTheme(theme) {
+      console.log('Force theme to:', theme);
+      if (window.applyTheme) {
+        window.applyTheme(theme);
+      } else {
+        document.documentElement.setAttribute('data-theme', theme);
+        updateDisplay();
+      }
+    }
+
+    function clearStorage() {
+      console.log('Clearing localStorage');
+      localStorage.removeItem('theme');
+      location.reload();
+    }
+
+    // 页面加载完成后初始化
+    window.addEventListener('load', initPage);
+  </script>
+</body>
+</html> 

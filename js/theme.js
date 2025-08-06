@@ -1,5 +1,9 @@
-// 主题切换功能 - 简单可靠的实现
+// 主题切换功能 - Chrome兼容性增强版
 let currentTheme = 'light';
+
+// 检测浏览器
+const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+console.log('Browser detection:', { isChrome, userAgent: navigator.userAgent });
 
 // 主题配置
 const themes = {
@@ -31,7 +35,7 @@ const themes = {
 
 // 初始化主题
 function initTheme() {
-  console.log('Theme initialization started');
+  console.log('Theme initialization started - Chrome mode:', isChrome);
   
   // 从localStorage获取保存的主题，默认为light
   const savedTheme = localStorage.getItem('theme') || 'light';
@@ -44,11 +48,28 @@ function initTheme() {
   
   // 更新按钮图标
   updateThemeIcon();
+  
+  // Chrome特定：强制重绘
+  if (isChrome) {
+    console.log('Chrome detected, forcing repaint');
+    forceRepaint();
+  }
+}
+
+// 强制重绘（Chrome特定）
+function forceRepaint() {
+  const body = document.body;
+  if (body) {
+    // 触发重绘
+    body.style.display = 'none';
+    body.offsetHeight; // 强制重排
+    body.style.display = '';
+  }
 }
 
 // 应用主题
 function applyTheme(theme) {
-  console.log('Applying theme:', theme);
+  console.log('Applying theme:', theme, '- Chrome mode:', isChrome);
   
   // 设置data-theme属性
   document.documentElement.setAttribute('data-theme', theme);
@@ -59,7 +80,15 @@ function applyTheme(theme) {
   
   Object.entries(themeVars).forEach(([property, value]) => {
     root.style.setProperty(property, value);
+    console.log('Set CSS variable:', property, '=', value);
   });
+  
+  // Chrome特定：强制更新
+  if (isChrome) {
+    // 强制触发样式重新计算
+    root.style.cssText = root.style.cssText;
+    console.log('Chrome: Forced CSS update');
+  }
   
   // 验证主题是否正确设置
   const appliedTheme = document.documentElement.getAttribute('data-theme');
@@ -81,12 +110,19 @@ function applyTheme(theme) {
     const bgColor = computedStyle.getPropertyValue('--bg');
     const textColor = computedStyle.getPropertyValue('--text');
     console.log('CSS variables - bg:', bgColor, 'text:', textColor);
+    
+    // Chrome特定验证
+    if (isChrome) {
+      console.log('Chrome: CSS variables verification');
+      console.log('Expected bg:', themeVars['--bg'], 'Actual:', bgColor);
+      console.log('Expected text:', themeVars['--text'], 'Actual:', textColor);
+    }
   }, 100);
 }
 
 // 切换主题
 function toggleTheme() {
-  console.log('Theme toggle clicked');
+  console.log('Theme toggle clicked - Chrome mode:', isChrome);
   
   // 切换主题
   const newTheme = currentTheme === 'light' ? 'dark' : 'light';
@@ -98,6 +134,14 @@ function toggleTheme() {
   
   // 添加切换动画效果
   addToggleAnimation();
+  
+  // Chrome特定：延迟强制重绘
+  if (isChrome) {
+    setTimeout(() => {
+      console.log('Chrome: Delayed repaint');
+      forceRepaint();
+    }, 200);
+  }
 }
 
 // 更新主题图标
@@ -113,6 +157,8 @@ function updateThemeIcon() {
       }
       console.log('Theme icon updated to:', currentTheme === 'dark' ? 'sun' : 'moon');
     }
+  } else {
+    console.warn('Theme toggle button not found');
   }
 }
 
@@ -130,14 +176,48 @@ function addToggleAnimation() {
 // 全局函数，供HTML中的onclick调用
 window.toggleTheme = toggleTheme;
 
+// 多重事件绑定（Chrome兼容性）
+function setupEventListeners() {
+  console.log('Setting up event listeners - Chrome mode:', isChrome);
+  
+  const themeToggle = document.querySelector('.theme-toggle');
+  if (themeToggle) {
+    // 移除可能存在的旧事件监听器
+    const newThemeToggle = themeToggle.cloneNode(true);
+    themeToggle.parentNode.replaceChild(newThemeToggle, themeToggle);
+    
+    // 添加新的事件监听器
+    newThemeToggle.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      console.log('Event listener triggered');
+      toggleTheme();
+    });
+    
+    console.log('Event listener added successfully');
+  } else {
+    console.warn('Theme toggle button not found for event listener');
+  }
+}
+
 // 在DOM加载完成后初始化
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('DOM loaded, initializing theme');
+  console.log('DOM loaded, initializing theme - Chrome mode:', isChrome);
   initTheme();
+  setupEventListeners();
 });
 
 // 页面完全加载后再次检查
 window.addEventListener('load', () => {
-  console.log('Page fully loaded, final theme check');
+  console.log('Page fully loaded, final theme check - Chrome mode:', isChrome);
   console.log('Final theme state:', currentTheme);
+  
+  // Chrome特定：最终验证
+  if (isChrome) {
+    setTimeout(() => {
+      const computedStyle = getComputedStyle(document.documentElement);
+      const bgColor = computedStyle.getPropertyValue('--bg');
+      console.log('Chrome final check - bg color:', bgColor);
+    }, 500);
+  }
 }); 
