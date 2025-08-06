@@ -50,7 +50,10 @@ function extractContent(html) {
   }
   
   // 使用临时容器处理内容
-  const tempDiv = cheerio.load(`<div>${content}</div>`, null, false);
+  const tempDiv = cheerio.load(`<div>${content}</div>`, {
+    decodeEntities: false,
+    xmlMode: false
+  }, false);
   
   // 移除不需要的元素
   tempDiv('script').remove();

@@ -1,10 +1,29 @@
 window.addEventListener('load', () => {
   const { algolia } = GLOBAL_CONFIG
-  const { appId, apiKey, indexName, hitsPerPage = 5, languages } = algolia
-
-  if (!appId || !apiKey || !indexName) {
-    return console.error('Algolia setting is invalid!')
+  
+  // 检查Algolia配置是否存在
+  if (!algolia) {
+    console.warn('Algolia configuration not found, search functionality disabled')
+    return
   }
+  
+  const { appId, apiKey, indexName, hitsPerPage = 5, languages = {} } = algolia
+
+  // 验证必要的配置参数
+  if (!appId || !apiKey || !indexName) {
+    console.warn('Algolia configuration incomplete, search functionality disabled')
+    console.warn('Required: appId, apiKey, indexName')
+    return
+  }
+  
+  // 设置默认语言配置
+  const defaultLanguages = {
+    input_placeholder: '搜索',
+    hits_empty: '找不到 ${query} 的相关结果',
+    hits_stats: '找到 ${hits} 个相关结果，用时 ${time} 毫秒'
+  }
+  
+  const finalLanguages = { ...defaultLanguages, ...languages }
 
   const $searchMask = document.getElementById('search-mask')
   const $searchDialog = document.querySelector('#algolia-search .search-dialog')
@@ -103,7 +122,7 @@ window.addEventListener('load', () => {
       container: '#algolia-search-input',
       showReset: false,
       showSubmit: false,
-      placeholder: languages.input_placeholder,
+      placeholder: finalLanguages.input_placeholder,
       showLoadingIndicator: true
     }),
     instantsearch.widgets.hits({
@@ -126,7 +145,7 @@ window.addEventListener('load', () => {
             </a>`
         },
         empty (data) {
-          return `<div id="algolia-hits-empty">${languages.hits_empty.replace(/\$\{query}/, data.query)}</div>`
+          return `<div id="algolia-hits-empty">${finalLanguages.hits_empty.replace(/\$\{query}/, data.query)}</div>`
         }
       }
     }),
@@ -134,7 +153,7 @@ window.addEventListener('load', () => {
       container: '#algolia-info > .algolia-stats',
       templates: {
         text (data) {
-          const stats = languages.hits_stats
+          const stats = finalLanguages.hits_stats
             .replace(/\$\{hits}/, data.nbHits)
             .replace(/\$\{time}/, data.processingTimeMS)
           return `<hr>${stats}`
