@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>主题切换测试</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .test-content {
+      padding: 2rem;
+      text-align: center;
+    }
+    .test-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem;
+      margin: 1rem 0;
+      box-shadow: var(--shadow);
+    }
+  </style>
+</head>
+<body>
+  <!-- 主题切换按钮 -->
+  <button class="theme-toggle" onclick="toggleTheme()" aria-label="切换主题" title="切换主题">
+    <i class="fas fa-moon"></i>
+  </button>
+
+  <div class="test-content">
+    <h1 class="gradient-text">主题切换测试页面</h1>
+    
+    <div class="test-card">
+      <h2>当前主题状态</h2>
+      <p>主题: <span id="current-theme">light</span></p>
+      <p>背景色: <span id="bg-color">#fbfbfd</span></p>
+      <p>文字色: <span id="text-color">#1d1d1f</span></p>
+    </div>
+
+    <div class="test-card">
+      <h2>测试内容</h2>
+      <p>这是一段测试文字，用于验证主题切换效果。</p>
+      <button onclick="checkTheme()">检查主题状态</button>
+    </div>
+  </div>
+
+  <script src="/js/theme.js"></script>
+  <script>
+    function checkTheme() {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      const computedStyle = getComputedStyle(document.documentElement);
+      const bgColor = computedStyle.getPropertyValue('--bg');
+      const textColor = computedStyle.getPropertyValue('--text');
+      
+      document.getElementById('current-theme').textContent = currentTheme;
+      document.getElementById('bg-color').textContent = bgColor;
+      document.getElementById('text-color').textContent = textColor;
+      
+      console.log('Theme check:', { currentTheme, bgColor, textColor });
+    }
+    
+    // 页面加载后自动检查
+    window.addEventListener('load', checkTheme);
+  </script>
+</body>
+</html> 
