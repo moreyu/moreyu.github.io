@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const { getArticleContent } = require('./content-templates');
 
 // 文章数据 - 包含2024年3月到2025年8月的文章
 const articles = [
@@ -322,6 +323,7 @@ const articleTemplate = `<!DOCTYPE html>
       padding: 15px;
       border-radius: 8px;
       overflow-x: auto;
+      position: relative;
     }
 
     code {
@@ -369,6 +371,195 @@ const articleTemplate = `<!DOCTYPE html>
       text-decoration: none;
     }
 
+    /* 表格样式 */
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .comparison-table th,
+    .comparison-table td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+    }
+
+    .comparison-table th {
+      background: #FF375F;
+      color: white;
+      font-weight: bold;
+    }
+
+    .comparison-table tr:hover {
+      background: #f8f9fa;
+    }
+
+    /* 信息框样式 */
+    .info-box, .recommendation-box, .concept-box {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 20px;
+      border-radius: 10px;
+      margin: 20px 0;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    .info-box h4, .recommendation-box h4, .concept-box h4 {
+      margin-top: 0;
+      color: white;
+    }
+
+    /* 应用网格样式 */
+    .application-grid, .use-cases {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin: 20px 0;
+    }
+
+    .app-card, .use-case {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .app-card:hover, .use-case:hover {
+      transform: translateY(-5px);
+    }
+
+    .app-card h4, .use-case h4 {
+      color: #FF375F;
+      margin-top: 0;
+    }
+
+    /* 平台对比样式 */
+    .platform-comparison {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin: 20px 0;
+    }
+
+    .platform {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .platform h4 {
+      color: #FF375F;
+      margin-top: 0;
+    }
+
+    .platform ul {
+      padding-left: 20px;
+    }
+
+    /* Web3特性样式 */
+    .web3-features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin: 20px 0;
+    }
+
+    .feature {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    .feature h4 {
+      color: #FF375F;
+      margin-top: 0;
+    }
+
+    /* 量子计算图表样式 */
+    .quantum-diagram {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      margin: 20px 0;
+    }
+
+    .comparison {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-top: 15px;
+    }
+
+    .classical, .quantum {
+      text-align: center;
+      padding: 15px;
+      border-radius: 8px;
+    }
+
+    .classical {
+      background: #e3f2fd;
+      border: 2px solid #2196f3;
+    }
+
+    .quantum {
+      background: #f3e5f5;
+      border: 2px solid #9c27b0;
+    }
+
+    /* 边缘计算架构样式 */
+    .edge-architecture {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      margin: 20px 0;
+    }
+
+    .architecture-diagram {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .layer {
+      background: #FF375F;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+
+    .arrow {
+      font-size: 20px;
+      color: #FF375F;
+    }
+
+    /* 技术趋势样式 */
+    .tech-trends, .best-practices {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      margin: 20px 0;
+    }
+
+    .tech-trends h4, .best-practices h4 {
+      color: #FF375F;
+      margin-top: 0;
+    }
+
     /* 深色模式适配 */
     @media (prefers-color-scheme: dark) {
       body {
@@ -378,6 +569,28 @@ const articleTemplate = `<!DOCTYPE html>
 
       a {
         color: #2997ff;
+      }
+
+      .comparison-table,
+      .app-card,
+      .use-case,
+      .platform,
+      .feature,
+      .quantum-diagram,
+      .edge-architecture,
+      .tech-trends,
+      .best-practices {
+        background: #1a1a1a;
+        color: #f5f5f7;
+      }
+
+      .comparison-table th,
+      .comparison-table td {
+        border-bottom: 1px solid #333;
+      }
+
+      .comparison-table tr:hover {
+        background: #2a2a2a;
       }
     }
   </style>
@@ -389,25 +602,9 @@ const articleTemplate = `<!DOCTYPE html>
       发布时间：{{DATE}} | 分类：{{CATEGORY}} | 标签：{{TAGS}}
     </div>
     
-    <p>{{DESCRIPTION}}本文将详细介绍相关技术概念、实践经验和最佳实践。</p>
+    <p>{{DESCRIPTION}}</p>
 
-    <h2>技术背景</h2>
-    <p>在当今快速发展的技术环境中，{{CATEGORY}}领域正在经历前所未有的变革。随着新技术的不断涌现，开发者需要不断学习和适应新的技术栈和最佳实践。</p>
-
-    <h2>核心概念</h2>
-    <p>理解{{CATEGORY}}的核心概念对于掌握相关技术至关重要。这些概念构成了技术体系的基础，为后续的深入学习和实践提供了理论支撑。</p>
-
-    <h2>实践应用</h2>
-    <p>理论结合实践是学习技术的最佳方式。通过实际的项目案例，我们可以更好地理解技术的应用场景和实现方法。</p>
-
-    <h2>最佳实践</h2>
-    <p>在{{CATEGORY}}领域，遵循最佳实践可以避免常见的陷阱，提高开发效率和代码质量。这些实践来自于大量的项目经验和行业标准。</p>
-
-    <h2>未来展望</h2>
-    <p>随着技术的不断发展，{{CATEGORY}}领域将继续演进。了解未来的发展趋势有助于我们做出更好的技术决策和职业规划。</p>
-
-    <h2>总结</h2>
-    <p>{{DESCRIPTION}}通过本文的学习，读者应该对相关技术有了更深入的理解，并能够在实际项目中应用这些知识。</p>
+    {{CONTENT}}
 
     <a href="/" class="back-to-home">返回首页 🏠</a>
   </main>
@@ -436,12 +633,19 @@ articles.forEach(article => {
     fs.mkdirSync(outputDir, { recursive: true });
   }
 
+  // 获取模板键名
+  const templateKey = article.filename.replace('.html', '');
+  
+  // 生成智能内容
+  const smartContent = getArticleContent(templateKey, article);
+  
   let content = articleTemplate
     .replace(/{{TITLE}}/g, article.title)
     .replace(/{{DATE}}/g, article.date)
     .replace(/{{CATEGORY}}/g, article.category)
     .replace(/{{TAGS}}/g, article.tags.join(', '))
-    .replace(/{{DESCRIPTION}}/g, article.description);
+    .replace(/{{DESCRIPTION}}/g, article.description)
+    .replace(/{{CONTENT}}/g, smartContent);
 
   fs.writeFileSync(outputPath, content);
   console.log(`✅ 生成文章: ${outputPath}`);
