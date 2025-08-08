@@ -1,0 +1,65 @@
+
+      <svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+          </linearGradient>
+          <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#f093fb;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#f5576c;stop-opacity:1" />
+          </linearGradient>
+        </defs>
+        
+        <!-- 背景 -->
+        <rect width="800" height="600" fill="#f8f9fa"/>
+        
+        <!-- 标题 -->
+        <text x="400" y="30" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#333">AI Agent 架构图</text>
+        
+        <!-- 用户输入层 -->
+        <rect x="50" y="80" width="700" height="60" rx="10" fill="url(#grad1)" stroke="#333" stroke-width="2"/>
+        <text x="400" y="115" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="white">用户输入层</text>
+        <text x="400" y="135" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="white">自然语言处理、意图识别</text>
+        
+        <!-- 箭头 -->
+        <polygon points="400,150 395,160 405,160" fill="#333"/>
+        
+        <!-- 任务分解层 -->
+        <rect x="50" y="170" width="700" height="60" rx="10" fill="url(#grad2)" stroke="#333" stroke-width="2"/>
+        <text x="400" y="205" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="white">任务分解层</text>
+        <text x="400" y="225" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="white">目标设定、计划制定</text>
+        
+        <!-- 箭头 -->
+        <polygon points="400,240 395,250 405,250" fill="#333"/>
+        
+        <!-- 工具调用层 -->
+        <rect x="50" y="260" width="700" height="60" rx="10" fill="url(#grad1)" stroke="#333" stroke-width="2"/>
+        <text x="400" y="295" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="white">工具调用层</text>
+        <text x="400" y="315" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="white">API调用、工具执行</text>
+        
+        <!-- 箭头 -->
+        <polygon points="400,330 395,340 405,340" fill="#333"/>
+        
+        <!-- 结果整合层 -->
+        <rect x="50" y="350" width="700" height="60" rx="10" fill="url(#grad2)" stroke="#333" stroke-width="2"/>
+        <text x="400" y="385" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="white">结果整合层</text>
+        <text x="400" y="405" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="white">结果分析、反馈生成</text>
+        
+        <!-- 侧边工具 -->
+        <rect x="50" y="450" width="150" height="80" rx="10" fill="#e3f2fd" stroke="#2196f3" stroke-width="2"/>
+        <text x="125" y="475" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#2196f3">搜索工具</text>
+        <text x="125" y="495" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#333">Web搜索</text>
+        <text x="125" y="510" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#333">知识库</text>
+        
+        <rect x="325" y="450" width="150" height="80" rx="10" fill="#f3e5f5" stroke="#9c27b0" stroke-width="2"/>
+        <text x="400" y="475" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#9c27b0">计算工具</text>
+        <text x="400" y="495" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#333">数学计算</text>
+        <text x="400" y="510" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#333">数据分析</text>
+        
+        <rect x="600" y="450" width="150" height="80" rx="10" fill="#e8f5e8" stroke="#4caf50" stroke-width="2"/>
+        <text x="675" y="475" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#4caf50">执行工具</text>
+        <text x="675" y="495" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#333">文件操作</text>
+        <text x="675" y="510" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#333">系统控制</text>
+      </svg>
+    
