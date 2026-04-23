@@ -42,12 +42,9 @@ function Globe({ className = "h-7 w-7" }) {
 function Hero() {
     return (
         <section className="relative min-h-screen bg-black overflow-hidden">
-            {/* Background Video - 120% scale, top-aligned */}
-            <FadingVideo
-                src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260418_080021_d598092b-c4c2-4e53-8e46-94cf9064cd50.mp4"
-                className="absolute left-1/2 top-0 -translate-x-1/2 object-cover object-top z-0"
-                style={{ width: '120%', height: '120%' }}
-            />
+            {/* Gradient Background - 替代视频 */}
+            <div className="absolute inset-0 bg-gradient-to-br from-purple-900 via-blue-900 to-black opacity-80"></div>
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-purple-700/20 via-transparent to-transparent"></div>
 
             {/* Content Layer */}
             <div className="relative z-10 min-h-screen flex flex-col">
