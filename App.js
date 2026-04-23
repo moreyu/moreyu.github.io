@@ -1,4 +1,4 @@
-const { Navbar, Hero, Capabilities } = window;
+const { Navbar, Hero, Capabilities, BlogPosts } = window;
 
 function App() {
     return (
@@ -6,6 +6,7 @@ function App() {
             <Navbar />
             <Hero />
             <Capabilities />
+            <BlogPosts />
         </div>
     );
 }

@@ -60,14 +60,14 @@ function Hero() {
                         transition={{ duration: 0.8, delay: 0.4, ease: 'easeOut' }}
                         className="liquid-glass rounded-full flex items-center gap-3 px-1.5 py-1.5 mb-6"
                     >
-                        <span className="bg-white text-black px-3 py-1 text-xs font-semibold rounded-full">新</span>
-                        <span className="text-sm text-white/90 pr-3">首次载人火星之旅将于 2026 年抵达</span>
+                        <span className="bg-white text-black px-3 py-1 text-xs font-semibold rounded-full">✨</span>
+                        <span className="text-sm text-white/90 pr-3">全栈开发者 · AI 探索者</span>
                     </motion.div>
 
                     {/* Headline with BlurText */}
                     <BlurText
-                        text="探索天际 穿越宇宙"
-                        className="text-6xl md:text-7xl lg:text-[5.5rem] font-heading italic text-white leading-[0.8] max-w-2xl text-center tracking-[-4px]"
+                        text="用技术改变生活 用创意实现梦想"
+                        className="text-5xl md:text-6xl lg:text-[4.5rem] font-heading italic text-white leading-[0.9] max-w-4xl text-center tracking-[-3px]"
                     />
 
                     {/* Subheading */}
@@ -77,7 +77,7 @@ function Hero() {
                         transition={{ duration: 0.8, delay: 0.8, ease: 'easeOut' }}
                         className="mt-4 text-sm md:text-base text-white/90 max-w-2xl font-body font-light leading-tight text-center"
                     >
-                        以前所未有的方式探索宇宙。我们的先锋飞船和突破性工程让深空探索触手可及——安全而非凡。
+                        👋 嗨，我是 Moreyu，热衷于探索新技术和自动化解决方案的全栈工程师。在这里分享技术心得、项目实践和极客生活。
                     </motion.p>
 
                     {/* CTAs */}
@@ -87,12 +87,12 @@ function Hero() {
                         transition={{ duration: 0.8, delay: 1.1, ease: 'easeOut' }}
                         className="flex items-center gap-6 mt-6"
                     >
-                        <button className="liquid-glass-strong rounded-full px-5 py-2.5 text-sm font-medium text-white flex items-center gap-2">
-                            开始您的旅程
+                        <a href="https://github.com/moreyu" target="_blank" className="liquid-glass-strong rounded-full px-5 py-2.5 text-sm font-medium text-white flex items-center gap-2">
+                            访问 GitHub
                             <ArrowUpRight className="h-5 w-5" />
-                        </button>
-                        <a href="#" className="text-white/90 text-sm font-medium flex items-center gap-2 hover:text-white transition-colors">
-                            观看发射
+                        </a>
+                        <a href="#capabilities" className="text-white/90 text-sm font-medium flex items-center gap-2 hover:text-white transition-colors">
+                            了解更多
                             <Play className="h-4 w-4" />
                         </a>
                     </motion.div>
@@ -106,18 +106,18 @@ function Hero() {
                     >
                         <div className="liquid-glass p-5 w-[220px] rounded-[1.25rem]">
                             <Clock className="text-white mb-4" />
-                            <div className="text-4xl font-heading italic text-white tracking-[-1px] leading-none">34.5 分钟</div>
-                            <div className="text-xs text-white/90 font-body font-light mt-2">平均视频观看时长</div>
+                            <div className="text-4xl font-heading italic text-white tracking-[-1px] leading-none">2025+</div>
+                            <div className="text-xs text-white/90 font-body font-light mt-2">专注 AI 应用开发</div>
                         </div>
                         <div className="liquid-glass p-5 w-[220px] rounded-[1.25rem]">
                             <Globe className="text-white mb-4" />
-                            <div className="text-4xl font-heading italic text-white tracking-[-1px] leading-none">28 亿+</div>
-                            <div className="text-xs text-white/90 font-body font-light mt-2">全球用户</div>
+                            <div className="text-4xl font-heading italic text-white tracking-[-1px] leading-none">全栈</div>
+                            <div className="text-xs text-white/90 font-body font-light mt-2">前端 · 后端 · DevOps</div>
                         </div>
                     </motion.div>
                 </div>
 
-                {/* Partners */}
+                {/* Tech Stack */}
                 <motion.div
                     initial={{ filter: 'blur(10px)', opacity: 0, y: 20 }}
                     animate={{ filter: 'blur(0px)', opacity: 1, y: 0 }}
@@ -125,18 +125,18 @@ function Hero() {
                     className="flex flex-col items-center gap-4 pb-8"
                 >
                     <div className="liquid-glass rounded-full px-3.5 py-1 text-xs font-medium text-white">
-                        与全球顶尖航天先驱合作
+                        技术栈
                     </div>
-                    <div className="flex items-center gap-12 md:gap-16 text-2xl md:text-3xl font-heading italic text-white tracking-tight">
-                        <span>Aeon</span>
+                    <div className="flex items-center gap-8 md:gap-12 text-xl md:text-2xl font-heading italic text-white tracking-tight">
+                        <span>React</span>
                         <span>·</span>
-                        <span>Vela</span>
+                        <span>Python</span>
                         <span>·</span>
-                        <span>Apex</span>
+                        <span>Go</span>
                         <span>·</span>
-                        <span>Orbit</span>
+                        <span>Docker</span>
                         <span>·</span>
-                        <span>Zeno</span>
+                        <span>AI</span>
                     </div>
                 </motion.div>
             </div>

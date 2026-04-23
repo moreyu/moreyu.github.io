@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aetheris Voyage - 探索未知的旅程</title>
+    <title>Moreyu's Blog ✨ - 用技术改变生活</title>
+    <meta name="description" content="全栈开发者 Moreyu 的个人博客，分享技术心得、项目实践和极客生活">
+    <meta name="keywords" content="全栈开发,React,Python,Go,AI,DevOps,技术博客">
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -46,6 +48,37 @@
             padding: 0;
             background: #000;
             font-family: 'Barlow', sans-serif;
+        }
+
+        /* Loading indicator */
+        #loading {
+            position: fixed;
+            inset: 0;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            color: white;
+            font-size: 14px;
+        }
+
+        #loading.hidden {
+            display: none;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255,255,255,0.1);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 10px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
 
         .liquid-glass {
@@ -110,6 +143,14 @@
     </style>
 </head>
 <body>
+    <!-- Loading indicator -->
+    <div id="loading">
+        <div style="text-align: center;">
+            <div class="spinner"></div>
+            <div>加载中...</div>
+        </div>
+    </div>
+
     <div id="root"></div>
 
     <script type="text/babel" src="components/FadingVideo.js"></script>
@@ -117,6 +158,16 @@
     <script type="text/babel" src="components/Navbar.js"></script>
     <script type="text/babel" src="components/Hero.js"></script>
     <script type="text/babel" src="components/Capabilities.js"></script>
+    <script type="text/babel" src="components/BlogPosts.js"></script>
     <script type="text/babel" src="App.js"></script>
+
+    <script>
+        // Hide loading indicator when page is ready
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loading').classList.add('hidden');
+            }, 500);
+        });
+    </script>
 </body>
 </html>
