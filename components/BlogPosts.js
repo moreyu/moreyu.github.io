@@ -1,28 +1,28 @@
 function BlogPosts() {
     const categories = [
         {
-            title: '智能家居',
+            title: 'STREAM & SMART MEDIA HUB',
             icon: '🏠',
             description: 'Home Assistant / Apple TV / NAS / EMBY / Movie Pilot',
             gradient: 'linear-gradient(135deg, #d97706 0%, #ea580c 100%)',
             articleCount: '即将更新'
         },
         {
-            title: '支付方案',
+            title: 'CRYPTO & PAY',
             icon: '💳',
             description: '虚拟货币 / U卡 / 美卡 / eSIM 研究',
             gradient: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
             articleCount: '即将更新'
         },
         {
-            title: 'AI 技术',
+            title: 'AI & VIBE CODING',
             icon: '🤖',
             description: 'AI 模型 / KIRO 反代 / 中转站运营 / 养虾心得',
             gradient: 'linear-gradient(135deg, #ea580c 0%, #f59e0b 100%)',
             articleCount: '即将更新'
         },
         {
-            title: '生活兴趣',
+            title: 'MUSIC / MOVIE / SERIES',
             icon: '🎵',
             description: 'Coachella / 音乐 / 剧集 / 生活方式',
             gradient: 'linear-gradient(135deg, #d97706 0%, #f59e0b 100%)',
