@@ -1,15 +1,22 @@
-// Simple test - check if components load
 console.log('App.js loading...');
-console.log('window.Motion:', window.Motion);
-console.log('window.Navbar:', window.Navbar);
-console.log('window.Hero:', window.Hero);
-console.log('window.Capabilities:', window.Capabilities);
-console.log('window.BlogPosts:', window.BlogPosts);
 
-const { Navbar, Hero, Capabilities, BlogPosts } = window;
+const { Navbar, Hero, Capabilities, BlogPosts, ParticleSystem, Interactions } = window;
 
 function App() {
-    console.log('App rendering...');
+    React.useEffect(() => {
+        console.log('App mounted');
+
+        // Initialize particle system
+        if (ParticleSystem) {
+            ParticleSystem.init();
+        }
+
+        // Initialize interactions
+        if (Interactions) {
+            Interactions.init();
+        }
+    }, []);
+
     return (
         <div>
             <Navbar />
@@ -20,8 +27,5 @@ function App() {
     );
 }
 
-console.log('Creating React root...');
 const root = ReactDOM.createRoot(document.getElementById('root'));
-console.log('Rendering App...');
 root.render(<App />);
-console.log('App rendered!');
