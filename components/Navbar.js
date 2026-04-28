@@ -10,14 +10,8 @@ function Navbar() {
             }}
         >
             <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-                {/* Logo */}
-                <a
-                    href="#home"
-                    className="text-xl font-black tracking-tight"
-                    style={{ color: 'var(--text)', textDecoration: 'none' }}
-                >
-                    MOREYU
-                </a>
+                {/* Logo - Split-flap animation */}
+                {window.SolariLogo && <window.SolariLogo />}
 
                 {/* Nav Links */}
                 <div className="flex items-center gap-10">
@@ -56,17 +50,17 @@ function Navbar() {
                             background: 'var(--accent)',
                             color: 'white',
                             textDecoration: 'none',
-                            boxShadow: '0 4px 14px rgba(59, 130, 246, 0.3)'
+                            boxShadow: '0 4px 14px rgba(217, 119, 6, 0.3)'
                         }}
                         onMouseEnter={(e) => {
                             e.target.style.background = 'var(--accent-hover)';
                             e.target.style.transform = 'translateY(-2px)';
-                            e.target.style.boxShadow = '0 6px 20px rgba(59, 130, 246, 0.4)';
+                            e.target.style.boxShadow = '0 6px 20px rgba(217, 119, 6, 0.4)';
                         }}
                         onMouseLeave={(e) => {
                             e.target.style.background = 'var(--accent)';
                             e.target.style.transform = 'translateY(0)';
-                            e.target.style.boxShadow = '0 4px 14px rgba(59, 130, 246, 0.3)';
+                            e.target.style.boxShadow = '0 4px 14px rgba(217, 119, 6, 0.3)';
                         }}
                     >
                         Contact

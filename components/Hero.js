@@ -38,9 +38,9 @@ function Hero() {
                     className="text-xl md:text-2xl max-w-3xl mx-auto font-normal leading-relaxed mb-12 fade-in-up fade-in-delay-4"
                     style={{ color: 'var(--text-secondary)' }}
                 >
-                    全栈工程师 × AI 探索者。专注于构建高性能 Web 应用和智能化解决方案。
+                    全栈工程师 × AI 探索者。
                     <br />
-                    从想法到产品，用代码创造价值。
+                    专注于构建高性能 Web 应用和智能化解决方案。
                 </p>
 
                 {/* CTAs */}
