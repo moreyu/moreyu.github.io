@@ -1,4 +1,6 @@
 function Navbar() {
+    const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
+
     return (
         <nav
             className="fixed top-0 left-0 right-0 z-50 fade-in"
@@ -13,8 +15,8 @@ function Navbar() {
                 {/* Logo - Split-flap animation */}
                 {window.SolariLogo && <window.SolariLogo />}
 
-                {/* Nav Links */}
-                <div className="flex items-center gap-10">
+                {/* Desktop Nav Links */}
+                <div className="hidden md:flex items-center gap-10">
                     <a
                         href="#home"
                         className="text-sm font-semibold transition-all"
@@ -43,7 +45,7 @@ function Navbar() {
                         Blog
                     </a>
                     <a
-                        href="https://github.com/moreyu"
+                        href="https://all-in.cc.cd"
                         target="_blank"
                         className="px-5 py-2.5 text-sm font-semibold rounded-full transition-all"
                         style={{
@@ -63,10 +65,82 @@ function Navbar() {
                             e.target.style.boxShadow = '0 4px 14px rgba(217, 119, 6, 0.3)';
                         }}
                     >
-                        Contact
+                        API 中转站
                     </a>
                 </div>
+
+                {/* Mobile Menu Button */}
+                <button
+                    className="md:hidden p-2"
+                    onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                    style={{
+                        background: 'none',
+                        border: 'none',
+                        color: 'var(--text)',
+                        cursor: 'pointer'
+                    }}
+                >
+                    <svg className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                        {mobileMenuOpen ? (
+                            <path d="M6 18L18 6M6 6l12 12"/>
+                        ) : (
+                            <path d="M4 6h16M4 12h16M4 18h16"/>
+                        )}
+                    </svg>
+                </button>
             </div>
+
+            {/* Mobile Menu */}
+            {mobileMenuOpen && (
+                <div
+                    className="md:hidden"
+                    style={{
+                        background: 'rgba(0, 0, 0, 0.95)',
+                        backdropFilter: 'blur(20px)',
+                        borderTop: '1px solid var(--border)'
+                    }}
+                >
+                    <div className="px-6 py-4 flex flex-col gap-4">
+                        <a
+                            href="#home"
+                            className="text-base font-semibold py-2"
+                            style={{ color: 'var(--text-secondary)', textDecoration: 'none' }}
+                            onClick={() => setMobileMenuOpen(false)}
+                        >
+                            Home
+                        </a>
+                        <a
+                            href="#capabilities"
+                            className="text-base font-semibold py-2"
+                            style={{ color: 'var(--text-secondary)', textDecoration: 'none' }}
+                            onClick={() => setMobileMenuOpen(false)}
+                        >
+                            Capabilities
+                        </a>
+                        <a
+                            href="#blog"
+                            className="text-base font-semibold py-2"
+                            style={{ color: 'var(--text-secondary)', textDecoration: 'none' }}
+                            onClick={() => setMobileMenuOpen(false)}
+                        >
+                            Blog
+                        </a>
+                        <a
+                            href="https://all-in.cc.cd"
+                            target="_blank"
+                            className="px-5 py-3 text-base font-semibold rounded-full text-center"
+                            style={{
+                                background: 'var(--accent)',
+                                color: 'white',
+                                textDecoration: 'none',
+                                boxShadow: '0 4px 14px rgba(217, 119, 6, 0.3)'
+                            }}
+                        >
+                            API 中转站
+                        </a>
+                    </div>
+                </div>
+            )}
         </nav>
     );
 }
