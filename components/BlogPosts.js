@@ -1,185 +1,224 @@
-const { motion } = window.Motion;
-
-// Article Icon
-function ArticleIcon({ className = "h-5 w-5" }) {
-    return (
-        <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" />
-        </svg>
-    );
-}
-
-// Calendar Icon
-function CalendarIcon({ className = "h-4 w-4" }) {
-    return (
-        <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-            <line x1="16" y1="2" x2="16" y2="6"/>
-            <line x1="8" y1="2" x2="8" y2="6"/>
-            <line x1="3" y1="10" x2="21" y2="10"/>
-        </svg>
-    );
-}
-
-// Tag Icon
-function TagIcon({ className = "h-4 w-4" }) {
-    return (
-        <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-            <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/>
-            <line x1="7" y1="7" x2="7.01" y2="7"/>
-        </svg>
-    );
-}
-
 function BlogPosts() {
     const posts = [
         {
-            title: '家庭服务器搭建指南（五）：监控与维护',
-            date: '2025-03-15',
-            category: '技术',
-            tags: ['服务器', '运维', 'Prometheus'],
-            url: 'posts/2025/03/home-server-part5.html',
-            excerpt: '完整的监控方案，让你的家庭服务器稳定运行'
+            title: '构建现代化的全栈应用',
+            date: '2026-04-27',
+            category: '技术分享',
+            tags: ['Full-Stack', 'Architecture', 'Best Practices'],
+            excerpt: '探讨如何使用最新的技术栈构建高性能、可扩展的全栈应用。从前端框架选择到后端架构设计，从数据库优化到部署策略，分享实战经验和踩坑心得。',
+            gradient: 'linear-gradient(135deg, #d97706 0%, #ea580c 100%)',
+            readTime: '8 min',
+            views: '1.2k'
         },
         {
-            title: '家庭服务器搭建指南（四）：数据备份',
-            date: '2025-03-12',
-            category: '技术',
-            tags: ['服务器', '备份', 'Restic'],
-            url: 'posts/2025/03/home-server-part4.html',
-            excerpt: '自动化备份策略，保护你的重要数据'
+            title: 'AI 时代的开发者工具链',
+            date: '2026-04-20',
+            category: 'AI 探索',
+            tags: ['AI', 'Developer Tools', 'Productivity'],
+            excerpt: '深入探讨如何利用 AI 工具提升开发效率。从代码生成到自动化测试，从智能调试到文档编写，AI 正在重塑开发者的工作流程。分享我的实践经验。',
+            gradient: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
+            readTime: '6 min',
+            views: '980'
         },
         {
-            title: '家庭服务器搭建指南（三）：服务部署',
-            date: '2025-03-10',
-            category: '技术',
-            tags: ['服务器', 'Docker', '自动化'],
-            url: 'posts/2025/03/home-server-part3.html',
-            excerpt: '使用 Docker Compose 部署常用服务'
-        },
-        {
-            title: 'AI 伦理：2025 年的思考',
-            date: '2025-03-08',
-            category: 'AI',
-            tags: ['AI', '伦理', '思考'],
-            url: 'posts/2025/03/ai-ethics-2025.html',
-            excerpt: '探讨 AI 发展中的伦理问题和未来方向'
-        },
-        {
-            title: '数字孪生技术入门',
-            date: '2025-03-05',
-            category: '技术',
-            tags: ['数字孪生', 'IoT', '仿真'],
-            url: 'posts/2025/03/digital-twins-technology.html',
-            excerpt: '了解数字孪生技术的原理和应用场景'
-        },
-        {
-            title: 'Serverless 架构实践',
-            date: '2024-12-20',
-            category: '架构',
-            tags: ['Serverless', 'AWS Lambda', '云原生'],
-            url: 'posts/2024/12/serverless-architecture.html',
-            excerpt: '从零开始构建 Serverless 应用'
-        },
-        {
-            title: 'React 性能优化实战',
-            date: '2024-04-15',
-            category: '前端',
-            tags: ['React', '性能优化', 'Web'],
-            url: 'posts/2024/04/react-performance-optimization.html',
-            excerpt: '深入理解 React 性能优化技巧'
-        },
-        {
-            title: 'Docker 容器化完全指南',
-            date: '2024-03-10',
-            category: 'DevOps',
-            tags: ['Docker', '容器化', 'DevOps'],
-            url: 'posts/2024/03/docker-containerization-guide.html',
-            excerpt: '从入门到精通 Docker 容器技术'
+            title: '微服务架构实践指南',
+            date: '2026-04-15',
+            category: '系统设计',
+            tags: ['Microservices', 'DevOps', 'Cloud Native'],
+            excerpt: '从零到一构建微服务系统的完整指南。涵盖服务拆分原则、API 设计规范、服务发现机制、负载均衡策略、监控告警体系等核心环节的最佳实践。',
+            gradient: 'linear-gradient(135deg, #ea580c 0%, #f59e0b 100%)',
+            readTime: '10 min',
+            views: '1.5k'
         }
     ];
 
     return (
-        <section id="blog" className="relative min-h-screen bg-black overflow-hidden py-24">
-            {/* Gradient Background */}
-            <div className="absolute inset-0 bg-gradient-to-b from-black via-gray-900 to-black"></div>
-
-            {/* Content */}
-            <div className="relative z-10 px-8 md:px-16 lg:px-20">
-                {/* Header */}
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6 }}
-                    viewport={{ once: true }}
-                    className="mb-16"
-                >
-                    <div className="text-sm font-body text-white/80 mb-6">// 博客文章</div>
-                    <h2 className="font-heading italic text-white text-6xl md:text-7xl lg:text-[6rem] leading-[0.9] tracking-[-3px]">
-                        技术<br />分享
+        <section id="blog" className="py-32 px-6" style={{ background: 'var(--bg)' }}>
+            <div className="max-w-7xl mx-auto">
+                {/* Section Header */}
+                <div className="mb-24 fade-in-up">
+                    <div className="text-xs font-bold tracking-widest mb-6" style={{ color: 'var(--text-tertiary)' }}>LATEST ARTICLES</div>
+                    <h2 className="text-6xl md:text-7xl font-black mb-8" style={{ color: 'var(--text)', letterSpacing: '-0.04em' }}>
+                        技术博客
                     </h2>
-                </motion.div>
-
-                {/* Posts Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {posts.map((post, index) => (
-                        <motion.a
-                            key={index}
-                            href={post.url}
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, delay: index * 0.1 }}
-                            viewport={{ once: true }}
-                            className="liquid-glass rounded-[1.25rem] p-6 min-h-[280px] flex flex-col hover:scale-[1.02] transition-transform duration-300"
-                        >
-                            {/* Category Badge */}
-                            <div className="flex items-center justify-between mb-4">
-                                <span className="liquid-glass rounded-full px-3 py-1 text-xs text-white/90 font-body">
-                                    {post.category}
-                                </span>
-                                <div className="flex items-center gap-1.5 text-white/70 text-xs">
-                                    <CalendarIcon />
-                                    <span>{post.date}</span>
-                                </div>
-                            </div>
-
-                            {/* Title */}
-                            <h3 className="font-heading italic text-white text-2xl tracking-[-1px] leading-tight mb-3">
-                                {post.title}
-                            </h3>
-
-                            {/* Excerpt */}
-                            <p className="text-sm text-white/80 font-body font-light leading-relaxed mb-4 flex-1">
-                                {post.excerpt}
-                            </p>
-
-                            {/* Tags */}
-                            <div className="flex flex-wrap gap-2">
-                                {post.tags.map((tag, i) => (
-                                    <span key={i} className="flex items-center gap-1 text-xs text-white/60">
-                                        <TagIcon className="h-3 w-3" />
-                                        {tag}
-                                    </span>
-                                ))}
-                            </div>
-                        </motion.a>
-                    ))}
+                    <p className="text-xl md:text-2xl max-w-3xl" style={{ color: 'var(--text-secondary)', lineHeight: '1.6' }}>
+                        记录技术探索的点点滴滴，分享实战经验与思考。
+                        <br />
+                        从代码到架构，从工具到方法论。
+                    </p>
                 </div>
 
-                {/* View All Button */}
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.8 }}
-                    viewport={{ once: true }}
-                    className="flex justify-center mt-12"
-                >
-                    <a href="#" className="liquid-glass-strong rounded-full px-6 py-3 text-sm font-medium text-white flex items-center gap-2 hover:scale-105 transition-transform">
-                        查看所有文章
-                        <ArticleIcon />
-                    </a>
-                </motion.div>
+                {/* Posts Grid */}
+                <div className="grid md:grid-cols-1 gap-8">
+                    {posts.map((post, index) => (
+                        <a
+                            key={index}
+                            href="#"
+                            className="glass-card group fade-in-up"
+                            style={{
+                                textDecoration: 'none',
+                                color: 'inherit',
+                                transition: 'all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                                animationDelay: `${index * 0.15 + 0.2}s`,
+                                display: 'grid',
+                                gridTemplateColumns: '1fr',
+                                overflow: 'hidden'
+                            }}
+                            onMouseEnter={(e) => {
+                                e.currentTarget.style.transform = 'translateY(-8px)';
+                                e.currentTarget.style.borderColor = 'var(--accent)';
+                                e.currentTarget.style.boxShadow = '0 20px 60px rgba(0, 0, 0, 0.6), 0 0 0 1px var(--accent-glow)';
+                            }}
+                            onMouseLeave={(e) => {
+                                e.currentTarget.style.transform = 'translateY(0)';
+                                e.currentTarget.style.borderColor = 'var(--border)';
+                                e.currentTarget.style.boxShadow = 'none';
+                            }}
+                        >
+                            <div className="flex flex-col md:flex-row gap-8 p-10">
+                                {/* Thumbnail */}
+                                <div
+                                    className="w-full md:w-80 h-64 rounded-2xl flex-shrink-0 relative overflow-hidden"
+                                    style={{
+                                        background: post.gradient,
+                                        transition: 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)'
+                                    }}
+                                >
+                                    <div className="absolute inset-0 flex items-center justify-center opacity-10">
+                                        <svg className="h-32 w-32" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/>
+                                            <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/>
+                                        </svg>
+                                    </div>
+                                    {/* Category badge */}
+                                    <div className="absolute top-4 left-4 px-4 py-2 rounded-full text-xs font-bold" style={{
+                                        background: 'rgba(0, 0, 0, 0.5)',
+                                        backdropFilter: 'blur(10px)',
+                                        color: 'white'
+                                    }}>
+                                        {post.category}
+                                    </div>
+                                </div>
+
+                                {/* Content */}
+                                <div className="flex-1 flex flex-col justify-between">
+                                    <div>
+                                        {/* Meta */}
+                                        <div className="flex items-center gap-4 mb-4 text-sm font-medium" style={{ color: 'var(--text-tertiary)' }}>
+                                            <span>{post.date}</span>
+                                            <span>·</span>
+                                            <span>{post.readTime}</span>
+                                            <span>·</span>
+                                            <span>{post.views} views</span>
+                                        </div>
+
+                                        {/* Title */}
+                                        <h3 className="text-4xl font-black mb-6 group-hover:gradient-text transition-all" style={{ color: 'var(--text)', letterSpacing: '-0.03em' }}>
+                                            {post.title}
+                                        </h3>
+
+                                        {/* Excerpt */}
+                                        <p className="text-lg leading-relaxed mb-6" style={{ color: 'var(--text-secondary)', lineHeight: '1.7' }}>
+                                            {post.excerpt}
+                                        </p>
+                                    </div>
+
+                                    {/* Tags and Arrow */}
+                                    <div className="flex items-center justify-between">
+                                        <div className="flex flex-wrap gap-2">
+                                            {post.tags.map((tag, tagIndex) => (
+                                                <span
+                                                    key={tagIndex}
+                                                    className="px-4 py-2 text-xs font-semibold rounded-full"
+                                                    style={{
+                                                        background: 'var(--bg-elevated)',
+                                                        border: '1px solid var(--border)',
+                                                        color: 'var(--text-secondary)'
+                                                    }}
+                                                >
+                                                    {tag}
+                                                </span>
+                                            ))}
+                                        </div>
+                                        <svg className="h-8 w-8 icon-arrow flex-shrink-0" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24" style={{ color: 'var(--text-tertiary)' }}>
+                                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    ))}
+                </div>
             </div>
+
+            {/* Footer */}
+            <footer
+                className="mt-32 pt-16 border-t fade-in-up"
+                style={{ borderColor: 'var(--border)', animationDelay: '0.8s' }}
+            >
+                <div className="max-w-7xl mx-auto">
+                    <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-12">
+                        <div>
+                            <div className="text-3xl font-black mb-3" style={{ color: 'var(--text)' }}>Moreyu</div>
+                            <div className="text-base" style={{ color: 'var(--text-secondary)' }}>
+                                Full-Stack Developer & AI Explorer
+                            </div>
+                        </div>
+                        <div className="flex items-center gap-8">
+                            <a
+                                href="https://github.com/moreyu"
+                                target="_blank"
+                                className="text-base font-semibold transition-all"
+                                style={{ color: 'var(--text-secondary)', textDecoration: 'none' }}
+                                onMouseEnter={(e) => {
+                                    e.target.style.color = 'var(--text)';
+                                    e.target.style.transform = 'translateY(-2px)';
+                                }}
+                                onMouseLeave={(e) => {
+                                    e.target.style.color = 'var(--text-secondary)';
+                                    e.target.style.transform = 'translateY(0)';
+                                }}
+                            >
+                                GitHub
+                            </a>
+                            <a
+                                href="https://twitter.com/moreyu"
+                                target="_blank"
+                                className="text-base font-semibold transition-all"
+                                style={{ color: 'var(--text-secondary)', textDecoration: 'none' }}
+                                onMouseEnter={(e) => {
+                                    e.target.style.color = 'var(--text)';
+                                    e.target.style.transform = 'translateY(-2px)';
+                                }}
+                                onMouseLeave={(e) => {
+                                    e.target.style.color = 'var(--text-secondary)';
+                                    e.target.style.transform = 'translateY(0)';
+                                }}
+                            >
+                                Twitter
+                            </a>
+                            <a
+                                href="mailto:hi@moreyu.me"
+                                className="text-base font-semibold transition-all"
+                                style={{ color: 'var(--text-secondary)', textDecoration: 'none' }}
+                                onMouseEnter={(e) => {
+                                    e.target.style.color = 'var(--text)';
+                                    e.target.style.transform = 'translateY(-2px)';
+                                }}
+                                onMouseLeave={(e) => {
+                                    e.target.style.color = 'var(--text-secondary)';
+                                    e.target.style.transform = 'translateY(0)';
+                                }}
+                            >
+                                Email
+                            </a>
+                        </div>
+                    </div>
+                    <div className="text-sm text-center md:text-left" style={{ color: 'var(--text-tertiary)' }}>
+                        © 2026 Moreyu. Built with React & Tailwind CSS.
+                    </div>
+                </div>
+            </footer>
         </section>
     );
 }

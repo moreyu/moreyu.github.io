@@ -1,42 +1,77 @@
-const { motion } = window.Motion;
-
-// ArrowUpRight Icon
-function ArrowUpRight({ className = "h-5 w-5" }) {
-    return (
-        <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
-            <path d="M7 17L17 7M7 7h10v10" />
-        </svg>
-    );
-}
-
 function Navbar() {
     return (
-        <nav className="fixed top-4 left-0 right-0 px-8 lg:px-16 z-50">
-            <div className="flex items-center justify-between">
+        <nav
+            className="fixed top-0 left-0 right-0 z-50 fade-in"
+            style={{
+                background: 'rgba(0, 0, 0, 0.8)',
+                backdropFilter: 'blur(20px)',
+                WebkitBackdropFilter: 'blur(20px)',
+                borderBottom: '1px solid var(--border)'
+            }}
+        >
+            <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
                 {/* Logo */}
-                <a href="/" className="liquid-glass w-12 h-12 rounded-full flex items-center justify-center hover:scale-110 transition-transform">
-                    <span className="font-heading italic text-white text-2xl">M</span>
+                <a
+                    href="#home"
+                    className="text-xl font-black tracking-tight"
+                    style={{ color: 'var(--text)', textDecoration: 'none' }}
+                >
+                    MOREYU
                 </a>
 
-                {/* Center Nav - Desktop Only */}
-                <div className="hidden lg:flex liquid-glass rounded-full px-1.5 py-1.5 items-center gap-1">
-                    <a href="#" className="px-3 py-2 text-sm font-medium text-white/90 font-body hover:text-white transition-colors">
-                        首页
+                {/* Nav Links */}
+                <div className="flex items-center gap-10">
+                    <a
+                        href="#home"
+                        className="text-sm font-semibold transition-all"
+                        style={{ color: 'var(--text-secondary)', textDecoration: 'none' }}
+                        onMouseEnter={(e) => e.target.style.color = 'var(--text)'}
+                        onMouseLeave={(e) => e.target.style.color = 'var(--text-secondary)'}
+                    >
+                        Home
                     </a>
-                    <a href="#capabilities" className="px-3 py-2 text-sm font-medium text-white/90 font-body hover:text-white transition-colors">
-                        技术领域
+                    <a
+                        href="#capabilities"
+                        className="text-sm font-semibold transition-all"
+                        style={{ color: 'var(--text-secondary)', textDecoration: 'none' }}
+                        onMouseEnter={(e) => e.target.style.color = 'var(--text)'}
+                        onMouseLeave={(e) => e.target.style.color = 'var(--text-secondary)'}
+                    >
+                        Capabilities
                     </a>
-                    <a href="#blog" className="px-3 py-2 text-sm font-medium text-white/90 font-body hover:text-white transition-colors">
-                        博客
+                    <a
+                        href="#blog"
+                        className="text-sm font-semibold transition-all"
+                        style={{ color: 'var(--text-secondary)', textDecoration: 'none' }}
+                        onMouseEnter={(e) => e.target.style.color = 'var(--text)'}
+                        onMouseLeave={(e) => e.target.style.color = 'var(--text-secondary)'}
+                    >
+                        Blog
                     </a>
-                    <a href="https://github.com/moreyu" target="_blank" className="bg-white text-black rounded-full px-4 py-2 text-sm font-medium whitespace-nowrap flex items-center gap-2 ml-2 hover:scale-105 transition-transform">
-                        GitHub
-                        <ArrowUpRight className="h-4 w-4" />
+                    <a
+                        href="https://github.com/moreyu"
+                        target="_blank"
+                        className="px-5 py-2.5 text-sm font-semibold rounded-full transition-all"
+                        style={{
+                            background: 'var(--accent)',
+                            color: 'white',
+                            textDecoration: 'none',
+                            boxShadow: '0 4px 14px rgba(59, 130, 246, 0.3)'
+                        }}
+                        onMouseEnter={(e) => {
+                            e.target.style.background = 'var(--accent-hover)';
+                            e.target.style.transform = 'translateY(-2px)';
+                            e.target.style.boxShadow = '0 6px 20px rgba(59, 130, 246, 0.4)';
+                        }}
+                        onMouseLeave={(e) => {
+                            e.target.style.background = 'var(--accent)';
+                            e.target.style.transform = 'translateY(0)';
+                            e.target.style.boxShadow = '0 4px 14px rgba(59, 130, 246, 0.3)';
+                        }}
+                    >
+                        Contact
                     </a>
                 </div>
-
-                {/* Right Spacer */}
-                <div className="w-12 h-12"></div>
             </div>
         </nav>
     );
