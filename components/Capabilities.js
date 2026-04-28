@@ -1,31 +1,31 @@
 function Capabilities() {
     const cards = [
         {
-            code: 'fullstack',
-            title: '全栈开发',
-            description: '从用户界面到服务器架构，掌握完整的技术栈。构建高性能、可扩展的现代 Web 应用。',
+            code: 'frontend',
+            title: 'Frontend',
+            description: '从用户界面到交互体验，构建现代化的 Web 应用。',
             skills: [
                 { name: 'React/Next.js', level: 95 },
-                { name: 'Python/FastAPI', level: 90 },
-                { name: 'Go/Gin', level: 85 },
-                { name: 'PostgreSQL', level: 88 }
+                { name: 'TypeScript', level: 90 },
+                { name: 'Tailwind CSS', level: 92 },
+                { name: 'Framer Motion', level: 85 }
             ]
         },
         {
-            code: 'devops',
-            title: '云原生 & DevOps',
-            description: '自动化一切可以自动化的。CI/CD、容器化、基础设施即代码，让部署变得简单。',
+            code: 'backend',
+            title: 'Backend & DevOps',
+            description: '服务器架构、容器化部署，让系统稳定高效运行。',
             skills: [
+                { name: 'Python/FastAPI', level: 90 },
+                { name: 'Go/Gin', level: 85 },
                 { name: 'Docker/K8s', level: 88 },
-                { name: 'GitHub Actions', level: 92 },
-                { name: 'Terraform', level: 80 },
-                { name: 'Monitoring', level: 85 }
+                { name: 'PostgreSQL', level: 88 }
             ]
         },
         {
             code: 'ai',
             title: 'AI 应用开发',
-            description: '将大语言模型的能力转化为实际产品。从 RAG 系统到 AI Agent，让 AI 真正落地。',
+            description: '将大语言模型转化为实际产品，让 AI 真正落地。',
             skills: [
                 { name: 'LangChain', level: 90 },
                 { name: 'Vector DB', level: 85 },
@@ -42,12 +42,10 @@ function Capabilities() {
                 <div className="mb-24 fade-in-up">
                     <div className="text-xs font-bold tracking-widest mb-6" style={{ color: 'var(--text-tertiary)' }}>WHAT I DO</div>
                     <h2 className="text-6xl md:text-7xl font-black mb-8" style={{ color: 'var(--text)', letterSpacing: '-0.04em' }}>
-                        核心能力
+                        技术栈
                     </h2>
                     <p className="text-xl md:text-2xl max-w-3xl" style={{ color: 'var(--text-secondary)', lineHeight: '1.6' }}>
                         多年技术积累，专注于构建高质量的软件产品。
-                        <br />
-                        从前端到后端，从开发到部署，全流程掌控。
                     </p>
                 </div>
 
