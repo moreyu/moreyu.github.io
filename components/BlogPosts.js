@@ -24,7 +24,7 @@ function BlogPosts() {
         {
             title: 'MUSIC / MOVIE / SERIES',
             icon: '🎵',
-            description: 'Coachella / 音乐 / 剧集 / 生活方式',
+            description: '音乐节 / 音乐 / 剧集 / 生活方式',
             gradient: 'linear-gradient(135deg, #d97706 0%, #f59e0b 100%)',
             articleCount: '即将更新'
         }
