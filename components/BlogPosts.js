@@ -37,7 +37,7 @@ function BlogPosts() {
                 <div className="mb-24 fade-in-up">
                     <div className="text-xs font-bold tracking-widest mb-6" style={{ color: '#94a3b8' }}>EXPLORE TOPICS</div>
                     <h2 className="text-6xl md:text-7xl font-black mb-8" style={{ color: '#94a3b8', letterSpacing: '-0.04em' }}>
-                        内容板块
+                        探索领域
                     </h2>
                     <p className="text-xl md:text-2xl max-w-3xl" style={{ color: '#cbd5e1', lineHeight: '1.6' }}>
                         技术折腾、支付研究、AI 探索、生活记录。
