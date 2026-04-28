@@ -17,7 +17,7 @@ function BlogPosts() {
         {
             title: 'AI & VIBE CODING',
             iconSvg: '<svg width="24" height="24" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style="overflow: visible;"><style>@keyframes caiPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.02); } } @keyframes caiCursor { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } } @keyframes caiSparkle { 0%, 100% { opacity: 0.3; transform: scale(0.8) rotate(0deg); } 50% { opacity: 1; transform: scale(1.1) rotate(15deg); } } @keyframes caiGlow { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.7; } } .cai-group { animation: caiPulse 3s ease-in-out infinite; transform-origin: 10px 11px; } .cai-cursor { animation: caiCursor 1s step-end infinite; } .cai-sparkle { animation: caiSparkle 2.5s ease-in-out infinite; transform-origin: 16px 4px; } .cai-glow { animation: caiGlow 2.5s ease-in-out infinite; }</style><g class="cai-group"><polyline points="7,5 3,10.5 7,16" stroke="#d97706" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/><polyline points="13,5 17,10.5 13,16" stroke="#d97706" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/><line x1="11.5" y1="5" x2="8.5" y2="16" stroke="#fbbf24" stroke-width="1.2" stroke-linecap="round"/><line class="cai-glow" x1="5" y1="10.5" x2="8" y2="10.5" stroke="#fbbf24" stroke-width="0.7" stroke-linecap="round" opacity="0.5"/><line class="cai-glow" x1="12" y1="10.5" x2="15" y2="10.5" stroke="#fbbf24" stroke-width="0.7" stroke-linecap="round" opacity="0.5"/><line class="cai-cursor" x1="10" y1="8" x2="10" y2="13" stroke="#f97316" stroke-width="0.8" stroke-linecap="round" opacity="0.7"/></g><g class="cai-sparkle"><path d="M16 2L16.4 3.2L17.6 3.6L16.4 4L16 5.2L15.6 4L14.4 3.6L15.6 3.2Z" stroke="#f97316" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M16 2L16.4 3.2L17.6 3.6L16.4 4L16 5.2L15.6 4L14.4 3.6L15.6 3.2Z" fill="#facc15" opacity="0.3"/></g></svg>',
-            description: 'AI 模型 / KIRO 反代 / 中转站运营 / 养虾心得',
+            description: 'AI 模型 / API 反代 / 中转站运营 / 养虾心得',
             gradient: 'linear-gradient(135deg, #ea580c 0%, #f59e0b 100%)',
             articleCount: '即将更新'
         },
@@ -35,11 +35,11 @@ function BlogPosts() {
             <div className="max-w-7xl mx-auto">
                 {/* Section Header */}
                 <div className="mb-24 fade-in-up">
-                    <div className="text-xs font-bold tracking-widest mb-6" style={{ color: 'var(--text-tertiary)' }}>EXPLORE TOPICS</div>
-                    <h2 className="text-6xl md:text-7xl font-black mb-8" style={{ color: 'var(--text)', letterSpacing: '-0.04em' }}>
+                    <div className="text-xs font-bold tracking-widest mb-6" style={{ color: '#94a3b8' }}>EXPLORE TOPICS</div>
+                    <h2 className="text-6xl md:text-7xl font-black mb-8" style={{ color: '#94a3b8', letterSpacing: '-0.04em' }}>
                         内容板块
                     </h2>
-                    <p className="text-xl md:text-2xl max-w-3xl" style={{ color: 'var(--text-secondary)', lineHeight: '1.6' }}>
+                    <p className="text-xl md:text-2xl max-w-3xl" style={{ color: '#cbd5e1', lineHeight: '1.6' }}>
                         技术折腾、支付研究、AI 探索、生活记录。
                     </p>
                 </div>
@@ -90,21 +90,21 @@ function BlogPosts() {
                                 ></div>
 
                                 {/* Title */}
-                                <h3 className="text-4xl font-black mb-4 group-hover:gradient-text transition-all" style={{ color: 'var(--text)', letterSpacing: '-0.03em' }}>
+                                <h3 className="text-4xl font-black mb-4 group-hover:gradient-text transition-all" style={{ color: '#f1f5f9', letterSpacing: '-0.03em' }}>
                                     {category.title}
                                 </h3>
 
                                 {/* Description */}
-                                <p className="text-lg leading-relaxed mb-6" style={{ color: 'var(--text-secondary)', lineHeight: '1.7' }}>
+                                <p className="text-lg leading-relaxed mb-6" style={{ color: '#94a3b8', lineHeight: '1.7' }}>
                                     {category.description}
                                 </p>
 
                                 {/* Article Count & Arrow */}
                                 <div className="flex items-center justify-between">
-                                    <span className="text-sm font-semibold" style={{ color: 'var(--text-tertiary)' }}>
+                                    <span className="text-sm font-semibold" style={{ color: '#64748b' }}>
                                         {category.articleCount}
                                     </span>
-                                    <svg className="h-8 w-8 icon-arrow" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24" style={{ color: 'var(--text-tertiary)' }}>
+                                    <svg className="h-8 w-8 icon-arrow" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24" style={{ color: '#64748b' }}>
                                         <path d="M5 12h14M12 5l7 7-7 7"/>
                                     </svg>
                                 </div>
