@@ -492,7 +492,7 @@
                             <h3>2. 软件安装</h3>
                             <div className="info-box">
                                 <p><strong>Plex安装（Docker方式）</strong></p>
-                                <pre dangerouslySetInnerHTML={{__html: `<code{'>'}docker run -d \
+                                <pre dangerouslySetInnerHTML={{__html: `<code>docker run -d \
   --name=plex \
   -e PUID=1000 \
   -e PGID=1000 \
@@ -501,12 +501,12 @@
   -v /path/to/config:/config \
   -v /path/to/media:/media \
   --restart unless-stopped \
-  plexinc/pms-docker</code{'>'}`}} />
+  plexinc/pms-docker</code>`}} />
                             </div>
 
                             <h3>3. 媒体库组织</h3>
                             <p>正确的文件命名和目录结构很重要：</p>
-                            <pre dangerouslySetInnerHTML={{__html: `<code{'>'}/media
+                            <pre dangerouslySetInnerHTML={{__html: `<code>/media
   /Movies
     /电影名称 (年份)
       电影名称 (年份).mkv
@@ -514,7 +514,7 @@
     /剧集名称
       /Season 01
         S01E01.mkv
-        S01E02.mkv</code{'>'}`}} />
+        S01E02.mkv</code>`}} />
                         </section>
 
                         <section id="automation">

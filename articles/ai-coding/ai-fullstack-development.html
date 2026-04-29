@@ -90,7 +90,7 @@
                         <p>
                             与AI讨论项目需求，明确功能范围。
                         </p>
-                        <pre dangerouslySetInnerHTML={{__html: `<code{'>'}你: "帮我规划一个任务管理应用"
+                        <pre dangerouslySetInnerHTML={{__html: `<code>你: "帮我规划一个任务管理应用"
 
 Claude:
 功能模块：
@@ -108,17 +108,17 @@ Claude:
 项目结构：
 - /client - React前端
 - /server - Node.js后端
-- /shared - 共享类型定义</code{'>'}`}} />
+- /shared - 共享类型定义</code>`}} />
 
                         <h3>第2步：初始化项目</h3>
-                        <pre dangerouslySetInnerHTML={{__html: `<code{'>'}你: "创建项目结构"
+                        <pre dangerouslySetInnerHTML={{__html: `<code>你: "创建项目结构"
 
 Claude执行：
 mkdir todo-app && cd todo-app
 npx create-react-app client --template typescript
 mkdir server && cd server && npm init -y
 npm install express mongoose jsonwebtoken bcrypt cors
-npm install -D typescript @types/node @types/express</code{'>'}`}} />
+npm install -D typescript @types/node @types/express</code>`}} />
 
                         <h2>前端开发（30分钟）</h2>
 
@@ -126,21 +126,21 @@ npm install -D typescript @types/node @types/express</code{'>'}`}} />
                         <p>
                             让AI生成React组件。
                         </p>
-                        <pre dangerouslySetInnerHTML={{__html: `<code{'>'}你: "创建登录组件，使用React Hooks和TypeScript"
+                        <pre dangerouslySetInnerHTML={{__html: `<code>你: "创建登录组件，使用React Hooks和TypeScript"
 
 Claude生成：
 - LoginForm.tsx（表单组件）
 - useAuth.ts（认证Hook）
 - api.ts（API客户端）
-- 包含表单验证、错误处理、loading状态</code{'>'}`}} />
+- 包含表单验证、错误处理、loading状态</code>`}} />
 
                         <h3>状态管理</h3>
-                        <pre dangerouslySetInnerHTML={{__html: `<code{'>'}你: "使用Context API管理全局状态"
+                        <pre dangerouslySetInnerHTML={{__html: `<code>你: "使用Context API管理全局状态"
 
 Claude实现：
 - AuthContext（用户状态）
 - TodoContext（任务状态）
-- 包含Provider和自定义Hooks</code{'>'}`}} />
+- 包含Provider和自定义Hooks</code>`}} />
 
                         <h3>UI组件库</h3>
                         <p>
@@ -156,7 +156,7 @@ Claude实现：
                         <h2>后端开发（40分钟）</h2>
 
                         <h3>API设计</h3>
-                        <pre dangerouslySetInnerHTML={{__html: `<code{'>'}你: "设计RESTful API"
+                        <pre dangerouslySetInnerHTML={{__html: `<code>你: "设计RESTful API"
 
 Claude生成：
 POST   /api/auth/register - 注册
@@ -164,16 +164,16 @@ POST   /api/auth/login - 登录
 GET    /api/todos - 获取任务列表
 POST   /api/todos - 创建任务
 PUT    /api/todos/:id - 更新任务
-DELETE /api/todos/:id - 删除任务</code{'>'}`}} />
+DELETE /api/todos/:id - 删除任务</code>`}} />
 
                         <h3>实现认证</h3>
-                        <pre dangerouslySetInnerHTML={{__html: `<code{'>'}你: "实现JWT认证中间件"
+                        <pre dangerouslySetInnerHTML={{__html: `<code>你: "实现JWT认证中间件"
 
 Claude生成：
 - auth.middleware.ts（验证token）
 - auth.controller.ts（注册/登录逻辑）
 - 密码加密（bcrypt）
-- token生成和验证</code{'>'}`}} />
+- token生成和验证</code>`}} />
 
                         <h3>数据验证</h3>
                         <p>
@@ -189,7 +189,7 @@ Claude生成：
                         <h2>数据库设计（20分钟）</h2>
 
                         <h3>Schema设计</h3>
-                        <pre dangerouslySetInnerHTML={{__html: `<code{'>'}你: "设计MongoDB Schema"
+                        <pre dangerouslySetInnerHTML={{__html: `<code>你: "设计MongoDB Schema"
 
 Claude生成：
 User Schema:
@@ -204,7 +204,7 @@ Todo Schema:
 - completed (default: false)
 - userId (ref: User)
 - tags []
-- createdAt, updatedAt</code{'>'}`}} />
+- createdAt, updatedAt</code>`}} />
 
                         <h3>数据关系</h3>
                         <ul>
@@ -219,13 +219,13 @@ Todo Schema:
                         <p>
                             连接前端和后端。
                         </p>
-                        <pre dangerouslySetInnerHTML={{__html: `<code{'>'}你: "配置CORS和API代理"
+                        <pre dangerouslySetInnerHTML={{__html: `<code>你: "配置CORS和API代理"
 
 Claude配置：
 - 后端CORS设置
 - 前端proxy配置
 - 环境变量管理
-- 错误处理统一</code{'>'}`}} />
+- 错误处理统一</code>`}} />
 
                         <h3>错误处理</h3>
                         <ul>
@@ -238,22 +238,22 @@ Claude配置：
                         <h2>部署上线（10分钟）</h2>
 
                         <h3>Docker化</h3>
-                        <pre dangerouslySetInnerHTML={{__html: `<code{'>'}你: "创建Docker配置"
+                        <pre dangerouslySetInnerHTML={{__html: `<code>你: "创建Docker配置"
 
 Claude生成：
 - Dockerfile（前端、后端）
 - docker-compose.yml
 - .dockerignore
-- 一键启动命令</code{'>'}`}} />
+- 一键启动命令</code>`}} />
 
                         <h3>部署到云平台</h3>
-                        <pre dangerouslySetInnerHTML={{__html: `<code{'>'}你: "部署到Vercel和Railway"
+                        <pre dangerouslySetInnerHTML={{__html: `<code>你: "部署到Vercel和Railway"
 
 Claude执行：
 - 前端部署到Vercel
 - 后端部署到Railway
 - MongoDB Atlas配置
-- 环境变量设置</code{'>'}`}} />
+- 环境变量设置</code>`}} />
 
                         <h2>成果总结</h2>
                         <p>
