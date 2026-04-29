@@ -111,6 +111,16 @@
 
     // Flip a character with rolling animation
     function flipCharacter(charDiv, targetChar, delay = 0) {
+        // Hide empty slots
+        if (targetChar === ' ') {
+            charDiv.style.opacity = '0';
+            charDiv.style.width = '4px';
+            return;
+        } else {
+            charDiv.style.opacity = '1';
+            charDiv.style.width = '32px';
+        }
+
         setTimeout(() => {
             const topContent = charDiv.querySelector('.solari-flap-top .solari-content');
             const bottomContent = charDiv.querySelector('.solari-flap-bottom .solari-content');
@@ -395,14 +405,14 @@
 
     // Optimize navigation spacing and add glass effect
     function optimizeNavigation() {
-        // Add glass effect to nav
+        // Add strong glass effect to nav
         const nav = document.querySelector('nav');
         if (nav) {
-            nav.style.backdropFilter = 'blur(20px) saturate(180%)';
-            nav.style.webkitBackdropFilter = 'blur(20px) saturate(180%)';
-            nav.style.background = 'rgba(10, 10, 10, 0.7)';
-            nav.style.borderBottom = '1px solid rgba(255, 255, 255, 0.08)';
-            nav.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.3)';
+            nav.style.backdropFilter = 'blur(40px) saturate(200%)';
+            nav.style.webkitBackdropFilter = 'blur(40px) saturate(200%)';
+            nav.style.background = 'rgba(15, 15, 15, 0.5)';
+            nav.style.borderBottom = '1px solid rgba(255, 255, 255, 0.12)';
+            nav.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05)';
         }
 
         const style = document.createElement('style');
@@ -432,6 +442,12 @@
             #solari-display {
                 order: -1;
                 margin-right: auto;
+                transition: all 0.3s ease;
+            }
+
+            /* Smooth transitions for character slots */
+            .solari-char {
+                transition: opacity 0.3s ease, width 0.3s ease;
             }
 
             @media (max-width: 768px) {
