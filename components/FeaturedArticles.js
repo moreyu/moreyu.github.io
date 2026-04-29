@@ -37,7 +37,7 @@ function FeaturedArticles() {
             title: '加密货币打新完全指南',
             description: '空投猎人必备技能',
             readTime: '22分钟',
-            link: 'articles/crypto-pay/airdrop-guide.html',
+            link: 'articles/crypto-pay/crypto-ido-complete-guide.html',
             gradient: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)'
         },
         {
