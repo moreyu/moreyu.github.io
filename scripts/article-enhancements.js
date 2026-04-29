@@ -2,7 +2,7 @@
 (function() {
     'use strict';
 
-    // Create Solari split-flap display (分瓣显示器)
+    // Create Solari split-flap display (like homepage MOREYU)
     function createSolariDisplay() {
         const container = document.createElement('div');
         container.id = 'solari-display';
@@ -20,84 +20,119 @@
         // Create character slots (max 13 chars for "ALMOST DONE")
         const maxChars = 13;
         for (let i = 0; i < maxChars; i++) {
-            const slot = document.createElement('div');
-            slot.className = 'solari-slot';
-            slot.style.cssText = `
+            const charDiv = document.createElement('div');
+            charDiv.className = 'solari-char';
+            charDiv.style.cssText = `
+                position: relative;
                 width: 12px;
                 height: 28px;
-                position: relative;
                 overflow: hidden;
-                background: linear-gradient(180deg, #1a1a1a 0%, #0a0a0a 100%);
-                border-radius: 2px;
-                box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5);
             `;
 
-            // Create flaps container
-            const flapsContainer = document.createElement('div');
-            flapsContainer.className = 'flaps-container';
-            flapsContainer.style.cssText = `
+            const topFlap = document.createElement('div');
+            topFlap.className = 'solari-flap-top';
+            topFlap.style.cssText = `
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 50%;
+                background: linear-gradient(180deg, #2a2a2a 0%, #1a1a1a 100%);
+                border-bottom: 1px solid rgba(0, 0, 0, 0.8);
+                overflow: hidden;
+                transform-origin: bottom;
+                border-radius: 2px 2px 0 0;
+            `;
+
+            const topContent = document.createElement('div');
+            topContent.className = 'solari-content';
+            topContent.style.cssText = `
                 position: absolute;
                 width: 100%;
-                height: 100%;
+                height: 200%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-family: 'JetBrains Mono', monospace;
+                font-size: 16px;
+                font-weight: 700;
+                color: #667eea;
+                text-shadow: 0 0 8px rgba(102, 126, 234, 0.6);
+            `;
+            topContent.textContent = ' ';
+            topFlap.appendChild(topContent);
+
+            const bottomFlap = document.createElement('div');
+            bottomFlap.className = 'solari-flap-bottom';
+            bottomFlap.style.cssText = `
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                height: 50%;
+                background: linear-gradient(180deg, #1a1a1a 0%, #0a0a0a 100%);
+                overflow: hidden;
+                border-radius: 0 0 2px 2px;
             `;
 
-            // Create multiple flaps (瓣片)
-            const flapCount = 8;
-            for (let j = 0; j < flapCount; j++) {
-                const flap = document.createElement('div');
-                flap.className = 'flap';
-                flap.style.cssText = `
-                    position: absolute;
-                    width: 100%;
-                    height: ${100 / flapCount}%;
-                    top: ${(j * 100) / flapCount}%;
-                    background: #2a2a2a;
-                    border-bottom: 1px solid rgba(0, 0, 0, 0.8);
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    font-family: 'JetBrains Mono', monospace;
-                    font-size: 16px;
-                    font-weight: 700;
-                    color: #667eea;
-                    text-shadow: 0 0 8px rgba(102, 126, 234, 0.6);
-                    transform-origin: top;
-                    transition: transform 0.15s ease-out;
-                `;
-                flap.dataset.flapIndex = j;
-                flapsContainer.appendChild(flap);
-            }
+            const bottomContent = document.createElement('div');
+            bottomContent.className = 'solari-content';
+            bottomContent.style.cssText = `
+                position: absolute;
+                width: 100%;
+                height: 200%;
+                top: -100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-family: 'JetBrains Mono', monospace;
+                font-size: 16px;
+                font-weight: 700;
+                color: #667eea;
+                text-shadow: 0 0 8px rgba(102, 126, 234, 0.6);
+            `;
+            bottomContent.textContent = ' ';
+            bottomFlap.appendChild(bottomContent);
 
-            slot.appendChild(flapsContainer);
-            container.appendChild(slot);
+            charDiv.appendChild(topFlap);
+            charDiv.appendChild(bottomFlap);
+            container.appendChild(charDiv);
         }
 
         return container;
     }
 
-    // Flip character with split-flap animation
-    function flipCharacter(slot, newChar, delay = 0) {
+    // Random letter for animation
+    function randomLetter() {
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ';
+        return chars[Math.floor(Math.random() * chars.length)];
+    }
+
+    // Flip a character with rolling animation
+    function flipCharacter(charDiv, targetChar, delay = 0) {
         setTimeout(() => {
-            const flaps = slot.querySelectorAll('.flap');
+            const topContent = charDiv.querySelector('.solari-flap-top .solari-content');
+            const bottomContent = charDiv.querySelector('.solari-flap-bottom .solari-content');
 
-            // Animate flaps sequentially from top to bottom
-            flaps.forEach((flap, index) => {
-                setTimeout(() => {
-                    // Flip down animation
-                    flap.style.transform = 'rotateX(-90deg)';
-                    flap.style.opacity = '0';
+            let iterations = 0;
+            const maxIterations = Math.floor(Math.random() * 5) + 8; // 8-12 次随机翻滚
 
-                    setTimeout(() => {
-                        flap.textContent = newChar;
-                        flap.style.transform = 'rotateX(0deg)';
-                        flap.style.opacity = '1';
-                    }, 75);
-                }, index * 20);
-            });
+            const interval = setInterval(() => {
+                if (iterations < maxIterations) {
+                    const randomChar = randomLetter();
+                    topContent.textContent = randomChar;
+                    bottomContent.textContent = randomChar;
+                    iterations++;
+                } else {
+                    topContent.textContent = targetChar;
+                    bottomContent.textContent = targetChar;
+                    clearInterval(interval);
+                }
+            }, 80);
         }, delay);
     }
 
-    // Update status text with split-flap animation
+    // Update status text with rolling animation (triggered by scroll progress)
     let currentStatus = '';
     function updateStatus(scrollPercentage) {
         const container = document.getElementById('solari-display');
@@ -118,13 +153,15 @@
             status = 'COMPLETED ✓  ';
         }
 
+        // Only animate when status actually changes
         if (status === currentStatus) return;
         currentStatus = status;
 
-        const slots = container.querySelectorAll('.solari-slot');
-        slots.forEach((slot, i) => {
-            const char = status[i] || ' ';
-            flipCharacter(slot, char, i * 50);
+        const chars = container.querySelectorAll('.solari-char');
+        chars.forEach((charDiv, i) => {
+            const targetChar = status[i] || ' ';
+            // Stagger the animation for each character
+            flipCharacter(charDiv, targetChar, i * 50);
         });
     }
 
@@ -253,7 +290,7 @@
     // Code block enhancements
     function enhanceCodeBlocks() {
         const codeBlocks = document.querySelectorAll('pre code');
-        codeBlocks.forEach((block, index) => {
+        codeBlocks.forEach((block) => {
             const pre = block.parentElement;
             pre.style.position = 'relative';
 
