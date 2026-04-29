@@ -60,26 +60,37 @@ function SolariLogoArticles() {
         startAnimation();
     };
 
-    return (
-        <a
-            href="index.html"
-            className="solari-board"
-            style={{ textDecoration: 'none' }}
-            onMouseEnter={handleHover}
-        >
-            <div className="solari-display">
-                {letters.map((char, i) => (
-                    <div key={i} className={`solari-char ${flipping.includes(i) ? 'flipping' : ''}`}>
-                        <div className="solari-flap solari-flap-top">
-                            <div className="solari-flap-content">{char}</div>
-                        </div>
-                        <div className="solari-flap solari-flap-bottom">
-                            <div className="solari-flap-content">{char}</div>
-                        </div>
-                    </div>
-                ))}
-            </div>
-        </a>
+    return React.createElement(
+        'a',
+        {
+            href: 'index.html',
+            className: 'solari-board',
+            style: { textDecoration: 'none' },
+            onMouseEnter: handleHover
+        },
+        React.createElement(
+            'div',
+            { className: 'solari-display' },
+            letters.map((char, i) =>
+                React.createElement(
+                    'div',
+                    {
+                        key: i,
+                        className: `solari-char ${flipping.includes(i) ? 'flipping' : ''}`
+                    },
+                    React.createElement(
+                        'div',
+                        { className: 'solari-flap solari-flap-top' },
+                        React.createElement('div', { className: 'solari-flap-content' }, char)
+                    ),
+                    React.createElement(
+                        'div',
+                        { className: 'solari-flap solari-flap-bottom' },
+                        React.createElement('div', { className: 'solari-flap-content' }, char)
+                    )
+                )
+            )
+        )
     );
 }
 
