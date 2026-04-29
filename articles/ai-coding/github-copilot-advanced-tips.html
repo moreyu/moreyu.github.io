@@ -455,10 +455,10 @@
                                 <p >最基本的功能，Copilot会根据上下文自动建议代码。</p>
                                 
                                 <div>
-                                    <pre>// 输入函数名和注释，Copilot自动生成实现
+                                    <pre dangerouslySetInnerHTML={{__html: `// 输入函数名和注释，Copilot自动生成实现
 function calculateTax(income, rate) {
     // Copilot会建议：return income * rate;
-}</pre>
+}`}} />
                                 </div>
 
                                 <div>
@@ -471,11 +471,11 @@ function calculateTax(income, rate) {
                                 <p >写注释描述需求，Copilot生成对应代码。</p>
                                 
                                 <div>
-                                    <pre>// 创建一个函数，接收数组，返回去重后的数组
+                                    <pre dangerouslySetInnerHTML={{__html: `// 创建一个函数，接收数组，返回去重后的数组
 // Copilot会生成：
 function removeDuplicates(arr) {
     return [...new Set(arr)];
-}</pre>
+}`}} />
                                 </div>
                             </div>
 
@@ -484,14 +484,14 @@ function removeDuplicates(arr) {
                                 <p >提供示例，Copilot会理解模式并生成类似代码。</p>
                                 
                                 <div>
-                                    <pre>// 示例1
+                                    <pre dangerouslySetInnerHTML={{__html: `// 示例1
 const user1 = { name: 'Alice', age: 25 };
 
 // 示例2
 const user2 = { name: 'Bob', age: 30 };
 
 // Copilot会建议：
-const user3 = { name: 'Charlie', age: 35 };</pre>
+const user3 = { name: 'Charlie', age: 35 };`}} />
                                 </div>
                             </div>
                         </section>
@@ -508,9 +508,9 @@ const user3 = { name: 'Charlie', age: 35 };</pre>
                                     <div>
                                         <p >❌ 差的上下文</p>
                                         <div>
-                                            <pre>function process(data) {
+                                            <pre dangerouslySetInnerHTML={{__html: `function process(data) {
     // 处理数据
-}</pre>
+}`}} />
                                         </div>
                                         <p >Copilot不知道data是什么，建议会很泛泛</p>
                                     </div>
@@ -518,7 +518,7 @@ const user3 = { name: 'Charlie', age: 35 };</pre>
                                     <div>
                                         <p >✅ 好的上下文</p>
                                         <div>
-                                            <pre>interface User {
+                                            <pre dangerouslySetInnerHTML={{__html: `interface User {
     id: number;
     name: string;
     email: string;
@@ -527,7 +527,7 @@ const user3 = { name: 'Charlie', age: 35 };</pre>
 // 验证用户邮箱格式
 function validateUserEmail(user: User) {
     // Copilot会生成准确的验证逻辑
-}</pre>
+}`}} />
                                         </div>
                                         <p >提供类型定义，Copilot理解数据结构</p>
                                     </div>

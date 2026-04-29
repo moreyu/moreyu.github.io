@@ -835,14 +835,14 @@ description: 部署到生产环境
                                 <h4 >Hooks钩子</h4>
                                 <p >在特定事件触发时自动执行操作：</p>
                                 <div>
-                                    <pre># .claude/settings.json
+                                    <pre dangerouslySetInnerHTML={{__html: `# .claude/settings.json
 {
   "hooks": {
     "beforeEdit": "npm run lint",
     "afterEdit": "npm run format",
     "beforeCommit": "npm test"
   }
-}</pre>
+}`}} />
                                 </div>
                             </div>
                         </section>
@@ -1152,13 +1152,13 @@ refactor.md</pre>
                                 <div>
                                     <h4 >🔧 配置优化</h4>
                                     <div>
-                                        <pre>{
+                                        <pre dangerouslySetInnerHTML={{__html: `{
   "autoSave": true,
   "autoFormat": true,
   "autoTest": false,
   "model": "opus",
   "temperature": 0.7
-}</pre>
+}`}} />
                                     </div>
                                 </div>
                             </div>
