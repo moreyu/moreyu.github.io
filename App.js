@@ -1,6 +1,6 @@
 console.log('App.js loading...');
 
-const { Navbar, Hero, Capabilities, FeaturedArticles, BlogPosts, ParticleSystem, Interactions } = window;
+const { Navbar, Hero, Capabilities, FeaturedArticles, BlogPosts, Footer, ParticleSystem, Interactions } = window;
 
 function App() {
     React.useEffect(() => {
@@ -24,6 +24,7 @@ function App() {
             <Capabilities />
             <BlogPosts />
             <FeaturedArticles />
+            <Footer />
         </div>
     );
 }
