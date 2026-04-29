@@ -2,24 +2,19 @@
 (function() {
     'use strict';
 
-    // Solari flip display for status
+    // Create Solari split-flap display (分瓣显示器)
     function createSolariDisplay() {
         const container = document.createElement('div');
         container.id = 'solari-display';
         container.style.cssText = `
-            position: fixed;
-            top: 100px;
-            left: 20px;
-            z-index: 999;
-            background: rgba(10, 10, 10, 0.95);
-            border: 2px solid rgba(102, 126, 234, 0.3);
-            border-radius: 12px;
-            padding: 16px 24px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(10px);
             display: flex;
-            gap: 4px;
+            gap: 3px;
             align-items: center;
+            padding: 8px 12px;
+            background: rgba(20, 20, 20, 0.95);
+            border-radius: 8px;
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
         `;
 
         // Create character slots (max 13 chars for "ALMOST DONE")
@@ -28,92 +23,82 @@
             const slot = document.createElement('div');
             slot.className = 'solari-slot';
             slot.style.cssText = `
-                width: 14px;
-                height: 32px;
+                width: 12px;
+                height: 28px;
                 position: relative;
                 overflow: hidden;
-                perspective: 200px;
+                background: linear-gradient(180deg, #1a1a1a 0%, #0a0a0a 100%);
+                border-radius: 2px;
+                box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5);
             `;
 
-            const flipper = document.createElement('div');
-            flipper.className = 'solari-flipper';
-            flipper.style.cssText = `
+            // Create flaps container
+            const flapsContainer = document.createElement('div');
+            flapsContainer.className = 'flaps-container';
+            flapsContainer.style.cssText = `
                 position: absolute;
                 width: 100%;
                 height: 100%;
-                transition: transform 0.6s cubic-bezier(0.4, 0.0, 0.2, 1);
-                transform-style: preserve-3d;
             `;
 
-            const front = document.createElement('div');
-            front.className = 'solari-front';
-            front.style.cssText = `
-                position: absolute;
-                width: 100%;
-                height: 100%;
-                backface-visibility: hidden;
-                font-family: 'JetBrains Mono', monospace;
-                font-size: 18px;
-                font-weight: 700;
-                color: #667eea;
-                text-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            `;
-            front.textContent = ' ';
+            // Create multiple flaps (瓣片)
+            const flapCount = 8;
+            for (let j = 0; j < flapCount; j++) {
+                const flap = document.createElement('div');
+                flap.className = 'flap';
+                flap.style.cssText = `
+                    position: absolute;
+                    width: 100%;
+                    height: ${100 / flapCount}%;
+                    top: ${(j * 100) / flapCount}%;
+                    background: #2a2a2a;
+                    border-bottom: 1px solid rgba(0, 0, 0, 0.8);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-family: 'JetBrains Mono', monospace;
+                    font-size: 16px;
+                    font-weight: 700;
+                    color: #667eea;
+                    text-shadow: 0 0 8px rgba(102, 126, 234, 0.6);
+                    transform-origin: top;
+                    transition: transform 0.15s ease-out;
+                `;
+                flap.dataset.flapIndex = j;
+                flapsContainer.appendChild(flap);
+            }
 
-            const back = document.createElement('div');
-            back.className = 'solari-back';
-            back.style.cssText = `
-                position: absolute;
-                width: 100%;
-                height: 100%;
-                backface-visibility: hidden;
-                transform: rotateX(180deg);
-                font-family: 'JetBrains Mono', monospace;
-                font-size: 18px;
-                font-weight: 700;
-                color: #667eea;
-                text-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            `;
-            back.textContent = ' ';
-
-            flipper.appendChild(front);
-            flipper.appendChild(back);
-            slot.appendChild(flipper);
+            slot.appendChild(flapsContainer);
             container.appendChild(slot);
         }
 
-        document.body.appendChild(container);
         return container;
     }
 
-    // Flip a character slot
-    function flipCharacter(slot, newChar) {
-        const flipper = slot.querySelector('.solari-flipper');
-        const front = slot.querySelector('.solari-front');
-        const back = slot.querySelector('.solari-back');
-
-        if (front.textContent === newChar) return;
-
-        back.textContent = newChar;
-        flipper.style.transform = 'rotateX(180deg)';
-
+    // Flip character with split-flap animation
+    function flipCharacter(slot, newChar, delay = 0) {
         setTimeout(() => {
-            front.textContent = newChar;
-            flipper.style.transform = 'rotateX(0deg)';
-            flipper.style.transition = 'none';
-            setTimeout(() => {
-                flipper.style.transition = 'transform 0.6s cubic-bezier(0.4, 0.0, 0.2, 1)';
-            }, 50);
-        }, 300);
+            const flaps = slot.querySelectorAll('.flap');
+
+            // Animate flaps sequentially from top to bottom
+            flaps.forEach((flap, index) => {
+                setTimeout(() => {
+                    // Flip down animation
+                    flap.style.transform = 'rotateX(-90deg)';
+                    flap.style.opacity = '0';
+
+                    setTimeout(() => {
+                        flap.textContent = newChar;
+                        flap.style.transform = 'rotateX(0deg)';
+                        flap.style.opacity = '1';
+                    }, 75);
+                }, index * 20);
+            });
+        }, delay);
     }
 
-    // Update status text with flip animation
+    // Update status text with split-flap animation
+    let currentStatus = '';
     function updateStatus(scrollPercentage) {
         const container = document.getElementById('solari-display');
         if (!container) return;
@@ -133,12 +118,27 @@
             status = 'COMPLETED ✓  ';
         }
 
+        if (status === currentStatus) return;
+        currentStatus = status;
+
         const slots = container.querySelectorAll('.solari-slot');
-        for (let i = 0; i < slots.length; i++) {
+        slots.forEach((slot, i) => {
             const char = status[i] || ' ';
-            setTimeout(() => {
-                flipCharacter(slots[i], char);
-            }, i * 50);
+            flipCharacter(slot, char, i * 50);
+        });
+    }
+
+    // Add Solari display to navigation
+    function addSolariToNav() {
+        const nav = document.querySelector('nav > div');
+        if (!nav) return;
+
+        const solariDisplay = createSolariDisplay();
+
+        // Insert after logo
+        const logoContainer = nav.querySelector('#logo-container');
+        if (logoContainer) {
+            logoContainer.parentNode.insertBefore(solariDisplay, logoContainer.nextSibling);
         }
     }
 
@@ -173,11 +173,133 @@
         bar.style.width = Math.min(100, Math.max(0, scrollPercentage)) + '%';
     }
 
+    // Floating reading time indicator
+    function createReadingTime() {
+        const article = document.querySelector('.article-content');
+        if (!article) return;
+
+        const text = article.textContent;
+        const wordCount = text.length;
+        const readingTime = Math.ceil(wordCount / 400); // 中文阅读速度约400字/分钟
+
+        const indicator = document.createElement('div');
+        indicator.id = 'reading-time';
+        indicator.style.cssText = `
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 12px 20px;
+            background: rgba(102, 126, 234, 0.1);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            color: #667eea;
+            z-index: 998;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+        `;
+        indicator.innerHTML = `📖 ${readingTime} 分钟阅读`;
+        document.body.appendChild(indicator);
+
+        // Show after a delay
+        setTimeout(() => {
+            indicator.style.opacity = '1';
+            indicator.style.transform = 'translateY(0)';
+        }, 1000);
+
+        // Hide when scrolling
+        let scrollTimeout;
+        window.addEventListener('scroll', () => {
+            indicator.style.opacity = '0.3';
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() => {
+                indicator.style.opacity = '1';
+            }, 500);
+        });
+    }
+
+    // Animated section markers
+    function addSectionMarkers() {
+        const headings = document.querySelectorAll('.article-content h2');
+        headings.forEach((heading, index) => {
+            const marker = document.createElement('span');
+            marker.style.cssText = `
+                display: inline-block;
+                width: 6px;
+                height: 6px;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                border-radius: 50%;
+                margin-right: 12px;
+                box-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
+                animation: pulse 2s ease-in-out infinite;
+                animation-delay: ${index * 0.2}s;
+            `;
+            heading.insertBefore(marker, heading.firstChild);
+        });
+
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes pulse {
+                0%, 100% { transform: scale(1); opacity: 1; }
+                50% { transform: scale(1.3); opacity: 0.7; }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+
+    // Code block enhancements
+    function enhanceCodeBlocks() {
+        const codeBlocks = document.querySelectorAll('pre code');
+        codeBlocks.forEach((block, index) => {
+            const pre = block.parentElement;
+            pre.style.position = 'relative';
+
+            // Add copy button
+            const copyBtn = document.createElement('button');
+            copyBtn.textContent = '📋 复制';
+            copyBtn.style.cssText = `
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                padding: 6px 12px;
+                background: rgba(102, 126, 234, 0.2);
+                border: 1px solid rgba(102, 126, 234, 0.3);
+                border-radius: 6px;
+                color: #667eea;
+                font-size: 12px;
+                cursor: pointer;
+                transition: all 0.2s ease;
+                font-family: 'JetBrains Mono', monospace;
+            `;
+            copyBtn.onmouseover = () => {
+                copyBtn.style.background = 'rgba(102, 126, 234, 0.3)';
+            };
+            copyBtn.onmouseout = () => {
+                copyBtn.style.background = 'rgba(102, 126, 234, 0.2)';
+            };
+            copyBtn.onclick = () => {
+                navigator.clipboard.writeText(block.textContent);
+                copyBtn.textContent = '✓ 已复制';
+                setTimeout(() => {
+                    copyBtn.textContent = '📋 复制';
+                }, 2000);
+            };
+            pre.appendChild(copyBtn);
+        });
+    }
+
     // Optimize navigation spacing
     function optimizeNavigation() {
         const style = document.createElement('style');
         style.textContent = `
             /* Better button spacing */
+            nav > div {
+                gap: 1.5rem !important;
+            }
+
             nav > div > div:last-child {
                 gap: 1.5rem !important;
             }
@@ -185,6 +307,7 @@
             @media (max-width: 768px) {
                 nav > div {
                     padding: 0.75rem 1rem !important;
+                    gap: 1rem !important;
                 }
                 nav a {
                     font-size: 0.875rem !important;
@@ -193,11 +316,13 @@
                     gap: 1rem !important;
                 }
                 #solari-display {
-                    top: 80px !important;
-                    left: 16px !important;
-                    padding: 12px 18px !important;
-                    transform: scale(0.85);
-                    transform-origin: top left;
+                    transform: scale(0.8);
+                }
+                #reading-time {
+                    bottom: 20px !important;
+                    right: 20px !important;
+                    font-size: 11px !important;
+                    padding: 8px 14px !important;
                 }
             }
         `;
@@ -245,47 +370,53 @@
             return;
         }
 
-        createSolariDisplay();
-        createScrollProgress();
-        optimizeNavigation();
-        addContentAnimations();
+        // Wait a bit for React to render
+        setTimeout(() => {
+            addSolariToNav();
+            createScrollProgress();
+            createReadingTime();
+            addSectionMarkers();
+            enhanceCodeBlocks();
+            optimizeNavigation();
+            addContentAnimations();
 
-        let lastStatus = '';
-        let ticking = false;
+            let lastStatus = '';
+            let ticking = false;
 
-        // Update on scroll
-        window.addEventListener('scroll', () => {
-            if (!ticking) {
-                window.requestAnimationFrame(() => {
-                    const windowHeight = window.innerHeight;
-                    const documentHeight = document.documentElement.scrollHeight;
-                    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-                    const scrollPercentage = (scrollTop / (documentHeight - windowHeight)) * 100;
+            // Update on scroll
+            window.addEventListener('scroll', () => {
+                if (!ticking) {
+                    window.requestAnimationFrame(() => {
+                        const windowHeight = window.innerHeight;
+                        const documentHeight = document.documentElement.scrollHeight;
+                        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                        const scrollPercentage = (scrollTop / (documentHeight - windowHeight)) * 100;
 
-                    // Only update status if it changed
-                    let newStatus = '';
-                    if (scrollPercentage < 5) newStatus = 'START';
-                    else if (scrollPercentage < 25) newStatus = 'READING...';
-                    else if (scrollPercentage < 50) newStatus = 'HALFWAY';
-                    else if (scrollPercentage < 75) newStatus = 'KEEP GOING';
-                    else if (scrollPercentage < 95) newStatus = 'ALMOST DONE';
-                    else newStatus = 'COMPLETED ✓';
+                        // Only update status if it changed
+                        let newStatus = '';
+                        if (scrollPercentage < 5) newStatus = 'START';
+                        else if (scrollPercentage < 25) newStatus = 'READING...';
+                        else if (scrollPercentage < 50) newStatus = 'HALFWAY';
+                        else if (scrollPercentage < 75) newStatus = 'KEEP GOING';
+                        else if (scrollPercentage < 95) newStatus = 'ALMOST DONE';
+                        else newStatus = 'COMPLETED ✓';
 
-                    if (newStatus !== lastStatus) {
-                        updateStatus(scrollPercentage);
-                        lastStatus = newStatus;
-                    }
+                        if (newStatus !== lastStatus) {
+                            updateStatus(scrollPercentage);
+                            lastStatus = newStatus;
+                        }
 
-                    updateScrollProgress();
-                    ticking = false;
-                });
-                ticking = true;
-            }
-        });
+                        updateScrollProgress();
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            });
 
-        // Initial update
-        updateStatus(0);
-        updateScrollProgress();
+            // Initial update
+            updateStatus(0);
+            updateScrollProgress();
+        }, 500);
     }
 
     init();
