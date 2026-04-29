@@ -2,66 +2,143 @@
 (function() {
     'use strict';
 
-    // Solari reading status display
-    function createSolariProgress() {
+    // Solari flip display for status
+    function createSolariDisplay() {
         const container = document.createElement('div');
-        container.id = 'solari-progress';
+        container.id = 'solari-display';
         container.style.cssText = `
             position: fixed;
-            top: 24px;
-            left: 24px;
-            z-index: 9999;
-            display: flex;
-            gap: 6px;
-            padding: 12px 18px;
-            background: rgba(22, 21, 19, 0.95);
+            top: 100px;
+            left: 20px;
+            z-index: 999;
+            background: rgba(10, 10, 10, 0.95);
+            border: 2px solid rgba(102, 126, 234, 0.3);
             border-radius: 12px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(217, 119, 6, 0.3);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            transition: all 0.3s ease;
-            font-family: 'JetBrains Mono', monospace;
-            font-weight: 700;
-            font-size: 0.95rem;
-            color: #d4952a;
-            text-shadow: 0 0 18px rgba(212, 149, 42, 0.12);
+            padding: 16px 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            display: flex;
+            gap: 4px;
+            align-items: center;
         `;
 
-        const statusText = document.createElement('span');
-        statusText.id = 'status-text';
-        statusText.textContent = 'READING...';
-        container.appendChild(statusText);
+        // Create character slots (max 13 chars for "ALMOST DONE")
+        const maxChars = 13;
+        for (let i = 0; i < maxChars; i++) {
+            const slot = document.createElement('div');
+            slot.className = 'solari-slot';
+            slot.style.cssText = `
+                width: 14px;
+                height: 32px;
+                position: relative;
+                overflow: hidden;
+                perspective: 200px;
+            `;
+
+            const flipper = document.createElement('div');
+            flipper.className = 'solari-flipper';
+            flipper.style.cssText = `
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                transition: transform 0.6s cubic-bezier(0.4, 0.0, 0.2, 1);
+                transform-style: preserve-3d;
+            `;
+
+            const front = document.createElement('div');
+            front.className = 'solari-front';
+            front.style.cssText = `
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                backface-visibility: hidden;
+                font-family: 'JetBrains Mono', monospace;
+                font-size: 18px;
+                font-weight: 700;
+                color: #667eea;
+                text-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            `;
+            front.textContent = ' ';
+
+            const back = document.createElement('div');
+            back.className = 'solari-back';
+            back.style.cssText = `
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                backface-visibility: hidden;
+                transform: rotateX(180deg);
+                font-family: 'JetBrains Mono', monospace;
+                font-size: 18px;
+                font-weight: 700;
+                color: #667eea;
+                text-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            `;
+            back.textContent = ' ';
+
+            flipper.appendChild(front);
+            flipper.appendChild(back);
+            slot.appendChild(flipper);
+            container.appendChild(slot);
+        }
 
         document.body.appendChild(container);
         return container;
     }
 
-    // Update status display based on scroll
+    // Flip a character slot
+    function flipCharacter(slot, newChar) {
+        const flipper = slot.querySelector('.solari-flipper');
+        const front = slot.querySelector('.solari-front');
+        const back = slot.querySelector('.solari-back');
+
+        if (front.textContent === newChar) return;
+
+        back.textContent = newChar;
+        flipper.style.transform = 'rotateX(180deg)';
+
+        setTimeout(() => {
+            front.textContent = newChar;
+            flipper.style.transform = 'rotateX(0deg)';
+            flipper.style.transition = 'none';
+            setTimeout(() => {
+                flipper.style.transition = 'transform 0.6s cubic-bezier(0.4, 0.0, 0.2, 1)';
+            }, 50);
+        }, 300);
+    }
+
+    // Update status text with flip animation
     function updateStatus(scrollPercentage) {
-        const statusText = document.getElementById('status-text');
-        if (!statusText) return;
+        const container = document.getElementById('solari-display');
+        if (!container) return;
 
         let status = '';
         if (scrollPercentage < 5) {
-            status = 'START';
+            status = 'START        ';
         } else if (scrollPercentage < 25) {
-            status = 'READING...';
+            status = 'READING...   ';
         } else if (scrollPercentage < 50) {
-            status = 'HALFWAY';
+            status = 'HALFWAY      ';
         } else if (scrollPercentage < 75) {
-            status = 'KEEP GOING';
+            status = 'KEEP GOING   ';
         } else if (scrollPercentage < 95) {
-            status = 'ALMOST DONE';
+            status = 'ALMOST DONE  ';
         } else {
-            status = 'COMPLETED ✓';
+            status = 'COMPLETED ✓  ';
         }
 
-        if (statusText.textContent !== status) {
-            statusText.style.opacity = '0';
+        const slots = container.querySelectorAll('.solari-slot');
+        for (let i = 0; i < slots.length; i++) {
+            const char = status[i] || ' ';
             setTimeout(() => {
-                statusText.textContent = status;
-                statusText.style.opacity = '1';
-            }, 150);
+                flipCharacter(slots[i], char);
+            }, i * 50);
         }
     }
 
@@ -74,10 +151,10 @@
             top: 0;
             left: 0;
             height: 3px;
-            background: linear-gradient(90deg, #d97706 0%, #f59e0b 100%);
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
             z-index: 10001;
             transition: width 0.1s ease;
-            box-shadow: 0 0 10px rgba(217, 119, 6, 0.5);
+            box-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
         `;
         document.body.appendChild(bar);
         return bar;
@@ -96,14 +173,15 @@
         bar.style.width = Math.min(100, Math.max(0, scrollPercentage)) + '%';
     }
 
-    // Responsive navigation
+    // Optimize navigation spacing
     function optimizeNavigation() {
-        const nav = document.querySelector('nav');
-        if (!nav) return;
-
-        // Make nav more compact on mobile
         const style = document.createElement('style');
         style.textContent = `
+            /* Better button spacing */
+            nav > div > div:last-child {
+                gap: 1.5rem !important;
+            }
+
             @media (max-width: 768px) {
                 nav > div {
                     padding: 0.75rem 1rem !important;
@@ -114,10 +192,10 @@
                 nav > div > div:last-child {
                     gap: 1rem !important;
                 }
-                #solari-progress {
-                    top: 16px !important;
+                #solari-display {
+                    top: 80px !important;
                     left: 16px !important;
-                    padding: 8px 12px !important;
+                    padding: 12px 18px !important;
                     transform: scale(0.85);
                     transform-origin: top left;
                 }
@@ -167,13 +245,15 @@
             return;
         }
 
-        createSolariProgress();
+        createSolariDisplay();
         createScrollProgress();
         optimizeNavigation();
         addContentAnimations();
 
-        // Update on scroll
+        let lastStatus = '';
         let ticking = false;
+
+        // Update on scroll
         window.addEventListener('scroll', () => {
             if (!ticking) {
                 window.requestAnimationFrame(() => {
@@ -182,7 +262,20 @@
                     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
                     const scrollPercentage = (scrollTop / (documentHeight - windowHeight)) * 100;
 
-                    updateStatus(scrollPercentage);
+                    // Only update status if it changed
+                    let newStatus = '';
+                    if (scrollPercentage < 5) newStatus = 'START';
+                    else if (scrollPercentage < 25) newStatus = 'READING...';
+                    else if (scrollPercentage < 50) newStatus = 'HALFWAY';
+                    else if (scrollPercentage < 75) newStatus = 'KEEP GOING';
+                    else if (scrollPercentage < 95) newStatus = 'ALMOST DONE';
+                    else newStatus = 'COMPLETED ✓';
+
+                    if (newStatus !== lastStatus) {
+                        updateStatus(scrollPercentage);
+                        lastStatus = newStatus;
+                    }
+
                     updateScrollProgress();
                     ticking = false;
                 });
@@ -193,15 +286,6 @@
         // Initial update
         updateStatus(0);
         updateScrollProgress();
-
-        // Add transition style for status text
-        const style = document.createElement('style');
-        style.textContent = `
-            #status-text {
-                transition: opacity 0.3s ease;
-            }
-        `;
-        document.head.appendChild(style);
     }
 
     init();
