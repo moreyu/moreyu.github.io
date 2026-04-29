@@ -432,7 +432,7 @@
 
         <p>2. 上传到 Proxmox，然后用命令导入：</p>
 
-        <pre><code># 解压镜像
+        <pre><code{'>'}# 解压镜像
 xz -d haos_ova-11.2.qcow2.xz
 
 # 创建虚拟机（ID 100）
@@ -448,7 +448,7 @@ qm set 100 --scsihw virtio-scsi-pci --scsi0 local-lvm:vm-100-disk-0
 qm set 100 --boot c --bootdisk scsi0
 
 # 启动虚拟机
-qm start 100</code></pre>
+qm start 100</code{'>'}</pre>
 
         <div>
             <strong>⚠️ 踩坑记录：</strong>
@@ -472,7 +472,7 @@ qm start 100</code></pre>
             <li>运行安装脚本：</li>
         </ol>
 
-        <pre><code>wget -O - https://get.hacs.xyz | bash -</code></pre>
+        <pre><code{'>'}wget -O - https://get.hacs.xyz | bash -</code{'>'}</pre>
 
         <ol start="3">
             <li>重启 HA</li>
@@ -546,7 +546,7 @@ qm start 100</code></pre>
 
         <p>配置代码：</p>
 
-        <pre><code>automation:
+        <pre><code{'>'}automation:
   - alias: "回家开灯"
     trigger:
       - platform: state
@@ -562,7 +562,7 @@ qm start 100</code></pre>
             - light.entrance
             - light.living_room
         data:
-          brightness_pct: 80</code></pre>
+          brightness_pct: 80</code{'>'}</pre>
 
         <div>
             <strong>💡 优化技巧：</strong>
