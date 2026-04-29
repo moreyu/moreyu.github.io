@@ -405,14 +405,14 @@
 
     // Optimize navigation spacing and add glass effect
     function optimizeNavigation() {
-        // Add strong glass effect to nav
+        // Add ultra strong glass effect to nav
         const nav = document.querySelector('nav');
         if (nav) {
-            nav.style.backdropFilter = 'blur(40px) saturate(200%)';
-            nav.style.webkitBackdropFilter = 'blur(40px) saturate(200%)';
-            nav.style.background = 'rgba(15, 15, 15, 0.5)';
-            nav.style.borderBottom = '1px solid rgba(255, 255, 255, 0.12)';
-            nav.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05)';
+            nav.style.backdropFilter = 'blur(60px) saturate(250%) brightness(1.1)';
+            nav.style.webkitBackdropFilter = 'blur(60px) saturate(250%) brightness(1.1)';
+            nav.style.background = 'rgba(20, 20, 20, 0.4)';
+            nav.style.borderBottom = '1px solid rgba(255, 255, 255, 0.15)';
+            nav.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1), inset 0 -1px 0 rgba(0, 0, 0, 0.5)';
         }
 
         const style = document.createElement('style');

@@ -5,10 +5,11 @@ function Navbar() {
         <nav
             className="fixed top-0 left-0 right-0 z-50 fade-in"
             style={{
-                background: 'rgba(0, 0, 0, 0.8)',
-                backdropFilter: 'blur(20px)',
-                WebkitBackdropFilter: 'blur(20px)',
-                borderBottom: '1px solid var(--border)'
+                background: 'rgba(20, 20, 20, 0.4)',
+                backdropFilter: 'blur(60px) saturate(250%) brightness(1.1)',
+                WebkitBackdropFilter: 'blur(60px) saturate(250%) brightness(1.1)',
+                borderBottom: '1px solid rgba(255, 255, 255, 0.15)',
+                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1), inset 0 -1px 0 rgba(0, 0, 0, 0.5)'
             }}
         >
             <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
