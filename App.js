@@ -21,8 +21,8 @@ function App() {
         <div>
             <Navbar />
             <Hero />
-            <FeaturedArticles />
             <Capabilities />
+            <FeaturedArticles />
             <BlogPosts />
         </div>
     );
