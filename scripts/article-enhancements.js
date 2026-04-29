@@ -2,7 +2,7 @@
 (function() {
     'use strict';
 
-    // Solari reading progress display
+    // Solari reading status display
     function createSolariProgress() {
         const container = document.createElement('div');
         container.id = 'solari-progress';
@@ -12,147 +12,57 @@
             left: 24px;
             z-index: 9999;
             display: flex;
-            gap: 4px;
-            padding: 12px 16px;
+            gap: 6px;
+            padding: 12px 18px;
             background: rgba(22, 21, 19, 0.95);
             border-radius: 12px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(217, 119, 6, 0.3);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             transition: all 0.3s ease;
-        `;
-
-        // Create 3 digit displays
-        for (let i = 0; i < 3; i++) {
-            const digit = document.createElement('div');
-            digit.className = 'solari-digit';
-            digit.style.cssText = `
-                position: relative;
-                width: 28px;
-                height: 40px;
-                perspective: 400px;
-            `;
-
-            const flapTop = document.createElement('div');
-            flapTop.className = 'solari-flap-top';
-            flapTop.style.cssText = `
-                position: absolute;
-                top: 0;
-                width: 100%;
-                height: 50%;
-                overflow: hidden;
-                background: linear-gradient(180deg, #2a2825 0%, #252420 100%);
-                border-radius: 4px 4px 0 0;
-                transform-origin: bottom;
-                backface-visibility: hidden;
-            `;
-
-            const flapBottom = document.createElement('div');
-            flapBottom.className = 'solari-flap-bottom';
-            flapBottom.style.cssText = `
-                position: absolute;
-                bottom: 0;
-                width: 100%;
-                height: 50%;
-                overflow: hidden;
-                background: linear-gradient(180deg, #222120 0%, #1f1e1b 100%);
-                border-radius: 0 0 4px 4px;
-                border-top: 1px solid #0a0a09;
-            `;
-
-            const contentTop = document.createElement('div');
-            contentTop.className = 'solari-content';
-            contentTop.textContent = '0';
-            contentTop.style.cssText = `
-                font-family: 'JetBrains Mono', monospace;
-                font-weight: 700;
-                font-size: 1.5rem;
-                color: #d4952a;
-                text-shadow: 0 0 18px rgba(212, 149, 42, 0.12);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                width: 100%;
-                height: 200%;
-                position: absolute;
-                top: 0;
-            `;
-
-            const contentBottom = document.createElement('div');
-            contentBottom.className = 'solari-content';
-            contentBottom.textContent = '0';
-            contentBottom.style.cssText = `
-                font-family: 'JetBrains Mono', monospace;
-                font-weight: 700;
-                font-size: 1.5rem;
-                color: #d4952a;
-                text-shadow: 0 0 18px rgba(212, 149, 42, 0.12);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                width: 100%;
-                height: 200%;
-                position: absolute;
-                bottom: 0;
-            `;
-
-            flapTop.appendChild(contentTop);
-            flapBottom.appendChild(contentBottom);
-            digit.appendChild(flapTop);
-            digit.appendChild(flapBottom);
-            container.appendChild(digit);
-        }
-
-        // Add % symbol
-        const percent = document.createElement('span');
-        percent.textContent = '%';
-        percent.style.cssText = `
             font-family: 'JetBrains Mono', monospace;
             font-weight: 700;
-            font-size: 1.2rem;
+            font-size: 0.95rem;
             color: #d4952a;
-            margin-left: 4px;
-            align-self: center;
+            text-shadow: 0 0 18px rgba(212, 149, 42, 0.12);
         `;
-        container.appendChild(percent);
+
+        const statusText = document.createElement('span');
+        statusText.id = 'status-text';
+        statusText.textContent = 'READING...';
+        container.appendChild(statusText);
 
         document.body.appendChild(container);
         return container;
     }
 
-    // Update progress display
-    function updateProgress(percentage) {
-        const digits = document.querySelectorAll('.solari-digit');
-        const percentStr = percentage.toString().padStart(3, '0');
+    // Update status display based on scroll
+    function updateStatus(scrollPercentage) {
+        const statusText = document.getElementById('status-text');
+        if (!statusText) return;
 
-        digits.forEach((digit, index) => {
-            const contents = digit.querySelectorAll('.solari-content');
-            contents.forEach(content => {
-                content.textContent = percentStr[index];
-            });
-        });
-    }
+        let status = '';
+        if (scrollPercentage < 5) {
+            status = 'START';
+        } else if (scrollPercentage < 25) {
+            status = 'READING...';
+        } else if (scrollPercentage < 50) {
+            status = 'HALFWAY';
+        } else if (scrollPercentage < 75) {
+            status = 'KEEP GOING';
+        } else if (scrollPercentage < 95) {
+            status = 'ALMOST DONE';
+        } else {
+            status = 'COMPLETED ✓';
+        }
 
-    // Calculate reading progress
-    function calculateProgress() {
-        const article = document.querySelector('.article-content') || document.querySelector('article');
-        if (!article) return 0;
-
-        const articleTop = article.offsetTop;
-        const articleHeight = article.offsetHeight;
-        const windowHeight = window.innerHeight;
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-        const articleBottom = articleTop + articleHeight;
-        const viewportBottom = scrollTop + windowHeight;
-
-        if (scrollTop < articleTop) return 0;
-        if (viewportBottom >= articleBottom) return 100;
-
-        const visibleHeight = Math.min(viewportBottom, articleBottom) - Math.max(scrollTop, articleTop);
-        const progress = (visibleHeight / articleHeight) * 100;
-
-        return Math.min(100, Math.max(0, Math.round(progress)));
+        if (statusText.textContent !== status) {
+            statusText.style.opacity = '0';
+            setTimeout(() => {
+                statusText.textContent = status;
+                statusText.style.opacity = '1';
+            }, 150);
+        }
     }
 
     // Smooth scroll progress bar
@@ -267,8 +177,12 @@
         window.addEventListener('scroll', () => {
             if (!ticking) {
                 window.requestAnimationFrame(() => {
-                    const progress = calculateProgress();
-                    updateProgress(progress);
+                    const windowHeight = window.innerHeight;
+                    const documentHeight = document.documentElement.scrollHeight;
+                    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                    const scrollPercentage = (scrollTop / (documentHeight - windowHeight)) * 100;
+
+                    updateStatus(scrollPercentage);
                     updateScrollProgress();
                     ticking = false;
                 });
@@ -277,8 +191,17 @@
         });
 
         // Initial update
-        updateProgress(0);
+        updateStatus(0);
         updateScrollProgress();
+
+        // Add transition style for status text
+        const style = document.createElement('style');
+        style.textContent = `
+            #status-text {
+                transition: opacity 0.3s ease;
+            }
+        `;
+        document.head.appendChild(style);
     }
 
     init();
