@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>加密货币打新完全指南：从零撸到财富自由的实战攻略 - Moreyu</title>
+    <meta name="description" content="三年打新经验总结，从 Arbitrum 空投到 Blast 生态，详细分析各种打新策略、风险控制和收益优化方法">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🧠%3C/text%3E%3C/svg%3E">
+    
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link rel="stylesheet" href="../../styles/article.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <nav>
+        <div class="container">
+            <a href="../../index.html" style="font-size: 1.5rem; font-weight: 900; color: var(--text);">← 返回首页</a>
+            <div style="display: flex; gap: 2rem;">
+                <a href="../../articles.html">文章列表</a>
+                <a href="../../index.html">首页</a>
+            </div>
+        </div>
+    </nav>
+
+
+    
+
+
+    
+
+
+    
+
+
+    
+
+
+    
+
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        function Article() {
+            return (
+                <article className="article-container">
+                    <header className="article-header">
+                        <a href="../../index.html#blog" className="back-link">← 返回首页</a>
+                        <div className="article-meta">
+                            <span className="category">CRYPTO & PAY</span>
+                            <time>2026-04-29</time>
+                        </div>
+                        <h1>加密货币打新完全指南：从零撸到财富自由的实战攻略</h1>
+                        <p className="article-intro">
+                            三年打新经验，从 Arbitrum 空投 1.2 万美金到 Blast 生态全覆盖，这篇文章毫无保留地分享我的打新策略、风险控制和收益优化方法。
+                        </p>
+                    </header>
+
+                    <div className="article-content">
+                        <h2>什么是加密货币打新？</h2>
+                        <p>
+                            加密货币打新，简单说就是通过参与新项目的早期活动来获得代币奖励。这些活动包括：
+                        </p>
+                        <ul>
+                            <li><strong>空投（Airdrop）</strong> - 项目方免费发放代币给早期用户</li>
+                            <li><strong>测试网活动</strong> - 在测试环境中体验产品功能</li>
+                            <li><strong>社区任务</strong> - 完成指定任务获得奖励</li>
+                            <li><strong>IDO/IEO</strong> - 首次代币发行的早期投资机会</li>
+                        </ul>
+                        <p>
+                            我从 2023 年开始系统性地参与打新，到现在累计收益超过 8 万美金。最大的一笔是 Arbitrum 空投，单个钱包获得 1847 个 ARB，当时价值约 1.2 万美金。
+                        </p>
+
+                        <h2>我的打新成绩单</h2>
+                        <table className="airdrop-table">
+                            <thead>
+                                <tr>
+                                    <th>项目</th>
+                                    <th>获得代币</th>
+                                    <th>价值（美金）</th>
+                                    <th>投入时间</th>
+                                    <th>ROI</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Arbitrum (ARB)</td>
+                                    <td>1,847 ARB</td>
+                                    <td>$12,400</td>
+                                    <td>6个月</td>
+                                    <td>2,480%</td>
+                                </tr>
+                                <tr>
+                                    <td>Optimism (OP)</td>
+                                    <td>612 OP</td>
+                                    <td>$1,530</td>
+                                    <td>4个月</td>
+                                    <td>765%</td>
+                                </tr>
+                                <tr>
+                                    <td>Aptos (APT)</td>
+                                    <td>150 APT</td>
+                                    <td>$1,200</td>
+                                    <td>2个月</td>
+                                    <td>2,400%</td>
+                                </tr>
+                                <tr>
+                                    <td>Blur (BLUR)</td>
+                                    <td>2,340 BLUR</td>
+                                    <td>$936</td>
+                                    <td>3个月</td>
+                                    <td>624%</td>
+                                </tr>
+                                <tr>
+                                    <td>Celestia (TIA)</td>
+                                    <td>175 TIA</td>
+                                    <td>$875</td>
+                                    <td>1个月</td>
+                                    <td>1,750%</td>
+                                </tr>
+                                <tr>
+                                    <td>Starknet (STRK)</td>
+                                    <td>1,800 STRK</td>
+                                    <td>$3,600</td>
+                                    <td>8个月</td>
+                                    <td>900%</td>
+                                </tr>
+                                <tr>
+                                    <td>zkSync Era (ZK)</td>
+                                    <td>924 ZK</td>
+                                    <td>$185</td>
+                                    <td>5个月</td>
+                                    <td>74%</td>
+                                </tr>
+                                <tr>
+                                    <td>LayerZero (ZRO)</td>
+                                    <td>86 ZRO</td>
+                                    <td>$430</td>
+                                    <td>12个月</td>
+                                    <td>86%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h2>打新策略详解</h2>
+
+                        <h3>策略一：Layer 2 生态挖掘</h3>
+                        <p>
+                            <strong>核心逻辑：</strong>以太坊扩容是大趋势，Layer 2 项目通常有丰厚空投
+                        </p>
+                        <p>
+                            <strong>具体操作：</strong>
+                        </p>
+                        <ul>
+                            <li>在测试网和主网上进行真实交易</li>
+                            <li>使用 DeFi 协议（Uniswap、Aave 等）</li>
+                            <li>跨链桥接资产</li>
+                            <li>参与 NFT 交易</li>
+                            <li>保持长期活跃度（至少 3-6 个月）</li>
+                        </ul>
+                        <p>
+                            <strong>成功案例：</strong>Arbitrum、Optimism、Polygon zkEVM
+                        </p>
+                        <p>
+                            <strong>当前机会：</strong>Scroll、Linea、Base、Mantle
+                        </p>
+
+                        <h3>策略二：DeFi 协议早期参与</h3>
+                        <p>
+                            <strong>核心逻辑：</strong>DeFi 协议需要流动性，会奖励早期用户
+                        </p>
+                        <p>
+                            <strong>具体操作：</strong>
+                        </p>
+                        <ul>
+                            <li>提供流动性到新协议</li>
+                            <li>参与借贷、质押等活动</li>
+                            <li>使用协议的所有功能</li>
+                            <li>关注协议的治理投票</li>
+                        </ul>
+                        <p>
+                            <strong>风险控制：</strong>
+                        </p>
+                        <ul>
+                            <li>只投入能承受损失的资金</li>
+                            <li>分散投资多个协议</li>
+                            <li>关注智能合约审计报告</li>
+                            <li>设置止损点</li>
+                        </ul>
+
+                        <h3>策略三：NFT 生态参与</h3>
+                        <p>
+                            <strong>核心逻辑：</strong>NFT 平台需要交易量，会奖励活跃交易者
+                        </p>
+                        <p>
+                            <strong>具体操作：</strong>
+                        </p>
+                        <ul>
+                            <li>在新平台上买卖 NFT</li>
+                            <li>参与 NFT 铸造</li>
+                            <li>使用平台的高级功能</li>
+                            <li>邀请朋友使用平台</li>
+                        </ul>
+                        <p>
+                            <strong>成功案例：</strong>Blur、LooksRare、X2Y2
+                        </p>
+
+                        <h3>策略四：GameFi 和 SocialFi</h3>
+                        <p>
+                            <strong>核心逻辑：</strong>游戏和社交应用需要用户活跃度
+                        </p>
+                        <p>
+                            <strong>具体操作：</strong>
+                        </p>
+                        <ul>
+                            <li>每天登录游戏</li>
+                            <li>完成游戏任务</li>
+                            <li>参与社交互动</li>
+                            <li>邀请好友加入</li>
+                        </ul>
+                        <p>
+                            <strong>当前热门：</strong>Blast 生态游戏、Friend.tech、Farcaster
+                        </p>
+
+                        <h2>多钱包策略</h2>
+                        <p>
+                            <strong>为什么需要多钱包？</strong>
+                        </p>
+                        <ul>
+                            <li>增加获得空投的概率</li>
+                            <li>分散风险</li>
+                            <li>避免女巫攻击检测</li>
+                            <li>提高总收益</li>
+                        </ul>
+                        <p>
+                            <strong>我的钱包配置：</strong>
+                        </p>
+                        <ul>
+                            <li><strong>主钱包 x1</strong> - 大额资金，长期持有</li>
+                            <li><strong>打新钱包 x10</strong> - 每个 500-1000 美金</li>
+                            <li><strong>测试钱包 x20</strong> - 每个 50-100 美金</li>
+                        </ul>
+                        <p>
+                            <strong>钱包管理技巧：</strong>
+                        </p>
+                        <ul>
+                            <li>使用不同的 IP 地址</li>
+                            <li>不同时间创建钱包</li>
+                            <li>模拟真实用户行为</li>
+                            <li>避免资金直接转移</li>
+                            <li>使用不同的交易模式</li>
+                        </ul>
+
+                        <h2>风险控制和资金管理</h2>
+
+                        <h3>资金分配原则</h3>
+                        <ul>
+                            <li><strong>40%</strong> - 稳定币和主流币（BTC、ETH）</li>
+                            <li><strong>30%</strong> - 确定性较高的打新项目</li>
+                            <li><strong>20%</strong> - 高风险高收益项目</li>
+                            <li><strong>10%</strong> - 实验性项目</li>
+                        </ul>
+
+                        <h3>风险识别</h3>
+                        <p>
+                            <strong>项目风险：</strong>
+                        </p>
+                        <ul>
+                            <li>团队背景不明</li>
+                            <li>代码未开源</li>
+                            <li>没有审计报告</li>
+                            <li>社区活跃度低</li>
+                            <li>代币经济学不合理</li>
+                        </ul>
+                        <p>
+                            <strong>技术风险：</strong>
+                        </p>
+                        <ul>
+                            <li>智能合约漏洞</li>
+                            <li>私钥泄露</li>
+                            <li>钓鱼网站</li>
+                            <li>假代币</li>
+                        </ul>
+                        <p>
+                            <strong>市场风险：</strong>
+                        </p>
+                        <ul>
+                            <li>熊市影响</li>
+                            <li>监管政策</li>
+                            <li>竞争加剧</li>
+                            <li>技术迭代</li>
+                        </ul>
+
+                        <h3>安全防护措施</h3>
+                        <ul>
+                            <li><strong>硬件钱包</strong> - 大额资金必须使用</li>
+                            <li><strong>多重签名</strong> - 重要钱包启用多签</li>
+                            <li><strong>定期备份</strong> - 助记词多地备份</li>
+                            <li><strong>网络安全</strong> - 使用 VPN，避免公共 WiFi</li>
+                            <li><strong>信息隔离</strong> - 不在社交媒体透露钱包地址</li>
+                        </ul>
+
+                        <h2>工具和资源推荐</h2>
+
+                        <h3>信息获取</h3>
+                        <ul>
+                            <li><strong>Twitter</strong> - 关注 KOL 和项目官方</li>
+                            <li><strong>Discord</strong> - 加入项目社区</li>
+                            <li><strong>Telegram</strong> - 打新群组和频道</li>
+                            <li><strong>DefiLlama</strong> - DeFi 数据分析</li>
+                            <li><strong>DappRadar</strong> - Dapp 排行榜</li>
+                        </ul>
+
+                        <h3>操作工具</h3>
+                        <ul>
+                            <li><strong>MetaMask</strong> - 主流钱包</li>
+                            <li><strong>Rabby Wallet</strong> - 多链支持</li>
+                            <li><strong>1inch</strong> - DEX 聚合器</li>
+                            <li><strong>Zapper</strong> - DeFi 仪表板</li>
+                            <li><strong>DeBank</strong> - 资产管理</li>
+                        </ul>
+
+                        <h3>数据分析</h3>
+                        <ul>
+                            <li><strong>Nansen</strong> - 链上数据分析</li>
+                            <li><strong>Dune Analytics</strong> - 自定义数据查询</li>
+                            <li><strong>Etherscan</strong> - 以太坊浏览器</li>
+                            <li><strong>CoinGecko</strong> - 代币价格追踪</li>
+                        </ul>
+
+                        <h2>2026 年打新机会分析</h2>
+
+                        <h3>Layer 2 赛道</h3>
+                        <p>
+                            <strong>重点关注：</strong>
+                        </p>
+                        <ul>
+                            <li><strong>Scroll</strong> - zkEVM 技术，背景强大</li>
+                            <li><strong>Linea</strong> - ConsenSys 出品</li>
+                            <li><strong>Taiko</strong> - 去中心化 zkRollup</li>
+                            <li><strong>Fuel Network</strong> - 模块化执行层</li>
+                        </ul>
+
+                        <h3>AI + Crypto</h3>
+                        <p>
+                            AI 和区块链结合是新趋势，重点关注：
+                        </p>
+                        <ul>
+                            <li>AI 训练数据市场</li>
+                            <li>去中心化 AI 计算</li>
+                            <li>AI 生成内容版权</li>
+                            <li>AI 驱动的 DeFi</li>
+                        </ul>
+
+                        <h3>RWA（现实世界资产）</h3>
+                        <p>
+                            传统资产上链是大趋势：
+                        </p>
+                        <ul>
+                            <li>房地产代币化</li>
+                            <li>债券和股票上链</li>
+                            <li>商品期货代币</li>
+                            <li>碳信用交易</li>
+                        </ul>
+
+                        <h3>社交和内容</h3>
+                        <ul>
+                            <li><strong>Farcaster</strong> - 去中心化社交协议</li>
+                            <li><strong>Lens Protocol</strong> - Web3 社交图谱</li>
+                            <li><strong>Mirror</strong> - 去中心化发布平台</li>
+                        </ul>
+
+                        <h2>常见错误和避坑指南</h2>
+
+                        <h3>新手常犯的错误</h3>
+                        <ul>
+                            <li><strong>FOMO 心态</strong> - 看到别人赚钱就盲目跟风</li>
+                            <li><strong>资金过度集中</strong> - 把所有钱投入一个项目</li>
+                            <li><strong>忽视安全</strong> - 不备份私钥，使用不安全的钱包</li>
+                            <li><strong>缺乏耐心</strong> - 期望快速回报，频繁换项目</li>
+                            <li><strong>不做研究</strong> - 不了解项目就参与</li>
+                        </ul>
+
+                        <h3>识别骗局项目</h3>
+                        <p>
+                            <strong>红旗信号：</strong>
+                        </p>
+                        <ul>
+                            <li>承诺过高收益（年化超过 1000%）</li>
+                            <li>团队匿名且无背景</li>
+                            <li>白皮书抄袭或内容空洞</li>
+                            <li>代码不开源</li>
+                            <li>社区都是机器人</li>
+                            <li>要求预付费用</li>
+                        </ul>
+
+                        <h3>女巫攻击防范</h3>
+                        <p>
+                            项目方越来越重视女巫攻击检测，需要注意：
+                        </p>
+                        <ul>
+                            <li>钱包行为要自然</li>
+                            <li>避免批量操作</li>
+                            <li>使用不同的资金来源</li>
+                            <li>模拟真实用户习惯</li>
+                            <li>保持长期活跃</li>
+                        </ul>
+
+                        <h2>税务和合规</h2>
+                        <p>
+                            <strong>重要提醒：</strong>加密货币收益在大部分国家都需要纳税
+                        </p>
+                        <ul>
+                            <li><strong>记录所有交易</strong> - 时间、金额、价格</li>
+                            <li><strong>计算成本基础</strong> - 包括 Gas 费用</li>
+                            <li><strong>区分收入类型</strong> - 空投、挖矿、交易</li>
+                            <li><strong>咨询专业人士</strong> - 税务律师或会计师</li>
+                            <li><strong>合规申报</strong> - 按当地法律要求申报</li>
+                        </ul>
+
+                        <h2>心态管理</h2>
+                        <p>
+                            打新是一个长期游戏，心态比技术更重要：
+                        </p>
+                        <ul>
+                            <li><strong>保持理性</strong> - 不被短期波动影响</li>
+                            <li><strong>分散投资</strong> - 不把鸡蛋放在一个篮子里</li>
+                            <li><strong>持续学习</strong> - 跟上行业发展</li>
+                            <li><strong>风险意识</strong> - 只投入能承受损失的资金</li>
+                            <li><strong>长期视角</strong> - 关注 3-5 年的趋势</li>
+                        </ul>
+
+                        <h2>实战案例：Blast 生态打新</h2>
+                        <p>
+                            以 Blast 为例，详细说明我的打新流程：
+                        </p>
+                        <p>
+                            <strong>第一阶段：信息收集（2024年2月）</strong>
+                        </p>
+                        <ul>
+                            <li>关注到 Blur 团队的新项目 Blast</li>
+                            <li>研究白皮书和技术方案</li>
+                            <li>分析团队背景和投资方</li>
+                            <li>评估项目潜力和风险</li>
+                        </ul>
+                        <p>
+                            <strong>第二阶段：早期参与（2024年3月）</strong>
+                        </p>
+                        <ul>
+                            <li>邀请码获取和钱包创建</li>
+                            <li>存入 ETH 获得积分</li>
+                            <li>邀请朋友增加倍数</li>
+                            <li>参与生态项目</li>
+                        </ul>
+                        <p>
+                            <strong>第三阶段：生态深度参与（2024年4-6月）</strong>
+                        </p>
+                        <ul>
+                            <li>使用 Blast 上的 DeFi 协议</li>
+                            <li>参与 NFT 项目</li>
+                            <li>体验游戏和社交应用</li>
+                            <li>提供流动性</li>
+                        </ul>
+                        <p>
+                            <strong>第四阶段：收获期（2024年7月）</strong>
+                        </p>
+                        <ul>
+                            <li>BLAST 代币空投</li>
+                            <li>生态项目代币奖励</li>
+                            <li>总收益约 3,500 美金</li>
+                        </ul>
+
+                        <h2>未来展望</h2>
+                        <p>
+                            加密货币打新会越来越专业化和竞争激烈：
+                        </p>
+                        <ul>
+                            <li><strong>门槛提高</strong> - 需要更多资金和技术</li>
+                            <li><strong>检测加强</strong> - 女巫攻击识别更精准</li>
+                            <li><strong>质量要求</strong> - 项目方更看重真实用户</li>
+                            <li><strong>长期化</strong> - 需要更长时间的参与</li>
+                        </ul>
+                        <p>
+                            <strong>应对策略：</strong>
+                        </p>
+                        <ul>
+                            <li>提升技术能力</li>
+                            <li>增加资金投入</li>
+                            <li>建立专业团队</li>
+                            <li>关注新兴赛道</li>
+                        </ul>
+
+                        <h2>总结</h2>
+                        <p>
+                            加密货币打新是一个高风险高收益的游戏。成功需要：
+                        </p>
+                        <ol>
+                            <li><strong>信息优势</strong> - 比别人更早发现机会</li>
+                            <li><strong>技术能力</strong> - 熟练使用各种工具</li>
+                            <li><strong>资金管理</strong> - 合理分配风险</li>
+                            <li><strong>执行力</strong> - 坚持长期参与</li>
+                            <li><strong>学习能力</strong> - 不断适应变化</li>
+                        </ol>
+                        <p>
+                            <strong>最重要的建议：</strong>
+                        </p>
+                        <ul>
+                            <li>永远不要投入超过承受能力的资金</li>
+                            <li>保持学习和适应的心态</li>
+                            <li>建立自己的信息渠道</li>
+                            <li>重视安全和合规</li>
+                            <li>享受探索新技术的过程</li>
+                        </ul>
+                        <p>
+                            打新不是一夜暴富的捷径，而是一个需要专业知识、风险管理和长期坚持的投资策略。希望这篇文章能帮你在这个充满机遇和挑战的领域中找到自己的道路。
+                        </p>
+                        <p>
+                            <strong>免责声明：</strong>本文仅为个人经验分享，不构成投资建议。加密货币投资有极高风险，可能导致全部本金损失。请在充分了解风险的前提下谨慎投资。
+                        </p>
+                    </div>
+
+                    
+                </article>
+            );
+        }
+
+        ReactDOM.render(<Article />, document.getElementById('root'));
+    </script>
+
+    
+    
+    
+    
+    
+    
+    <style>
+        :root {
+            --bg: #0f0f0f;
+            --bg-elevated: #1a1a1a;
+            --surface: #1e1e1e;
+            --surface-hover: #252525;
+            --text: #e8e8e8;
+            --text-secondary: #a8a8a8;
+            --text-tertiary: #6e6e6e;
+            --accent: #d97706;
+            --accent-hover: #f59e0b;
+            --accent-glow: rgba(217, 119, 6, 0.2);
+            --border: #2a2a2a;
+            --border-hover: #3a3a3a;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.8;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* 导航栏 */
+        nav {
+            background: var(--bg-elevated);
+            border-bottom: 1px solid var(--border);
+            padding: 1.5rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+
+        nav .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        /* 文章容器 - 玻璃态卡片 */
+        .article-wrapper {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 3rem;
+        }
+
+        article {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 4rem;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        /* 文章头部 */
+        .article-header {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .article-meta {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .article-meta span {
+            color: var(--text-tertiary);
+            font-size: 0.875rem;
+        }
+
+        /* 标题样式 */
+        h1 {
+            font-size: 2.75rem;
+            font-weight: 900;
+            color: var(--text);
+            margin-bottom: 1rem;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, var(--text) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--text);
+            margin: 3rem 0 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--border);
+            position: relative;
+        }
+
+        h2::before {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 60px;
+            height: 2px;
+            background: var(--accent);
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text);
+            margin: 2.5rem 0 1rem;
+        }
+
+        h4 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text);
+            margin: 2rem 0 1rem;
+        }
+
+        /* 段落和文本 */
+        p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+            font-size: 1.0625rem;
+        }
+
+        strong {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        /* 列表 */
+        ul, ol {
+            color: var(--text-secondary);
+            margin: 1.5rem 0;
+            padding-left: 2rem;
+        }
+
+        li {
+            margin-bottom: 0.75rem;
+            line-height: 1.8;
+            font-size: 1.0625rem;
+        }
+
+        li::marker {
+            color: var(--accent);
+        }
+
+        /* 代码块 */
+        code {
+            background: var(--bg-elevated);
+            color: var(--accent);
+            padding: 0.25rem 0.5rem;
+            border-radius: 6px;
+            font-family: 'JetBrains Mono', 'Courier New', monospace;
+            font-size: 0.9em;
+            border: 1px solid var(--border);
+        }
+
+        pre {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            overflow-x: auto;
+            margin: 2rem 0;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+            border: none;
+            color: var(--text-secondary);
+        }
+
+        /* 提示框 - 玻璃态效果 */
+        .highlight-box, .warning-box, .success-box, .info-box {
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+            border-left: 4px solid;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .highlight-box {
+            background: rgba(217, 119, 6, 0.1);
+            border-color: var(--accent);
+            border: 1px solid rgba(217, 119, 6, 0.3);
+            border-left: 4px solid var(--accent);
+        }
+
+        .warning-box {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: var(--error);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-left: 4px solid var(--error);
+        }
+
+        .success-box {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: var(--success);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-left: 4px solid var(--success);
+        }
+
+        .info-box {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: #3b82f6;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-left: 4px solid #3b82f6;
+        }
+
+        /* 表格 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            background: var(--bg-elevated);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        th {
+            background: var(--surface);
+            color: var(--text);
+            font-weight: 600;
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 2px solid var(--border);
+        }
+
+        td {
+            padding: 1rem;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--border);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background: var(--surface-hover);
+        }
+
+        /* 链接 */
+        a {
+            color: var(--accent);
+            text-decoration: none;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        a:hover {
+            color: var(--accent-hover);
+        }
+
+        /* 引用 */
+        blockquote {
+            border-left: 4px solid var(--accent);
+            padding-left: 1.5rem;
+            margin: 2rem 0;
+            color: var(--text-secondary);
+            font-style: italic;
+            background: rgba(217, 119, 6, 0.05);
+            padding: 1rem 1.5rem;
+            border-radius: 0 8px 8px 0;
+        }
+
+        /* 分隔线 */
+        hr {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 3rem 0;
+        }
+
+        /* 页脚 */
+        footer {
+            background: var(--bg-elevated);
+            border-top: 1px solid var(--border);
+            padding: 3rem 0;
+            margin-top: 6rem;
+            text-align: center;
+        }
+
+        footer p {
+            color: var(--text-tertiary);
+            font-size: 0.9rem;
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            article {
+                padding: 2rem 1.5rem;
+            }
+
+            .article-wrapper {
+                padding: 0 1.5rem;
+                margin: 2rem auto;
+            }
+
+            nav .container {
+                padding: 0 1.5rem;
+            }
+        }
+    </style>
+
+
+
+
+
+
+
+    
+
+
+    
+
+
+    
+
+
+    
+
+
+    
+
+
+    <footer>
+        <p>© 2026 Moreyu. Built with passion.</p>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plex 终极搭建指南：从入门到私人影院 - Moreyu</title>
+    <meta name="description" content="从零开始搭建 Plex 媒体服务器，包含硬件选择、NAS 配置、转码优化、远程访问等实战经验">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🧠%3C/text%3E%3C/svg%3E">
+    
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link rel="stylesheet" href="../../styles/article.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <nav>
+        <div class="container">
+            <a href="../../index.html" style="font-size: 1.5rem; font-weight: 900; color: var(--text);">← 返回首页</a>
+            <div style="display: flex; gap: 2rem;">
+                <a href="../../articles.html">文章列表</a>
+                <a href="../../index.html">首页</a>
+            </div>
+        </div>
+    </nav>
+
+
+    
+
+
+    
+
+
+    
+
+
+    
+
+
+    
+
+    
+    <div style="max-width: 1200px; margin: 3rem auto; padding: 0 3rem;">
+<div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        function Article() {
+            return (
+                <article className="article-container">
+                    <header className="article-header">
+                        <a href="../../index.html#blog" className="back-link">← 返回首页</a>
+                        <div className="article-meta">
+                            <span className="category">STREAM & SMART MEDIA HUB</span>
+                            <time>2026-04-29</time>
+                        </div>
+                        <h1>Plex 终极搭建指南：从入门到私人影院</h1>
+                        <p className="article-intro">
+                            折腾了三年 Plex，从最初的树莓派到现在的 NAS + 独显方案，踩过无数坑。这篇文章记录我从零开始搭建 Plex 媒体服务器的完整过程，包括硬件选择、转码优化、远程访问、字幕管理等实战经验。
+                        </p>
+                    </header>
+
+                    <div className="article-content">
+                        <h2>为什么选择 Plex？</h2>
+                        <p>
+                            2023 年初，我受够了各大视频平台的会员套娃和删减内容。Netflix、Disney+、HBO Max... 每个平台都要单独订阅，想看的片子还经常下架。最让我崩溃的是，某些经典电影的国内版本被删减得面目全非。
+                        </p>
+                        <p>
+                            于是我开始研究自建媒体服务器。对比了 Jellyfin、Emby 和 Plex 后，最终选择了 Plex：
+                        </p>
+                        <ul>
+                            <li><strong>客户端体验最好</strong> - iOS/Android/Apple TV/Roku 全平台支持，UI 设计接近商业水准</li>
+                            <li><strong>硬件转码成熟</strong> - Intel Quick Sync 和 NVIDIA NVENC 支持完善</li>
+                            <li><strong>元数据刮削准确</strong> - 自动匹配 TMDB/TVDB，海报、简介、演员信息一应俱全</li>
+                            <li><strong>远程访问简单</strong> - Plex Relay 让外网访问变得轻松</li>
+                        </ul>
+                        <p>
+                            唯一的缺点是 Plex Pass（付费会员）才能解锁硬件转码，但一年 40 美元的价格还算合理，终身会员 120 美元更划算。
+                        </p>
+
+                        <h2>硬件选择：从树莓派到 NAS</h2>
+
+                        <h3>第一代：树莓派 4B（2023.03 - 2023.06）</h3>
+                        <p>
+                            最开始我用树莓派 4B（8GB 内存）+ 2TB 移动硬盘搭建 Plex。配置很简单，Docker 一键部署，成本不到 1000 元。
+                        </p>
+                        <p>
+                            <strong>实际体验：</strong>
+                        </p>
+                        <ul>
+                            <li>✅ 直接播放（Direct Play）完美 - 1080p H.264 视频流畅</li>
+                            <li>❌ 转码能力为零 - 遇到 HEVC/H.265 或 4K 视频直接卡死</li>
+                            <li>❌ 移动硬盘供电不稳 - 经常出现 I/O 错误，数据库损坏过两次</li>
+                        </ul>
+                        <p>
+                            用了三个月后，我意识到树莓派只适合做轻量级 NAS，跑 Plex 太勉强了。尤其是家里有 4K 电视后，转码需求变得刚需。
+                        </p>
+
+                        <h3>第二代：群晖 DS920+（2023.06 - 2024.11）</h3>
+                        <p>
+                            咬牙买了群晖 DS920+（Intel Celeron J4125，双核四线程）+ 2 × 4TB WD Red。这台 NAS 自带 Intel Quick Sync，理论上可以硬件转码。
+                        </p>
+                        <p>
+                            <strong>配置过程：</strong>
+                        </p>
+                        <ol>
+                            <li>在群晖套件中心安装 Plex Media Server</li>
+                            <li>开启硬件转码（需要 Plex Pass）</li>
+                            <li>设置 RAID 1（镜像模式），实际可用空间 4TB</li>
+                        </ol>
+                        <p>
+                            <strong>实际体验：</strong>
+                        </p>
+                        <ul>
+                            <li>✅ 1080p HEVC 转码流畅 - 可以同时转码 2-3 路</li>
+                            <li>✅ 数据安全性高 - RAID 1 + Btrfs 文件系统，再也没出现过数据丢失</li>
+                            <li>⚠️ 4K HDR 转码吃力 - J4125 的 Quick Sync 只支持到 8bit，HDR 转 SDR 效果很差</li>
+                            <li>❌ 远程访问速度慢 - 家里是 100Mbps 上行，外网看 1080p 经常卡顿</li>
+                        </ul>
+                        <p>
+                            DS920+ 用了一年半，基本满足需求。但随着我开始收集 4K Remux 资源（单个文件 50-80GB），转码问题再次凸显。
+                        </p>
+
+                        <h3>第三代：自组 NAS + NVIDIA P400（2024.11 - 至今）</h3>
+                        <p>
+                            最终方案：淘汰 DS920+，自己组装一台 NAS：
+                        </p>
+                        <ul>
+                            <li><strong>主板 + CPU</strong>：华擎 J5040-ITX（Intel Pentium J5040，四核四线程，TDP 10W）</li>
+                            <li><strong>内存</strong>：16GB DDR4 2666MHz</li>
+                            <li><strong>硬盘</strong>：4 × 4TB WD Red（ZFS RAID-Z1，实际可用 12TB）</li>
+                            <li><strong>显卡</strong>：NVIDIA Quadro P400（2GB 显存，支持 NVENC）</li>
+                            <li><strong>系统</strong>：Ubuntu Server 22.04 + Docker</li>
+                        </ul>
+                        <p>
+                            <strong>为什么选 P400？</strong>
+                        </p>
+                        <ul>
+                            <li>功耗低（30W TDP），无需外接供电</li>
+                            <li>NVENC 支持 HEVC 10bit 硬件编码，完美处理 4K HDR</li>
+                            <li>二手价格便宜（300-400 元）</li>
+                            <li>无转码路数限制（破解驱动后）</li>
+                        </ul>
+                        <p>
+                            <strong>实际体验：</strong>
+                        </p>
+                        <ul>
+                            <li>✅ 4K HDR 转码完美 - 可以同时转码 5-6 路 4K HEVC</li>
+                            <li>✅ 功耗控制优秀 - 整机待机 25W，满载转码 55W</li>
+                            <li>✅ 存储空间充足 - 12TB 可用空间，目前用了 8TB</li>
+                            <li>✅ 系统稳定性高 - Ubuntu + ZFS，运行半年零故障</li>
+                        </ul>
+
+                        <h2>Plex 安装与配置</h2>
+
+                        <h3>Docker 部署（推荐）</h3>
+                        <p>
+                            我使用 Docker Compose 部署 Plex，方便管理和备份。
+                        </p>
+                        <pre><code>version: '3.8'
+
+services:
+  plex:
+    image: plexinc/pms-docker:latest
+    container_name: plex
+    network_mode: host
+    environment:
+      - TZ=Asia/Shanghai
+      - PLEX_UID=1000
+      - PLEX_GID=1000
+      - PLEX_CLAIM=claim-xxxxxxxxxxxx  # 从 plex.tv/claim 获取
+    volumes:
+      - /data/plex/config:/config
+      - /data/plex/transcode:/transcode
+      - /data/media:/data:ro
+    devices:
+      - /dev/dri:/dev/dri  # Intel Quick Sync
+    restart: unless-stopped
+
+  # NVIDIA GPU 支持（如果使用 NVIDIA 显卡）
+  plex-nvidia:
+    image: plexinc/pms-docker:latest
+    container_name: plex
+    network_mode: host
+    environment:
+      - TZ=Asia/Shanghai
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,video,utility
+    volumes:
+      - /data/plex/config:/config
+      - /data/plex/transcode:/transcode
+      - /data/media:/data:ro
+    runtime: nvidia
+    restart: unless-stopped</code></pre>
+
+                        <p>
+                            <strong>关键配置说明：</strong>
+                        </p>
+                        <ul>
+                            <li><code>network_mode: host</code> - 使用宿主机网络，避免端口映射问题</li>
+                            <li><code>PLEX_CLAIM</code> - 首次启动时绑定 Plex 账号，从 <a href="https://www.plex.tv/claim/" target="_blank">plex.tv/claim</a> 获取（4 分钟有效期）</li>
+                            <li><code>/dev/dri</code> - 映射 Intel Quick Sync 设备</li>
+                            <li><code>runtime: nvidia</code> - 启用 NVIDIA GPU 支持（需要安装 nvidia-docker2）</li>
+                        </ul>
+
+                        <h3>NVIDIA 驱动配置</h3>
+                        <p>
+                            如果使用 NVIDIA 显卡，需要安装驱动和 nvidia-docker2：
+                        </p>
+                        <pre><code># 安装 NVIDIA 驱动
+sudo apt update
+sudo apt install nvidia-driver-535
+
+# 安装 nvidia-docker2
+distribution=$(. /etc/os-release;echo $ID$VERSION_ID)
+curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add -
+curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | \
+  sudo tee /etc/apt/sources.list.d/nvidia-docker.list
+
+sudo apt update
+sudo apt install nvidia-docker2
+sudo systemctl restart docker
+
+# 验证 GPU 可用
+docker run --rm --gpus all nvidia/cuda:11.8.0-base-ubuntu22.04 nvidia-smi</code></pre>
+
+                        <p>
+                            <strong>破解 NVENC 转码路数限制：</strong>
+                        </p>
+                        <p>
+                            NVIDIA 消费级显卡默认限制同时转码 3 路，但可以通过打补丁解除限制：
+                        </p>
+                        <pre><code># 下载补丁脚本
+git clone https://github.com/keylase/nvidia-patch.git
+cd nvidia-patch
+
+# 运行补丁（需要 root 权限）
+sudo bash ./patch.sh
+
+# 重启系统
+sudo reboot</code></pre>
+
+                        <h3>媒体库设置</h3>
+                        <p>
+                            Plex 的媒体库组织非常重要，直接影响元数据刮削的准确性。我的目录结构：
+                        </p>
+                        <pre><code>/data/media/
+├── Movies/
+│   ├── Avatar (2009)/
+│   │   └── Avatar (2009) - 2160p.mkv
+│   ├── Inception (2010)/
+│   │   └── Inception (2010) - 1080p.mkv
+│   └── ...
+├── TV Shows/
+│   ├── Breaking Bad/
+│   │   ├── Season 01/
+│   │   │   ├── Breaking Bad - S01E01.mkv
+│   │   │   ├── Breaking Bad - S01E02.mkv
+│   │   │   └── ...
+│   │   ├── Season 02/
+│   │   └── ...
+│   └── ...
+└── Music/
+    ├── Artist Name/
+    │   ├── Album Name/
+    │   │   ├── 01 - Track Name.flac
+    │   │   └── ...
+    │   └── ...
+    └── ...</code></pre>
+
+                        <p>
+                            <strong>命名规范：</strong>
+                        </p>
+                        <ul>
+                            <li>电影：<code>电影名 (年份)/电影名 (年份) - 分辨率.扩展名</code></li>
+                            <li>电视剧：<code>剧名/Season XX/剧名 - SXXEXX.扩展名</code></li>
+                            <li>避免使用中文文件名（可能导致刮削失败）</li>
+                        </ul>
+
+                        <h2>转码优化：榨干硬件性能</h2>
+
+                        <h3>开启硬件转码</h3>
+                        <p>
+                            进入 Plex 设置 → 转码器（Transcoder）：
+                        </p>
+                        <ul>
+                            <li>✅ 使用硬件加速（需要 Plex Pass）</li>
+                            <li>转码临时目录：<code>/transcode</code>（建议使用 SSD 或 RAM Disk）</li>
+                            <li>转码质量：自动（Automatic）</li>
+                            <li>✅ 使用硬件加速进行视频上传（如果支持）</li>
+                        </ul>
+
+                        <h3>RAM Disk 加速转码</h3>
+                        <p>
+                            转码过程会产生大量临时文件，使用 RAM Disk 可以显著提升性能：
+                        </p>
+                        <pre><code># 创建 8GB RAM Disk
+sudo mkdir -p /mnt/ramdisk
+sudo mount -t tmpfs -o size=8G tmpfs /mnt/ramdisk
+
+# 开机自动挂载（编辑 /etc/fstab）
+tmpfs /mnt/ramdisk tmpfs defaults,size=8G 0 0
+
+# 修改 Docker Compose 配置
+volumes:
+  - /mnt/ramdisk:/transcode</code></pre>
+
+                        <h3>转码参数调优</h3>
+                        <p>
+                            Plex 的转码参数可以通过环境变量调整：
+                        </p>
+                        <pre><code>environment:
+  - TRANSCODE_THREADS=4  # 转码线程数
+  - TRANSCODE_THROTTLE_BUFFER=600  # 转码缓冲时间（秒）</code></pre>
+
+                        <h2>远程访问：突破内网限制</h2>
+
+                        <h3>方案一：Plex Relay（最简单）</h3>
+                        <p>
+                            Plex 自带 Relay 服务，无需配置端口转发，但速度较慢（限速 1Mbps）。
+                        </p>
+                        <p>
+                            <strong>适用场景：</strong>应急访问、低码率视频
+                        </p>
+
+                        <h3>方案二：端口转发（推荐）</h3>
+                        <p>
+                            在路由器上配置端口转发，将外网 32400 端口映射到 NAS 的 32400 端口。
+                        </p>
+                        <p>
+                            <strong>步骤：</strong>
+                        </p>
+                        <ol>
+                            <li>登录路由器管理界面</li>
+                            <li>找到"端口转发"或"虚拟服务器"设置</li>
+                            <li>添加规则：外部端口 32400 → 内部 IP（NAS）端口 32400</li>
+                            <li>在 Plex 设置中手动指定公网端口：32400</li>
+                        </ol>
+                        <p>
+                            <strong>注意：</strong>需要公网 IP，如果是运营商 NAT，需要联系客服申请公网 IP。
+                        </p>
+
+                        <h3>方案三：Cloudflare Tunnel（无需公网 IP）</h3>
+                        <p>
+                            如果没有公网 IP，可以使用 Cloudflare Tunnel 实现内网穿透：
+                        </p>
+                        <pre><code># 安装 cloudflared
+wget https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb
+sudo dpkg -i cloudflared-linux-amd64.deb
+
+# 登录 Cloudflare
+cloudflared tunnel login
+
+# 创建隧道
+cloudflared tunnel create plex
+
+# 配置隧道（~/.cloudflared/config.yml）
+tunnel: <TUNNEL_ID>
+credentials-file: /root/.cloudflared/<TUNNEL_ID>.json
+
+ingress:
+  - hostname: plex.yourdomain.com
+    service: http://localhost:32400
+  - service: http_status:404
+
+# 启动隧道
+cloudflared tunnel run plex</code></pre>
+
+                        <p>
+                            <strong>优点：</strong>无需公网 IP，支持 HTTPS<br>
+                            <strong>缺点：</strong>速度受 Cloudflare 节点影响，可能不如直连
+                        </p>
+
+                        <h2>字幕管理：告别手动下载</h2>
+
+                        <h3>Sub-Zero 插件（已停更）</h3>
+                        <p>
+                            Sub-Zero 曾经是 Plex 最好的字幕插件，但 2020 年后停止维护。如果你还在用旧版 Plex，可以继续使用。
+                        </p>
+
+                        <h3>Bazarr（推荐）</h3>
+                        <p>
+                            Bazarr 是独立的字幕管理工具，支持 Plex、Emby、Jellyfin。
+                        </p>
+                        <pre><code>version: '3.8'
+
+services:
+  bazarr:
+    image: linuxserver/bazarr:latest
+    container_name: bazarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Shanghai
+    volumes:
+      - /data/bazarr/config:/config
+      - /data/media:/data
+    ports:
+      - 6767:6767
+    restart: unless-stopped</code></pre>
+
+                        <p>
+                            <strong>配置步骤：</strong>
+                        </p>
+                        <ol>
+                            <li>访问 <code>http://NAS_IP:6767</code></li>
+                            <li>连接 Plex（需要 Plex Token）</li>
+                            <li>添加字幕源：OpenSubtitles、Subscene、射手网</li>
+                            <li>设置自动下载规则：中文 + 英文字幕</li>
+                        </ol>
+
+                        <h2>常见问题与解决方案</h2>
+
+                        <h3>1. 转码失败：Conversion failed</h3>
+                        <p>
+                            <strong>原因：</strong>硬件转码驱动问题或权限不足
+                        </p>
+                        <p>
+                            <strong>解决：</strong>
+                        </p>
+                        <pre><code># 检查 GPU 是否可用
+docker exec -it plex nvidia-smi  # NVIDIA
+docker exec -it plex ls -l /dev/dri  # Intel
+
+# 确保 Plex 用户有权限访问 GPU
+sudo usermod -aG video plex
+sudo usermod -aG render plex</code></pre>
+
+                        <h3>2. 远程访问显示"不可用"</h3>
+                        <p>
+                            <strong>原因：</strong>端口转发配置错误或防火墙拦截
+                        </p>
+                        <p>
+                            <strong>解决：</strong>
+                        </p>
+                        <pre><code># 检查端口是否开放
+sudo ufw allow 32400/tcp
+
+# 测试端口连通性
+curl -I http://YOUR_PUBLIC_IP:32400/web</code></pre>
+
+                        <h3>3. 元数据刮削失败</h3>
+                        <p>
+                            <strong>原因：</strong>文件命名不规范或网络问题
+                        </p>
+                        <p>
+                            <strong>解决：</strong>
+                        </p>
+                        <ul>
+                            <li>检查文件命名是否符合规范</li>
+                            <li>手动匹配：点击电影 → "修复匹配" → 搜索正确的 TMDB ID</li>
+                            <li>配置代理：Plex 设置 → 网络 → 代理服务器</li>
+                        </ul>
+
+                        <h3>4. 4K HDR 转 SDR 色彩失真</h3>
+                        <p>
+                            <strong>原因：</strong>硬件转码不支持 HDR Tone Mapping
+                        </p>
+                        <p>
+                            <strong>解决：</strong>
+                        </p>
+                        <ul>
+                            <li>使用 NVIDIA GPU（P400 及以上）</li>
+                            <li>或者准备两个版本：4K HDR（直接播放）+ 1080p SDR（转码）</li>
+                        </ul>
+
+                        <h2>进阶玩法</h2>
+
+                        <h3>1. 自动化下载：Sonarr + Radarr</h3>
+                        <p>
+                            配合 Sonarr（电视剧）和 Radarr（电影）实现自动追剧：
+                        </p>
+                        <ul>
+                            <li>监控 TMDB/TVDB 新剧集发布</li>
+                            <li>自动搜索种子并下载</li>
+                            <li>下载完成后通知 Plex 刷新媒体库</li>
+                        </ul>
+
+                        <h3>2. 多用户管理</h3>
+                        <p>
+                            Plex 支持创建多个用户账号，每个用户可以单独设置权限：
+                        </p>
+                        <ul>
+                            <li>限制访问特定媒体库（例如：儿童账号只能看动画）</li>
+                            <li>限制转码质量（节省带宽）</li>
+                            <li>查看每个用户的观看历史</li>
+                        </ul>
+
+                        <h3>3. Tautulli 统计分析</h3>
+                        <p>
+                            Tautulli 是 Plex 的监控工具，可以查看：
+                        </p>
+                        <ul>
+                            <li>实时播放状态</li>
+                            <li>历史播放记录</li>
+                            <li>用户活跃度统计</li>
+                            <li>转码性能分析</li>
+                        </ul>
+
+                        <h2>总结</h2>
+                        <p>
+                            从树莓派到自组 NAS，我在 Plex 上折腾了三年。现在的方案（J5040 + P400 + ZFS）已经非常稳定，可以流畅播放 4K HDR，远程访问也没问题。
+                        </p>
+                        <p>
+                            <strong>给新手的建议：</strong>
+                        </p>
+                        <ul>
+                            <li>预算有限：二手 NUC + 外置硬盘（1000-2000 元）</li>
+                            <li>追求性价比：群晖 DS920+ 或 DS923+（3000-4000 元）</li>
+                            <li>极致性能：自组 NAS + NVIDIA GPU（5000-8000 元）</li>
+                        </ul>
+                        <p>
+                            最重要的是：<strong>硬件转码能力</strong>。如果只是直接播放，树莓派都够用；但如果需要转码（尤其是 4K），一定要选择支持 Quick Sync 或 NVENC 的方案。
+                        </p>
+                        <p>
+                            希望这篇文章能帮你少踩坑，早日搭建出自己的私人影院！
+                        </p>
+                    </div>
+
+                    
+                </article>
+            );
+        }
+
+        ReactDOM.render(<Article />, document.getElementById('root'));
+    </script>
+
+    
+
+
+    
+
+
+    
+
+
+    
+
+
+    
+
+
+    <footer>
+        <p>© 2026 Moreyu. Built with passion.</p>
+    </footer>
+
+</body>
+</html>
+    </div>

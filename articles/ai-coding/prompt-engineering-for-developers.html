@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prompt Engineering for Developers：写出更好的AI提示词 | 开发者指南</title>
+    <meta name="description" content="专为开发者设计的Prompt工程指南，掌握与AI高效沟通的技巧，提升AI辅助编程效率。">
+    <meta name="keywords" content="Prompt Engineering,提示词工程,AI编程,开发技巧,Claude,ChatGPT">
+    
+    
+    
+    
+    
+    
+    
+    <style>
+        :root {
+            --bg: #0f0f0f;
+            --bg-elevated: #1a1a1a;
+            --surface: #1e1e1e;
+            --surface-hover: #252525;
+            --text: #e8e8e8;
+            --text-secondary: #a8a8a8;
+            --text-tertiary: #6e6e6e;
+            --accent: #d97706;
+            --accent-hover: #f59e0b;
+            --accent-glow: rgba(217, 119, 6, 0.2);
+            --border: #2a2a2a;
+            --border-hover: #3a3a3a;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.8;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* 导航栏 */
+        nav {
+            background: var(--bg-elevated);
+            border-bottom: 1px solid var(--border);
+            padding: 1.5rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+
+        nav .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        /* 文章容器 - 玻璃态卡片 */
+        .article-wrapper {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 3rem;
+        }
+
+        article {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 4rem;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        /* 文章头部 */
+        .article-header {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .article-meta {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .article-meta span {
+            color: var(--text-tertiary);
+            font-size: 0.875rem;
+        }
+
+        /* 标题样式 */
+        h1 {
+            font-size: 2.75rem;
+            font-weight: 900;
+            color: var(--text);
+            margin-bottom: 1rem;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, var(--text) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--text);
+            margin: 3rem 0 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--border);
+            position: relative;
+        }
+
+        h2::before {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 60px;
+            height: 2px;
+            background: var(--accent);
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text);
+            margin: 2.5rem 0 1rem;
+        }
+
+        h4 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text);
+            margin: 2rem 0 1rem;
+        }
+
+        /* 段落和文本 */
+        p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+            font-size: 1.0625rem;
+        }
+
+        strong {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        /* 列表 */
+        ul, ol {
+            color: var(--text-secondary);
+            margin: 1.5rem 0;
+            padding-left: 2rem;
+        }
+
+        li {
+            margin-bottom: 0.75rem;
+            line-height: 1.8;
+            font-size: 1.0625rem;
+        }
+
+        li::marker {
+            color: var(--accent);
+        }
+
+        /* 代码块 */
+        code {
+            background: var(--bg-elevated);
+            color: var(--accent);
+            padding: 0.25rem 0.5rem;
+            border-radius: 6px;
+            font-family: 'JetBrains Mono', 'Courier New', monospace;
+            font-size: 0.9em;
+            border: 1px solid var(--border);
+        }
+
+        pre {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            overflow-x: auto;
+            margin: 2rem 0;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+            border: none;
+            color: var(--text-secondary);
+        }
+
+        /* 提示框 - 玻璃态效果 */
+        .highlight-box, .warning-box, .success-box, .info-box {
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+            border-left: 4px solid;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .highlight-box {
+            background: rgba(217, 119, 6, 0.1);
+            border-color: var(--accent);
+            border: 1px solid rgba(217, 119, 6, 0.3);
+            border-left: 4px solid var(--accent);
+        }
+
+        .warning-box {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: var(--error);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-left: 4px solid var(--error);
+        }
+
+        .success-box {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: var(--success);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-left: 4px solid var(--success);
+        }
+
+        .info-box {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: #3b82f6;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-left: 4px solid #3b82f6;
+        }
+
+        /* 表格 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            background: var(--bg-elevated);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        th {
+            background: var(--surface);
+            color: var(--text);
+            font-weight: 600;
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 2px solid var(--border);
+        }
+
+        td {
+            padding: 1rem;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--border);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background: var(--surface-hover);
+        }
+
+        /* 链接 */
+        a {
+            color: var(--accent);
+            text-decoration: none;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        a:hover {
+            color: var(--accent-hover);
+        }
+
+        /* 引用 */
+        blockquote {
+            border-left: 4px solid var(--accent);
+            padding-left: 1.5rem;
+            margin: 2rem 0;
+            color: var(--text-secondary);
+            font-style: italic;
+            background: rgba(217, 119, 6, 0.05);
+            padding: 1rem 1.5rem;
+            border-radius: 0 8px 8px 0;
+        }
+
+        /* 分隔线 */
+        hr {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 3rem 0;
+        }
+
+        /* 页脚 */
+        footer {
+            background: var(--bg-elevated);
+            border-top: 1px solid var(--border);
+            padding: 3rem 0;
+            margin-top: 6rem;
+            text-align: center;
+        }
+
+        footer p {
+            color: var(--text-tertiary);
+            font-size: 0.9rem;
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            article {
+                padding: 2rem 1.5rem;
+            }
+
+            .article-wrapper {
+                padding: 0 1.5rem;
+                margin: 2rem auto;
+            }
+
+            nav .container {
+                padding: 0 1.5rem;
+            }
+        }
+    </style>
+
+
+
+
+
+
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link rel="stylesheet" href="../../styles/article.css">
+</head>
+<body>
+
+    <nav>
+        <div class="container">
+            <a href="../../index.html" style="font-size: 1.5rem; font-weight: 900; color: var(--text);">← 返回首页</a>
+            <div style="display: flex; gap: 2rem;">
+                <a href="../../articles.html">文章列表</a>
+                <a href="../../index.html">首页</a>
+            </div>
+        </div>
+    </nav>
+
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        function Article() {
+            return (
+<div>
+        <div>
+            <div className="article-sidebar"><div className="sidebar-sticky"><h3 className="sidebar-title">文章导航</h3>
+                    <a href="#intro" >引言</a>
+                    <a href="#basics" >基础原则</a>
+                    <a href="#patterns" >常用模式</a>
+                    <a href="#advanced" >高级技巧</a>
+                    <a href="#code-tasks" >编程任务</a>
+                    <a href="#debugging" >调试与优化</a>
+                    <a href="#pitfalls" >常见错误</a>
+                    <a href="#tools" >工具推荐</a>
+                    <a href="#conclusion" >总结</a>
+                </div>
+            </div>
+
+            <div className="article-content"><article className="article-container">
+                    <div>
+                        <div>
+                            <h1 >Prompt Engineering for Developers</h1>
+                            <p >写出更好的AI提示词，让AI真正理解你的需求</p>
+                            <div>
+                                <span>发布时间：2026年1月</span>
+                                <span >•</span>
+                                <span>阅读时间：约 18 分钟</span>
+                                <span >•</span>
+                                <span>字数：约 8,500 字</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <section id="intro" >
+                            <h2 >引言：Prompt是与AI沟通的语言</h2>
+
+                            <div>
+                                <p >💡 核心观点</p>
+                                <p>Prompt Engineering不是玄学，而是一门科学。掌握正确的方法，你就能让AI准确理解需求，生成高质量代码。本文专为开发者设计，教你如何写出有效的Prompt。</p>
+                            </div>
+
+                            <p >
+                                AI编程工具的效果，70%取决于Prompt质量。同样的任务，好的Prompt能让AI一次生成完美代码，差的Prompt则需要反复修改。作为开发者，学会写Prompt就像学会写文档一样重要。
+                            </p>
+
+                            <p >
+                                我花了一年时间研究Prompt工程，总结出一套适合开发者的方法论。这些方法已经在数百个项目中验证，能显著提升AI辅助编程的效率。
+                            </p>
+
+                            <div>
+                                <div>
+                                    <div>3x</div>
+                                    <p >代码质量提升</p>
+                                </div>
+                                <div>
+                                    <div>5x</div>
+                                    <p >开发效率提升</p>
+                                </div>
+                                <div>
+                                    <div>80%</div>
+                                    <p >一次成功率</p>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section id="basics" >
+                            <h2 >基础原则</h2>
+
+                            <h3 >原则1：清晰具体</h3>
+
+                            <div>
+                                <p >模糊的Prompt得到模糊的结果。越具体，AI越能理解你的需求。</p>
+                                
+                                <div>
+                                    <div>
+                                        <p >❌ 模糊的Prompt</p>
+                                        <p >"写一个登录功能"</p>
+                                    </div>
+
+                                    <div>
+                                        <p >✅ 清晰的Prompt</p>
+                                        <p >"创建一个React登录组件，使用TypeScript，包含邮箱和密码输入框，表单验证（邮箱格式、密码最少8位），调用POST /api/login接口，成功后跳转到/dashboard，失败显示错误提示"</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h3 >原则2：提供上下文</h3>
+
+                            <div>
+                                <p >AI需要知道项目背景、技术栈、代码规范。</p>
+                                
+                                <div>
+                                    <div>
+                                        <p >❌ 缺少上下文</p>
+                                        <p >"优化这个函数"</p>
+                                    </div>
+
+                                    <div>
+                                        <p >✅ 包含上下文</p>
+                                        <p >"这是一个Node.js API项目，使用Express框架。优化这个函数，要求：1) 使用async/await而非回调，2) 添加错误处理，3) 使用TypeScript类型，4) 遵循项目的命名规范（camelCase）"</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h3 >原则3：示例驱动</h3>
+
+                            <div>
+                                <p >提供输入输出示例，AI能更准确理解需求。</p>
+                                
+                                <div>
+                                    <p >✅ 包含示例</p>
+                                    <div>
+                                        <pre>创建一个日期格式化函数
+
+输入示例：
+- new Date('2026-01-15') → '2026-01-15'
+- new Date('2026-1-5') → '2026-01-05'
+- null → ''
+
+要求：
+- 使用TypeScript
+- 处理边界情况
+- 返回YYYY-MM-DD格式</pre>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h3 >原则4：分步指导</h3>
+
+                            <div>
+                                <p >复杂任务拆分成步骤，AI更容易理解和执行。</p>
+                                
+                                <div>
+                                    <p >✅ 分步骤</p>
+                                    <div>
+                                        <pre>创建用户认证系统，按以下步骤：
+
+1. 定义User接口（id, email, password, createdAt）
+2. 创建AuthService类
+3. 实现register方法（验证邮箱、加密密码、保存数据库）
+4. 实现login方法（验证凭据、生成JWT token）
+5. 实现logout方法（清除token）
+6. 添加单元测试</pre>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h3 >原则5：约束条件</h3>
+
+                            <div>
+                                <p >明确限制和要求，避免AI生成不符合规范的代码。</p>
+                                
+                                <div>
+                                    <p >✅ 包含约束</p>
+                                    <div>
+                                        <pre>实现数据缓存功能
+
+约束条件：
+- 不使用第三方库（如Redis）
+- 使用内存缓存
+- 支持过期时间
+- 最大缓存100条
+- LRU淘汰策略
+- 线程安全</pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section id="patterns" >
+                            <h2 >常用Prompt模式</h2>
+
+                            <h3 >模式1：任务模板</h3>
+
+                            <div>
+                                <p >标准化的任务描述模板，适用于大多数编程任务。</p>
+                                
+                                <div>
+                                    <pre>任务：[动词] + [对象] + [目标]
+技术栈：[语言/框架/库]
+输入：[数据类型和格式]
+输出：[期望结果]
+约束：[限制条件]
+示例：[输入输出示例]
+
+示例：
+任务：创建一个函数，验证用户输入的邮箱格式
+技术栈：TypeScript
+输入：string类型的邮箱地址
+输出：boolean，true表示有效
+约束：支持国际域名，不使用正则库
+示例：
+  - 'user@example.com' → true
+  - 'invalid.email' → false</pre>
+                                </div>
+                            </div>
+
+                            <h3 >模式2：角色扮演</h3>
+
+                            <div>
+                                <p >让AI扮演特定角色，获得更专业的建议。</p>
+                                
+                                <div>
+                                    <pre>你是一位资深的[领域]工程师，拥有10年经验。
+
+请帮我[任务描述]，要求：
+- 遵循[领域]最佳实践
+- 考虑性能和安全性
+- 提供详细注释
+- 解释关键决策
+
+示例：
+你是一位资深的React工程师，拥有10年经验。
+
+请帮我设计一个复杂表单组件，要求：
+- 遵循React最佳实践
+- 使用Hooks管理状态
+- 支持表单验证
+- 性能优化（避免不必要的重渲染）</pre>
+                                </div>
+                            </div>
+
+                            <h3 >模式3：思维链</h3>
+
+                            <div>
+                                <p >引导AI逐步思考，得到更准确的结果。</p>
+                                
+                                <div>
+                                    <pre>请按以下步骤思考并实现：
+
+1. 分析问题：[问题描述]
+2. 列出可能的解决方案
+3. 评估每个方案的优缺点
+4. 选择最佳方案并说明理由
+5. 实现代码
+6. 添加测试用例
+
+示例：
+请按以下步骤思考并实现一个排序算法：
+
+1. 分析问题：需要对大量数据排序
+2. 列出可能的解决方案：冒泡、快排、归并
+3. 评估优缺点：时间复杂度、空间复杂度、稳定性
+4. 选择最佳方案：快排（O(n log n)，原地排序）
+5. 实现代码
+6. 添加测试用例</pre>
+                                </div>
+                            </div>
+
+                            <h3 >模式4：对比学习</h3>
+
+                            <div>
+                                <p >提供正反例，帮助AI理解你的偏好。</p>
+                                
+                                <div>
+                                    <pre>好的示例：
+[展示你期望的代码风格]
+
+不好的示例：
+[展示你不希望的代码风格]
+
+请按照"好的示例"的风格实现[任务]
+
+示例：
+好的示例（函数式风格）：
+const getAdultUsers = users => users.filter(u => u.age >= 18);
+
+不好的示例（命令式风格）：
+function getAdultUsers(users) {
+  const result = [];
+  for (let i = 0; i < users.length; i++) {
+    if (users[i].age >= 18) {
+      result.push(users[i]);
+    }
+  }
+  return result;
+}
+
+请按照"好的示例"的风格实现筛选活跃用户的函数</pre>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section id="advanced" >
+                            <h2 >高级技巧</h2>
+
+                            <div>
+                                <h3 >技巧1：迭代优化</h3>
+                                <p >不要期望一次完美，通过迭代改进Prompt。</p>
+                                <div>
+                                    <pre>第1次：创建一个API客户端
+第2次：创建一个TypeScript API客户端，支持GET/POST
+第3次：创建一个TypeScript API客户端，支持GET/POST/PUT/DELETE，包含错误处理和重试机制</pre>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h3 >技巧2：使用元提示</h3>
+                                <p >告诉AI如何理解你的Prompt。</p>
+                                <div>
+                                    <pre>当我说"优化"时，我指的是：
+1. 提高性能（时间复杂度）
+2. 减少内存使用
+3. 提高代码可读性
+4. 遵循最佳实践
+
+现在，请优化这个函数：[代码]</pre>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h3 >技巧3：Few-Shot Learning</h3>
+                                <p >提供多个示例，建立模式。</p>
+                                <div>
+                                    <pre>示例1：
+输入：getUserById
+输出：get_user_by_id
+
+示例2：
+输入：createNewPost
+输出：create_new_post
+
+现在转换：deleteOldComments</pre>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section id="code-tasks" >
+                            <h2 >常见编程任务的Prompt</h2>
+
+                            <div>
+                                <h3 >创建API端点</h3>
+                                <div>
+                                    <pre>创建一个Express API端点：
+- 路径：POST /api/users
+- 功能：创建新用户
+- 输入：{ name, email, password }
+- 验证：邮箱格式、密码最少8位
+- 处理：密码加密（bcrypt）、保存到MongoDB
+- 输出：{ id, name, email, createdAt }
+- 错误处理：400（验证失败）、500（服务器错误）</pre>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h3 >数据库查询优化</h3>
+                                <div>
+                                    <pre>优化这个MongoDB查询：
+[当前代码]
+
+要求：
+- 添加索引建议
+- 使用聚合管道
+- 减少数据传输
+- 添加分页支持
+- 解释优化原理</pre>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h3 >单元测试</h3>
+                                <div>
+                                    <pre>为这个函数编写Jest测试：
+[函数代码]
+
+要求：
+- 测试正常情况
+- 测试边界条件
+- 测试错误处理
+- 使用describe/it结构
+- 覆盖率100%</pre>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section id="debugging" >
+                            <h2 >调试与优化Prompt</h2>
+
+                            <div>
+                                <p >🔍 Prompt不工作时的检查清单</p>
+                                <ul >
+                                    <li>✓ 是否足够具体？</li>
+                                    <li>✓ 是否提供了上下文？</li>
+                                    <li>✓ 是否包含示例？</li>
+                                    <li>✓ 是否有明确的约束？</li>
+                                    <li>✓ 是否拆分了复杂任务？</li>
+                                </ul>
+                            </div>
+                        </section>
+
+                        <section id="pitfalls" >
+                            <h2 >常见错误</h2>
+
+                            <div>
+                                <p >❌ 错误1：过于简短</p>
+                                <p >"写个函数" → AI不知道要实现什么</p>
+                            </div>
+
+                            <div>
+                                <p >❌ 错误2：假设AI知道上下文</p>
+                                <p >"用那个库实现" → AI不知道"那个库"是什么</p>
+                            </div>
+
+                            <div>
+                                <p >❌ 错误3：一次要求太多</p>
+                                <p >"创建完整的电商系统" → 任务太大，拆分成小任务</p>
+                            </div>
+                        </section>
+
+                        <section id="tools" >
+                            <h2 >工具推荐</h2>
+
+                            <div>
+                                <div>
+                                    <h4 >Prompt库</h4>
+                                    <ul >
+                                        <li>• PromptBase - Prompt市场</li>
+                                        <li>• Awesome Prompts - GitHub集合</li>
+                                        <li>• ShareGPT - 分享对话</li>
+                                    </ul>
+                                </div>
+
+                                <div>
+                                    <h4 >测试工具</h4>
+                                    <ul >
+                                        <li>• Playground - 测试Prompt</li>
+                                        <li>• PromptPerfect - 优化工具</li>
+                                        <li>• LangChain - Prompt框架</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section id="conclusion" >
+                            <h2 >总结</h2>
+
+                            <div>
+                                <p >🎯 核心要点</p>
+                                <ul >
+                                    <li><strong>清晰具体：</strong>详细描述需求</li>
+                                    <li><strong>提供上下文：</strong>技术栈、规范、背景</li>
+                                    <li><strong>使用示例：</strong>输入输出示例</li>
+                                    <li><strong>分步指导：</strong>复杂任务拆分</li>
+                                    <li><strong>持续优化：</strong>迭代改进Prompt</li>
+                                </ul>
+                            </div>
+
+                            <div>
+                                <p >🚀 立即行动</p>
+                                <p >从今天开始，用本文的方法改进你的Prompt。你会发现AI变得更"聪明"，代码质量显著提升。</p>
+                                <p>记住：好的Prompt是AI编程成功的关键。投入时间学习Prompt工程，回报是巨大的。</p>
+                            </div>
+                        </section>
+
+                        <div>
+                            <div>
+                                <div>
+                                    <p>最后更新：2026年1月</p>
+                                    <p >分类：AI & VIBE CODING</p>
+                                </div>
+                                <div>
+                                    <p>作者：M2REYU</p>
+                                    <p >字数：约 8,500 字</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </div>
+
+    
+
+    <script>
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('text-amber-600', 'font-bold');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('text-amber-600', 'font-bold');
+                }
+            });
+        });
+    </script>
+            );
+        }
+
+        ReactDOM.render(<Article />, document.getElementById('root'));
+    </script>
+
+    <footer>
+        <p>© 2026 Moreyu. Built with passion.</p>
+    </footer>
+
+</body>
+</html>

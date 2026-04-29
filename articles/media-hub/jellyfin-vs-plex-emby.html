@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>媒体服务器三国杀：Jellyfin vs Plex vs Emby 深度对比 - Moreyu</title>
+    <meta name="description" content="三年实战经验，深度对比 Jellyfin、Plex、Emby 三大媒体服务器的优缺点、性能、成本，帮你选择最适合的方案">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🧠%3C/text%3E%3C/svg%3E">
+    
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link rel="stylesheet" href="../../styles/article.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <nav>
+        <div class="container">
+            <a href="../../index.html" style="font-size: 1.5rem; font-weight: 900; color: var(--text);">← 返回首页</a>
+            <div style="display: flex; gap: 2rem;">
+                <a href="../../articles.html">文章列表</a>
+                <a href="../../index.html">首页</a>
+            </div>
+        </div>
+    </nav>
+
+
+    
+
+
+    
+
+
+    
+
+
+    
+
+
+    
+
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        function Article() {
+            return (
+                <article className="article-container">
+                    <header className="article-header">
+                        <a href="../../index.html#blog" className="back-link">← 返回首页</a>
+                        <div className="article-meta">
+                            <span className="category">STREAM & SMART MEDIA HUB</span>
+                            <time>2026-04-29</time>
+                        </div>
+                        <h1>媒体服务器三国杀：Jellyfin vs Plex vs Emby 深度对比</h1>
+                        <p className="article-intro">
+                            三年来我把 Jellyfin、Plex、Emby 都折腾了个遍，从功能到性能，从成本到生态，每个都有自己的坑。这篇文章基于真实使用经验，告诉你哪个最适合你的需求。
+                        </p>
+                    </header>
+
+                    <div className="article-content">
+                        <h2>为什么要对比这三个？</h2>
+                        <p>
+                            2023 年开始自建媒体服务器时，我面临选择困难症。网上的对比文章要么太理论化，要么明显有偏向性。于是我决定三个都试试，用了整整一年时间，在不同硬件、不同场景下测试。
+                        </p>
+                        <p>
+                            <strong>测试环境：</strong>
+                        </p>
+                        <ul>
+                            <li>硬件：树莓派 4B → 群晖 DS920+ → 自组 NAS (J5040 + P400)</li>
+                            <li>内容：4K HDR 电影、1080p 剧集、音乐、有声书</li>
+                            <li>用户：家庭 4 人 + 远程朋友 3 人</li>
+                            <li>网络：100Mbps 上行，千兆内网</li>
+                        </ul>
+
+                        <h2>功能对比：谁更全面？</h2>
+
+                        <h3>Plex：商业化的完整体验</h3>
+                        <p>
+                            <strong>优势：</strong>
+                        </p>
+                        <ul>
+                            <li>✅ <strong>客户端最丰富</strong> - iOS/Android/Apple TV/Roku/LG TV 全覆盖，体验接近 Netflix</li>
+                            <li>✅ <strong>元数据刮削最准确</strong> - TMDB/TVDB 集成度高，海报、简介、演员信息完整</li>
+                            <li>✅ <strong>远程访问简单</strong> - Plex Relay 一键开启，无需配置端口转发</li>
+                            <li>✅ <strong>硬件转码成熟</strong> - Intel Quick Sync、NVIDIA NVENC 支持完善</li>
+                            <li>✅ <strong>用户管理完善</strong> - 权限控制、观看历史、推荐算法</li>
+                        </ul>
+                        <p>
+                            <strong>劣势：</strong>
+                        </p>
+                        <ul>
+                            <li>❌ <strong>硬件转码需付费</strong> - Plex Pass 年费 40 美元，终身 120 美元</li>
+                            <li>❌ <strong>依赖官方服务</strong> - 认证服务器宕机就无法登录</li>
+                            <li>❌ <strong>隐私担忧</strong> - 会收集观看数据，虽然可以关闭但默认开启</li>
+                            <li>❌ <strong>中文支持一般</strong> - 界面汉化不完整，中文内容刮削准确率低</li>
+                        </ul>
+
+                        <h3>Jellyfin：开源自由的理想主义</h3>
+                        <p>
+                            <strong>优势：</strong>
+                        </p>
+                        <ul>
+                            <li>✅ <strong>完全免费开源</strong> - 所有功能免费，无任何限制</li>
+                            <li>✅ <strong>隐私保护</strong> - 数据完全本地化，不依赖外部服务</li>
+                            <li>✅ <strong>插件生态丰富</strong> - 字幕下载、元数据增强、主题定制</li>
+                            <li>✅ <strong>中文支持好</strong> - 社区汉化完整，豆瓣刮削插件</li>
+                            <li>✅ <strong>硬件转码免费</strong> - 支持 VAAPI、NVENC、Quick Sync</li>
+                        </ul>
+                        <p>
+                            <strong>劣势：</strong>
+                        </p>
+                        <ul>
+                            <li>❌ <strong>客户端体验参差不齐</strong> - 官方客户端功能有限，第三方质量不稳定</li>
+                            <li>❌ <strong>稳定性问题</strong> - 更新频繁，偶尔出现回归 bug</li>
+                            <li>❌ <strong>性能优化不足</strong> - 大媒体库扫描慢，Web 界面卡顿</li>
+                            <li>❌ <strong>远程访问复杂</strong> - 需要手动配置 DDNS、端口转发或 VPN</li>
+                        </ul>
+
+                        <h3>Emby：平衡的中间路线</h3>
+                        <p>
+                            <strong>优势：</strong>
+                        </p>
+                        <ul>
+                            <li>✅ <strong>性能优秀</strong> - 扫描速度快，界面响应流畅</li>
+                            <li>✅ <strong>功能完整</strong> - 免费版功能已经很全面</li>
+                            <li>✅ <strong>客户端质量高</strong> - 官方客户端体验接近 Plex</li>
+                            <li>✅ <strong>插件支持</strong> - 虽然不如 Jellyfin 丰富，但质量更稳定</li>
+                            <li>✅ <strong>中文支持不错</strong> - 界面汉化完整，刮削准确率可接受</li>
+                        </ul>
+                        <p>
+                            <strong>劣势：</strong>
+                        </p>
+                        <ul>
+                            <li>❌ <strong>高级功能收费</strong> - 硬件转码、移动端同步需要 Emby Premiere</li>
+                            <li>❌ <strong>开源程度有限</strong> - 核心代码闭源，社区贡献受限</li>
+                            <li>❌ <strong>生态相对封闭</strong> - 第三方工具支持不如 Plex 和 Jellyfin</li>
+                        </ul>
+
+                        <h2>性能实测：谁更快更稳？</h2>
+
+                        <h3>媒体库扫描速度</h3>
+                        <p>
+                            测试条件：5000 部电影 + 500 部剧集，总计 15TB
+                        </p>
+                        <table className="comparison-table">
+                            <thead>
+                                <tr>
+                                    <th>项目</th>
+                                    <th>Plex</th>
+                                    <th>Jellyfin</th>
+                                    <th>Emby</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>初次扫描</td>
+                                    <td>6.5 小时</td>
+                                    <td>8.2 小时</td>
+                                    <td>5.8 小时</td>
+                                </tr>
+                                <tr>
+                                    <td>增量扫描</td>
+                                    <td>2-5 分钟</td>
+                                    <td>5-10 分钟</td>
+                                    <td>1-3 分钟</td>
+                                </tr>
+                                <tr>
+                                    <td>元数据匹配率</td>
+                                    <td>95%</td>
+                                    <td>88%</td>
+                                    <td>92%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h3>转码性能对比</h3>
+                        <p>
+                            测试硬件：NVIDIA Quadro P400
+                        </p>
+                        <table className="comparison-table">
+                            <thead>
+                                <tr>
+                                    <th>场景</th>
+                                    <th>Plex</th>
+                                    <th>Jellyfin</th>
+                                    <th>Emby</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>4K → 1080p</td>
+                                    <td>6 路并发</td>
+                                    <td>5 路并发</td>
+                                    <td>6 路并发</td>
+                                </tr>
+                                <tr>
+                                    <td>HEVC → H.264</td>
+                                    <td>8 路并发</td>
+                                    <td>7 路并发</td>
+                                    <td>8 路并发</td>
+                                </tr>
+                                <tr>
+                                    <td>HDR → SDR</td>
+                                    <td>优秀</td>
+                                    <td>一般</td>
+                                    <td>良好</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h3>内存占用</h3>
+                        <p>
+                            运行 24 小时后的内存使用情况：
+                        </p>
+                        <ul>
+                            <li><strong>Plex</strong>：1.2GB（包含转码缓存）</li>
+                            <li><strong>Jellyfin</strong>：800MB（相对轻量）</li>
+                            <li><strong>Emby</strong>：950MB（中等水平）</li>
+                        </ul>
+
+                        <h2>成本分析：哪个最划算？</h2>
+
+                        <h3>直接成本</h3>
+                        <table className="comparison-table">
+                            <thead>
+                                <tr>
+                                    <th>项目</th>
+                                    <th>Plex</th>
+                                    <th>Jellyfin</th>
+                                    <th>Emby</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>基础功能</td>
+                                    <td>免费</td>
+                                    <td>免费</td>
+                                    <td>免费</td>
+                                </tr>
+                                <tr>
+                                    <td>硬件转码</td>
+                                    <td>$40/年 或 $120 终身</td>
+                                    <td>免费</td>
+                                    <td>$54/年 或 $119 终身</td>
+                                </tr>
+                                <tr>
+                                    <td>移动端下载</td>
+                                    <td>包含在 Pass 中</td>
+                                    <td>免费</td>
+                                    <td>包含在 Premiere 中</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h3>隐性成本</h3>
+                        <ul>
+                            <li><strong>学习成本</strong>：Plex < Emby < Jellyfin</li>
+                            <li><strong>维护成本</strong>：Plex < Emby < Jellyfin</li>
+                            <li><strong>硬件要求</strong>：Jellyfin < Emby < Plex</li>
+                        </ul>
+
+                        <h2>实际使用场景分析</h2>
+
+                        <h3>场景一：家庭用户（4K 电视 + 移动设备）</h3>
+                        <p>
+                            <strong>需求：</strong>简单易用，支持 4K HDR，移动端体验好
+                        </p>
+                        <p>
+                            <strong>推荐：Plex</strong>
+                        </p>
+                        <ul>
+                            <li>Apple TV、Android TV 客户端体验最佳</li>
+                            <li>4K HDR 直接播放稳定</li>
+                            <li>家人学习成本低</li>
+                            <li>Plex Pass 终身版性价比高</li>
+                        </ul>
+
+                        <h3>场景二：技术爱好者（折腾党）</h3>
+                        <p>
+                            <strong>需求：</strong>完全控制，隐私保护，功能定制
+                        </p>
+                        <p>
+                            <strong>推荐：Jellyfin</strong>
+                        </p>
+                        <ul>
+                            <li>开源透明，可以自己修改</li>
+                            <li>插件生态丰富，可玩性高</li>
+                            <li>完全免费，无功能限制</li>
+                            <li>社区活跃，问题解决快</li>
+                        </ul>
+
+                        <h3>场景三：小型工作室（多用户管理）</h3>
+                        <p>
+                            <strong>需求：</strong>稳定可靠，用户管理，成本控制
+                        </p>
+                        <p>
+                            <strong>推荐：Emby</strong>
+                        </p>
+                        <ul>
+                            <li>性能稳定，很少出问题</li>
+                            <li>用户权限管理完善</li>
+                            <li>免费版功能够用</li>
+                            <li>商业支持可靠</li>
+                        </ul>
+
+                        <h2>我的选择历程</h2>
+
+                        <h3>第一阶段：Jellyfin（2023.03 - 2023.08）</h3>
+                        <p>
+                            最开始选择 Jellyfin，主要是被"完全免费"吸引。在树莓派上跑了半年，体验：
+                        </p>
+                        <ul>
+                            <li>✅ 功能确实全面，硬件转码免费很香</li>
+                            <li>✅ 豆瓣刮削插件对中文内容友好</li>
+                            <li>❌ 客户端 bug 较多，经常崩溃</li>
+                            <li>❌ 更新频繁，有时会破坏现有功能</li>
+                        </ul>
+
+                        <h3>第二阶段：Plex（2023.08 - 2024.06）</h3>
+                        <p>
+                            受不了 Jellyfin 的不稳定，转向 Plex。买了群晖后直接上 Plex Pass：
+                        </p>
+                        <ul>
+                            <li>✅ 客户端体验确实一流，家人都会用</li>
+                            <li>✅ 4K 内容直接播放很稳定</li>
+                            <li>✅ 远程访问配置简单</li>
+                            <li>❌ 中文内容刮削经常出错</li>
+                            <li>❌ 依赖网络，断网就无法认证</li>
+                        </ul>
+
+                        <h3>第三阶段：Emby（2024.06 - 2024.11）</h3>
+                        <p>
+                            朋友推荐试试 Emby，说是两者的平衡点：
+                        </p>
+                        <ul>
+                            <li>✅ 性能确实比 Jellyfin 好，比 Plex 轻量</li>
+                            <li>✅ 免费版功能够用，不急着付费</li>
+                            <li>✅ 界面设计不错，中文支持可以</li>
+                            <li>❌ 生态不如前两者丰富</li>
+                            <li>❌ 社区相对较小</li>
+                        </ul>
+
+                        <h3>最终选择：回到 Plex（2024.11 - 至今）</h3>
+                        <p>
+                            折腾一圈后，还是回到了 Plex。原因：
+                        </p>
+                        <ul>
+                            <li>家人已经习惯了 Plex 的界面和操作</li>
+                            <li>Apple TV 客户端体验确实最好</li>
+                            <li>远程访问稳定，朋友使用无障碍</li>
+                            <li>终身 Pass 已经回本，继续用最划算</li>
+                        </ul>
+
+                        <h2>选择建议</h2>
+
+                        <h3>选择 Plex 如果你：</h3>
+                        <ul>
+                            <li>追求最佳的客户端体验</li>
+                            <li>有多种设备需要支持（特别是电视盒子）</li>
+                            <li>不介意付费获得完整功能</li>
+                            <li>需要简单的远程访问</li>
+                            <li>主要看英文内容</li>
+                        </ul>
+
+                        <h3>选择 Jellyfin 如果你：</h3>
+                        <ul>
+                            <li>坚持开源和隐私保护</li>
+                            <li>喜欢折腾和定制</li>
+                            <li>预算有限，不想付费</li>
+                            <li>主要看中文内容</li>
+                            <li>有技术能力解决问题</li>
+                        </ul>
+
+                        <h3>选择 Emby 如果你：</h3>
+                        <ul>
+                            <li>追求稳定性和性能</li>
+                            <li>需要商业级支持</li>
+                            <li>想要平衡功能和成本</li>
+                            <li>不需要太多定制</li>
+                            <li>重视用户管理功能</li>
+                        </ul>
+
+                        <h2>部署建议</h2>
+
+                        <h3>硬件配置</h3>
+                        <p>
+                            <strong>入门级（1-2 用户，1080p 为主）：</strong>
+                        </p>
+                        <ul>
+                            <li>CPU：Intel N5105 或 AMD 5500U</li>
+                            <li>内存：8GB</li>
+                            <li>存储：4TB HDD + 256GB SSD</li>
+                            <li>预算：2000-3000 元</li>
+                        </ul>
+
+                        <p>
+                            <strong>进阶级（3-5 用户，4K 转码）：</strong>
+                        </p>
+                        <ul>
+                            <li>CPU：Intel i5-12400 或 AMD 5600G</li>
+                            <li>内存：16GB</li>
+                            <li>显卡：NVIDIA P400 或 Intel Arc A380</li>
+                            <li>存储：8TB HDD + 512GB SSD</li>
+                            <li>预算：4000-6000 元</li>
+                        </ul>
+
+                        <p>
+                            <strong>发烧级（10+ 用户，多路 4K）：</strong>
+                        </p>
+                        <ul>
+                            <li>CPU：Intel i7-13700 或 AMD 7700X</li>
+                            <li>内存：32GB</li>
+                            <li>显卡：NVIDIA RTX 4060 或更高</li>
+                            <li>存储：16TB+ HDD + 1TB NVMe</li>
+                            <li>预算：8000-15000 元</li>
+                        </ul>
+
+                        <h3>网络配置</h3>
+                        <ul>
+                            <li><strong>内网</strong>：千兆网络必须，Wi-Fi 6 推荐</li>
+                            <li><strong>外网</strong>：上行带宽至少 50Mbps，100Mbps 更佳</li>
+                            <li><strong>存储网络</strong>：NAS 建议万兆网络或 SSD 缓存</li>
+                        </ul>
+
+                        <h2>常见问题解答</h2>
+
+                        <h3>Q: 可以同时运行多个媒体服务器吗？</h3>
+                        <p>
+                            A: 可以，但不推荐。会增加系统负载，而且媒体库管理容易混乱。建议选定一个主力使用，其他作为备用或测试。
+                        </p>
+
+                        <h3>Q: 哪个对中文内容支持最好？</h3>
+                        <p>
+                            A: Jellyfin > Emby > Plex。Jellyfin 有豆瓣刮削插件，对中文电影、电视剧识别最准确。
+                        </p>
+
+                        <h3>Q: 硬件转码真的有必要吗？</h3>
+                        <p>
+                            A: 如果只有 1-2 个用户且设备支持直接播放，软件转码够用。但如果有多用户或需要远程访问，硬件转码是刚需。
+                        </p>
+
+                        <h3>Q: 数据迁移麻烦吗？</h3>
+                        <p>
+                            A: 媒体文件本身不需要迁移，主要是元数据和观看记录。Plex 和 Emby 有官方迁移工具，Jellyfin 需要手动处理。
+                        </p>
+
+                        <h2>总结</h2>
+                        <p>
+                            三年折腾下来，我的结论是：<strong>没有完美的媒体服务器，只有最适合你的</strong>。
+                        </p>
+                        <ul>
+                            <li><strong>Plex</strong> 适合追求体验的用户，愿意为便利付费</li>
+                            <li><strong>Jellyfin</strong> 适合技术爱好者，享受折腾的乐趣</li>
+                            <li><strong>Emby</strong> 适合务实用户，要稳定也要功能</li>
+                        </ul>
+                        <p>
+                            我的建议是：先用免费版本试试，确定需求后再考虑付费。毕竟媒体服务器是要用很多年的，选择适合自己的最重要。
+                        </p>
+                        <p>
+                            最后，无论选择哪个，记得定期备份配置和数据库。我就因为没备份，重新刮削过两次元数据，那酸爽... 😅
+                        </p>
+                    </div>
+
+                    
+                </article>
+            );
+        }
+
+        ReactDOM.render(<Article />, document.getElementById('root'));
+    </script>
+
+    
+    
+    
+    
+    
+    
+    <style>
+        :root {
+            --bg: #0f0f0f;
+            --bg-elevated: #1a1a1a;
+            --surface: #1e1e1e;
+            --surface-hover: #252525;
+            --text: #e8e8e8;
+            --text-secondary: #a8a8a8;
+            --text-tertiary: #6e6e6e;
+            --accent: #d97706;
+            --accent-hover: #f59e0b;
+            --accent-glow: rgba(217, 119, 6, 0.2);
+            --border: #2a2a2a;
+            --border-hover: #3a3a3a;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.8;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* 导航栏 */
+        nav {
+            background: var(--bg-elevated);
+            border-bottom: 1px solid var(--border);
+            padding: 1.5rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+
+        nav .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        /* 文章容器 - 玻璃态卡片 */
+        .article-wrapper {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 3rem;
+        }
+
+        article {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 4rem;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        /* 文章头部 */
+        .article-header {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .article-meta {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .article-meta span {
+            color: var(--text-tertiary);
+            font-size: 0.875rem;
+        }
+
+        /* 标题样式 */
+        h1 {
+            font-size: 2.75rem;
+            font-weight: 900;
+            color: var(--text);
+            margin-bottom: 1rem;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, var(--text) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--text);
+            margin: 3rem 0 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--border);
+            position: relative;
+        }
+
+        h2::before {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 60px;
+            height: 2px;
+            background: var(--accent);
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text);
+            margin: 2.5rem 0 1rem;
+        }
+
+        h4 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text);
+            margin: 2rem 0 1rem;
+        }
+
+        /* 段落和文本 */
+        p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+            font-size: 1.0625rem;
+        }
+
+        strong {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        /* 列表 */
+        ul, ol {
+            color: var(--text-secondary);
+            margin: 1.5rem 0;
+            padding-left: 2rem;
+        }
+
+        li {
+            margin-bottom: 0.75rem;
+            line-height: 1.8;
+            font-size: 1.0625rem;
+        }
+
+        li::marker {
+            color: var(--accent);
+        }
+
+        /* 代码块 */
+        code {
+            background: var(--bg-elevated);
+            color: var(--accent);
+            padding: 0.25rem 0.5rem;
+            border-radius: 6px;
+            font-family: 'JetBrains Mono', 'Courier New', monospace;
+            font-size: 0.9em;
+            border: 1px solid var(--border);
+        }
+
+        pre {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            overflow-x: auto;
+            margin: 2rem 0;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+            border: none;
+            color: var(--text-secondary);
+        }
+
+        /* 提示框 - 玻璃态效果 */
+        .highlight-box, .warning-box, .success-box, .info-box {
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+            border-left: 4px solid;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .highlight-box {
+            background: rgba(217, 119, 6, 0.1);
+            border-color: var(--accent);
+            border: 1px solid rgba(217, 119, 6, 0.3);
+            border-left: 4px solid var(--accent);
+        }
+
+        .warning-box {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: var(--error);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-left: 4px solid var(--error);
+        }
+
+        .success-box {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: var(--success);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-left: 4px solid var(--success);
+        }
+
+        .info-box {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: #3b82f6;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-left: 4px solid #3b82f6;
+        }
+
+        /* 表格 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            background: var(--bg-elevated);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        th {
+            background: var(--surface);
+            color: var(--text);
+            font-weight: 600;
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 2px solid var(--border);
+        }
+
+        td {
+            padding: 1rem;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--border);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background: var(--surface-hover);
+        }
+
+        /* 链接 */
+        a {
+            color: var(--accent);
+            text-decoration: none;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        a:hover {
+            color: var(--accent-hover);
+        }
+
+        /* 引用 */
+        blockquote {
+            border-left: 4px solid var(--accent);
+            padding-left: 1.5rem;
+            margin: 2rem 0;
+            color: var(--text-secondary);
+            font-style: italic;
+            background: rgba(217, 119, 6, 0.05);
+            padding: 1rem 1.5rem;
+            border-radius: 0 8px 8px 0;
+        }
+
+        /* 分隔线 */
+        hr {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 3rem 0;
+        }
+
+        /* 页脚 */
+        footer {
+            background: var(--bg-elevated);
+            border-top: 1px solid var(--border);
+            padding: 3rem 0;
+            margin-top: 6rem;
+            text-align: center;
+        }
+
+        footer p {
+            color: var(--text-tertiary);
+            font-size: 0.9rem;
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            article {
+                padding: 2rem 1.5rem;
+            }
+
+            .article-wrapper {
+                padding: 0 1.5rem;
+                margin: 2rem auto;
+            }
+
+            nav .container {
+                padding: 0 1.5rem;
+            }
+        }
+    </style>
+
+
+
+
+
+
+
+    
+
+
+    
+
+
+    
+
+
+    
+
+
+    
+
+
+    <footer>
+        <p>© 2026 Moreyu. Built with passion.</p>
+    </footer>
+
+</body>
+</html>

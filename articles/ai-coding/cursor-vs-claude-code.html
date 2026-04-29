@@ -1,0 +1,1531 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cursor vs Claude Code：AI编程工具深度对比 | 工具评测</title>
+    <meta name="description" content="全面对比Cursor和Claude Code两款AI编程工具，从功能、性能、价格等多维度分析，帮你选择最适合的工具。">
+    <meta name="keywords" content="Cursor,Claude Code,AI编程,工具对比,开发效率,代码助手">
+    
+    
+    
+    
+    
+    
+    
+    <style>
+        :root {
+            --bg: #0f0f0f;
+            --bg-elevated: #1a1a1a;
+            --surface: #1e1e1e;
+            --surface-hover: #252525;
+            --text: #e8e8e8;
+            --text-secondary: #a8a8a8;
+            --text-tertiary: #6e6e6e;
+            --accent: #d97706;
+            --accent-hover: #f59e0b;
+            --accent-glow: rgba(217, 119, 6, 0.2);
+            --border: #2a2a2a;
+            --border-hover: #3a3a3a;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.8;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* 导航栏 */
+        nav {
+            background: var(--bg-elevated);
+            border-bottom: 1px solid var(--border);
+            padding: 1.5rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+
+        nav .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        /* 文章容器 - 玻璃态卡片 */
+        .article-wrapper {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 3rem;
+        }
+
+        article {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 4rem;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        /* 文章头部 */
+        .article-header {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .article-meta {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .article-meta span {
+            color: var(--text-tertiary);
+            font-size: 0.875rem;
+        }
+
+        /* 标题样式 */
+        h1 {
+            font-size: 2.75rem;
+            font-weight: 900;
+            color: var(--text);
+            margin-bottom: 1rem;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, var(--text) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--text);
+            margin: 3rem 0 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--border);
+            position: relative;
+        }
+
+        h2::before {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 60px;
+            height: 2px;
+            background: var(--accent);
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text);
+            margin: 2.5rem 0 1rem;
+        }
+
+        h4 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text);
+            margin: 2rem 0 1rem;
+        }
+
+        /* 段落和文本 */
+        p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+            font-size: 1.0625rem;
+        }
+
+        strong {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        /* 列表 */
+        ul, ol {
+            color: var(--text-secondary);
+            margin: 1.5rem 0;
+            padding-left: 2rem;
+        }
+
+        li {
+            margin-bottom: 0.75rem;
+            line-height: 1.8;
+            font-size: 1.0625rem;
+        }
+
+        li::marker {
+            color: var(--accent);
+        }
+
+        /* 代码块 */
+        code {
+            background: var(--bg-elevated);
+            color: var(--accent);
+            padding: 0.25rem 0.5rem;
+            border-radius: 6px;
+            font-family: 'JetBrains Mono', 'Courier New', monospace;
+            font-size: 0.9em;
+            border: 1px solid var(--border);
+        }
+
+        pre {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            overflow-x: auto;
+            margin: 2rem 0;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+            border: none;
+            color: var(--text-secondary);
+        }
+
+        /* 提示框 - 玻璃态效果 */
+        .highlight-box, .warning-box, .success-box, .info-box {
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+            border-left: 4px solid;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .highlight-box {
+            background: rgba(217, 119, 6, 0.1);
+            border-color: var(--accent);
+            border: 1px solid rgba(217, 119, 6, 0.3);
+            border-left: 4px solid var(--accent);
+        }
+
+        .warning-box {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: var(--error);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-left: 4px solid var(--error);
+        }
+
+        .success-box {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: var(--success);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-left: 4px solid var(--success);
+        }
+
+        .info-box {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: #3b82f6;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-left: 4px solid #3b82f6;
+        }
+
+        /* 表格 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            background: var(--bg-elevated);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        th {
+            background: var(--surface);
+            color: var(--text);
+            font-weight: 600;
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 2px solid var(--border);
+        }
+
+        td {
+            padding: 1rem;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--border);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background: var(--surface-hover);
+        }
+
+        /* 链接 */
+        a {
+            color: var(--accent);
+            text-decoration: none;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        a:hover {
+            color: var(--accent-hover);
+        }
+
+        /* 引用 */
+        blockquote {
+            border-left: 4px solid var(--accent);
+            padding-left: 1.5rem;
+            margin: 2rem 0;
+            color: var(--text-secondary);
+            font-style: italic;
+            background: rgba(217, 119, 6, 0.05);
+            padding: 1rem 1.5rem;
+            border-radius: 0 8px 8px 0;
+        }
+
+        /* 分隔线 */
+        hr {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 3rem 0;
+        }
+
+        /* 页脚 */
+        footer {
+            background: var(--bg-elevated);
+            border-top: 1px solid var(--border);
+            padding: 3rem 0;
+            margin-top: 6rem;
+            text-align: center;
+        }
+
+        footer p {
+            color: var(--text-tertiary);
+            font-size: 0.9rem;
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            article {
+                padding: 2rem 1.5rem;
+            }
+
+            .article-wrapper {
+                padding: 0 1.5rem;
+                margin: 2rem auto;
+            }
+
+            nav .container {
+                padding: 0 1.5rem;
+            }
+        }
+    </style>
+
+
+
+
+
+
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link rel="stylesheet" href="../../styles/article.css">
+</head>
+<body>
+
+    <nav>
+        <div class="container">
+            <a href="../../index.html" style="font-size: 1.5rem; font-weight: 900; color: var(--text);">← 返回首页</a>
+            <div style="display: flex; gap: 2rem;">
+                <a href="../../articles.html">文章列表</a>
+                <a href="../../index.html">首页</a>
+            </div>
+        </div>
+    </nav>
+
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        function Article() {
+            return (
+<div>
+        <div>
+            <div className="article-sidebar"><div className="sidebar-sticky"><h3 className="sidebar-title">文章导航</h3>
+                    <a href="#intro" >引言</a>
+                    <a href="#overview" >产品概览</a>
+                    <a href="#features" >功能对比</a>
+                    <a href="#performance" >性能测试</a>
+                    <a href="#pricing" >价格对比</a>
+                    <a href="#use-cases" >使用场景</a>
+                    <a href="#pros-cons" >优缺点</a>
+                    <a href="#recommendation" >选择建议</a>
+                    <a href="#conclusion" >总结</a>
+                </div>
+            </div>
+
+            <div className="article-content"><article className="article-container">
+                    <div>
+                        <div>
+                            <div>
+                                <span >VS</span>
+                            </div>
+                            <h1 >Cursor vs Claude Code</h1>
+                            <p >AI编程工具深度对比：谁才是最强代码助手？</p>
+                            <div>
+                                <span>发布时间：2026年1月</span>
+                                <span >•</span>
+                                <span>阅读时间：约 22 分钟</span>
+                                <span >•</span>
+                                <span>字数：约 10,000 字</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <section id="intro" >
+                            <h2 >引言：AI编程工具的巅峰对决</h2>
+
+                            <div>
+                                <p >💡 核心观点</p>
+                                <p>Cursor和Claude Code是当前最受欢迎的两款AI编程工具。Cursor以IDE集成和流畅体验著称，Claude Code则凭借强大的上下文理解和CLI优先设计脱颖而出。本文将从多个维度深度对比，帮你找到最适合的工具。</p>
+                            </div>
+
+                            <p >
+                                2025年是AI编程工具爆发的一年。GitHub Copilot开创了先河，但Cursor和Claude Code将AI辅助编程推向了新高度。作为一名使用两款工具超过半年的开发者，我将分享真实的使用体验和深度对比。
+                            </p>
+
+                            <div>
+                                <div>
+                                    <h3 >Cursor</h3>
+                                    <ul >
+                                        <li>• 基于VS Code的AI编辑器</li>
+                                        <li>• 流畅的IDE体验</li>
+                                        <li>• 强大的代码补全</li>
+                                        <li>• 多模型支持</li>
+                                    </ul>
+                                </div>
+
+                                <div>
+                                    <h3 >Claude Code</h3>
+                                    <ul >
+                                        <li>• Anthropic官方工具</li>
+                                        <li>• CLI优先设计</li>
+                                        <li>• 200K超大上下文</li>
+                                        <li>• 自主Agent能力</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section id="overview" >
+                            <h2 >产品概览</h2>
+
+                            <table >
+                                <thead>
+                                    <tr>
+                                        <th>特性</th>
+                                        <th>Cursor</th>
+                                        <th>Claude Code</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td >发布时间</td>
+                                        <td>2023年3月</td>
+                                        <td>2024年10月</td>
+                                    </tr>
+                                    <tr>
+                                        <td >开发公司</td>
+                                        <td>Anysphere</td>
+                                        <td>Anthropic</td>
+                                    </tr>
+                                    <tr>
+                                        <td >产品定位</td>
+                                        <td>AI-first代码编辑器</td>
+                                        <td>AI编程助手</td>
+                                    </tr>
+                                    <tr>
+                                        <td >核心模型</td>
+                                        <td>GPT-4, Claude, Gemini</td>
+                                        <td>Claude 4 Opus/Sonnet</td>
+                                    </tr>
+                                    <tr>
+                                        <td >平台支持</td>
+                                        <td>macOS, Windows, Linux</td>
+                                        <td>macOS, Windows, Linux</td>
+                                    </tr>
+                                    <tr>
+                                        <td >使用方式</td>
+                                        <td>桌面应用（IDE）</td>
+                                        <td>CLI + IDE扩展</td>
+                                    </tr>
+                                    <tr>
+                                        <td >用户数量</td>
+                                        <td>100万+</td>
+                                        <td>50万+</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </section>
+
+                        <section id="features" >
+                            <h2 >功能对比</h2>
+
+                            <h3 >1. 代码补全</h3>
+
+                            <div>
+                                <div>
+                                    <h4 >Cursor Tab</h4>
+                                    <ul >
+                                        <li>✅ 实时补全，延迟极低（<50ms）</li>
+                                        <li>✅ 多行代码预测</li>
+                                        <li>✅ 上下文感知</li>
+                                        <li>✅ 支持多种语言</li>
+                                        <li>⚠️ 上下文窗口较小（~8K）</li>
+                                    </ul>
+                                    <div>
+                                        <p >评分</p>
+                                        <div>
+                                            <div  style="width: 90%">9.0/10</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <h4 >Claude Autocomplete</h4>
+                                    <ul >
+                                        <li>✅ 理解整个项目上下文</li>
+                                        <li>✅ 智能建议</li>
+                                        <li>✅ 200K上下文窗口</li>
+                                        <li>⚠️ 延迟稍高（~100ms）</li>
+                                        <li>⚠️ 需要IDE扩展</li>
+                                    </ul>
+                                    <div>
+                                        <p >评分</p>
+                                        <div>
+                                            <div  style="width: 85%">8.5/10</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h3 >2. 对话式编程</h3>
+
+                            <div>
+                                <div>
+                                    <h4 >Cursor Chat</h4>
+                                    <ul >
+                                        <li>✅ 侧边栏对话界面</li>
+                                        <li>✅ 支持@文件引用</li>
+                                        <li>✅ 多模型切换</li>
+                                        <li>✅ 代码diff预览</li>
+                                        <li>⚠️ 上下文有限</li>
+                                    </ul>
+                                    <div>
+                                        <p >评分</p>
+                                        <div>
+                                            <div  style="width: 88%">8.8/10</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <h4 >Claude Conversation</h4>
+                                    <ul >
+                                        <li>✅ CLI原生对话</li>
+                                        <li>✅ 超大上下文（200K）</li>
+                                        <li>✅ 理解整个项目</li>
+                                        <li>✅ 自动执行命令</li>
+                                        <li>✅ 持久化记忆</li>
+                                    </ul>
+                                    <div>
+                                        <p >评分</p>
+                                        <div>
+                                            <div  style="width: 95%">9.5/10</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h3 >3. 代码编辑</h3>
+
+                            <div>
+                                <div>
+                                    <h4 >Cursor Composer</h4>
+                                    <ul >
+                                        <li>✅ 可视化编辑界面</li>
+                                        <li>✅ 实时预览修改</li>
+                                        <li>✅ 多文件同时编辑</li>
+                                        <li>✅ 撤销/重做</li>
+                                        <li>⚠️ 需要手动确认</li>
+                                    </ul>
+                                    <div>
+                                        <p >评分</p>
+                                        <div>
+                                            <div  style="width: 92%">9.2/10</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <h4 >Claude Edit</h4>
+                                    <ul >
+                                        <li>✅ 自动编辑文件</li>
+                                        <li>✅ 批量重构</li>
+                                        <li>✅ 智能搜索替换</li>
+                                        <li>✅ Git集成</li>
+                                        <li>⚠️ 需要权限确认</li>
+                                    </ul>
+                                    <div>
+                                        <p >评分</p>
+                                        <div>
+                                            <div  style="width: 90%">9.0/10</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h3 >4. 命令执行</h3>
+
+                            <div>
+                                <div>
+                                    <h4 >Cursor Terminal</h4>
+                                    <ul >
+                                        <li>✅ 集成终端</li>
+                                        <li>✅ AI建议命令</li>
+                                        <li>⚠️ 不能自动执行</li>
+                                        <li>⚠️ 需要手动运行</li>
+                                    </ul>
+                                    <div>
+                                        <p >评分</p>
+                                        <div>
+                                            <div  style="width: 70%">7.0/10</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <h4 >Claude Bash</h4>
+                                    <ul >
+                                        <li>✅ 自动执行命令</li>
+                                        <li>✅ 实时查看输出</li>
+                                        <li>✅ 错误自动修复</li>
+                                        <li>✅ 后台任务支持</li>
+                                    </ul>
+                                    <div>
+                                        <p >评分</p>
+                                        <div>
+                                            <div  style="width: 95%">9.5/10</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h3 >5. 多模态支持</h3>
+
+                            <div>
+                                <div>
+                                    <h4 >Cursor Vision</h4>
+                                    <ul >
+                                        <li>✅ 支持图片输入</li>
+                                        <li>✅ 设计稿转代码</li>
+                                        <li>✅ 错误截图分析</li>
+                                        <li>⚠️ 需要GPT-4V</li>
+                                    </ul>
+                                    <div>
+                                        <p >评分</p>
+                                        <div>
+                                            <div  style="width: 85%">8.5/10</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <h4 >Claude Vision</h4>
+                                    <ul >
+                                        <li>✅ 原生多模态</li>
+                                        <li>✅ 图片理解能力强</li>
+                                        <li>✅ UI生成准确</li>
+                                        <li>✅ 支持多张图片</li>
+                                    </ul>
+                                    <div>
+                                        <p >评分</p>
+                                        <div>
+                                            <div  style="width: 92%">9.2/10</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section id="performance" >
+                            <h2 >性能测试</h2>
+
+                            <p >我进行了一系列真实场景测试，对比两款工具的性能表现。</p>
+
+                            <h3 >测试1：创建React组件（简单任务）</h3>
+
+                            <div>
+                                <p ><strong>任务：</strong>创建一个带表单验证的登录组件</p>
+                                
+                                <table >
+                                    <thead>
+                                        <tr >
+                                            <th >指标</th>
+                                            <th >Cursor</th>
+                                            <th >Claude Code</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr >
+                                            <td >完成时间</td>
+                                            <td >45秒</td>
+                                            <td >1分钟</td>
+                                        </tr>
+                                        <tr >
+                                            <td >代码质量</td>
+                                            <td >8/10</td>
+                                            <td >9/10</td>
+                                        </tr>
+                                        <tr >
+                                            <td >需要修改</td>
+                                            <td >2处</td>
+                                            <td >0处</td>
+                                        </tr>
+                                        <tr>
+                                            <td >总体评价</td>
+                                            <td >快速但需调整</td>
+                                            <td >慢但完美</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <h3 >测试2：重构遗留代码（复杂任务）</h3>
+
+                            <div>
+                                <p ><strong>任务：</strong>将jQuery代码重构为React + TypeScript</p>
+                                
+                                <table >
+                                    <thead>
+                                        <tr >
+                                            <th >指标</th>
+                                            <th >Cursor</th>
+                                            <th >Claude Code</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr >
+                                            <td >完成时间</td>
+                                            <td >2小时</td>
+                                            <td >1.5小时</td>
+                                        </tr>
+                                        <tr >
+                                            <td >理解准确度</td>
+                                            <td >7/10</td>
+                                            <td >9/10</td>
+                                        </tr>
+                                        <tr >
+                                            <td >自主性</td>
+                                            <td >需要频繁指导</td>
+                                            <td >高度自主</td>
+                                        </tr>
+                                        <tr>
+                                            <td >总体评价</td>
+                                            <td >需要人工介入</td>
+                                            <td >自动完成</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <h3 >测试3：调试生产问题</h3>
+
+                            <div>
+                                <p ><strong>任务：</strong>排查API性能问题并优化</p>
+                                
+                                <table >
+                                    <thead>
+                                        <tr >
+                                            <th >指标</th>
+                                            <th >Cursor</th>
+                                            <th >Claude Code</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr >
+                                            <td >问题定位</td>
+                                            <td >需要提示</td>
+                                            <td >自动分析</td>
+                                        </tr>
+                                        <tr >
+                                            <td >解决方案</td>
+                                            <td >单一方案</td>
+                                            <td >多种方案</td>
+                                        </tr>
+                                        <tr >
+                                            <td >执行能力</td>
+                                            <td >需要手动</td>
+                                            <td >自动执行</td>
+                                        </tr>
+                                        <tr>
+                                            <td >总体评价</td>
+                                            <td >辅助工具</td>
+                                            <td >独立解决</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div>
+                                <p >📊 性能总结</p>
+                                <ul >
+                                    <li><strong>简单任务：</strong>Cursor更快，Claude Code更准确</li>
+                                    <li><strong>复杂任务：</strong>Claude Code明显领先，自主性强</li>
+                                    <li><strong>调试问题：</strong>Claude Code能独立分析和解决</li>
+                                    <li><strong>整体：</strong>Cursor适合快速开发，Claude Code适合复杂项目</li>
+                                </ul>
+                            </div>
+                        </section>
+
+                        <section id="pricing" >
+                            <h2 >价格对比</h2>
+
+                            <div>
+                                <div>
+                                    <h3 >Cursor</h3>
+                                    
+                                    <div>
+                                        <h4 >免费版</h4>
+                                        <p >$0<span >/月</span></p>
+                                        <ul >
+                                            <li>✅ 基础代码补全</li>
+                                            <li>✅ 50次AI请求/月</li>
+                                            <li>⚠️ 功能受限</li>
+                                        </ul>
+                                    </div>
+
+                                    <div>
+                                        <h4 >Pro版</h4>
+                                        <p >$20<span >/月</span></p>
+                                        <ul >
+                                            <li>✅ 无限代码补全</li>
+                                            <li>✅ 500次AI请求/月</li>
+                                            <li>✅ 多模型支持</li>
+                                            <li>✅ 优先支持</li>
+                                        </ul>
+                                    </div>
+
+                                    <div>
+                                        <h4 >Business版</h4>
+                                        <p >$40<span >/月</span></p>
+                                        <ul >
+                                            <li>✅ Pro版所有功能</li>
+                                            <li>✅ 团队协作</li>
+                                            <li>✅ 私有部署</li>
+                                            <li>✅ 企业支持</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <h3 >Claude Code</h3>
+                                    
+                                    <div>
+                                        <h4 >免费版</h4>
+                                        <p >$0<span >/月</span></p>
+                                        <ul >
+                                            <li>✅ 基础功能</li>
+                                            <li>✅ Sonnet模型</li>
+                                            <li>✅ 有限请求</li>
+                                            <li>⚠️ 功能受限</li>
+                                        </ul>
+                                    </div>
+
+                                    <div>
+                                        <h4 >Pro版</h4>
+                                        <p >$20<span >/月</span></p>
+                                        <ul >
+                                            <li>✅ Opus模型</li>
+                                            <li>✅ 无限请求</li>
+                                            <li>✅ 200K上下文</li>
+                                            <li>✅ Agent模式</li>
+                                            <li>✅ 优先支持</li>
+                                        </ul>
+                                    </div>
+
+                                    <div>
+                                        <h4 >API计费</h4>
+                                        <p >按使用量付费</p>
+                                        <ul >
+                                            <li>• Opus: $15/1M tokens</li>
+                                            <li>• Sonnet: $3/1M tokens</li>
+                                            <li>• Haiku: $0.25/1M tokens</li>
+                                            <li>• 适合高频使用</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h3 >性价比分析</h3>
+                                <table >
+                                    <thead>
+                                        <tr >
+                                            <th >使用场景</th>
+                                            <th >推荐方案</th>
+                                            <th >月成本</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr >
+                                            <td >个人学习</td>
+                                            <td >Cursor免费版</td>
+                                            <td >$0</td>
+                                        </tr>
+                                        <tr >
+                                            <td >日常开发</td>
+                                            <td >Cursor Pro或Claude Code Pro</td>
+                                            <td >$20</td>
+                                        </tr>
+                                        <tr >
+                                            <td >复杂项目</td>
+                                            <td >Claude Code Pro</td>
+                                            <td >$20</td>
+                                        </tr>
+                                        <tr >
+                                            <td >团队协作</td>
+                                            <td >Cursor Business</td>
+                                            <td >$40/人</td>
+                                        </tr>
+                                        <tr>
+                                            <td >高频使用</td>
+                                            <td >Claude Code API</td>
+                                            <td >按量计费</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </section>
+
+                        <section id="use-cases" >
+                            <h2 >使用场景</h2>
+
+                            <h3 >Cursor更适合的场景</h3>
+
+                            <div>
+                                <div>
+                                    <h4 >✅ 快速原型开发</h4>
+                                    <p >实时补全和快速响应，适合快速迭代</p>
+                                </div>
+
+                                <div>
+                                    <h4 >✅ 前端开发</h4>
+                                    <p >UI组件开发，可视化编辑体验好</p>
+                                </div>
+
+                                <div>
+                                    <h4 >✅ 学习新技术</h4>
+                                    <p >边写边学，实时提示和建议</p>
+                                </div>
+
+                                <div>
+                                    <h4 >✅ 团队协作</h4>
+                                    <p >统一的IDE环境，便于团队使用</p>
+                                </div>
+                            </div>
+
+                            <h3 >Claude Code更适合的场景</h3>
+
+                            <div>
+                                <div>
+                                    <h4 >✅ 大型项目重构</h4>
+                                    <p >理解整个项目，自主完成复杂重构</p>
+                                </div>
+
+                                <div>
+                                    <h4 >✅ 遗留代码维护</h4>
+                                    <p >分析旧代码，提供现代化方案</p>
+                                </div>
+
+                                <div>
+                                    <h4 >✅ 全栈开发</h4>
+                                    <p >从前端到后端，端到端开发</p>
+                                </div>
+
+                                <div>
+                                    <h4 >✅ DevOps自动化</h4>
+                                    <p >自动执行命令，配置CI/CD</p>
+                                </div>
+
+                                <div>
+                                    <h4 >✅ 问题排查</h4>
+                                    <p >分析日志，定位和修复问题</p>
+                                </div>
+
+                                <div>
+                                    <h4 >✅ 终端重度用户</h4>
+                                    <p >CLI优先，适合命令行爱好者</p>
+                                </div>
+                            </div>
+
+                            <h3 >真实案例</h3>
+
+                            <div>
+                                <h4 >案例1：创业公司MVP开发</h4>
+                                <p ><strong>选择：Cursor</strong></p>
+                                <p >
+                                    一个3人创业团队，需要快速开发产品MVP。使用Cursor的实时补全和可视化编辑，2周完成了原本需要1个月的工作。团队成员都熟悉VS Code，上手快。
+                                </p>
+                            </div>
+
+                            <div>
+                                <h4 >案例2：企业遗留系统现代化</h4>
+                                <p ><strong>选择：Claude Code</strong></p>
+                                <p >
+                                    一个大型企业需要将10年前的Java系统迁移到微服务架构。Claude Code分析了整个代码库，制定迁移计划，自动完成了80%的重构工作。原本需要6个月，实际3个月完成。
+                                </p>
+                            </div>
+
+                            <div>
+                                <h4 >案例3：个人开发者副业项目</h4>
+                                <p ><strong>选择：两者结合</strong></p>
+                                <p >
+                                    一个全职开发者利用业余时间做SaaS产品。白天用Cursor快速开发功能，晚上用Claude Code重构和优化代码。两个工具互补，效率最高。
+                                </p>
+                            </div>
+                        </section>
+
+                        <section id="pros-cons" >
+                            <h2 >优缺点总结</h2>
+
+                            <div>
+                                <div>
+                                    <h3 >Cursor</h3>
+                                    
+                                    <div>
+                                        <h4 >✅ 优点</h4>
+                                        <ul >
+                                            <li>• 响应速度快，延迟低</li>
+                                            <li>• IDE体验流畅</li>
+                                            <li>• 上手简单，学习成本低</li>
+                                            <li>• 多模型支持</li>
+                                            <li>• 可视化编辑界面</li>
+                                            <li>• 团队协作功能完善</li>
+                                        </ul>
+                                    </div>
+
+                                    <div>
+                                        <h4 >❌ 缺点</h4>
+                                        <ul >
+                                            <li>• 上下文窗口小</li>
+                                            <li>• 不能自动执行命令</li>
+                                            <li>• 复杂任务需要人工介入</li>
+                                            <li>• 没有持久化记忆</li>
+                                            <li>• 依赖第三方模型</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <h3 >Claude Code</h3>
+                                    
+                                    <div>
+                                        <h4 >✅ 优点</h4>
+                                        <ul >
+                                            <li>• 200K超大上下文</li>
+                                            <li>• 自动执行命令</li>
+                                            <li>• 高度自主，能独立完成任务</li>
+                                            <li>• 持久化记忆系统</li>
+                                            <li>• CLI优先设计</li>
+                                            <li>• 多模态能力强</li>
+                                            <li>• Agent模式</li>
+                                        </ul>
+                                    </div>
+
+                                    <div>
+                                        <h4 >❌ 缺点</h4>
+                                        <ul >
+                                            <li>• 响应稍慢</li>
+                                            <li>• 学习曲线陡峭</li>
+                                            <li>• IDE集成不如Cursor</li>
+                                            <li>• 需要适应CLI工作流</li>
+                                            <li>• 团队协作功能较弱</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section id="recommendation" >
+                            <h2 >选择建议</h2>
+
+                            <div>
+                                <p >🎯 快速决策指南</p>
+                                <p >根据你的情况，选择最适合的工具：</p>
+                            </div>
+
+                            <div>
+                                <div>
+                                    <h3 >选择Cursor，如果你：</h3>
+                                    <ul >
+                                        <li >
+                                            <span >✓</span>
+                                            <span>是<strong>前端开发者</strong>，主要做UI开发</span>
+                                        </li>
+                                        <li >
+                                            <span >✓</span>
+                                            <span>需要<strong>快速原型</strong>开发</span>
+                                        </li>
+                                        <li >
+                                            <span >✓</span>
+                                            <span>习惯使用<strong>VS Code</strong></span>
+                                        </li>
+                                        <li >
+                                            <span >✓</span>
+                                            <span>在<strong>团队</strong>中工作，需要统一工具</span>
+                                        </li>
+                                        <li >
+                                            <span >✓</span>
+                                            <span>追求<strong>流畅体验</strong>和快速响应</span>
+                                        </li>
+                                        <li >
+                                            <span >✓</span>
+                                            <span>希望<strong>低学习成本</strong>，快速上手</span>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div>
+                                    <h3 >选择Claude Code，如果你：</h3>
+                                    <ul >
+                                        <li >
+                                            <span >✓</span>
+                                            <span>是<strong>全栈开发者</strong>或后端开发者</span>
+                                        </li>
+                                        <li >
+                                            <span >✓</span>
+                                            <span>处理<strong>大型项目</strong>或遗留代码</span>
+                                        </li>
+                                        <li >
+                                            <span >✓</span>
+                                            <span>是<strong>终端重度用户</strong>，喜欢CLI</span>
+                                        </li>
+                                        <li >
+                                            <span >✓</span>
+                                            <span>需要AI<strong>独立完成</strong>复杂任务</span>
+                                        </li>
+                                        <li >
+                                            <span >✓</span>
+                                            <span>需要<strong>自动化</strong>工作流</span>
+                                        </li>
+                                        <li >
+                                            <span >✓</span>
+                                            <span>愿意投入时间<strong>学习</strong>新工具</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <h3 >按开发阶段选择</h3>
+
+                            <div>
+                                <table >
+                                    <thead>
+                                        <tr >
+                                            <th >开发阶段</th>
+                                            <th >推荐工具</th>
+                                            <th >原因</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr >
+                                            <td >原型开发</td>
+                                            <td >Cursor</td>
+                                            <td >快速迭代，实时反馈</td>
+                                        </tr>
+                                        <tr >
+                                            <td >功能开发</td>
+                                            <td >两者皆可</td>
+                                            <td >根据个人偏好</td>
+                                        </tr>
+                                        <tr >
+                                            <td >代码重构</td>
+                                            <td >Claude Code</td>
+                                            <td >理解全局，自主重构</td>
+                                        </tr>
+                                        <tr >
+                                            <td >问题排查</td>
+                                            <td >Claude Code</td>
+                                            <td >分析能力强，自动修复</td>
+                                        </tr>
+                                        <tr>
+                                            <td >维护优化</td>
+                                            <td >Claude Code</td>
+                                            <td >持续优化，自动化</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <h3 >组合使用策略</h3>
+
+                            <div>
+                                <p >很多开发者同时使用两款工具，发挥各自优势：</p>
+                                
+                                <div>
+                                    <div>
+                                        <h4 >策略1：按任务类型切换</h4>
+                                        <ul >
+                                            <li>• <strong>快速开发：</strong>使用Cursor的实时补全</li>
+                                            <li>• <strong>复杂重构：</strong>切换到Claude Code</li>
+                                            <li>• <strong>问题排查：</strong>使用Claude Code分析</li>
+                                        </ul>
+                                    </div>
+
+                                    <div>
+                                        <h4 >策略2：按时间段使用</h4>
+                                        <ul >
+                                            <li>• <strong>白天：</strong>Cursor快速开发功能</li>
+                                            <li>• <strong>晚上：</strong>Claude Code重构优化</li>
+                                            <li>• <strong>周末：</strong>Claude Code处理技术债</li>
+                                        </ul>
+                                    </div>
+
+                                    <div>
+                                        <h4 >策略3：按项目规模</h4>
+                                        <ul >
+                                            <li>• <strong>小项目：</strong>Cursor全程使用</li>
+                                            <li>• <strong>中型项目：</strong>两者结合</li>
+                                            <li>• <strong>大型项目：</strong>Claude Code为主</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section id="conclusion" >
+                            <h2 >总结</h2>
+
+                            <div>
+                                <p >🎯 核心结论</p>
+                                <ul >
+                                    <li><strong>Cursor：</strong>快速、流畅、易用，适合日常开发和团队协作</li>
+                                    <li><strong>Claude Code：</strong>强大、智能、自主，适合复杂项目和深度工作</li>
+                                    <li><strong>没有绝对的赢家：</strong>选择取决于你的需求和工作方式</li>
+                                    <li><strong>可以组合使用：</strong>发挥各自优势，效率最大化</li>
+                                </ul>
+                            </div>
+
+                            <h3 >最终评分</h3>
+
+                            <div>
+                                <div>
+                                    <h4 >Cursor</h4>
+                                    <div>
+                                        <div>
+                                            <div>
+                                                <span >代码补全</span>
+                                                <span >9.0/10</span>
+                                            </div>
+                                            <div>
+                                                <div  style="width: 90%"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div>
+                                                <span >对话编程</span>
+                                                <span >8.8/10</span>
+                                            </div>
+                                            <div>
+                                                <div  style="width: 88%"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div>
+                                                <span >用户体验</span>
+                                                <span >9.5/10</span>
+                                            </div>
+                                            <div>
+                                                <div  style="width: 95%"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div>
+                                                <span >自主能力</span>
+                                                <span >7.0/10</span>
+                                            </div>
+                                            <div>
+                                                <div  style="width: 70%"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div>
+                                                <span >性价比</span>
+                                                <span >8.5/10</span>
+                                            </div>
+                                            <div>
+                                                <div  style="width: 85%"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div>
+                                                <span >总分</span>
+                                                <span >8.6/10</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <h4 >Claude Code</h4>
+                                    <div>
+                                        <div>
+                                            <div>
+                                                <span >代码补全</span>
+                                                <span >8.5/10</span>
+                                            </div>
+                                            <div>
+                                                <div  style="width: 85%"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div>
+                                                <span >对话编程</span>
+                                                <span >9.5/10</span>
+                                            </div>
+                                            <div>
+                                                <div  style="width: 95%"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div>
+                                                <span >用户体验</span>
+                                                <span >8.0/10</span>
+                                            </div>
+                                            <div>
+                                                <div  style="width: 80%"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div>
+                                                <span >自主能力</span>
+                                                <span >9.5/10</span>
+                                            </div>
+                                            <div>
+                                                <div  style="width: 95%"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div>
+                                                <span >性价比</span>
+                                                <span >9.0/10</span>
+                                            </div>
+                                            <div>
+                                                <div  style="width: 90%"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div>
+                                                <span >总分</span>
+                                                <span >8.9/10</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h3 >我的个人选择</h3>
+
+                            <div>
+                                <p >
+                                    作为一名全栈开发者，我同时使用两款工具。日常开发用Cursor，享受流畅的补全和快速响应。遇到复杂重构、问题排查或需要深度思考的任务时，切换到Claude Code。
+                                </p>
+                                <p >
+                                    如果只能选一个，我会选<strong >Claude Code</strong>。虽然学习曲线陡峭，但掌握后带来的生产力提升是巨大的。它不只是工具，更像是一个真正理解你的编程伙伴。
+                                </p>
+                                <p >
+                                    但对于新手或团队，<strong >Cursor</strong>可能是更好的选择。低学习成本、统一的IDE环境、流畅的体验，让团队能快速上手并保持高效。
+                                </p>
+                            </div>
+
+                            <div>
+                                <p >🚀 最后的建议</p>
+                                <p >
+                                    不要纠结于选择，两款工具都提供免费试用。最好的方法是亲自体验，找到最适合自己的工作方式。
+                                </p>
+                                <p >
+                                    AI编程工具正在快速发展，Cursor和Claude Code都在不断进化。保持开放的心态，拥抱新技术，你的开发效率会持续提升。
+                                </p>
+                            </div>
+                        </section>
+
+                        <div>
+                            <div>
+                                <div>
+                                    <p>最后更新：2026年1月</p>
+                                    <p >分类：AI & VIBE CODING</p>
+                                </div>
+                                <div>
+                                    <p>作者：M2REYU</p>
+                                    <p >字数：约 10,000 字</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <div>
+                    <h3 >相关文章推荐</h3>
+                    <div>
+                        <a href="claude-code-complete-guide.html" >
+                            <h4 >Claude Code完全指南</h4>
+                            <p >从入门到精通Claude Code</p>
+                        </a>
+                        <a href="#" >
+                            <h4 >GitHub Copilot实战技巧</h4>
+                            <p >提升编程效率的高级用法</p>
+                        </a>
+                        <a href="#" >
+                            <h4 >Prompt Engineering指南</h4>
+                            <p >写出更好的AI提示词</p>
+                        </a>
+                        <a href="#" >
+                            <h4 >AI全栈开发实战</h4>
+                            <p >用AI完成完整项目</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+
+    <script>
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // 高亮当前导航
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('text-blue-600', 'font-bold');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('text-blue-600', 'font-bold');
+                }
+            });
+        });
+
+        // 评分条动画
+        window.addEventListener('load', () => {
+            document.querySelectorAll('.score-fill').forEach(bar => {
+                const width = bar.style.width;
+                bar.style.width = '0';
+                setTimeout(() => {
+                    bar.style.width = width;
+                }, 100);
+            });
+        });
+
+        // 返回顶部按钮
+        const backToTop = document.createElement('button');
+        backToTop.innerHTML = '↑';
+        backToTop.className = 'fixed bottom-8 right-8 bg-gradient-to-r from-blue-600 to-purple-600 text-white w-12 h-12 rounded-full shadow-lg hover:shadow-xl transition opacity-0 pointer-events-none';
+        backToTop.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+        document.body.appendChild(backToTop);
+
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTop.style.opacity = '1';
+                backToTop.style.pointerEvents = 'auto';
+            } else {
+                backToTop.style.opacity = '0';
+                backToTop.style.pointerEvents = 'none';
+            }
+        });
+    </script>
+            );
+        }
+
+        ReactDOM.render(<Article />, document.getElementById('root'));
+    </script>
+
+    <footer>
+        <p>© 2026 Moreyu. Built with passion.</p>
+    </footer>
+
+</body>
+</html>

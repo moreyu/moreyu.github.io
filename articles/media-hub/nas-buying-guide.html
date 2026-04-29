@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NAS 选购避坑指南：从群晖到自组，三年踩坑实录 - Moreyu</title>
+    <meta name="description" content="从群晖 DS220j 到自组 NAS，三年换了 5 台设备的血泪史。告诉你 NAS 选购的真实坑点和实用建议">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🧠%3C/text%3E%3C/svg%3E">
+    
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link rel="stylesheet" href="../../styles/article.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <nav>
+        <div class="container">
+            <a href="../../index.html" style="font-size: 1.5rem; font-weight: 900; color: var(--text);">← 返回首页</a>
+            <div style="display: flex; gap: 2rem;">
+                <a href="../../articles.html">文章列表</a>
+                <a href="../../index.html">首页</a>
+            </div>
+        </div>
+    </nav>
+
+
+    
+
+
+    
+
+
+    
+
+
+    
+
+
+    
+
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        function Article() {
+            return (
+                <article className="article-container">
+                    <header className="article-header">
+                        <a href="../../index.html#blog" className="back-link">← 返回首页</a>
+                        <div className="article-meta">
+                            <span className="category">STREAM & SMART MEDIA HUB</span>
+                            <time>2026-04-29</time>
+                        </div>
+                        <h1>NAS 选购避坑指南：从群晖到自组，三年踩坑实录</h1>
+                        <p className="article-intro">
+                            三年时间，我换了 5 台 NAS 设备，从入门的群晖 DS220j 到最终的自组方案。每一次升级都是血泪教训，这篇文章记录所有踩过的坑，帮你一步到位选对 NAS。
+                        </p>
+                    </header>
+
+                    <div className="article-content">
+                        <h2>我的 NAS 进化史</h2>
+                        <p>
+                            2023 年初，我开始折腾 NAS，目标很简单：存照片、看电影、远程访问。三年下来，换了 5 台设备，花了近 3 万元学费。现在回头看，如果一开始就知道这些坑，能省下一半钱和无数个熬夜调试的夜晚。
+                        </p>
+
+                        <h3>第一台：群晖 DS220j（2023.01 - 2023.04）</h3>
+                        <p>
+                            <strong>购买原因：</strong>便宜（1200 元），群晖系统口碑好，双盘位够用
+                        </p>
+                        <p>
+                            <strong>配置：</strong>
+                        </p>
+                        <ul>
+                            <li>CPU：Realtek RTD1296（四核 1.4GHz）</li>
+                            <li>内存：512MB DDR4（不可扩展）</li>
+                            <li>硬盘：2 × 4TB WD Red</li>
+                        </ul>
+                        <p>
+                            <strong>实际体验：</strong>
+                        </p>
+                        <ul>
+                            <li>✅ DSM 系统确实好用，界面友好</li>
+                            <li>✅ 基础 NAS 功能正常，文件共享没问题</li>
+                            <li>❌ <strong>性能严重不足</strong> - 复制大文件经常卡死</li>
+                            <li>❌ <strong>无法转码</strong> - 看个 1080p 视频都卡顿</li>
+                            <li>❌ <strong>内存太小</strong> - 多开几个套件就内存不足</li>
+                        </ul>
+                        <p>
+                            <strong>踩坑总结：</strong>J 系列是群晖的入门产品，只适合纯文件存储。如果要跑 Plex、Docker 等应用，完全不够用。
+                        </p>
+
+                        <h3>第二台：群晖 DS920+（2023.04 - 2023.10）</h3>
+                        <p>
+                            <strong>购买原因：</strong>有 Intel CPU，支持硬件转码，4 盘位扩展性好
+                        </p>
+                        <p>
+                            <strong>配置：</strong>
+                        </p>
+                        <ul>
+                            <li>CPU：Intel Celeron J4125（四核 2.0GHz）</li>
+                            <li>内存：4GB DDR4（扩展到 20GB）</li>
+                            <li>硬盘：4 × 4TB WD Red，RAID 5</li>
+                        </ul>
+                        <p>
+                            <strong>实际体验：</strong>
+                        </p>
+                        <ul>
+                            <li>✅ 性能大幅提升，Plex 转码流畅</li>
+                            <li>✅ 内存扩展后多任务无压力</li>
+                            <li>✅ RAID 5 提供冗余保护</li>
+                            <li>❌ <strong>4K 转码吃力</strong> - J4125 的 Quick Sync 只支持 8bit</li>
+                            <li>❌ <strong>价格昂贵</strong> - 裸机 3500 元，加硬盘近万元</li>
+                            <li>❌ <strong>扩展受限</strong> - 无法加独立显卡</li>
+                        </ul>
+                        <p>
+                            <strong>踩坑总结：</strong>DS920+ 是很好的中端 NAS，但 4K 时代来临后，CPU 转码能力不足成为瓶颈。
+                        </p>
+
+                        <h3>第三台：威联通 TS-464C2（2023.10 - 2024.02）</h3>
+                        <p>
+                            <strong>购买原因：</strong>朋友推荐，说威联通性价比高，支持 PCIe 扩展
+                        </p>
+                        <p>
+                            <strong>配置：</strong>
+                        </p>
+                        <ul>
+                            <li>CPU：Intel Celeron N5095（四核 2.9GHz）</li>
+                            <li>内存：8GB DDR4</li>
+                            <li>扩展：PCIe 3.0 x2 插槽</li>
+                            <li>硬盘：4 × 6TB WD Red Pro</li>
+                        </ul>
+                        <p>
+                            <strong>实际体验：</strong>
+                        </p>
+                        <ul>
+                            <li>✅ CPU 性能比 J4125 强一些</li>
+                            <li>✅ 可以加 PCIe 网卡或显卡</li>
+                            <li>✅ 价格相对便宜</li>
+                            <li>❌ <strong>QTS 系统体验差</strong> - 界面丑陋，bug 较多</li>
+                            <li>❌ <strong>软件生态不如群晖</strong> - 第三方应用少</li>
+                            <li>❌ <strong>PCIe 插槽功率限制</strong> - 只能用低功耗显卡</li>
+                        </ul>
+                        <p>
+                            <strong>踩坑总结：</strong>威联通硬件不错，但软件体验和生态远不如群晖。省钱买威联通，结果花更多时间折腾。
+                        </p>
+
+                        <h3>第四台：华硕 AS6704T（2024.02 - 2024.08）</h3>
+                        <p>
+                            <strong>购买原因：</strong>看中 AMD 平台，想试试不同的方案
+                        </p>
+                        <p>
+                            <strong>配置：</strong>
+                        </p>
+                        <ul>
+                            <li>CPU：AMD Ryzen V1500B（四核 2.2GHz）</li>
+                            <li>内存：8GB DDR4</li>
+                            <li>硬盘：4 × 8TB WD Red Plus</li>
+                        </ul>
+                        <p>
+                            <strong>实际体验：</strong>
+                        </p>
+                        <ul>
+                            <li>✅ AMD CPU 性能不错，多线程强</li>
+                            <li>✅ 做工扎实，散热好</li>
+                            <li>❌ <strong>无硬件转码</strong> - AMD 平台不支持 Quick Sync</li>
+                            <li>❌ <strong>ADM 系统一般</strong> - 功能有限，更新慢</li>
+                            <li>❌ <strong>生态最差</strong> - 应用商店几乎没有可用软件</li>
+                        </ul>
+                        <p>
+                            <strong>踩坑总结：</strong>华硕 NAS 就是个笑话，除了硬件还行，软件完全不能用。买了就是交学费。
+                        </p>
+
+                        <h3>第五台：自组 NAS（2024.08 - 至今）</h3>
+                        <p>
+                            <strong>购买原因：</strong>受够了成品 NAS 的限制，决定自己组装
+                        </p>
+                        <p>
+                            <strong>配置：</strong>
+                        </p>
+                        <ul>
+                            <li>主板：华擎 J5040-ITX</li>
+                            <li>CPU：Intel Pentium J5040（四核 3.2GHz）</li>
+                            <li>内存：32GB DDR4 2666MHz</li>
+                            <li>显卡：NVIDIA Quadro P400</li>
+                            <li>硬盘：6 × 4TB WD Red，ZFS RAID-Z2</li>
+                            <li>系统：Ubuntu Server 22.04 + Docker</li>
+                        </ul>
+                        <p>
+                            <strong>实际体验：</strong>
+                        </p>
+                        <ul>
+                            <li>✅ <strong>性能强劲</strong> - P400 可以转码 6 路 4K</li>
+                            <li>✅ <strong>完全可控</strong> - 想装什么软件都行</li>
+                            <li>✅ <strong>扩展性强</strong> - 可以随时升级硬件</li>
+                            <li>✅ <strong>成本可控</strong> - 总成本 5000 元，性能超过万元 NAS</li>
+                            <li>❌ <strong>学习成本高</strong> - 需要 Linux 基础</li>
+                            <li>❌ <strong>无官方支持</strong> - 出问题只能自己解决</li>
+                        </ul>
+
+                        <h2>NAS 选购的核心要素</h2>
+
+                        <h3>1. CPU：决定性能上限</h3>
+                        <p>
+                            <strong>Intel 平台（推荐）：</strong>
+                        </p>
+                        <ul>
+                            <li><strong>Celeron J 系列</strong>：入门级，适合基础 NAS 功能</li>
+                            <li><strong>Pentium J 系列</strong>：中端，支持硬件转码</li>
+                            <li><strong>Core i3/i5</strong>：高端，性能强劲</li>
+                        </ul>
+                        <p>
+                            <strong>AMD 平台：</strong>
+                        </p>
+                        <ul>
+                            <li>多线程性能强，但无硬件转码</li>
+                            <li>适合计算密集型任务，不适合媒体服务器</li>
+                        </ul>
+                        <p>
+                            <strong>ARM 平台：</strong>
+                        </p>
+                        <ul>
+                            <li>功耗低，但性能有限</li>
+                            <li>只适合轻量级应用</li>
+                        </ul>
+
+                        <h3>2. 内存：多任务的基础</h3>
+                        <table className="spec-table">
+                            <thead>
+                                <tr>
+                                    <th>用途</th>
+                                    <th>推荐内存</th>
+                                    <th>说明</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>纯文件存储</td>
+                                    <td>2-4GB</td>
+                                    <td>基础 NAS 功能够用</td>
+                                </tr>
+                                <tr>
+                                    <td>媒体服务器</td>
+                                    <td>8-16GB</td>
+                                    <td>Plex + 几个 Docker 容器</td>
+                                </tr>
+                                <tr>
+                                    <td>虚拟化平台</td>
+                                    <td>16-32GB</td>
+                                    <td>运行多个虚拟机</td>
+                                </tr>
+                                <tr>
+                                    <td>专业应用</td>
+                                    <td>32GB+</td>
+                                    <td>数据库、AI 训练等</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h3>3. 存储：容量与安全的平衡</h3>
+                        <p>
+                            <strong>RAID 选择：</strong>
+                        </p>
+                        <ul>
+                            <li><strong>RAID 0</strong>：性能最好，但无冗余，不推荐</li>
+                            <li><strong>RAID 1</strong>：简单可靠，适合 2 盘位</li>
+                            <li><strong>RAID 5</strong>：平衡性能和冗余，适合 3-4 盘位</li>
+                            <li><strong>RAID 6</strong>：双重冗余，适合 4+ 盘位</li>
+                            <li><strong>ZFS RAID-Z</strong>：最强数据保护，推荐自组 NAS</li>
+                        </ul>
+
+                        <h3>4. 网络：传输速度的瓶颈</h3>
+                        <ul>
+                            <li><strong>千兆网络</strong>：基础配置，满足大部分需求</li>
+                            <li><strong>2.5G 网络</strong>：性价比选择，适合 SSD 缓存</li>
+                            <li><strong>万兆网络</strong>：专业级配置，成本较高</li>
+                        </ul>
+
+                        <h2>品牌对比：谁更值得买？</h2>
+
+                        <h3>群晖（Synology）</h3>
+                        <p>
+                            <strong>优势：</strong>
+                        </p>
+                        <ul>
+                            <li>DSM 系统体验最佳</li>
+                            <li>软件生态丰富</li>
+                            <li>技术支持完善</li>
+                            <li>社区活跃，教程多</li>
+                        </ul>
+                        <p>
+                            <strong>劣势：</strong>
+                        </p>
+                        <ul>
+                            <li>价格昂贵，性价比低</li>
+                            <li>硬件配置保守</li>
+                            <li>升级扩展受限</li>
+                        </ul>
+                        <p>
+                            <strong>推荐型号：</strong>
+                        </p>
+                        <ul>
+                            <li><strong>DS224+</strong>：入门首选，替代 DS220j</li>
+                            <li><strong>DS923+</strong>：中端主力，性能够用</li>
+                            <li><strong>DS1522+</strong>：高端选择，5 盘位</li>
+                        </ul>
+
+                        <h3>威联通（QNAP）</h3>
+                        <p>
+                            <strong>优势：</strong>
+                        </p>
+                        <ul>
+                            <li>硬件配置激进</li>
+                            <li>价格相对便宜</li>
+                            <li>扩展性好</li>
+                        </ul>
+                        <p>
+                            <strong>劣势：</strong>
+                        </p>
+                        <ul>
+                            <li>QTS 系统体验差</li>
+                            <li>软件 bug 较多</li>
+                            <li>安全问题频发</li>
+                        </ul>
+
+                        <h3>华硕（ASUSTOR）</h3>
+                        <p>
+                            <strong>优势：</strong>
+                        </p>
+                        <ul>
+                            <li>硬件做工不错</li>
+                            <li>价格适中</li>
+                        </ul>
+                        <p>
+                            <strong>劣势：</strong>
+                        </p>
+                        <ul>
+                            <li>ADM 系统功能有限</li>
+                            <li>软件生态最差</li>
+                            <li>更新缓慢</li>
+                        </ul>
+
+                        <h3>自组 NAS</h3>
+                        <p>
+                            <strong>优势：</strong>
+                        </p>
+                        <ul>
+                            <li>性价比最高</li>
+                            <li>完全可控</li>
+                            <li>扩展性最强</li>
+                            <li>学习价值高</li>
+                        </ul>
+                        <p>
+                            <strong>劣势：</strong>
+                        </p>
+                        <ul>
+                            <li>需要技术基础</li>
+                            <li>无官方支持</li>
+                            <li>稳定性需要调试</li>
+                        </ul>
+
+                        <h2>选购建议：按需求分类</h2>
+
+                        <h3>场景一：家庭文件存储</h3>
+                        <p>
+                            <strong>需求：</strong>存照片、文档，偶尔看电影
+                        </p>
+                        <p>
+                            <strong>推荐方案：</strong>
+                        </p>
+                        <ul>
+                            <li><strong>预算型</strong>：群晖 DS224+（2500 元）</li>
+                            <li><strong>平衡型</strong>：威联通 TS-264（2000 元）</li>
+                            <li><strong>DIY 型</strong>：J4125 ITX 主板 + 机箱（1500 元）</li>
+                        </ul>
+
+                        <h3>场景二：媒体服务器</h3>
+                        <p>
+                            <strong>需求：</strong>Plex/Jellyfin，4K 转码，多用户
+                        </p>
+                        <p>
+                            <strong>推荐方案：</strong>
+                        </p>
+                        <ul>
+                            <li><strong>简单型</strong>：群晖 DS923+（4000 元）</li>
+                            <li><strong>性能型</strong>：自组 NAS + 独显（5000 元）</li>
+                            <li><strong>专业型</strong>：Intel NUC + 外置存储（8000 元）</li>
+                        </ul>
+
+                        <h3>场景三：小型办公</h3>
+                        <p>
+                            <strong>需求：</strong>文件共享，虚拟化，数据库
+                        </p>
+                        <p>
+                            <strong>推荐方案：</strong>
+                        </p>
+                        <ul>
+                            <li><strong>入门型</strong>：群晖 DS1522+（6000 元）</li>
+                            <li><strong>专业型</strong>：自组服务器 + ECC 内存（10000 元）</li>
+                        </ul>
+
+                        <h2>避坑指南：血泪教训</h2>
+
+                        <h3>坑一：只看价格，忽略性能</h3>
+                        <p>
+                            <strong>错误示例：</strong>买了 DS220j，结果完全不能用
+                        </p>
+                        <p>
+                            <strong>正确做法：</strong>先确定需求，再看配置，最后比价格
+                        </p>
+
+                        <h3>坑二：迷信品牌，忽略实际体验</h3>
+                        <p>
+                            <strong>错误示例：</strong>听说威联通性价比高，结果 QTS 系统难用
+                        </p>
+                        <p>
+                            <strong>正确做法：</strong>试用系统 Demo，看真实用户评价
+                        </p>
+
+                        <h3>坑三：配置不足，后期升级困难</h3>
+                        <p>
+                            <strong>错误示例：</strong>买了 4GB 内存版本，后来发现不够用
+                        </p>
+                        <p>
+                            <strong>正确做法：</strong>按未来 2-3 年需求配置，一步到位
+                        </p>
+
+                        <h3>坑四：忽略网络瓶颈</h3>
+                        <p>
+                            <strong>错误示例：</strong>NAS 性能很强，但网络只有百兆
+                        </p>
+                        <p>
+                            <strong>正确做法：</strong>网络、存储、CPU 要匹配，避免木桶效应
+                        </p>
+
+                        <h3>坑五：数据安全意识不足</h3>
+                        <p>
+                            <strong>错误示例：</strong>只用 RAID 0，硬盘坏了数据全丢
+                        </p>
+                        <p>
+                            <strong>正确做法：</strong>RAID + 备份，3-2-1 备份策略
+                        </p>
+
+                        <h2>2026 年购买建议</h2>
+
+                        <h3>值得买的型号</h3>
+                        <p>
+                            <strong>群晖：</strong>
+                        </p>
+                        <ul>
+                            <li><strong>DS224+</strong>：入门首选，J4125 CPU 够用</li>
+                            <li><strong>DS923+</strong>：中端主力，性能均衡</li>
+                            <li><strong>DS1621+</strong>：高端选择，AMD 平台</li>
+                        </ul>
+                        <p>
+                            <strong>威联通：</strong>
+                        </p>
+                        <ul>
+                            <li><strong>TS-264</strong>：性价比之选</li>
+                            <li><strong>TS-464C2</strong>：支持 PCIe 扩展</li>
+                        </ul>
+                        <p>
+                            <strong>自组方案：</strong>
+                        </p>
+                        <ul>
+                            <li><strong>入门</strong>：J4125 ITX + 4 盘位机箱</li>
+                            <li><strong>进阶</strong>：i5-12400 + B660 ITX + 独显</li>
+                            <li><strong>专业</strong>：Xeon E-2300 + ECC 内存</li>
+                        </ul>
+
+                        <h3>不推荐的型号</h3>
+                        <ul>
+                            <li><strong>群晖 J 系列</strong>：性能太弱，只能存文件</li>
+                            <li><strong>华硕全系列</strong>：软件生态太差</li>
+                            <li><strong>ARM 平台 NAS</strong>：扩展性有限</li>
+                        </ul>
+
+                        <h2>总结：我的最终建议</h2>
+                        <p>
+                            三年折腾下来，我的结论是：
+                        </p>
+                        <ol>
+                            <li><strong>新手首选群晖</strong> - 虽然贵，但省心</li>
+                            <li><strong>有技术基础选自组</strong> - 性价比最高，可玩性强</li>
+                            <li><strong>威联通谨慎选择</strong> - 硬件不错，软件是硬伤</li>
+                            <li><strong>华硕直接跳过</strong> - 除非特殊需求</li>
+                        </ol>
+                        <p>
+                            <strong>预算分配建议：</strong>
+                        </p>
+                        <ul>
+                            <li>3000 元以下：群晖 DS224+ 或自组入门方案</li>
+                            <li>3000-6000 元：群晖 DS923+ 或自组进阶方案</li>
+                            <li>6000 元以上：群晖高端型号或自组专业方案</li>
+                        </ul>
+                        <p>
+                            最重要的是：<strong>先想清楚要用来干什么，再决定买什么</strong>。NAS 不是越贵越好，适合自己的才是最好的。
+                        </p>
+                        <p>
+                            希望我的踩坑经历能帮你少走弯路，一次选对 NAS！
+                        </p>
+                    </div>
+
+                    
+                </article>
+            );
+        }
+
+        ReactDOM.render(<Article />, document.getElementById('root'));
+    </script>
+
+    
+    
+    
+    
+    
+    
+    <style>
+        :root {
+            --bg: #0f0f0f;
+            --bg-elevated: #1a1a1a;
+            --surface: #1e1e1e;
+            --surface-hover: #252525;
+            --text: #e8e8e8;
+            --text-secondary: #a8a8a8;
+            --text-tertiary: #6e6e6e;
+            --accent: #d97706;
+            --accent-hover: #f59e0b;
+            --accent-glow: rgba(217, 119, 6, 0.2);
+            --border: #2a2a2a;
+            --border-hover: #3a3a3a;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.8;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* 导航栏 */
+        nav {
+            background: var(--bg-elevated);
+            border-bottom: 1px solid var(--border);
+            padding: 1.5rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+
+        nav .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        /* 文章容器 - 玻璃态卡片 */
+        .article-wrapper {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 3rem;
+        }
+
+        article {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 4rem;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        /* 文章头部 */
+        .article-header {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .article-meta {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .article-meta span {
+            color: var(--text-tertiary);
+            font-size: 0.875rem;
+        }
+
+        /* 标题样式 */
+        h1 {
+            font-size: 2.75rem;
+            font-weight: 900;
+            color: var(--text);
+            margin-bottom: 1rem;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, var(--text) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--text);
+            margin: 3rem 0 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--border);
+            position: relative;
+        }
+
+        h2::before {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 60px;
+            height: 2px;
+            background: var(--accent);
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text);
+            margin: 2.5rem 0 1rem;
+        }
+
+        h4 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text);
+            margin: 2rem 0 1rem;
+        }
+
+        /* 段落和文本 */
+        p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+            font-size: 1.0625rem;
+        }
+
+        strong {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        /* 列表 */
+        ul, ol {
+            color: var(--text-secondary);
+            margin: 1.5rem 0;
+            padding-left: 2rem;
+        }
+
+        li {
+            margin-bottom: 0.75rem;
+            line-height: 1.8;
+            font-size: 1.0625rem;
+        }
+
+        li::marker {
+            color: var(--accent);
+        }
+
+        /* 代码块 */
+        code {
+            background: var(--bg-elevated);
+            color: var(--accent);
+            padding: 0.25rem 0.5rem;
+            border-radius: 6px;
+            font-family: 'JetBrains Mono', 'Courier New', monospace;
+            font-size: 0.9em;
+            border: 1px solid var(--border);
+        }
+
+        pre {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            overflow-x: auto;
+            margin: 2rem 0;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+            border: none;
+            color: var(--text-secondary);
+        }
+
+        /* 提示框 - 玻璃态效果 */
+        .highlight-box, .warning-box, .success-box, .info-box {
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+            border-left: 4px solid;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .highlight-box {
+            background: rgba(217, 119, 6, 0.1);
+            border-color: var(--accent);
+            border: 1px solid rgba(217, 119, 6, 0.3);
+            border-left: 4px solid var(--accent);
+        }
+
+        .warning-box {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: var(--error);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-left: 4px solid var(--error);
+        }
+
+        .success-box {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: var(--success);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-left: 4px solid var(--success);
+        }
+
+        .info-box {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: #3b82f6;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-left: 4px solid #3b82f6;
+        }
+
+        /* 表格 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            background: var(--bg-elevated);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        th {
+            background: var(--surface);
+            color: var(--text);
+            font-weight: 600;
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 2px solid var(--border);
+        }
+
+        td {
+            padding: 1rem;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--border);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background: var(--surface-hover);
+        }
+
+        /* 链接 */
+        a {
+            color: var(--accent);
+            text-decoration: none;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        a:hover {
+            color: var(--accent-hover);
+        }
+
+        /* 引用 */
+        blockquote {
+            border-left: 4px solid var(--accent);
+            padding-left: 1.5rem;
+            margin: 2rem 0;
+            color: var(--text-secondary);
+            font-style: italic;
+            background: rgba(217, 119, 6, 0.05);
+            padding: 1rem 1.5rem;
+            border-radius: 0 8px 8px 0;
+        }
+
+        /* 分隔线 */
+        hr {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 3rem 0;
+        }
+
+        /* 页脚 */
+        footer {
+            background: var(--bg-elevated);
+            border-top: 1px solid var(--border);
+            padding: 3rem 0;
+            margin-top: 6rem;
+            text-align: center;
+        }
+
+        footer p {
+            color: var(--text-tertiary);
+            font-size: 0.9rem;
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            article {
+                padding: 2rem 1.5rem;
+            }
+
+            .article-wrapper {
+                padding: 0 1.5rem;
+                margin: 2rem auto;
+            }
+
+            nav .container {
+                padding: 0 1.5rem;
+            }
+        }
+    </style>
+
+
+
+
+
+
+
+    
+
+
+    
+
+
+    
+
+
+    
+
+
+    
+
+
+    <footer>
+        <p>© 2026 Moreyu. Built with passion.</p>
+    </footer>
+
+</body>
+</html>

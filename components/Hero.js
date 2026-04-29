@@ -55,11 +55,11 @@ function Hero() {
                         API 中转站
                     </a>
                     <a
-                        href="#blog"
+                        href="articles.html"
                         className="btn-secondary flex items-center gap-2"
                         style={{ textDecoration: 'none' }}
                     >
-                        Read Articles
+                        浏览文章
                         <svg className="h-4 w-4 icon-arrow" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
                             <path d="M5 12h14M12 5l7 7-7 7"/>
                         </svg>

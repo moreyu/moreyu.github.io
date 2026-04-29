@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI辅助全栈开发：从零搭建一个完整项目 | 实战教程</title>
+    <meta name="description" content="用AI工具从零开始构建全栈应用，涵盖前端、后端、数据库、部署全流程。">
+    <meta name="keywords" content="AI全栈开发,Claude Code,全栈项目,实战教程,前端后端">
+    
+    
+    
+    
+    
+    
+    
+    <style>
+        :root {
+            --bg: #0f0f0f;
+            --bg-elevated: #1a1a1a;
+            --surface: #1e1e1e;
+            --surface-hover: #252525;
+            --text: #e8e8e8;
+            --text-secondary: #a8a8a8;
+            --text-tertiary: #6e6e6e;
+            --accent: #d97706;
+            --accent-hover: #f59e0b;
+            --accent-glow: rgba(217, 119, 6, 0.2);
+            --border: #2a2a2a;
+            --border-hover: #3a3a3a;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.8;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* 导航栏 */
+        nav {
+            background: var(--bg-elevated);
+            border-bottom: 1px solid var(--border);
+            padding: 1.5rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+
+        nav .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        /* 文章容器 - 玻璃态卡片 */
+        .article-wrapper {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 3rem;
+        }
+
+        article {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 4rem;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        /* 文章头部 */
+        .article-header {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .article-meta {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .article-meta span {
+            color: var(--text-tertiary);
+            font-size: 0.875rem;
+        }
+
+        /* 标题样式 */
+        h1 {
+            font-size: 2.75rem;
+            font-weight: 900;
+            color: var(--text);
+            margin-bottom: 1rem;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, var(--text) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--text);
+            margin: 3rem 0 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--border);
+            position: relative;
+        }
+
+        h2::before {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 60px;
+            height: 2px;
+            background: var(--accent);
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text);
+            margin: 2.5rem 0 1rem;
+        }
+
+        h4 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text);
+            margin: 2rem 0 1rem;
+        }
+
+        /* 段落和文本 */
+        p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+            font-size: 1.0625rem;
+        }
+
+        strong {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        /* 列表 */
+        ul, ol {
+            color: var(--text-secondary);
+            margin: 1.5rem 0;
+            padding-left: 2rem;
+        }
+
+        li {
+            margin-bottom: 0.75rem;
+            line-height: 1.8;
+            font-size: 1.0625rem;
+        }
+
+        li::marker {
+            color: var(--accent);
+        }
+
+        /* 代码块 */
+        code {
+            background: var(--bg-elevated);
+            color: var(--accent);
+            padding: 0.25rem 0.5rem;
+            border-radius: 6px;
+            font-family: 'JetBrains Mono', 'Courier New', monospace;
+            font-size: 0.9em;
+            border: 1px solid var(--border);
+        }
+
+        pre {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            overflow-x: auto;
+            margin: 2rem 0;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+            border: none;
+            color: var(--text-secondary);
+        }
+
+        /* 提示框 - 玻璃态效果 */
+        .highlight-box, .warning-box, .success-box, .info-box {
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+            border-left: 4px solid;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .highlight-box {
+            background: rgba(217, 119, 6, 0.1);
+            border-color: var(--accent);
+            border: 1px solid rgba(217, 119, 6, 0.3);
+            border-left: 4px solid var(--accent);
+        }
+
+        .warning-box {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: var(--error);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-left: 4px solid var(--error);
+        }
+
+        .success-box {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: var(--success);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-left: 4px solid var(--success);
+        }
+
+        .info-box {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: #3b82f6;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-left: 4px solid #3b82f6;
+        }
+
+        /* 表格 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            background: var(--bg-elevated);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        th {
+            background: var(--surface);
+            color: var(--text);
+            font-weight: 600;
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 2px solid var(--border);
+        }
+
+        td {
+            padding: 1rem;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--border);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background: var(--surface-hover);
+        }
+
+        /* 链接 */
+        a {
+            color: var(--accent);
+            text-decoration: none;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        a:hover {
+            color: var(--accent-hover);
+        }
+
+        /* 引用 */
+        blockquote {
+            border-left: 4px solid var(--accent);
+            padding-left: 1.5rem;
+            margin: 2rem 0;
+            color: var(--text-secondary);
+            font-style: italic;
+            background: rgba(217, 119, 6, 0.05);
+            padding: 1rem 1.5rem;
+            border-radius: 0 8px 8px 0;
+        }
+
+        /* 分隔线 */
+        hr {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 3rem 0;
+        }
+
+        /* 页脚 */
+        footer {
+            background: var(--bg-elevated);
+            border-top: 1px solid var(--border);
+            padding: 3rem 0;
+            margin-top: 6rem;
+            text-align: center;
+        }
+
+        footer p {
+            color: var(--text-tertiary);
+            font-size: 0.9rem;
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            article {
+                padding: 2rem 1.5rem;
+            }
+
+            .article-wrapper {
+                padding: 0 1.5rem;
+                margin: 2rem auto;
+            }
+
+            nav .container {
+                padding: 0 1.5rem;
+            }
+        }
+    </style>
+
+
+
+
+
+
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link rel="stylesheet" href="../../styles/article.css">
+</head>
+<body>
+
+    <nav>
+        <div class="container">
+            <a href="../../index.html" style="font-size: 1.5rem; font-weight: 900; color: var(--text);">← 返回首页</a>
+            <div style="display: flex; gap: 2rem;">
+                <a href="../../articles.html">文章列表</a>
+                <a href="../../index.html">首页</a>
+            </div>
+        </div>
+    </nav>
+
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        function Article() {
+            return (
+<div>
+        <div>
+            <div className="article-sidebar"><div className="sidebar-sticky"><h3 className="sidebar-title">文章导航</h3>
+                    <a href="#intro" >引言</a>
+                    <a href="#project" >项目规划</a>
+                    <a href="#frontend" >前端开发</a>
+                    <a href="#backend" >后端开发</a>
+                    <a href="#database" >数据库设计</a>
+                    <a href="#integration" >前后端集成</a>
+                    <a href="#deployment" >部署上线</a>
+                    <a href="#conclusion" >总结</a>
+                </div>
+            </div>
+
+            <div className="article-content"><article className="article-container">
+                    <div>
+                        <div>
+                            <h1 >AI辅助全栈开发：从零搭建一个完整项目</h1>
+                            <p >用AI工具2小时完成传统需要2周的全栈项目</p>
+                            <div>
+                                <span>发布时间：2026年1月</span>
+                                <span >•</span>
+                                <span>阅读时间：约 15 分钟</span>
+                                <span >•</span>
+                                <span>字数：约 7,000 字</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <section id="intro" >
+                            <h2 >引言</h2>
+
+                            <div>
+                                <p >💡 项目目标</p>
+                                <p>构建一个任务管理应用（Todo App），包含用户认证、CRUD操作、实时更新。技术栈：React + Node.js + MongoDB + Docker。</p>
+                            </div>
+
+                            <p >
+                                本文将展示如何用AI工具（Claude Code）从零开始构建全栈应用。整个过程约2小时，涵盖前端、后端、数据库、部署全流程。
+                            </p>
+
+                            <div>
+                                <div>
+                                    <div>2小时</div>
+                                    <p >开发时间</p>
+                                </div>
+                                <div>
+                                    <div>全栈</div>
+                                    <p >前后端完整</p>
+                                </div>
+                                <div>
+                                    <div>生产级</div>
+                                    <p >可直接部署</p>
+                                </div>
+                                <div>
+                                    <div>AI驱动</div>
+                                    <p >80%代码AI生成</p>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section id="project" >
+                            <h2 >项目规划</h2>
+
+                            <div>
+                                <h3 >第1步：需求分析</h3>
+                                <p >与AI讨论项目需求，明确功能范围。</p>
+                                <div>
+                                    <pre>你: "帮我规划一个任务管理应用"
+
+Claude: 
+功能模块：
+1. 用户系统（注册、登录、JWT认证）
+2. 任务管理（创建、编辑、删除、标记完成）
+3. 分类标签
+4. 搜索过滤
+
+技术选型：
+- 前端：React + TypeScript + Tailwind CSS
+- 后端：Node.js + Express + TypeScript
+- 数据库：MongoDB
+- 部署：Docker + Vercel/Railway
+
+项目结构：
+- /client - React前端
+- /server - Node.js后端
+- /shared - 共享类型定义</pre>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h3 >第2步：初始化项目</h3>
+                                <div>
+                                    <pre>你: "创建项目结构"
+
+Claude执行：
+mkdir todo-app && cd todo-app
+npx create-react-app client --template typescript
+mkdir server && cd server && npm init -y
+npm install express mongoose jsonwebtoken bcrypt cors
+npm install -D typescript @types/node @types/express</pre>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section id="frontend" >
+                            <h2 >前端开发（30分钟）</h2>
+
+                            <div>
+                                <h3 >创建组件</h3>
+                                <p >让AI生成React组件。</p>
+                                <div>
+                                    <pre>你: "创建登录组件，使用React Hooks和TypeScript"
+
+Claude生成：
+- LoginForm.tsx（表单组件）
+- useAuth.ts（认证Hook）
+- api.ts（API客户端）
+- 包含表单验证、错误处理、loading状态</pre>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h3 >状态管理</h3>
+                                <div>
+                                    <pre>你: "使用Context API管理全局状态"
+
+Claude实现：
+- AuthContext（用户状态）
+- TodoContext（任务状态）
+- 包含Provider和自定义Hooks</pre>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section id="backend" >
+                            <h2 >后端开发（40分钟）</h2>
+
+                            <div>
+                                <h3 >API设计</h3>
+                                <div>
+                                    <pre>你: "设计RESTful API"
+
+Claude生成：
+POST   /api/auth/register - 注册
+POST   /api/auth/login - 登录
+GET    /api/todos - 获取任务列表
+POST   /api/todos - 创建任务
+PUT    /api/todos/:id - 更新任务
+DELETE /api/todos/:id - 删除任务</pre>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h3 >实现认证</h3>
+                                <div>
+                                    <pre>你: "实现JWT认证中间件"
+
+Claude生成：
+- auth.middleware.ts（验证token）
+- auth.controller.ts（注册/登录逻辑）
+- 密码加密（bcrypt）
+- token生成和验证</pre>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section id="database" >
+                            <h2 >数据库设计（20分钟）</h2>
+
+                            <div>
+                                <h3 >Schema设计</h3>
+                                <div>
+                                    <pre>你: "设计MongoDB Schema"
+
+Claude生成：
+User Schema:
+- email (unique, required)
+- password (hashed)
+- name
+- createdAt
+
+Todo Schema:
+- title (required)
+- description
+- completed (default: false)
+- userId (ref: User)
+- tags []
+- createdAt, updatedAt</pre>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section id="integration" >
+                            <h2 >前后端集成（20分钟）</h2>
+
+                            <div>
+                                <h3 >API集成</h3>
+                                <p >连接前端和后端。</p>
+                                <div>
+                                    <pre>你: "配置CORS和API代理"
+
+Claude配置：
+- 后端CORS设置
+- 前端proxy配置
+- 环境变量管理
+- 错误处理统一</pre>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section id="deployment" >
+                            <h2 >部署上线（10分钟）</h2>
+
+                            <div>
+                                <h3 >Docker化</h3>
+                                <div>
+                                    <pre>你: "创建Docker配置"
+
+Claude生成：
+- Dockerfile（前端、后端）
+- docker-compose.yml
+- .dockerignore
+- 一键启动命令</pre>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h3 >部署到云平台</h3>
+                                <div>
+                                    <pre>你: "部署到Vercel和Railway"
+
+Claude执行：
+- 前端部署到Vercel
+- 后端部署到Railway
+- MongoDB Atlas配置
+- 环境变量设置</pre>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section id="conclusion" >
+                            <h2 >总结</h2>
+
+                            <div>
+                                <p >🎯 成果</p>
+                                <ul >
+                                    <li>✅ 完整的全栈应用</li>
+                                    <li>✅ 用户认证系统</li>
+                                    <li>✅ CRUD功能完整</li>
+                                    <li>✅ 响应式设计</li>
+                                    <li>✅ 生产环境部署</li>
+                                    <li>✅ 总耗时：约2小时</li>
+                                </ul>
+                            </div>
+
+                            <div>
+                                <h3 >关键经验</h3>
+                                <ul >
+                                    <li>• <strong>清晰规划：</strong>先与AI讨论架构，再动手</li>
+                                    <li>• <strong>模块化开发：</strong>一次完成一个模块</li>
+                                    <li>• <strong>持续测试：</strong>每个功能完成后立即测试</li>
+                                    <li>• <strong>代码审查：</strong>理解AI生成的代码</li>
+                                    <li>• <strong>文档记录：</strong>让AI生成README和注释</li>
+                                </ul>
+                            </div>
+
+                            <div>
+                                <p >🚀 下一步</p>
+                                <p >
+                                    现在你已经掌握了AI辅助全栈开发的方法。尝试构建自己的项目，从简单开始，逐步提升复杂度。AI是你的助手，但架构设计和业务逻辑仍需要你来把控。
+                                </p>
+                            </div>
+                        </section>
+
+                        <div>
+                            <div>
+                                <div>
+                                    <p>最后更新：2026年1月</p>
+                                    <p >分类：AI & VIBE CODING</p>
+                                </div>
+                                <div>
+                                    <p>作者：M2REYU</p>
+                                    <p >字数：约 7,000 字</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </div>
+
+    
+
+    <script>
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+    </script>
+            );
+        }
+
+        ReactDOM.render(<Article />, document.getElementById('root'));
+    </script>
+
+    <footer>
+        <p>© 2026 Moreyu. Built with passion.</p>
+    </footer>
+
+</body>
+</html>

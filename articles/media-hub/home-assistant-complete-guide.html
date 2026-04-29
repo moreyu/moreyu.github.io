@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Assistant 从入门到智能家居全屋控制 - MOREYU</title>
+    <meta name="description" content="从零开始搭建 Home Assistant，实现全屋智能控制的完整指南">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    
+    
+    
+    
+    
+    <style>
+        :root {
+            --bg: #0f0f0f;
+            --bg-elevated: #1a1a1a;
+            --surface: #1e1e1e;
+            --surface-hover: #252525;
+            --text: #e8e8e8;
+            --text-secondary: #a8a8a8;
+            --text-tertiary: #6e6e6e;
+            --accent: #d97706;
+            --accent-hover: #f59e0b;
+            --accent-glow: rgba(217, 119, 6, 0.2);
+            --border: #2a2a2a;
+            --border-hover: #3a3a3a;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.8;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* 导航栏 */
+        nav {
+            background: var(--bg-elevated);
+            border-bottom: 1px solid var(--border);
+            padding: 1.5rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+
+        nav .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        /* 文章容器 - 玻璃态卡片 */
+        .article-wrapper {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 3rem;
+        }
+
+        article {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 4rem;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        /* 文章头部 */
+        .article-header {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .article-meta {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .article-meta span {
+            color: var(--text-tertiary);
+            font-size: 0.875rem;
+        }
+
+        /* 标题样式 */
+        h1 {
+            font-size: 2.75rem;
+            font-weight: 900;
+            color: var(--text);
+            margin-bottom: 1rem;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, var(--text) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--text);
+            margin: 3rem 0 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--border);
+            position: relative;
+        }
+
+        h2::before {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 60px;
+            height: 2px;
+            background: var(--accent);
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text);
+            margin: 2.5rem 0 1rem;
+        }
+
+        h4 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text);
+            margin: 2rem 0 1rem;
+        }
+
+        /* 段落和文本 */
+        p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+            font-size: 1.0625rem;
+        }
+
+        strong {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        /* 列表 */
+        ul, ol {
+            color: var(--text-secondary);
+            margin: 1.5rem 0;
+            padding-left: 2rem;
+        }
+
+        li {
+            margin-bottom: 0.75rem;
+            line-height: 1.8;
+            font-size: 1.0625rem;
+        }
+
+        li::marker {
+            color: var(--accent);
+        }
+
+        /* 代码块 */
+        code {
+            background: var(--bg-elevated);
+            color: var(--accent);
+            padding: 0.25rem 0.5rem;
+            border-radius: 6px;
+            font-family: 'JetBrains Mono', 'Courier New', monospace;
+            font-size: 0.9em;
+            border: 1px solid var(--border);
+        }
+
+        pre {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            overflow-x: auto;
+            margin: 2rem 0;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+            border: none;
+            color: var(--text-secondary);
+        }
+
+        /* 提示框 - 玻璃态效果 */
+        .highlight-box, .warning-box, .success-box, .info-box {
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+            border-left: 4px solid;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .highlight-box {
+            background: rgba(217, 119, 6, 0.1);
+            border-color: var(--accent);
+            border: 1px solid rgba(217, 119, 6, 0.3);
+            border-left: 4px solid var(--accent);
+        }
+
+        .warning-box {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: var(--error);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-left: 4px solid var(--error);
+        }
+
+        .success-box {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: var(--success);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-left: 4px solid var(--success);
+        }
+
+        .info-box {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: #3b82f6;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-left: 4px solid #3b82f6;
+        }
+
+        /* 表格 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            background: var(--bg-elevated);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        th {
+            background: var(--surface);
+            color: var(--text);
+            font-weight: 600;
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 2px solid var(--border);
+        }
+
+        td {
+            padding: 1rem;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--border);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background: var(--surface-hover);
+        }
+
+        /* 链接 */
+        a {
+            color: var(--accent);
+            text-decoration: none;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        a:hover {
+            color: var(--accent-hover);
+        }
+
+        /* 引用 */
+        blockquote {
+            border-left: 4px solid var(--accent);
+            padding-left: 1.5rem;
+            margin: 2rem 0;
+            color: var(--text-secondary);
+            font-style: italic;
+            background: rgba(217, 119, 6, 0.05);
+            padding: 1rem 1.5rem;
+            border-radius: 0 8px 8px 0;
+        }
+
+        /* 分隔线 */
+        hr {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 3rem 0;
+        }
+
+        /* 页脚 */
+        footer {
+            background: var(--bg-elevated);
+            border-top: 1px solid var(--border);
+            padding: 3rem 0;
+            margin-top: 6rem;
+            text-align: center;
+        }
+
+        footer p {
+            color: var(--text-tertiary);
+            font-size: 0.9rem;
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            article {
+                padding: 2rem 1.5rem;
+            }
+
+            .article-wrapper {
+                padding: 0 1.5rem;
+                margin: 2rem auto;
+            }
+
+            nav .container {
+                padding: 0 1.5rem;
+            }
+        }
+    </style>
+
+
+
+
+
+
+
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link rel="stylesheet" href="../../styles/article.css">
+</head>
+<body>
+
+    <nav>
+        <div class="container">
+            <a href="../../index.html" style="font-size: 1.5rem; font-weight: 900; color: var(--text);">← 返回首页</a>
+            <div style="display: flex; gap: 2rem;">
+                <a href="../../articles.html">文章列表</a>
+                <a href="../../index.html">首页</a>
+            </div>
+        </div>
+    </nav>
+
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        function Article() {
+            return (
+<div>
+        <a href="../../index.html#blog" >← 返回首页</a>
+
+        <h1>Home Assistant 从入门到智能家居全屋控制</h1>
+
+        <div>
+            <span>📅 2024-12-15</span>
+            <span style="margin: 0 1rem;">•</span>
+            <span>📖 约 6500 字</span>
+            <span style="margin: 0 1rem;">•</span>
+            <span>⏱️ 阅读时间 26 分钟</span>
+            <span style="margin: 0 1rem;">•</span>
+            <span>🏷️ 入门指南</span>
+        </div>
+
+        <p>去年双十一买了一堆智能设备，米家的灯、空调伴侣、温湿度传感器，还有几个 Aqara 的门窗传感器。本来想着用米家 App 就够了，结果发现自动化功能太弱了，而且不同品牌的设备根本没法联动。后来在 V2EX 看到有人推荐 Home Assistant，说是智能家居的终极解决方案，就开始折腾了。</p>
+
+        <p>这一折腾就是三个月，从最开始的树莓派装系统，到现在全屋 40+ 设备接入，自动化场景 30+ 个，真的是一路踩坑过来的。这篇文章就记录一下我的完整折腾历程，希望能帮到想入坑的朋友。</p>
+
+        <h2>为什么选择 Home Assistant？</h2>
+
+        <p>在决定用 HA 之前，我其实也对比过其他方案：</p>
+
+        <ul>
+            <li><strong>米家 App</strong>：最简单，但自动化太弱，只能做简单的"如果...那么..."，而且只支持米家生态</li>
+            <li><strong>Apple HomeKit</strong>：体验很好，但支持的设备太少，而且必须有 HomePod 或 iPad 做中枢</li>
+            <li><strong>Home Assistant</strong>：开源免费，支持 2000+ 种设备，自动化功能强大，可以本地运行</li>
+        </ul>
+
+        <p>最终选择 HA 的原因很简单：<strong>我想要完全的控制权</strong>。不想被厂商绑定，不想担心服务器挂了设备就废了，也不想数据被上传到云端。HA 可以完全本地运行，数据都在自己手里，这点很重要。</p>
+
+        <h2>硬件准备：选什么设备跑 HA？</h2>
+
+        <p>HA 可以跑在很多设备上，我前后试过三种方案：</p>
+
+        <h3>方案一：树莓派 4B（4GB）</h3>
+
+        <p>最开始用的是树莓派 4B，闲鱼 300 块收的二手。装的是 Home Assistant OS，官方推荐的系统。</p>
+
+        <div>
+            <strong>💡 优点：</strong>
+            <ul style="margin-bottom: 0;">
+                <li>功耗低，24 小时开机一个月电费不到 5 块</li>
+                <li>体积小，放在弱电箱里不占地方</li>
+                <li>官方支持好，系统更新及时</li>
+            </ul>
+        </div>
+
+        <div>
+            <strong>⚠️ 遇到的问题：</strong>
+            <p style="margin-bottom: 0.5rem;">用了两个月后，SD 卡突然挂了，所有配置都没了。虽然有备份，但恢复起来还是很麻烦。后来换了 SSD，但树莓派的 USB 启动有点玄学，折腾了一晚上才搞定。</p>
+        </div>
+
+        <h3>方案二：N100 小主机</h3>
+
+        <p>树莓派的性能还是有点吃紧，特别是装了一堆插件之后，打开界面都要等好几秒。正好看到群里有人推荐 N100 小主机，拼多多 700 块，16GB 内存 + 512GB SSD，性能吊打树莓派。</p>
+
+        <p>装的是 Proxmox VE，然后在虚拟机里跑 HA。这样的好处是可以同时跑其他服务，比如 AdGuard Home、Nginx Proxy Manager 之类的。</p>
+
+        <div>
+            <strong>✅ 最终方案：</strong>
+            <p style="margin-bottom: 0;">N100 小主机 + Proxmox VE + Home Assistant OS 虚拟机。稳定运行半年了，没出过问题。功耗也不高，满载也就 15W，待机只有 6W。</p>
+        </div>
+
+        <h2>安装 Home Assistant OS</h2>
+
+        <p>如果你用的是树莓派，直接用 Raspberry Pi Imager 烧录官方镜像就行。如果是 x86 主机，需要在 Proxmox 里创建虚拟机。</p>
+
+        <h3>Proxmox 安装 HA 的步骤</h3>
+
+        <p>1. 下载 HA 的 QCOW2 镜像（官网有下载链接）</p>
+
+        <p>2. 上传到 Proxmox，然后用命令导入：</p>
+
+        <pre><code># 解压镜像
+xz -d haos_ova-11.2.qcow2.xz
+
+# 创建虚拟机（ID 100）
+qm create 100 --name homeassistant --memory 4096 --cores 2 --net0 virtio,bridge=vmbr0
+
+# 导入磁盘
+qm importdisk 100 haos_ova-11.2.qcow2 local-lvm
+
+# 挂载磁盘
+qm set 100 --scsihw virtio-scsi-pci --scsi0 local-lvm:vm-100-disk-0
+
+# 设置启动顺序
+qm set 100 --boot c --bootdisk scsi0
+
+# 启动虚拟机
+qm start 100</code></pre>
+
+        <div>
+            <strong>⚠️ 踩坑记录：</strong>
+            <p>第一次装的时候，虚拟机一直卡在启动界面。后来发现是 CPU 类型选错了，要选 <code>host</code> 而不是 <code>kvm64</code>。还有就是内存至少要给 2GB，不然会很卡。</p>
+        </div>
+
+        <p>3. 等待 5-10 分钟，系统会自动安装。然后在浏览器打开 <code>http://homeassistant.local:8123</code> 就能看到欢迎界面了。</p>
+
+        <h2>初始配置：让 HA 跑起来</h2>
+
+        <p>第一次打开 HA，会有一个引导流程，创建账号、设置位置、时区之类的。这些都很简单，按提示操作就行。</p>
+
+        <h3>安装 HACS（必装）</h3>
+
+        <p>HACS 是 Home Assistant Community Store 的缩写，相当于一个第三方插件商店。很多好用的集成和主题都在这里，强烈建议第一时间装上。</p>
+
+        <p>安装方法：</p>
+
+        <ol>
+            <li>SSH 进入 HA（需要先装 SSH 插件）</li>
+            <li>运行安装脚本：</li>
+        </ol>
+
+        <pre><code>wget -O - https://get.hacs.xyz | bash -</code></pre>
+
+        <ol start="3">
+            <li>重启 HA</li>
+            <li>在"配置" → "集成"里搜索 HACS，按提示授权 GitHub 账号</li>
+        </ol>
+
+        <div>
+            <strong>💡 小技巧：</strong>
+            <p style="margin-bottom: 0;">如果 GitHub 访问慢，可以用 Cloudflare WARP 或者改 hosts。我是在路由器上装了 Clash，直接全局代理，速度飞快。</p>
+        </div>
+
+        <h2>接入设备：从米家到 Aqara</h2>
+
+        <p>HA 支持的设备非常多，但不同品牌的接入方式不一样。我主要用的是米家和 Aqara 的设备，下面分别说说怎么接入。</p>
+
+        <h3>米家设备接入</h3>
+
+        <p>米家设备有两种接入方式：</p>
+
+        <p><strong>方式一：Xiaomi Miot Auto（推荐）</strong></p>
+
+        <p>这是 HACS 里的一个插件，可以自动发现局域网内的米家设备。安装方法：</p>
+
+        <ol>
+            <li>在 HACS 里搜索"Xiaomi Miot Auto"，点击下载</li>
+            <li>重启 HA</li>
+            <li>在"配置" → "集成"里添加"Xiaomi Miot Auto"</li>
+            <li>输入小米账号和密码（会获取设备列表）</li>
+        </ol>
+
+        <p>这个插件的好处是支持云端控制，即使设备不在局域网也能控制。而且支持的设备很全，基本上米家的设备都能接入。</p>
+
+        <div>
+            <strong>⚠️ 遇到的问题：</strong>
+            <p>有些设备（比如空调伴侣）需要开启局域网控制才能用。在米家 App 里找到设备，进入设置，开启"局域网控制"。还有就是要记下设备的 Token，有些设备需要手动填。</p>
+            <p style="margin-bottom: 0;">获取 Token 的方法：用抓包工具（比如 Charles）抓米家 App 的请求，或者用小米云服务的 API。我是用的后者，写了个 Python 脚本批量获取。</p>
+        </div>
+
+        <p><strong>方式二：HomeKit Controller</strong></p>
+
+        <p>如果设备支持 HomeKit（比如 Aqara 的网关），可以直接用 HomeKit Controller 接入。这种方式是本地控制，不需要云端，响应速度更快。</p>
+
+        <h3>Aqara 设备接入</h3>
+
+        <p>Aqara 的设备需要通过网关接入。我用的是 Aqara M2 网关，支持 Zigbee 3.0。</p>
+
+        <p>接入步骤：</p>
+
+        <ol>
+            <li>在 Aqara App 里添加网关和设备</li>
+            <li>在网关设置里开启"HomeKit 模式"（会生成一个配对码）</li>
+            <li>在 HA 里添加"HomeKit Controller"集成</li>
+            <li>输入配对码，等待设备同步</li>
+        </ol>
+
+        <p>这样接入的好处是完全本地控制，不需要经过 Aqara 的服务器。而且响应速度很快，门窗传感器触发到灯亮起，延迟不到 100ms。</p>
+
+        <h2>自动化场景：让家真正"智能"起来</h2>
+
+        <p>接入设备只是第一步，真正让家智能起来的是自动化。HA 的自动化功能非常强大，可以实现各种复杂的逻辑。</p>
+
+        <h3>场景一：回家自动开灯</h3>
+
+        <p>这是最基础的场景。我的实现方式是：</p>
+
+        <ul>
+            <li><strong>触发条件</strong>：手机连接到家里的 WiFi</li>
+            <li><strong>条件判断</strong>：当前时间在日落之后</li>
+            <li><strong>执行动作</strong>：打开玄关灯和客厅灯</li>
+        </ul>
+
+        <p>配置代码：</p>
+
+        <pre><code>automation:
+  - alias: "回家开灯"
+    trigger:
+      - platform: state
+        entity_id: device_tracker.iphone
+        to: "home"
+    condition:
+      - condition: sun
+        after: sunset
+    action:
+      - service: light.turn_on
+        target:
+          entity_id:
+            - light.entrance
+            - light.living_room
+        data:
+          brightness_pct: 80</code></pre>
+
+        <div>
+            <strong>💡 优化技巧：</strong>
+            <p style="margin-bottom: 0;">后来我加了一个条件：如果家里已经有人（通过其他设备判断），就不开灯。这样可以避免重复触发。还有就是亮度可以根据时间动态调整，晚上 10 点后只开 30% 亮度，不刺眼。</p>
+        </div>
+
+        <h3>场景二：睡眠模式</h3>
+
+        <p>这个场景是我最满意的。晚上 11 点后，如果检测到卧室门关闭，就自动进入睡眠模式：</p>
+
+        <ul>
+            <li>关闭所有灯光（除了小夜灯）</li>
+            <li>空调设置为睡眠模式（26度，静音）</li>
+            <li>关闭客厅的电视和音响</li>
+            <li>启动空气净化器（自动模式）</li>
+            <li>手机进入勿扰模式（通过 iOS 快捷指令）</li>
+        </ul>
+
+        <p>早上 7 点，如果检测到卧室有人移动（通过人体传感器），就自动退出睡眠模式，窗帘缓慢打开，播放轻音乐。</p>
+
+        <div>
+            <strong>⚠️ 踩坑记录：</strong>
+            <p style="margin-bottom: 0;">最开始用的是时间触发，结果有时候 11 点还没睡，灯就自动关了，很尴尬。后来改成门窗传感器 + 时间条件，体验好多了。还有就是空调的控制，米家的空调伴侣有时候会失联，需要加个重试逻辑。</p>
+        </div>
+
+        <h3>场景三：离家模式</h3>
+
+        <p>这个场景是用来省电和安全的。当检测到所有人都离开家（通过手机定位），就自动：</p>
+
+        <ul>
+            <li>关闭所有灯光和电器</li>
+            <li>空调设置为离家模式（28度，节能）</li>
+            <li>启动扫地机器人（如果是工作日）</li>
+            <li>开启安防模式（门窗传感器触发时发送通知）</li>
+        </ul>
+
+        <p>回家时自动退出离家模式，恢复之前的状态。</p>
+
+        <h2>进阶玩法：Node-RED 和语音控制</h2>
+
+        <h3>Node-RED：可视化编程</h3>
+
+        <p>HA 自带的自动化编辑器对于复杂逻辑来说还是有点吃力。Node-RED 是一个可视化编程工具，可以用拖拽的方式创建自动化流程。</p>
+
+        <p>安装方法：在 HA 的"插件商店"里搜索"Node-RED"，点击安装。</p>
+
+        <p>我用 Node-RED 做了一个"智能浇花"的自动化：</p>
+
+        <ol>
+            <li>每天早上 8 点检查土壤湿度传感器</li>
+            <li>如果湿度低于 30%，发送通知提醒浇花</li>
+            <li>如果连续 3 天湿度都低于 30%，自动启动浇水泵（浇水 30 秒）</li>
+            <li>浇水后记录到数据库，可以在 Grafana 里查看历史数据</li>
+        </ol>
+
+        <p>这种复杂的逻辑用 HA 自带的编辑器很难实现，但在 Node-RED 里就很直观。</p>
+
+        <h3>语音控制：接入小爱同学</h3>
+
+        <p>虽然 HA 有自己的语音助手，但说实话体验一般。我还是用的小爱同学，通过 HACS 里的"Xiaomi Miot Auto"插件可以把 HA 的设备同步到米家，然后就能用小爱控制了。</p>
+
+        <p>常用的语音指令：</p>
+
+        <ul>
+            <li>"小爱同学，打开客厅灯"</li>
+            <li>"小爱同学，把卧室空调设置为 26 度"</li>
+            <li>"小爱同学，启动睡眠模式"（需要在米家里创建场景）</li>
+        </ul>
+
+        <div>
+            <strong>💡 小技巧：</strong>
+            <p style="margin-bottom: 0;">可以在 HA 里创建"脚本"（Script），然后同步到米家作为"场景"。这样就能用语音触发复杂的自动化流程了。比如"小爱同学，我要看电影"，就会自动关灯、拉窗帘、打开投影仪。</p>
+        </div>
+
+        <h2>数据可视化：Grafana 和 InfluxDB</h2>
+
+        <p>HA 自带的历史记录功能比较简陋，如果想要更专业的数据分析，可以接入 InfluxDB 和 Grafana。</p>
+
+        <p>我用这套方案监控了家里的温湿度、PM2.5、电量消耗等数据。可以看到每天的变化趋势，还能设置告警（比如 PM2.5 超标时发送通知）。</p>
+
+        <p>配置方法：</p>
+
+        <ol>
+            <li>在 Proxmox 里装一个 InfluxDB 容器</li>
+            <li>在 HA 的配置文件里添加 InfluxDB 集成</li>
+            <li>装 Grafana，添加 InfluxDB 数据源</li>
+            <li>导入 HA 的 Grafana 模板（GitHub 上有很多）</li>
+        </ol>
+
+        <h2>总结：三个月的折腾值得吗？</h2>
+
+        <p>说实话，折腾 HA 的过程挺累的。光是看文档、调试配置就花了无数个晚上。但当你看到家里的设备都能按照你的想法自动运行时，那种成就感是无法替代的。</p>
+
+        <p>现在我的 HA 已经稳定运行半年了，基本上不需要维护。每天回家灯会自动亮起，睡觉时空调会自动调节，早上窗帘会缓缓打开。这种"无感"的智能体验，才是我想要的。</p>
+
+        <p><strong>给想入坑的朋友几个建议：</strong></p>
+
+        <ul>
+            <li>硬件选择：预算够的话直接上 N100 小主机，树莓派性能真的不够</li>
+            <li>设备选择：优先选支持本地控制的设备（Zigbee、HomeKit），避免云端依赖</li>
+            <li>学习路径：先把基础功能跑起来，再慢慢加自动化。不要一开始就想做很复杂的东西</li>
+            <li>备份很重要：定期备份配置文件，我是每周自动备份到 NAS</li>
+            <li>加入社区：HA 的中文社区很活跃，遇到问题可以去论坛或 Telegram 群求助</li>
+        </ul>
+
+        <p>最后放一张我的 HA 仪表盘截图（此处应有图片）。如果你也在折腾 HA，欢迎在评论区交流！</p>
+
+        <div style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border);">
+            <a href="../../index.html#blog" >← 返回首页</a>
+        </div>
+    </div>
+            );
+        }
+
+        ReactDOM.render(<Article />, document.getElementById('root'));
+    </script>
+
+    <footer>
+        <p>© 2026 Moreyu. Built with passion.</p>
+    </footer>
+
+</body>
+</html>

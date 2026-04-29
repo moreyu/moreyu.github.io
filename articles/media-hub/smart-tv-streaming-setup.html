@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智能电视流媒体终极配置：从 Apple TV 到 Shield TV 全方位对比 - Moreyu</title>
+    <meta name="description" content="两年测试 8 款流媒体设备的真实体验，告诉你 Apple TV、Shield TV、小米盒子等设备的优缺点和最佳配置方案">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🧠%3C/text%3E%3C/svg%3E">
+    
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link rel="stylesheet" href="../../styles/article.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <nav>
+        <div class="container">
+            <a href="../../index.html" style="font-size: 1.5rem; font-weight: 900; color: var(--text);">← 返回首页</a>
+            <div style="display: flex; gap: 2rem;">
+                <a href="../../articles.html">文章列表</a>
+                <a href="../../index.html">首页</a>
+            </div>
+        </div>
+    </nav>
+
+
+    
+
+
+    
+
+
+    
+
+
+    
+
+
+    
+
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        function Article() {
+            return (
+                <article className="article-container">
+                    <header className="article-header">
+                        <a href="../../index.html#blog" className="back-link">← 返回首页</a>
+                        <div className="article-meta">
+                            <span className="category">STREAM & SMART MEDIA HUB</span>
+                            <time>2026-04-29</time>
+                        </div>
+                        <h1>智能电视流媒体终极配置：从 Apple TV 到 Shield TV 全方位对比</h1>
+                        <p className="article-intro">
+                            两年时间测试了 8 款主流流媒体设备，从 Apple TV 4K 到 NVIDIA Shield TV，从小米盒子到 Chromecast。这篇文章基于真实使用体验，告诉你哪款设备最适合你的需求。
+                        </p>
+                    </header>
+
+                    <div className="article-content">
+                        <h2>为什么需要独立流媒体设备？</h2>
+                        <p>
+                            2024 年买了 LG C3 OLED 电视后，我以为智能电视自带的 webOS 就够用了。结果用了一个月发现：
+                        </p>
+                        <ul>
+                            <li>Netflix、Disney+ 等应用经常卡顿</li>
+                            <li>本地 NAS 的 4K 视频播放不流畅</li>
+                            <li>系统更新慢，新应用支持差</li>
+                            <li>遥控器操作体验糟糕</li>
+                        </ul>
+                        <p>
+                            于是开始了流媒体设备的测试之旅。两年下来，我把市面上主流的 8 款设备都试了个遍，每款都用了至少 2 个月。
+                        </p>
+
+                        <h2>测试设备清单</h2>
+                        <table className="device-table">
+                            <thead>
+                                <tr>
+                                    <th>设备</th>
+                                    <th>价格</th>
+                                    <th>系统</th>
+                                    <th>测试时间</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Apple TV 4K (3rd Gen)</td>
+                                    <td>¥1399</td>
+                                    <td>tvOS 17</td>
+                                    <td>2024.03 - 至今</td>
+                                </tr>
+                                <tr>
+                                    <td>NVIDIA Shield TV Pro</td>
+                                    <td>¥1599</td>
+                                    <td>Android TV 11</td>
+                                    <td>2024.01 - 2024.06</td>
+                                </tr>
+                                <tr>
+                                    <td>小米盒子 4S Max</td>
+                                    <td>¥399</td>
+                                    <td>Android TV 9</td>
+                                    <td>2023.12 - 2024.02</td>
+                                </tr>
+                                <tr>
+                                    <td>Chromecast with Google TV</td>
+                                    <td>¥399</td>
+                                    <td>Google TV</td>
+                                    <td>2024.02 - 2024.04</td>
+                                </tr>
+                                <tr>
+                                    <td>Amazon Fire TV Stick 4K Max</td>
+                                    <td>¥459</td>
+                                    <td>Fire OS 7</td>
+                                    <td>2024.04 - 2024.06</td>
+                                </tr>
+                                <tr>
+                                    <td>Roku Ultra</td>
+                                    <td>¥699</td>
+                                    <td>Roku OS 12</td>
+                                    <td>2024.06 - 2024.08</td>
+                                </tr>
+                                <tr>
+                                    <td>当贝 X5 Ultra</td>
+                                    <td>¥2999</td>
+                                    <td>当贝 OS 4.0</td>
+                                    <td>2024.08 - 2024.10</td>
+                                </tr>
+                                <tr>
+                                    <td>海美迪 Q30 Pro</td>
+                                    <td>¥899</td>
+                                    <td>Android 11</td>
+                                    <td>2024.10 - 2024.12</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h2>详细评测：优缺点全解析</h2>
+
+                        <h3>Apple TV 4K：体验之王</h3>
+                        <p>
+                            <strong>配置：</strong>A15 Bionic 芯片，3GB 内存，64GB 存储
+                        </p>
+                        <p>
+                            <strong>优势：</strong>
+                        </p>
+                        <ul>
+                            <li>✅ <strong>系统流畅度无敌</strong> - A15 芯片性能强劲，从未卡顿</li>
+                            <li>✅ <strong>应用生态最丰富</strong> - Netflix、Disney+、HBO Max 等全覆盖</li>
+                            <li>✅ <strong>AirPlay 体验完美</strong> - iPhone/iPad 投屏无延迟</li>
+                            <li>✅ <strong>Siri 遥控器好用</strong> - 语音搜索准确，触控板操作顺滑</li>
+                            <li>✅ <strong>HDR 支持完整</strong> - Dolby Vision、HDR10+ 全支持</li>
+                            <li>✅ <strong>隐私保护到位</strong> - 不会收集观看数据</li>
+                        </ul>
+                        <p>
+                            <strong>劣势：</strong>
+                        </p>
+                        <ul>
+                            <li>❌ <strong>价格昂贵</strong> - 1399 元，是其他设备的 3-4 倍</li>
+                            <li>❌ <strong>本地播放能力一般</strong> - 不支持 DTS 音频，格式支持有限</li>
+                            <li>❌ <strong>无 USB 接口</strong> - 不能直接播放移动硬盘内容</li>
+                            <li>❌ <strong>生态封闭</strong> - 主要服务苹果用户</li>
+                        </ul>
+                        <p>
+                            <strong>适合人群：</strong>苹果生态用户，追求极致体验，预算充足
+                        </p>
+
+                        <h3>NVIDIA Shield TV Pro：性能怪兽</h3>
+                        <p>
+                            <strong>配置：</strong>Tegra X1+ 芯片，3GB 内存，16GB 存储
+                        </p>
+                        <p>
+                            <strong>优势：</strong>
+                        </p>
+                        <ul>
+                            <li>✅ <strong>本地播放无敌</strong> - 支持所有视频格式，包括 DTS-X</li>
+                            <li>✅ <strong>AI 增强功能</strong> - 1080p 视频 AI 升级到 4K</li>
+                            <li>✅ <strong>游戏性能强</strong> - 可以玩 Android 游戏，支持 GeForce Now</li>
+                            <li>✅ <strong>Plex 服务器</strong> - 可以直接当 Plex 服务器使用</li>
+                            <li>✅ <strong>扩展性好</strong> - USB 3.0 接口，可接移动硬盘</li>
+                        </ul>
+                        <p>
+                            <strong>劣势：</strong>
+                        </p>
+                        <ul>
+                            <li>❌ <strong>Android TV 体验一般</strong> - 偶尔卡顿，应用兼容性问题</li>
+                            <li>❌ <strong>遥控器难用</strong> - 按键布局不合理，手感差</li>
+                            <li>❌ <strong>功耗较高</strong> - 待机 8W，运行时 15W+</li>
+                            <li>❌ <strong>更新频率低</strong> - NVIDIA 对消费级产品支持一般</li>
+                        </ul>
+                        <p>
+                            <strong>适合人群：</strong>发烧友，重度本地播放用户，需要游戏功能
+                        </p>
+
+                        <h3>小米盒子 4S Max：性价比之选</h3>
+                        <p>
+                            <strong>配置：</strong>Amlogic S905X3 芯片，2GB 内存，8GB 存储
+                        </p>
+                        <p>
+                            <strong>优势：</strong>
+                        </p>
+                        <ul>
+                            <li>✅ <strong>价格便宜</strong> - 399 元，性价比极高</li>
+                            <li>✅ <strong>本地播放不错</strong> - 支持大部分格式，DTS 解码正常</li>
+                            <li>✅ <strong>国内应用丰富</strong> - 爱奇艺、腾讯视频等全覆盖</li>
+                            <li>✅ <strong>小爱同学语音</strong> - 中文语音识别准确</li>
+                        </ul>
+                        <p>
+                            <strong>劣势：</strong>
+                        </p>
+                        <ul>
+                            <li>❌ <strong>性能有限</strong> - 2GB 内存，多任务切换卡顿</li>
+                            <li>❌ <strong>广告较多</strong> - 系统内置广告，体验受影响</li>
+                            <li>❌ <strong>国际应用支持差</strong> - Netflix 等需要侧载</li>
+                            <li>❌ <strong>系统更新慢</strong> - 还是 Android TV 9</li>
+                        </ul>
+                        <p>
+                            <strong>适合人群：</strong>预算有限，主要看国内内容，小米生态用户
+                        </p>
+
+                        <h3>Chromecast with Google TV：简洁实用</h3>
+                        <p>
+                            <strong>配置：</strong>Amlogic S905X3 芯片，1.5GB 内存，8GB 存储
+                        </p>
+                        <p>
+                            <strong>优势：</strong>
+                        </p>
+                        <ul>
+                            <li>✅ <strong>Google TV 界面清爽</strong> - 个性化推荐，无广告</li>
+                            <li>✅ <strong>投屏体验好</strong> - Chromecast 投屏稳定流畅</li>
+                            <li>✅ <strong>价格合理</strong> - 399 元，功能够用</li>
+                            <li>✅ <strong>语音遥控器</strong> - Google Assistant 识别准确</li>
+                        </ul>
+                        <p>
+                            <strong>劣势：</strong>
+                        </p>
+                        <ul>
+                            <li>❌ <strong>内存不足</strong> - 1.5GB 内存，经常杀后台</li>
+                            <li>❌ <strong>存储空间小</strong> - 8GB 存储，装不了几个应用</li>
+                            <li>❌ <strong>本地播放弱</strong> - 格式支持有限，DTS 不支持</li>
+                            <li>❌ <strong>国内网络问题</strong> - Google 服务需要特殊网络</li>
+                        </ul>
+                        <p>
+                            <strong>适合人群：</strong>Google 生态用户，主要看流媒体，轻度使用
+                        </p>
+
+                        <h3>当贝 X5 Ultra：国产旗舰</h3>
+                        <p>
+                            <strong>配置：</strong>Amlogic A311D2 芯片，6GB 内存，128GB 存储
+                        </p>
+                        <p>
+                            <strong>优势：</strong>
+                        </p>
+                        <ul>
+                            <li>✅ <strong>配置豪华</strong> - 6GB 内存，128GB 存储，配置最高</li>
+                            <li>✅ <strong>当贝 OS 体验好</strong> - 无广告，界面清爽</li>
+                            <li>✅ <strong>本地播放强</strong> - 支持所有格式，解码能力强</li>
+                            <li>✅ <strong>应用商店丰富</strong> - 国内外应用都有</li>
+                        </ul>
+                        <p>
+                            <strong>劣势：</strong>
+                        </p>
+                        <ul>
+                            <li>❌ <strong>价格昂贵</strong> - 2999 元，比 Apple TV 还贵</li>
+                            <li>❌ <strong>品牌溢价高</strong> - 硬件成本不到 500 元</li>
+                            <li>❌ <strong>系统优化一般</strong> - 偶尔卡顿，稳定性不如大厂</li>
+                        </ul>
+                        <p>
+                            <strong>适合人群：</strong>追求高配置，主要看本地内容，不差钱
+                        </p>
+
+                        <h2>使用场景分析</h2>
+
+                        <h3>场景一：客厅主力设备</h3>
+                        <p>
+                            <strong>需求：</strong>家庭共用，老人小孩都要会用，稳定可靠
+                        </p>
+                        <p>
+                            <strong>推荐：Apple TV 4K</strong>
+                        </p>
+                        <ul>
+                            <li>界面简洁，操作逻辑清晰</li>
+                            <li>系统稳定，很少出问题</li>
+                            <li>应用生态完善，更新及时</li>
+                            <li>Siri 遥控器支持语音搜索</li>
+                        </ul>
+
+                        <h3>场景二：卧室次要设备</h3>
+                        <p>
+                            <strong>需求：</strong>个人使用，主要看流媒体，偶尔本地播放
+                        </p>
+                        <p>
+                            <strong>推荐：Chromecast with Google TV</strong>
+                        </p>
+                        <ul>
+                            <li>价格便宜，试错成本低</li>
+                            <li>体积小巧，不占空间</li>
+                            <li>投屏方便，手机控制</li>
+                            <li>Google TV 推荐算法不错</li>
+                        </ul>
+
+                        <h3>场景三：发烧友专用</h3>
+                        <p>
+                            <strong>需求：</strong>本地 4K 收藏，各种格式支持，可折腾
+                        </p>
+                        <p>
+                            <strong>推荐：NVIDIA Shield TV Pro</strong>
+                        </p>
+                        <ul>
+                            <li>本地播放能力最强</li>
+                            <li>支持 AI 增强功能</li>
+                            <li>可以当 Plex 服务器</li>
+                            <li>Android 系统可玩性高</li>
+                        </ul>
+
+                        <h3>场景四：预算有限</h3>
+                        <p>
+                            <strong>需求：</strong>基础功能够用，主要看国内内容
+                        </p>
+                        <p>
+                            <strong>推荐：小米盒子 4S Max</strong>
+                        </p>
+                        <ul>
+                            <li>价格最便宜</li>
+                            <li>国内应用支持好</li>
+                            <li>小爱同学语音方便</li>
+                            <li>基础功能够用</li>
+                        </ul>
+
+                        <h2>配置优化建议</h2>
+
+                        <h3>网络配置</h3>
+                        <p>
+                            <strong>有线连接优先：</strong>
+                        </p>
+                        <ul>
+                            <li>4K 内容建议有线连接</li>
+                            <li>千兆网络确保不卡顿</li>
+                            <li>路由器 QoS 优先级设置</li>
+                        </ul>
+                        <p>
+                            <strong>Wi-Fi 优化：</strong>
+                        </p>
+                        <ul>
+                            <li>使用 5GHz 频段</li>
+                            <li>Wi-Fi 6 路由器推荐</li>
+                            <li>避开干扰频道</li>
+                        </ul>
+
+                        <h3>音视频设置</h3>
+                        <p>
+                            <strong>视频输出：</strong>
+                        </p>
+                        <ul>
+                            <li>4K 60Hz 输出</li>
+                            <li>HDR 自动切换</li>
+                            <li>色彩空间 YUV 4:2:2</li>
+                        </ul>
+                        <p>
+                            <strong>音频输出：</strong>
+                        </p>
+                        <ul>
+                            <li>HDMI ARC/eARC 连接</li>
+                            <li>Dolby Atmos 透传</li>
+                            <li>DTS 解码设置</li>
+                        </ul>
+
+                        <h3>应用推荐</h3>
+                        <p>
+                            <strong>必装应用：</strong>
+                        </p>
+                        <ul>
+                            <li><strong>Plex/Jellyfin</strong> - 本地媒体播放</li>
+                            <li><strong>Kodi</strong> - 万能播放器</li>
+                            <li><strong>VLC</strong> - 格式支持最全</li>
+                            <li><strong>Speedtest</strong> - 网络测速</li>
+                        </ul>
+                        <p>
+                            <strong>流媒体应用：</strong>
+                        </p>
+                        <ul>
+                            <li>Netflix、Disney+、HBO Max</li>
+                            <li>YouTube、YouTube TV</li>
+                            <li>爱奇艺、腾讯视频、优酷</li>
+                            <li>哔哩哔哩、芒果TV</li>
+                        </ul>
+
+                        <h2>购买建议</h2>
+
+                        <h3>2026 年推荐榜单</h3>
+                        <p>
+                            <strong>最佳体验：Apple TV 4K</strong>
+                        </p>
+                        <ul>
+                            <li>价格：¥1399</li>
+                            <li>适合：苹果用户，追求体验</li>
+                            <li>优势：系统流畅，生态完善</li>
+                        </ul>
+                        <p>
+                            <strong>最佳性能：NVIDIA Shield TV Pro</strong>
+                        </p>
+                        <ul>
+                            <li>价格：¥1599</li>
+                            <li>适合：发烧友，本地播放</li>
+                            <li>优势：性能强劲，格式全支持</li>
+                        </ul>
+                        <p>
+                            <strong>最佳性价比：小米盒子 4S Max</strong>
+                        </p>
+                        <ul>
+                            <li>价格：¥399</li>
+                            <li>适合：预算有限，基础需求</li>
+                            <li>优势：价格便宜，功能够用</li>
+                        </ul>
+                        <p>
+                            <strong>最佳投屏：Chromecast with Google TV</strong>
+                        </p>
+                        <ul>
+                            <li>价格：¥399</li>
+                            <li>适合：Google 用户，轻度使用</li>
+                            <li>优势：投屏体验好，界面清爽</li>
+                        </ul>
+
+                        <h3>避坑指南</h3>
+                        <ul>
+                            <li><strong>不要只看配置</strong> - 系统优化更重要</li>
+                            <li><strong>考虑生态兼容</strong> - 选择与现有设备匹配的</li>
+                            <li><strong>重视遥控器体验</strong> - 每天都要用的东西</li>
+                            <li><strong>确认应用支持</strong> - 你常用的应用是否有</li>
+                            <li><strong>网络环境很重要</strong> - 有些设备需要特殊网络</li>
+                        </ul>
+
+                        <h2>未来趋势</h2>
+                        <p>
+                            <strong>技术发展方向：</strong>
+                        </p>
+                        <ul>
+                            <li><strong>8K 支持</strong> - 虽然内容还少，但硬件要跟上</li>
+                            <li><strong>AI 增强</strong> - 画质增强、内容推荐越来越智能</li>
+                            <li><strong>云游戏</strong> - Xbox Cloud Gaming、GeForce Now 普及</li>
+                            <li><strong>语音控制</strong> - 更自然的语音交互</li>
+                        </ul>
+                        <p>
+                            <strong>购买建议：</strong>
+                        </p>
+                        <ul>
+                            <li>如果现有设备够用，不急着升级</li>
+                            <li>如果要买新的，选择支持最新标准的</li>
+                            <li>关注大厂产品，更新支持更持久</li>
+                        </ul>
+
+                        <h2>总结</h2>
+                        <p>
+                            两年测试下来，我的结论是：<strong>没有完美的流媒体设备，只有最适合你的</strong>。
+                        </p>
+                        <p>
+                            <strong>我的最终选择：</strong>
+                        </p>
+                        <ul>
+                            <li><strong>客厅主力</strong>：Apple TV 4K - 家人都会用，体验最好</li>
+                            <li><strong>卧室备用</strong>：Chromecast - 便宜好用，投屏方便</li>
+                            <li><strong>书房折腾</strong>：Shield TV Pro - 本地播放无敌，可玩性高</li>
+                        </ul>
+                        <p>
+                            <strong>给新手的建议：</strong>
+                        </p>
+                        <ol>
+                            <li>先确定主要用途（流媒体 vs 本地播放）</li>
+                            <li>考虑现有设备生态（苹果 vs 安卓 vs Google）</li>
+                            <li>根据预算选择合适档位</li>
+                            <li>买之前看看真实用户评价</li>
+                        </ol>
+                        <p>
+                            最重要的是：<strong>适合自己的才是最好的</strong>。不要被参数和营销忽悠，根据实际需求选择。
+                        </p>
+                        <p>
+                            希望我的测试经历能帮你选到心仪的流媒体设备！
+                        </p>
+                    </div>
+
+                    
+                </article>
+            );
+        }
+
+        ReactDOM.render(<Article />, document.getElementById('root'));
+    </script>
+
+    
+    
+    
+    
+    
+    
+    <style>
+        :root {
+            --bg: #0f0f0f;
+            --bg-elevated: #1a1a1a;
+            --surface: #1e1e1e;
+            --surface-hover: #252525;
+            --text: #e8e8e8;
+            --text-secondary: #a8a8a8;
+            --text-tertiary: #6e6e6e;
+            --accent: #d97706;
+            --accent-hover: #f59e0b;
+            --accent-glow: rgba(217, 119, 6, 0.2);
+            --border: #2a2a2a;
+            --border-hover: #3a3a3a;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.8;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* 导航栏 */
+        nav {
+            background: var(--bg-elevated);
+            border-bottom: 1px solid var(--border);
+            padding: 1.5rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+
+        nav .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        /* 文章容器 - 玻璃态卡片 */
+        .article-wrapper {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 3rem;
+        }
+
+        article {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 4rem;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        /* 文章头部 */
+        .article-header {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .article-meta {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .article-meta span {
+            color: var(--text-tertiary);
+            font-size: 0.875rem;
+        }
+
+        /* 标题样式 */
+        h1 {
+            font-size: 2.75rem;
+            font-weight: 900;
+            color: var(--text);
+            margin-bottom: 1rem;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, var(--text) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--text);
+            margin: 3rem 0 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--border);
+            position: relative;
+        }
+
+        h2::before {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 60px;
+            height: 2px;
+            background: var(--accent);
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text);
+            margin: 2.5rem 0 1rem;
+        }
+
+        h4 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text);
+            margin: 2rem 0 1rem;
+        }
+
+        /* 段落和文本 */
+        p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+            font-size: 1.0625rem;
+        }
+
+        strong {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        /* 列表 */
+        ul, ol {
+            color: var(--text-secondary);
+            margin: 1.5rem 0;
+            padding-left: 2rem;
+        }
+
+        li {
+            margin-bottom: 0.75rem;
+            line-height: 1.8;
+            font-size: 1.0625rem;
+        }
+
+        li::marker {
+            color: var(--accent);
+        }
+
+        /* 代码块 */
+        code {
+            background: var(--bg-elevated);
+            color: var(--accent);
+            padding: 0.25rem 0.5rem;
+            border-radius: 6px;
+            font-family: 'JetBrains Mono', 'Courier New', monospace;
+            font-size: 0.9em;
+            border: 1px solid var(--border);
+        }
+
+        pre {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            overflow-x: auto;
+            margin: 2rem 0;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+            border: none;
+            color: var(--text-secondary);
+        }
+
+        /* 提示框 - 玻璃态效果 */
+        .highlight-box, .warning-box, .success-box, .info-box {
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+            border-left: 4px solid;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .highlight-box {
+            background: rgba(217, 119, 6, 0.1);
+            border-color: var(--accent);
+            border: 1px solid rgba(217, 119, 6, 0.3);
+            border-left: 4px solid var(--accent);
+        }
+
+        .warning-box {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: var(--error);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-left: 4px solid var(--error);
+        }
+
+        .success-box {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: var(--success);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-left: 4px solid var(--success);
+        }
+
+        .info-box {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: #3b82f6;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-left: 4px solid #3b82f6;
+        }
+
+        /* 表格 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            background: var(--bg-elevated);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        th {
+            background: var(--surface);
+            color: var(--text);
+            font-weight: 600;
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 2px solid var(--border);
+        }
+
+        td {
+            padding: 1rem;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--border);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background: var(--surface-hover);
+        }
+
+        /* 链接 */
+        a {
+            color: var(--accent);
+            text-decoration: none;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        a:hover {
+            color: var(--accent-hover);
+        }
+
+        /* 引用 */
+        blockquote {
+            border-left: 4px solid var(--accent);
+            padding-left: 1.5rem;
+            margin: 2rem 0;
+            color: var(--text-secondary);
+            font-style: italic;
+            background: rgba(217, 119, 6, 0.05);
+            padding: 1rem 1.5rem;
+            border-radius: 0 8px 8px 0;
+        }
+
+        /* 分隔线 */
+        hr {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 3rem 0;
+        }
+
+        /* 页脚 */
+        footer {
+            background: var(--bg-elevated);
+            border-top: 1px solid var(--border);
+            padding: 3rem 0;
+            margin-top: 6rem;
+            text-align: center;
+        }
+
+        footer p {
+            color: var(--text-tertiary);
+            font-size: 0.9rem;
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            article {
+                padding: 2rem 1.5rem;
+            }
+
+            .article-wrapper {
+                padding: 0 1.5rem;
+                margin: 2rem auto;
+            }
+
+            nav .container {
+                padding: 0 1.5rem;
+            }
+        }
+    </style>
+
+
+
+
+
+
+
+    
+
+
+    
+
+
+    
+
+
+    
+
+
+    
+
+
+    <footer>
+        <p>© 2026 Moreyu. Built with passion.</p>
+    </footer>
+
+</body>
+</html>
