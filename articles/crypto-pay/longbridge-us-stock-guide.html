@@ -393,39 +393,28 @@
 
     <div id="root"></div>
 
-    <script type="text/babel">
+        <script type="text/babel">
         const { useState, useEffect } = React;
 
         function Article() {
             return (
-<div>
-        <div>
-            <div className="article-sidebar"><div className="sidebar-sticky"><h3 className="sidebar-title">文章导航</h3>
-                    <a href="#intro" >引言：为什么选择长桥</a>
-                    <a href="#advantages" >长桥优势</a>
-                    <a href="#account-opening" >开户流程</a>
-                    <a href="#deposit" >入金方法</a>
-                    <a href="#trading" >交易指南</a>
-                    <a href="#fees" >费用说明</a>
-                    <a href="#tips" >实用技巧</a>
-                    <a href="#faq" >常见问题</a>
-                    <a href="#conclusion" >总结与建议</a>
-                </div>
-            </div>
-
-            <div className="article-content"><article className="article-container">
-                    <div>
-                        <div>
-                            <h1 >长桥美股开户完全指南：从开户到交易的全流程攻略</h1>
-                            <p >详细解析长桥证券开户流程，助你轻松投资美股港股</p>
-                            <div>
-                                <span>发布时间：2026年1月</span>
-                                <span >•</span>
-                                <span>阅读时间：约 20 分钟</span>
-                                <span >•</span>
-                                <span>字数：约 9,000 字</span>
-                            </div>
+                <article className="article-container">
+                    <header className="article-header">
+                        <div className="article-meta">
+                            <span className="category">CRYPTO & PAY</span>
+                            <time>2026-04-29</time>
                         </div>
+                        <h1>长桥美股开户完全指南：从开户到交易的全流程攻略</h1>
+                        <p className="article-intro">
+                            详细介绍长桥证券美股开户流程、入金方法、交易技巧和注意事项。包含开户步骤、费用对比、交易策略等实用信息。
+                        </p>
+                    </header>
+
+                    <div className="article-content">
+
+
+            
+                    
                     </div>
 
                     <div>
@@ -1225,55 +1214,13 @@
         // 平滑滚动
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
+                e.preventDefault(
+                    </div>
+                </article>
+            );
+        }
 
-        // 高亮当前导航
-        const sections = document.querySelectorAll('section[id]');
-        const navLinks = document.querySelectorAll('.nav-link');
-
-        window.addEventListener('scroll', () => {
-            let current = '';
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                const sectionHeight = section.clientHeight;
-                if (pageYOffset >= sectionTop - 200) {
-                    current = section.getAttribute('id');
-                }
-            });
-
-            navLinks.forEach(link => {
-                link.classList.remove('text-green-600', 'font-bold');
-                if (link.getAttribute('href') === `#${current}`) {
-                    link.classList.add('text-green-600', 'font-bold');
-                }
-            });
-        });
-
-        // 返回顶部按钮
-        const backToTop = document.createElement('button');
-        backToTop.innerHTML = '↑';
-        backToTop.className = 'fixed bottom-8 right-8 bg-green-600 text-white w-12 h-12 rounded-full shadow-lg hover:bg-green-700 transition opacity-0 pointer-events-none';
-        backToTop.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
-        document.body.appendChild(backToTop);
-
-        window.addEventListener('scroll', () => {
-            if (window.pageYOffset > 300) {
-                backToTop.style.opacity = '1';
-                backToTop.style.pointerEvents = 'auto';
-            } else {
-                backToTop.style.opacity = '0';
-                backToTop.style.pointerEvents = 'none';
-            }
-        });
+        ReactDOM.render(<Article />, document.getElementById('root'));
     </script>
             );
         }

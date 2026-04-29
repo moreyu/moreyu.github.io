@@ -394,42 +394,31 @@
 
     <div id="root"></div>
 
-    <script type="text/babel">
+        <script type="text/babel">
         const { useState, useEffect } = React;
 
         function Article() {
             return (
-<div>
-        <div>
-            <!-- 文章导航 -->
-            <div className="article-sidebar"><div className="sidebar-sticky"><h3 className="sidebar-title">文章导航</h3>
-                    <a href="#intro" >引言：Meme币的疯狂世界</a>
-                    <a href="#my-story" >我的Meme币投资经历</a>
-                    <a href="#market-analysis" >市场分析与趋势</a>
-                    <a href="#investment-strategies" >投资策略详解</a>
-                    <a href="#risk-management" >风险控制体系</a>
-                    <a href="#tools-resources" >工具与资源</a>
-                    <a href="#case-studies" >实战案例分析</a>
-                    <a href="#future-outlook" >2026年展望</a>
-                    <a href="#conclusion" >总结与建议</a>
-                </div>
-            </div>
+                <article className="article-container">
+                    <header className="article-header">
+                        <div className="article-meta">
+                            <span className="category">CRYPTO & PAY</span>
+                            <time>2026-04-29</time>
+                        </div>
+                        <h1>Meme币投资实战指南：从土狗到金狗的财富密码</h1>
+                        <p className="article-intro">
+                            深度解析Meme币投资策略，从DOGE到SHIB再到PEPE，揭秘土狗币暴富密码。包含实战案例、风险控制、热点追踪和工具推荐。
+                        </p>
+                    </header>
+
+                    <div className="article-content">
+<!-- 文章导航 -->
+            
 
             <!-- 主要内容 -->
-            <div className="article-content"><article className="article-container">
+            
                     <!-- 文章头部 -->
-                    <div>
-                        <div>
-                            <h1 >Meme币投资实战指南：从土狗到金狗的财富密码</h1>
-                            <p >深度解析Meme币投资策略，揭秘暴富密码与避坑指南</p>
-                            <div>
-                                <span>发布时间：2026年1月</span>
-                                <span >•</span>
-                                <span>阅读时间：约 25 分钟</span>
-                                <span >•</span>
-                                <span>字数：约 12,000 字</span>
-                            </div>
-                        </div>
+                    
                     </div>
 
                     <div>
@@ -1535,34 +1524,13 @@
         function showStrategy(strategyId) {
             // 隐藏所有策略内容
             document.querySelectorAll('.strategy-content').forEach(content => {
-                content.classList.remove('active');
-            });
-            
-            // 移除所有标签的active状态
-            document.querySelectorAll('.strategy-tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            
-            // 显示选中的策略内容
-            document.getElementById(strategyId).classList.add('active');
-            
-            // 添加选中标签的active状态
-            event.target.classList.add('active');
+                content.classList.remove('active'
+                    </div>
+                </article>
+            );
         }
 
-        // 平滑滚动
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
+        ReactDOM.render(<Article />, document.getElementById('root'));
     </script>
             );
         }
