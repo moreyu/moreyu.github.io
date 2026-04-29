@@ -403,6 +403,98 @@
         nav.appendChild(mobileMenu);
     }
 
+    // Enhance navigation buttons
+    function enhanceNavButtons() {
+        const nav = document.querySelector('nav');
+        if (!nav) return;
+
+        // Find all nav links
+        const links = nav.querySelectorAll('a');
+
+        links.forEach(link => {
+            const text = link.textContent.trim();
+
+            // Style for "文章列表" button
+            if (text.includes('文章列表')) {
+                link.style.cssText = `
+                    padding: 0.625rem 1.25rem;
+                    background: rgba(255, 255, 255, 0.05);
+                    border: 1px solid rgba(255, 255, 255, 0.1);
+                    border-radius: 10px;
+                    color: rgba(255, 255, 255, 0.9);
+                    text-decoration: none;
+                    font-weight: 600;
+                    font-size: 0.875rem;
+                    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                    backdrop-filter: blur(10px);
+                    -webkit-backdrop-filter: blur(10px);
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                `;
+
+                link.onmouseenter = () => {
+                    link.style.background = 'rgba(255, 255, 255, 0.1)';
+                    link.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                    link.style.transform = 'translateY(-2px)';
+                    link.style.boxShadow = '0 8px 20px rgba(0, 0, 0, 0.3)';
+                };
+
+                link.onmouseleave = () => {
+                    link.style.background = 'rgba(255, 255, 255, 0.05)';
+                    link.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+                    link.style.transform = 'translateY(0)';
+                    link.style.boxShadow = 'none';
+                };
+            }
+
+            // Style for "返回首页" button
+            if (text.includes('返回首页') || text.includes('首页')) {
+                link.style.cssText = `
+                    padding: 0.625rem 1.5rem;
+                    background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%);
+                    color: white;
+                    text-decoration: none;
+                    border-radius: 10px;
+                    font-weight: 600;
+                    font-size: 0.875rem;
+                    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                    box-shadow: 0 4px 15px rgba(217, 119, 6, 0.3);
+                    border: 1px solid rgba(255, 255, 255, 0.1);
+                    position: relative;
+                    overflow: hidden;
+                `;
+
+                // Add shine effect
+                const shine = document.createElement('div');
+                shine.style.cssText = `
+                    position: absolute;
+                    top: 0;
+                    left: -100%;
+                    width: 100%;
+                    height: 100%;
+                    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+                    transition: left 0.5s;
+                `;
+                link.appendChild(shine);
+
+                link.onmouseenter = () => {
+                    link.style.transform = 'translateY(-2px)';
+                    link.style.boxShadow = '0 8px 25px rgba(217, 119, 6, 0.5)';
+                    link.style.background = 'linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%)';
+                    shine.style.left = '100%';
+                };
+
+                link.onmouseleave = () => {
+                    link.style.transform = 'translateY(0)';
+                    link.style.boxShadow = '0 4px 15px rgba(217, 119, 6, 0.3)';
+                    link.style.background = 'linear-gradient(135deg, #d97706 0%, #f59e0b 100%)';
+                    shine.style.left = '-100%';
+                };
+            }
+        });
+    }
+
     // Optimize navigation spacing and add glass effect
     function optimizeNavigation() {
         // Add ultra strong glass effect to nav
@@ -541,6 +633,7 @@
         setTimeout(() => {
             addSolariToNav();
             addHamburgerMenu();
+            enhanceNavButtons();
             createScrollProgress();
             createReadingTime();
             addSectionMarkers();
