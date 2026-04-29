@@ -166,18 +166,15 @@
         });
     }
 
-    // Add Solari display to navigation
+    // Add Solari display to navigation (left side)
     function addSolariToNav() {
         const nav = document.querySelector('nav > div');
         if (!nav) return;
 
         const solariDisplay = createSolariDisplay();
 
-        // Insert after logo
-        const logoContainer = nav.querySelector('#logo-container');
-        if (logoContainer) {
-            logoContainer.parentNode.insertBefore(solariDisplay, logoContainer.nextSibling);
-        }
+        // Insert at the very beginning (leftmost position)
+        nav.insertBefore(solariDisplay, nav.firstChild);
     }
 
     // Smooth scroll progress bar
@@ -396,8 +393,18 @@
         nav.appendChild(mobileMenu);
     }
 
-    // Optimize navigation spacing
+    // Optimize navigation spacing and add glass effect
     function optimizeNavigation() {
+        // Add glass effect to nav
+        const nav = document.querySelector('nav');
+        if (nav) {
+            nav.style.backdropFilter = 'blur(20px) saturate(180%)';
+            nav.style.webkitBackdropFilter = 'blur(20px) saturate(180%)';
+            nav.style.background = 'rgba(10, 10, 10, 0.7)';
+            nav.style.borderBottom = '1px solid rgba(255, 255, 255, 0.08)';
+            nav.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.3)';
+        }
+
         const style = document.createElement('style');
         style.textContent = `
             /* Compact navigation */
@@ -419,6 +426,12 @@
 
             nav a {
                 white-space: nowrap;
+            }
+
+            /* Solari at leftmost position */
+            #solari-display {
+                order: -1;
+                margin-right: auto;
             }
 
             @media (max-width: 768px) {
