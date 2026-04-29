@@ -414,6 +414,9 @@
         links.forEach(link => {
             const text = link.textContent.trim();
 
+            // Remove emoji from text
+            link.textContent = text.replace(/📚\s*/, '').replace(/🏠\s*/, '');
+
             // Style for "文章列表" button
             if (text.includes('文章列表')) {
                 link.style.cssText = `
