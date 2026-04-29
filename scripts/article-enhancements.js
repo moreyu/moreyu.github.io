@@ -8,13 +8,14 @@
         container.id = 'solari-display';
         container.style.cssText = `
             display: flex;
-            gap: 3px;
+            gap: 4px;
             align-items: center;
-            padding: 8px 12px;
+            padding: 10px 16px;
             background: rgba(20, 20, 20, 0.95);
-            border-radius: 8px;
-            border: 1px solid rgba(102, 126, 234, 0.3);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            border-radius: 10px;
+            border: 1px solid rgba(217, 119, 6, 0.4);
+            box-shadow: 0 4px 16px rgba(217, 119, 6, 0.2);
+            margin-left: 16px;
         `;
 
         // Create character slots (max 13 chars for "ALMOST DONE")
@@ -24,8 +25,8 @@
             charDiv.className = 'solari-char';
             charDiv.style.cssText = `
                 position: relative;
-                width: 12px;
-                height: 28px;
+                width: 16px;
+                height: 36px;
                 overflow: hidden;
             `;
 
@@ -41,7 +42,7 @@
                 border-bottom: 1px solid rgba(0, 0, 0, 0.8);
                 overflow: hidden;
                 transform-origin: bottom;
-                border-radius: 2px 2px 0 0;
+                border-radius: 3px 3px 0 0;
             `;
 
             const topContent = document.createElement('div');
@@ -54,10 +55,13 @@
                 align-items: center;
                 justify-content: center;
                 font-family: 'JetBrains Mono', monospace;
-                font-size: 16px;
-                font-weight: 700;
-                color: #667eea;
-                text-shadow: 0 0 8px rgba(102, 126, 234, 0.6);
+                font-size: 20px;
+                font-weight: 900;
+                background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                filter: drop-shadow(0 0 10px rgba(217, 119, 6, 0.6));
             `;
             topContent.textContent = ' ';
             topFlap.appendChild(topContent);
@@ -72,7 +76,7 @@
                 height: 50%;
                 background: linear-gradient(180deg, #1a1a1a 0%, #0a0a0a 100%);
                 overflow: hidden;
-                border-radius: 0 0 2px 2px;
+                border-radius: 0 0 3px 3px;
             `;
 
             const bottomContent = document.createElement('div');
@@ -86,10 +90,13 @@
                 align-items: center;
                 justify-content: center;
                 font-family: 'JetBrains Mono', monospace;
-                font-size: 16px;
-                font-weight: 700;
-                color: #667eea;
-                text-shadow: 0 0 8px rgba(102, 126, 234, 0.6);
+                font-size: 20px;
+                font-weight: 900;
+                background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                filter: drop-shadow(0 0 10px rgba(217, 119, 6, 0.6));
             `;
             bottomContent.textContent = ' ';
             bottomFlap.appendChild(bottomContent);
