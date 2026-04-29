@@ -391,7 +391,7 @@
 
     <div id="root"></div>
 
-        <script type="text/babel">
+            <script type="text/babel">
         const { useState, useEffect } = React;
 
         function Article() {
@@ -409,19 +409,130 @@
                     </header>
 
                     <div className="article-content">
+                        <section id="intro">
+                            <h2>引言：打造个人媒体库</h2>
 
-            <div>
-                <h1 >电影收藏与管理：媒体库搭建</h1>
-                <p >用Plex/Jellyfin打造私人影院</p>
-            </div>
-            <div>
-                <h2 >媒体库搭建</h2>
-                <p >Plex和Jellyfin的安装配置、资源整理、元数据管理。实现Netflix般的观影体验。</p>
-                <h2 >自动化管理</h2>
-                <p >使用Sonarr/Radarr自动下载和整理影视资源，配合字幕自动匹配，打造全自动媒体库。</p>
-            </div>
-        </article>
-    </div>
+                            <div className="highlight-box">
+                                <p><strong>💡 核心价值</strong></p>
+                                <p>个人媒体库让你完全掌控自己的影音内容，不受流媒体平台限制，随时随地观看。</p>
+                            </div>
+
+                            <p>
+                                我从2020年开始搭建个人媒体库，目前收藏了5000+部电影和500+部剧集。这篇文章将分享完整的搭建和管理经验。
+                            </p>
+                        </section>
+
+                        <section id="platforms">
+                            <h2>媒体服务器选择</h2>
+
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>平台</th>
+                                        <th>费用</th>
+                                        <th>特点</th>
+                                        <th>推荐度</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Plex</td>
+                                        <td>免费/¥40/月</td>
+                                        <td>功能强大，生态完善</td>
+                                        <td>⭐⭐⭐⭐⭐</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Jellyfin</td>
+                                        <td>完全免费</td>
+                                        <td>开源，无限制</td>
+                                        <td>⭐⭐⭐⭐</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Emby</td>
+                                        <td>¥90/年</td>
+                                        <td>稳定性好</td>
+                                        <td>⭐⭐⭐⭐</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </section>
+
+                        <section id="setup">
+                            <h2>搭建步骤</h2>
+
+                            <h3>1. 硬件准备</h3>
+                            <ul>
+                                <li><strong>NAS设备：</strong>群晖、威联通或自组NAS</li>
+                                <li><strong>存储空间：</strong>至少4TB，推荐8TB+</li>
+                                <li><strong>网络：</strong>千兆局域网，100M+外网</li>
+                            </ul>
+
+                            <h3>2. 软件安装</h3>
+                            <div className="info-box">
+                                <p><strong>Plex安装（Docker方式）</strong></p>
+                                <pre><code>docker run -d \
+  --name=plex \
+  -e PUID=1000 \
+  -e PGID=1000 \
+  -e TZ=Asia/Shanghai \
+  -p 32400:32400 \
+  -v /path/to/config:/config \
+  -v /path/to/media:/media \
+  --restart unless-stopped \
+  plexinc/pms-docker</code></pre>
+                            </div>
+
+                            <h3>3. 媒体库组织</h3>
+                            <p>正确的文件命名和目录结构很重要：</p>
+                            <pre><code>/media
+  /Movies
+    /电影名称 (年份)
+      电影名称 (年份).mkv
+  /TV Shows
+    /剧集名称
+      /Season 01
+        S01E01.mkv
+        S01E02.mkv</code></pre>
+                        </section>
+
+                        <section id="automation">
+                            <h2>自动化管理</h2>
+
+                            <h3>Sonarr + Radarr</h3>
+                            <p>自动下载和管理剧集、电影：</p>
+                            <ul>
+                                <li><strong>Sonarr：</strong>剧集管理</li>
+                                <li><strong>Radarr：</strong>电影管理</li>
+                                <li><strong>Jackett：</strong>资源搜索</li>
+                                <li><strong>qBittorrent：</strong>下载工具</li>
+                            </ul>
+
+                            <h3>Bazarr</h3>
+                            <p>自动下载字幕，支持多语言。</p>
+                        </section>
+
+                        <section id="tips">
+                            <h2>使用技巧</h2>
+
+                            <h3>远程访问</h3>
+                            <ul>
+                                <li><strong>Plex Relay：</strong>官方中继服务</li>
+                                <li><strong>端口转发：</strong>路由器配置</li>
+                                <li><strong>Cloudflare Tunnel：</strong>安全隧道</li>
+                            </ul>
+
+                            <h3>转码优化</h3>
+                            <div className="warning-box">
+                                <p><strong>⚠️ 硬件转码</strong></p>
+                                <p>使用GPU硬件转码可以大幅提升性能，支持多路4K转码。推荐NVIDIA P400或Intel Quick Sync。</p>
+                            </div>
+                        </section>
+
+                        <section id="conclusion">
+                            <h2>总结</h2>
+                            <p>搭建个人媒体库需要一定的技术基础和时间投入，但一旦搭建完成，就能享受完全自主的观影体验。</p>
+                        </section>
+
                     </div>
                 </article>
             );

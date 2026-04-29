@@ -392,7 +392,7 @@
 
     <div id="root"></div>
 
-        <script type="text/babel">
+            <script type="text/babel">
         const { useState, useEffect } = React;
 
         function Article() {
@@ -410,19 +410,126 @@
                     </header>
 
                     <div className="article-content">
+                        <section id="intro">
+                            <h2>引言：流媒体时代的订阅策略</h2>
 
-            <div>
-                <h1 >Netflix/Disney+/HBO流媒体订阅攻略</h1>
-                <p >全平台对比，省钱技巧大公开</p>
-            </div>
-            <div>
-                <h2 >平台对比</h2>
-                <p >Netflix、Disney+、HBO Max、Apple TV+等主流平台的内容、价格、特色全面对比。包含合租技巧、区域定价差异、年费优惠等省钱方法。</p>
-                <h2 >订阅建议</h2>
-                <p >根据观影偏好选择最适合的平台组合，用最少的钱看最多的内容。</p>
-            </div>
-        </article>
-    </div>
+                            <div className="highlight-box">
+                                <p><strong>💡 核心观点</strong></p>
+                                <p>流媒体订阅不是越多越好，而是要根据自己的观看习惯，选择最合适的组合。合理规划可以节省50%以上的费用。</p>
+                            </div>
+
+                            <p>
+                                我从2019年开始订阅流媒体服务，经历了从"全部订阅"到"精选组合"的转变。这篇文章将分享我的订阅策略和省钱技巧。
+                            </p>
+                        </section>
+
+                        <section id="platforms">
+                            <h2>主流平台对比</h2>
+
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>平台</th>
+                                        <th>月费</th>
+                                        <th>内容特色</th>
+                                        <th>推荐指数</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Netflix</td>
+                                        <td>¥78-98</td>
+                                        <td>欧美剧、原创内容</td>
+                                        <td>⭐⭐⭐⭐⭐</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Disney+</td>
+                                        <td>¥68</td>
+                                        <td>迪士尼、漫威、星战</td>
+                                        <td>⭐⭐⭐⭐</td>
+                                    </tr>
+                                    <tr>
+                                        <td>HBO Max</td>
+                                        <td><div className="article-content">5.99</td>
+                                        <td>HBO剧集、华纳电影</td>
+                                        <td>⭐⭐⭐⭐⭐</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Apple TV+</td>
+                                        <td>¥25</td>
+                                        <td>苹果原创</td>
+                                        <td>⭐⭐⭐</td>
+                                    </tr>
+                                    <tr>
+                                        <td>爱奇艺</td>
+                                        <td>¥25-30</td>
+                                        <td>国产剧、综艺</td>
+                                        <td>⭐⭐⭐⭐</td>
+                                    </tr>
+                                    <tr>
+                                        <td>腾讯视频</td>
+                                        <td>¥30</td>
+                                        <td>国产剧、动漫</td>
+                                        <td>⭐⭐⭐⭐</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </section>
+
+                        <section id="strategy">
+                            <h2>订阅策略</h2>
+
+                            <h3>按需订阅</h3>
+                            <p>不要长期订阅所有平台，根据当前想看的内容选择：</p>
+                            <ul>
+                                <li><strong>追剧期订阅：</strong>有想看的剧时订阅，看完就取消</li>
+                                <li><strong>轮换订阅：</strong>每月订阅不同平台，避免内容疲劳</li>
+                                <li><strong>年度会员：</strong>常用平台购买年度会员，节省20-30%</li>
+                            </ul>
+
+                            <h3>家庭共享</h3>
+                            <div className="success-box">
+                                <p><strong>✅ 省钱技巧</strong></p>
+                                <p>大部分平台支持多设备同时观看，可以和家人朋友共享账号，分摊费用。</p>
+                            </div>
+
+                            <h3>优惠活动</h3>
+                            <ul>
+                                <li><strong>新用户优惠：</strong>首月免费或半价</li>
+                                <li><strong>年度促销：</strong>双11、618等大促期间购买</li>
+                                <li><strong>联合会员：</strong>购买联合会员包，更划算</li>
+                            </ul>
+                        </section>
+
+                        <section id="recommendations">
+                            <h2>推荐组合</h2>
+
+                            <div className="info-box">
+                                <h3>基础组合（¥100/月）</h3>
+                                <ul>
+                                    <li>Netflix 标准版 ¥78</li>
+                                    <li>爱奇艺/腾讯视频 ¥25</li>
+                                </ul>
+                                <p><strong>适合：</strong>欧美剧 + 国产内容</p>
+                            </div>
+
+                            <div className="info-box">
+                                <h3>进阶组合（¥200/月）</h3>
+                                <ul>
+                                    <li>Netflix 高级版 ¥98</li>
+                                    <li>Disney+ ¥68</li>
+                                    <li>爱奇艺 ¥25</li>
+                                    <li>Apple TV+ ¥25</li>
+                                </ul>
+                                <p><strong>适合：</strong>全家观看，内容丰富</p>
+                            </div>
+                        </section>
+
+                        <section id="conclusion">
+                            <h2>总结</h2>
+                            <p>流媒体订阅要根据自己的观看习惯来选择，不要盲目订阅。合理规划可以在享受优质内容的同时，节省大量费用。</p>
+                        </section>
+
                     </div>
                 </article>
             );

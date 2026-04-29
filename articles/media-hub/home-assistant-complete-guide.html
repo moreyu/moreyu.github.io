@@ -389,7 +389,7 @@
 
     <div id="root"></div>
 
-        <script type="text/babel">
+            <script type="text/babel">
         const { useState, useEffect } = React;
 
         function Article() {
@@ -407,56 +407,7 @@
                     </header>
 
                     <div className="article-content">
-<div>
-        <a href="../../index.html#blog" >← 返回首页</a>
-
-        <h1>Home Assistant 从入门到智能家居全屋控制</h1>
-
-        <div>
-            <span>📅 2024-12-15</span>
-            <span style="margin: 0 1rem;">•</span>
-            <span>📖 约 6500 字</span>
-            <span style="margin: 0 1rem;">•</span>
-            <span>⏱️ 阅读时间 26 分钟</span>
-            <span style="margin: 0 1rem;">•</span>
-            <span>🏷️ 入门指南</span>
-        </div>
-
-        <p>去年双十一买了一堆智能设备，米家的灯、空调伴侣、温湿度传感器，还有几个 Aqara 的门窗传感器。本来想着用米家 App 就够了，结果发现自动化功能太弱了，而且不同品牌的设备根本没法联动。后来在 V2EX 看到有人推荐 Home Assistant，说是智能家居的终极解决方案，就开始折腾了。</p>
-
-        <p>这一折腾就是三个月，从最开始的树莓派装系统，到现在全屋 40+ 设备接入，自动化场景 30+ 个，真的是一路踩坑过来的。这篇文章就记录一下我的完整折腾历程，希望能帮到想入坑的朋友。</p>
-
-        <h2>为什么选择 Home Assistant？</h2>
-
-        <p>在决定用 HA 之前，我其实也对比过其他方案：</p>
-
-        <ul>
-            <li><strong>米家 App</strong>：最简单，但自动化太弱，只能做简单的"如果...那么..."，而且只支持米家生态</li>
-            <li><strong>Apple HomeKit</strong>：体验很好，但支持的设备太少，而且必须有 HomePod 或 iPad 做中枢</li>
-            <li><strong>Home Assistant</strong>：开源免费，支持 2000+ 种设备，自动化功能强大，可以本地运行</li>
-        </ul>
-
-        <p>最终选择 HA 的原因很简单：<strong>我想要完全的控制权</strong>。不想被厂商绑定，不想担心服务器挂了设备就废了，也不想数据被上传到云端。HA 可以完全本地运行，数据都在自己手里，这点很重要。</p>
-
-        <h2>硬件准备：选什么设备跑 HA？</h2>
-
-        <p>HA 可以跑在很多设备上，我前后试过三种方案：</p>
-
-        <h3>方案一：树莓派 4B（4GB）</h3>
-
-        <p>最开始用的是树莓派 4B，闲鱼 300 块收的二手。装的是 Home Assistant OS，官方推荐的系统。</p>
-
-        <div>
-            <strong>💡 优点：</strong>
-            <ul style="margin-bottom: 0;">
-                <li>功耗低，24 小时开机一个月电费不到 5 块</li>
-                <li>体积小，放在弱电箱里不占地方</li>
-                <li>官方支持好，系统更新及时</li>
-            </ul>
-        </div>
-
-        <div>
-            <strong>⚠️ 遇到的问题：</strong>
+                        <strong>⚠️ 遇到的问题：</strong>
             <p style="margin-bottom: 0.5rem;">用了两个月后，SD 卡突然挂了，所有配置都没了。虽然有备份，但恢复起来还是很麻烦。后来换了 SSD，但树莓派的 USB 启动有点玄学，折腾了一晚上才搞定。</p>
         </div>
 
