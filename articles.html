@@ -50,17 +50,23 @@
 </head>
 <body>
     <!-- Navigation -->
-    <nav class="border-b" style="border-color: var(--border); background: var(--bg);">
-        <div class="max-w-7xl mx-auto px-6 py-6">
-            <div class="flex justify-between items-center">
-                <a href="index.html" class="text-2xl font-black gradient-text">返回首页</a>
-                <div class="flex items-center gap-8">
-                    <a href="index.html" class="text-sm font-semibold" style="color: var(--text-secondary);">首页</a>
-                    <a href="articles.html" class="text-sm font-semibold" style="color: var(--accent);">文章</a>
-                </div>
+    <nav style="position: fixed; top: 0; left: 0; right: 0; z-index: 1000; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); background: rgba(15, 15, 15, 0.8); border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+        <div style="max-width: 1400px; margin: 0 auto; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center;">
+            <a href="index.html" style="font-size: 1.5rem; font-weight: 900; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-decoration: none; transition: all 0.3s ease;">
+                Moreyu
+            </a>
+            <div style="display: flex; gap: 2rem; align-items: center;">
+                <a href="articles.html" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; font-weight: 500; transition: all 0.3s ease; position: relative; border-bottom: 2px solid #667eea; padding-bottom: 0.25rem;">
+                    📚 文章列表
+                </a>
+                <a href="index.html#blog" style="padding: 0.5rem 1.5rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);">
+                    返回首页
+                </a>
             </div>
         </div>
     </nav>
+
+    <div style="height: 80px;"></div>
 
     <div class="max-w-7xl mx-auto px-6 py-16">
         <!-- Header -->
