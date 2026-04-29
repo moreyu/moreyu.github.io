@@ -378,23 +378,23 @@
     <link rel="stylesheet" href="../../styles/article.css">
 </head>
 <body>
-    <nav style="position: fixed; top: 0; left: 0; right: 0; z-index: 1000; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); background: rgba(10, 10, 10, 0.8); border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
-        <div style="max-width: 1400px; margin: 0 auto; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center;">
-            <a href="../../index.html" style="font-size: 1.5rem; font-weight: 900; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-decoration: none; transition: all 0.3s ease;">
+    <nav style={{position: 'fixed', top: '0', left: '0', right: '0', zIndex: '1000', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)', background: 'rgba(10, 10, 10, 0.8)', borderBottom: '1px solid rgba(255, 255, 255, 0.1)'}}>
+        <div style={{maxWidth: '1400px', margin: '0 auto', padding: '1rem 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+            <a href="../../index.html" style={{fontSize: '1.5rem', fontWeight: '900', background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', textDecoration: 'none', transition: 'all 0.3s ease'}}>
                 Moreyu
             </a>
-            <div style="display: flex; gap: 2rem; align-items: center;">
-                <a href="../../articles.html" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; font-weight: 500; transition: all 0.3s ease; position: relative;">
+            <div style={{display: 'flex', gap: '2rem', alignItems: 'center'}}>
+                <a href="../../articles.html" style={{color: 'rgba(255, 255, 255, 0.8)', textDecoration: 'none', fontWeight: '500', transition: 'all 0.3s ease', position: 'relative'}}>
                     📚 文章列表
                 </a>
-                <a href="../../index.html#blog" style="padding: 0.5rem 1.5rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);">
+                <a href="../../index.html#blog" style={{padding: '0.5rem 1.5rem', background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', color: 'white', textDecoration: 'none', borderRadius: '8px', fontWeight: '600', transition: 'all 0.3s ease', boxShadow: '0 4px 15px rgba(102, 126, 234, 0.4)'}}>
                     返回首页
                 </a>
             </div>
         </div>
     </nav>
 
-    <div style="height: 80px;"></div>
+    <div style={{height: '80px'}}></div>
 <div id="root"></div>
 
             <script type="text/babel">
@@ -476,7 +476,7 @@
                             <h3>2. 软件安装</h3>
                             <div className="info-box">
                                 <p><strong>Plex安装（Docker方式）</strong></p>
-                                <pre><code{'>'}docker run -d \
+                                <pre dangerouslySetInnerHTML={{__html: `<code{'>'}docker run -d \
   --name=plex \
   -e PUID=1000 \
   -e PGID=1000 \
@@ -485,12 +485,12 @@
   -v /path/to/config:/config \
   -v /path/to/media:/media \
   --restart unless-stopped \
-  plexinc/pms-docker</code{'>'}</pre>
+  plexinc/pms-docker</code{'>'}`}} />
                             </div>
 
                             <h3>3. 媒体库组织</h3>
                             <p>正确的文件命名和目录结构很重要：</p>
-                            <pre><code{'>'}/media
+                            <pre dangerouslySetInnerHTML={{__html: `<code{'>'}/media
   /Movies
     /电影名称 (年份)
       电影名称 (年份).mkv
@@ -498,7 +498,7 @@
     /剧集名称
       /Season 01
         S01E01.mkv
-        S01E02.mkv</code{'>'}</pre>
+        S01E02.mkv</code{'>'}`}} />
                         </section>
 
                         <section id="automation">

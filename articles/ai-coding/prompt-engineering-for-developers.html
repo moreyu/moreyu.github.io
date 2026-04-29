@@ -380,43 +380,55 @@
     <link rel="stylesheet" href="../../styles/article.css">
 </head>
 <body>
-    <nav style="position: fixed; top: 0; left: 0; right: 0; z-index: 1000; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); background: rgba(10, 10, 10, 0.8); border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
-        <div style="max-width: 1400px; margin: 0 auto; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center;">
-            <a href="../../index.html" style="font-size: 1.5rem; font-weight: 900; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-decoration: none; transition: all 0.3s ease;">
-                Moreyu
-            </a>
-            <div style="display: flex; gap: 2rem; align-items: center;">
-                <a href="../../articles.html" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; font-weight: 500; transition: all 0.3s ease; position: relative;">
-                    📚 文章列表
-                </a>
-                <a href="../../index.html#blog" style="padding: 0.5rem 1.5rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);">
-                    返回首页
-                </a>
+
+    <nav>
+        <div class="container">
+            <a href="../../index.html" style={{fontSize: '1.5rem', fontWeight: '900', color: 'var(--text)'}}>← 返回首页</a>
+            <div style={{display: 'flex', gap: '2rem'}}>
+                <a href="../../articles.html">文章列表</a>
+                <a href="../../index.html">首页</a>
             </div>
         </div>
     </nav>
 
-    <div style="height: 80px;"></div>
-<div id="root"></div>
+    <div id="root"></div>
 
-            <script type="text/babel">
+    <script type="text/babel">
         const { useState, useEffect } = React;
 
         function Article() {
             return (
-                <article className="article-container">
-                    <header className="article-header">
-                        <div className="article-meta">
-                            <span className="category">AI & VIBE CODING</span>
-                            <time>2026-04-29</time>
-                        </div>
-                        <h1>Prompt Engineering for Developers</h1>
-                        <p className="article-intro">
-                            专为开发者设计的Prompt工程指南，掌握与AI高效沟通的技巧，提升AI辅助编程效率。
-                        </p>
-                    </header>
+<div>
+        <div>
+            <div className="article-sidebar"><div className="sidebar-sticky"><h3 className="sidebar-title">文章导航</h3>
+                    <a href="#intro" >引言</a>
+                    <a href="#basics" >基础原则</a>
+                    <a href="#patterns" >常用模式</a>
+                    <a href="#advanced" >高级技巧</a>
+                    <a href="#code-tasks" >编程任务</a>
+                    <a href="#debugging" >调试与优化</a>
+                    <a href="#pitfalls" >常见错误</a>
+                    <a href="#tools" >工具推荐</a>
+                    <a href="#conclusion" >总结</a>
+                </div>
+            </div>
 
-                    <div className="article-content">
+            <div className="article-content"><article className="article-container">
+                    <div>
+                        <div>
+                            <h1 >Prompt Engineering for Developers</h1>
+                            <p >写出更好的AI提示词，让AI真正理解你的需求</p>
+                            <div>
+                                <span>发布时间：2026年1月</span>
+                                <span >•</span>
+                                <span>阅读时间：约 18 分钟</span>
+                                <span >•</span>
+                                <span>字数：约 8,500 字</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
                         <section id="intro" >
                             <h2 >引言：Prompt是与AI沟通的语言</h2>
 
@@ -637,9 +649,9 @@
 
                             <div>
                                 <p >提供正反例，帮助AI理解你的偏好。</p>
-
+                                
                                 <div>
-                                    <pre>好的示例：
+                                    <pre dangerouslySetInnerHTML={{__html: `好的示例：
 [展示你期望的代码风格]
 
 不好的示例：
@@ -649,21 +661,246 @@
 
 示例：
 好的示例（函数式风格）：
-const getAdultUsers = users ={'>'} users.filter(u ={'>'} u.age {'>'}= 18);
+const getAdultUsers = users => users.filter(u => u.age >= 18);
 
 不好的示例（命令式风格）：
-function getAdultUsers(users) {'{'}
-    const result = [];
-    for (let i = 0; i {'<'} users.length; i++) {'{'}
-        if (users[i].age {'>'}= 18) {'{'}
-            result.push(users[i]);
-        {'}'}
-    {'}'}
-    return result;
-{'}'}</pre>
+function getAdultUsers(users) {
+  const result = [];
+  for (let i = 0; i < users.length; i++) {
+    if (users[i].age >= 18) {
+      result.push(users[i]);
+    }
+  }
+  return result;
+}
+
+请按照"好的示例"的风格实现筛选活跃用户的函数`}} />
                                 </div>
                             </div>
+                        </section>
+
+                        <section id="advanced" >
+                            <h2 >高级技巧</h2>
+
+                            <div>
+                                <h3 >技巧1：迭代优化</h3>
+                                <p >不要期望一次完美，通过迭代改进Prompt。</p>
+                                <div>
+                                    <pre>第1次：创建一个API客户端
+第2次：创建一个TypeScript API客户端，支持GET/POST
+第3次：创建一个TypeScript API客户端，支持GET/POST/PUT/DELETE，包含错误处理和重试机制</pre>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h3 >技巧2：使用元提示</h3>
+                                <p >告诉AI如何理解你的Prompt。</p>
+                                <div>
+                                    <pre>当我说"优化"时，我指的是：
+1. 提高性能（时间复杂度）
+2. 减少内存使用
+3. 提高代码可读性
+4. 遵循最佳实践
+
+现在，请优化这个函数：[代码]</pre>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h3 >技巧3：Few-Shot Learning</h3>
+                                <p >提供多个示例，建立模式。</p>
+                                <div>
+                                    <pre>示例1：
+输入：getUserById
+输出：get_user_by_id
+
+示例2：
+输入：createNewPost
+输出：create_new_post
+
+现在转换：deleteOldComments</pre>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section id="code-tasks" >
+                            <h2 >常见编程任务的Prompt</h2>
+
+                            <div>
+                                <h3 >创建API端点</h3>
+                                <div>
+                                    <pre dangerouslySetInnerHTML={{__html: `创建一个Express API端点：
+- 路径：POST /api/users
+- 功能：创建新用户
+- 输入：{ name, email, password }
+- 验证：邮箱格式、密码最少8位
+- 处理：密码加密（bcrypt）、保存到MongoDB
+- 输出：{ id, name, email, createdAt }
+- 错误处理：400（验证失败）、500（服务器错误）`}} />
+                                </div>
+                            </div>
+
+                            <div>
+                                <h3 >数据库查询优化</h3>
+                                <div>
+                                    <pre>优化这个MongoDB查询：
+[当前代码]
+
+要求：
+- 添加索引建议
+- 使用聚合管道
+- 减少数据传输
+- 添加分页支持
+- 解释优化原理</pre>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h3 >单元测试</h3>
+                                <div>
+                                    <pre>为这个函数编写Jest测试：
+[函数代码]
+
+要求：
+- 测试正常情况
+- 测试边界条件
+- 测试错误处理
+- 使用describe/it结构
+- 覆盖率100%</pre>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section id="debugging" >
+                            <h2 >调试与优化Prompt</h2>
+
+                            <div>
+                                <p >🔍 Prompt不工作时的检查清单</p>
+                                <ul >
+                                    <li>✓ 是否足够具体？</li>
+                                    <li>✓ 是否提供了上下文？</li>
+                                    <li>✓ 是否包含示例？</li>
+                                    <li>✓ 是否有明确的约束？</li>
+                                    <li>✓ 是否拆分了复杂任务？</li>
+                                </ul>
+                            </div>
+                        </section>
+
+                        <section id="pitfalls" >
+                            <h2 >常见错误</h2>
+
+                            <div>
+                                <p >❌ 错误1：过于简短</p>
+                                <p >"写个函数" → AI不知道要实现什么</p>
+                            </div>
+
+                            <div>
+                                <p >❌ 错误2：假设AI知道上下文</p>
+                                <p >"用那个库实现" → AI不知道"那个库"是什么</p>
+                            </div>
+
+                            <div>
+                                <p >❌ 错误3：一次要求太多</p>
+                                <p >"创建完整的电商系统" → 任务太大，拆分成小任务</p>
+                            </div>
+                        </section>
+
+                        <section id="tools" >
+                            <h2 >工具推荐</h2>
+
+                            <div>
+                                <div>
+                                    <h4 >Prompt库</h4>
+                                    <ul >
+                                        <li>• PromptBase - Prompt市场</li>
+                                        <li>• Awesome Prompts - GitHub集合</li>
+                                        <li>• ShareGPT - 分享对话</li>
+                                    </ul>
+                                </div>
+
+                                <div>
+                                    <h4 >测试工具</h4>
+                                    <ul >
+                                        <li>• Playground - 测试Prompt</li>
+                                        <li>• PromptPerfect - 优化工具</li>
+                                        <li>• LangChain - Prompt框架</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section id="conclusion" >
+                            <h2 >总结</h2>
+
+                            <div>
+                                <p >🎯 核心要点</p>
+                                <ul >
+                                    <li><strong>清晰具体：</strong>详细描述需求</li>
+                                    <li><strong>提供上下文：</strong>技术栈、规范、背景</li>
+                                    <li><strong>使用示例：</strong>输入输出示例</li>
+                                    <li><strong>分步指导：</strong>复杂任务拆分</li>
+                                    <li><strong>持续优化：</strong>迭代改进Prompt</li>
+                                </ul>
+                            </div>
+
+                            <div>
+                                <p >🚀 立即行动</p>
+                                <p >从今天开始，用本文的方法改进你的Prompt。你会发现AI变得更"聪明"，代码质量显著提升。</p>
+                                <p>记住：好的Prompt是AI编程成功的关键。投入时间学习Prompt工程，回报是巨大的。</p>
+                            </div>
+                        </section>
+
+                        <div>
+                            <div>
+                                <div>
+                                    <p>最后更新：2026年1月</p>
+                                    <p >分类：AI & VIBE CODING</p>
+                                </div>
+                                <div>
+                                    <p>作者：M2REYU</p>
+                                    <p >字数：约 8,500 字</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </article>
+            </div>
+        </div>
+    </div>
+
+    
+
+    <script>
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('text-amber-600', 'font-bold');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('text-amber-600', 'font-bold');
+                }
+            });
+        });
+    </script>
             );
         }
 

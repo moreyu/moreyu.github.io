@@ -17,23 +17,23 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <nav style="position: fixed; top: 0; left: 0; right: 0; z-index: 1000; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); background: rgba(10, 10, 10, 0.8); border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
-        <div style="max-width: 1400px; margin: 0 auto; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center;">
-            <a href="../../index.html" style="font-size: 1.5rem; font-weight: 900; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-decoration: none; transition: all 0.3s ease;">
+    <nav style={{position: 'fixed', top: '0', left: '0', right: '0', zIndex: '1000', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)', background: 'rgba(10, 10, 10, 0.8)', borderBottom: '1px solid rgba(255, 255, 255, 0.1)'}}>
+        <div style={{maxWidth: '1400px', margin: '0 auto', padding: '1rem 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+            <a href="../../index.html" style={{fontSize: '1.5rem', fontWeight: '900', background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', textDecoration: 'none', transition: 'all 0.3s ease'}}>
                 Moreyu
             </a>
-            <div style="display: flex; gap: 2rem; align-items: center;">
-                <a href="../../articles.html" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; font-weight: 500; transition: all 0.3s ease; position: relative;">
+            <div style={{display: 'flex', gap: '2rem', alignItems: 'center'}}>
+                <a href="../../articles.html" style={{color: 'rgba(255, 255, 255, 0.8)', textDecoration: 'none', fontWeight: '500', transition: 'all 0.3s ease', position: 'relative'}}>
                     📚 文章列表
                 </a>
-                <a href="../../index.html#blog" style="padding: 0.5rem 1.5rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);">
+                <a href="../../index.html#blog" style={{padding: '0.5rem 1.5rem', background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', color: 'white', textDecoration: 'none', borderRadius: '8px', fontWeight: '600', transition: 'all 0.3s ease', boxShadow: '0 4px 15px rgba(102, 126, 234, 0.4)'}}>
                     返回首页
                 </a>
             </div>
         </div>
     </nav>
 
-    <div style="height: 80px;"></div>
+    <div style={{height: '80px'}}></div>
 <div style={{maxWidth: '1200px', margin: '3rem auto', padding: '0 3rem'}}>
 <div id="root"></div>
 
@@ -151,7 +151,7 @@
                         <p>
                             我使用 Docker Compose 部署 Plex，方便管理和备份。
                         </p>
-                        <pre><code{'>'}version: '3.8'
+                        <pre dangerouslySetInnerHTML={{__html: `<code{'>'}version: '3.8'
 
 services:
   plex:
@@ -185,7 +185,7 @@ services:
       - /data/plex/transcode:/transcode
       - /data/media:/data:ro
     runtime: nvidia
-    restart: unless-stopped</code{'>'}</pre>
+    restart: unless-stopped</code{'>'}`}} />
 
                         <p>
                             <strong>关键配置说明：</strong>
@@ -201,7 +201,7 @@ services:
                         <p>
                             如果使用 NVIDIA 显卡，需要安装驱动和 nvidia-docker2：
                         </p>
-                        <pre><code{'>'}# 安装 NVIDIA 驱动
+                        <pre dangerouslySetInnerHTML={{__html: `<code{'>'}# 安装 NVIDIA 驱动
 sudo apt update
 sudo apt install nvidia-driver-535
 
@@ -216,7 +216,7 @@ sudo apt install nvidia-docker2
 sudo systemctl restart docker
 
 # 验证 GPU 可用
-docker run --rm --gpus all nvidia/cuda:11.8.0-base-ubuntu22.04 nvidia-smi</code{'>'}</pre>
+docker run --rm --gpus all nvidia/cuda:11.8.0-base-ubuntu22.04 nvidia-smi</code{'>'}`}} />
 
                         <p>
                             <strong>破解 NVENC 转码路数限制：</strong>
@@ -224,7 +224,7 @@ docker run --rm --gpus all nvidia/cuda:11.8.0-base-ubuntu22.04 nvidia-smi</code{
                         <p>
                             NVIDIA 消费级显卡默认限制同时转码 3 路，但可以通过打补丁解除限制：
                         </p>
-                        <pre><code{'>'}# 下载补丁脚本
+                        <pre dangerouslySetInnerHTML={{__html: `<code{'>'}# 下载补丁脚本
 git clone https://github.com/keylase/nvidia-patch.git
 cd nvidia-patch
 
@@ -232,13 +232,13 @@ cd nvidia-patch
 sudo bash ./patch.sh
 
 # 重启系统
-sudo reboot</code{'>'}</pre>
+sudo reboot</code{'>'}`}} />
 
                         <h3>媒体库设置</h3>
                         <p>
                             Plex 的媒体库组织非常重要，直接影响元数据刮削的准确性。我的目录结构：
                         </p>
-                        <pre><code{'>'}/data/media/
+                        <pre dangerouslySetInnerHTML={{__html: `<code{'>'}/data/media/
 ├── Movies/
 │   ├── Avatar (2009)/
 │   │   └── Avatar (2009) - 2160p.mkv
@@ -260,7 +260,7 @@ sudo reboot</code{'>'}</pre>
     │   │   ├── 01 - Track Name.flac
     │   │   └── ...
     │   └── ...
-    └── ...</code{'>'}</pre>
+    └── ...</code{'>'}`}} />
 
                         <p>
                             <strong>命名规范：</strong>
@@ -288,7 +288,7 @@ sudo reboot</code{'>'}</pre>
                         <p>
                             转码过程会产生大量临时文件，使用 RAM Disk 可以显著提升性能：
                         </p>
-                        <pre><code{'>'}# 创建 8GB RAM Disk
+                        <pre dangerouslySetInnerHTML={{__html: `<code{'>'}# 创建 8GB RAM Disk
 sudo mkdir -p /mnt/ramdisk
 sudo mount -t tmpfs -o size=8G tmpfs /mnt/ramdisk
 
@@ -297,15 +297,15 @@ tmpfs /mnt/ramdisk tmpfs defaults,size=8G 0 0
 
 # 修改 Docker Compose 配置
 volumes:
-  - /mnt/ramdisk:/transcode</code{'>'}</pre>
+  - /mnt/ramdisk:/transcode</code{'>'}`}} />
 
                         <h3>转码参数调优</h3>
                         <p>
                             Plex 的转码参数可以通过环境变量调整：
                         </p>
-                        <pre><code{'>'}environment:
+                        <pre dangerouslySetInnerHTML={{__html: `<code{'>'}environment:
   - TRANSCODE_THREADS=4  # 转码线程数
-  - TRANSCODE_THROTTLE_BUFFER=600  # 转码缓冲时间（秒）</code{'>'}</pre>
+  - TRANSCODE_THROTTLE_BUFFER=600  # 转码缓冲时间（秒）</code{'>'}`}} />
 
                         <h2>远程访问：突破内网限制</h2>
 
@@ -338,7 +338,7 @@ volumes:
                         <p>
                             如果没有公网 IP，可以使用 Cloudflare Tunnel 实现内网穿透：
                         </p>
-                        <pre><code{'>'}# 安装 cloudflared
+                        <pre dangerouslySetInnerHTML={{__html: `<code{'>'}# 安装 cloudflared
 wget https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb
 sudo dpkg -i cloudflared-linux-amd64.deb
 
@@ -358,7 +358,7 @@ ingress:
   - service: http_status:404
 
 # 启动隧道
-cloudflared tunnel run plex</code{'>'}</pre>
+cloudflared tunnel run plex</code{'>'}`}} />
 
                         <p>
                             <strong>优点：</strong>无需公网 IP，支持 HTTPS<br />
@@ -376,7 +376,7 @@ cloudflared tunnel run plex</code{'>'}</pre>
                         <p>
                             Bazarr 是独立的字幕管理工具，支持 Plex、Emby、Jellyfin。
                         </p>
-                        <pre><code{'>'}version: '3.8'
+                        <pre dangerouslySetInnerHTML={{__html: `<code{'>'}version: '3.8'
 
 services:
   bazarr:
@@ -391,7 +391,7 @@ services:
       - /data/media:/data
     ports:
       - 6767:6767
-    restart: unless-stopped</code{'>'}</pre>
+    restart: unless-stopped</code{'>'}`}} />
 
                         <p>
                             <strong>配置步骤：</strong>
@@ -412,13 +412,13 @@ services:
                         <p>
                             <strong>解决：</strong>
                         </p>
-                        <pre><code{'>'}# 检查 GPU 是否可用
+                        <pre dangerouslySetInnerHTML={{__html: `<code{'>'}# 检查 GPU 是否可用
 docker exec -it plex nvidia-smi  # NVIDIA
 docker exec -it plex ls -l /dev/dri  # Intel
 
 # 确保 Plex 用户有权限访问 GPU
 sudo usermod -aG video plex
-sudo usermod -aG render plex</code{'>'}</pre>
+sudo usermod -aG render plex</code{'>'}`}} />
 
                         <h3>2. 远程访问显示"不可用"</h3>
                         <p>
@@ -427,11 +427,11 @@ sudo usermod -aG render plex</code{'>'}</pre>
                         <p>
                             <strong>解决：</strong>
                         </p>
-                        <pre><code{'>'}# 检查端口是否开放
+                        <pre dangerouslySetInnerHTML={{__html: `<code{'>'}# 检查端口是否开放
 sudo ufw allow 32400/tcp
 
 # 测试端口连通性
-curl -I http://YOUR_PUBLIC_IP:32400/web</code{'>'}</pre>
+curl -I http://YOUR_PUBLIC_IP:32400/web</code{'>'}`}} />
 
                         <h3>3. 元数据刮削失败</h3>
                         <p>
