@@ -417,8 +417,9 @@
             // Remove emoji from text
             link.textContent = text.replace(/📚\s*/, '').replace(/🏠\s*/, '');
 
-            // Style for "文章列表" button
+            // Style for "文章列表" button - change to "ARTICLES"
             if (text.includes('文章列表')) {
+                link.textContent = 'ARTICLES';
                 link.style.cssText = `
                     padding: 0.625rem 1.25rem;
                     background: rgba(255, 255, 255, 0.05);
@@ -451,8 +452,9 @@
                 };
             }
 
-            // Style for "返回首页" button
+            // Style for "返回首页" button - change to "HOME"
             if (text.includes('返回首页') || text.includes('首页')) {
+                link.textContent = 'HOME';
                 link.style.cssText = `
                     padding: 0.625rem 1.5rem;
                     background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%);
