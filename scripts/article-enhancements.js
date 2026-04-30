@@ -600,43 +600,42 @@
         optimizeNavigation();
         addContentAnimations();
 
-            let lastStatus = '';
-            let ticking = false;
+        let lastStatus = '';
+        let ticking = false;
 
-            // Update on scroll
-            window.addEventListener('scroll', () => {
-                if (!ticking) {
-                    window.requestAnimationFrame(() => {
-                        const windowHeight = window.innerHeight;
-                        const documentHeight = document.documentElement.scrollHeight;
-                        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-                        const scrollPercentage = (scrollTop / (documentHeight - windowHeight)) * 100;
+        // Update on scroll
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    const windowHeight = window.innerHeight;
+                    const documentHeight = document.documentElement.scrollHeight;
+                    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                    const scrollPercentage = (scrollTop / (documentHeight - windowHeight)) * 100;
 
-                        // Only update status if it changed
-                        let newStatus = '';
-                        if (scrollPercentage < 5) newStatus = 'START';
-                        else if (scrollPercentage < 25) newStatus = 'READING...';
-                        else if (scrollPercentage < 50) newStatus = 'HALFWAY';
-                        else if (scrollPercentage < 75) newStatus = 'KEEP GOING';
-                        else if (scrollPercentage < 95) newStatus = 'ALMOST DONE';
-                        else newStatus = 'COMPLETED ✓';
+                    // Only update status if it changed
+                    let newStatus = '';
+                    if (scrollPercentage < 5) newStatus = 'START';
+                    else if (scrollPercentage < 25) newStatus = 'READING...';
+                    else if (scrollPercentage < 50) newStatus = 'HALFWAY';
+                    else if (scrollPercentage < 75) newStatus = 'KEEP GOING';
+                    else if (scrollPercentage < 95) newStatus = 'ALMOST DONE';
+                    else newStatus = 'COMPLETED ✓';
 
-                        if (newStatus !== lastStatus) {
-                            updateStatus(scrollPercentage);
-                            lastStatus = newStatus;
-                        }
+                    if (newStatus !== lastStatus) {
+                        updateStatus(scrollPercentage);
+                        lastStatus = newStatus;
+                    }
 
-                        updateScrollProgress();
-                        ticking = false;
-                    });
-                    ticking = true;
-                }
-            });
+                    updateScrollProgress();
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        });
 
-            // Initial update
-            updateStatus(0);
-            updateScrollProgress();
-        }, 500);
+        // Initial update
+        updateStatus(0);
+        updateScrollProgress();
     }
 
     init();
