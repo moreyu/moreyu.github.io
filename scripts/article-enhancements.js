@@ -8,10 +8,10 @@
         container.id = 'solari-display';
         container.style.cssText = `
             display: flex;
-            gap: 3px;
-            padding: 6px 10px;
+            gap: 4px;
+            padding: 8px 12px;
             background: #161513;
-            border-radius: 6px;
+            border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
         `;
 
@@ -22,8 +22,8 @@
             charDiv.className = 'solari-char';
             charDiv.style.cssText = `
                 position: relative;
-                width: 24px;
-                height: 32px;
+                width: 32px;
+                height: 44px;
                 perspective: 400px;
             `;
 
@@ -47,7 +47,7 @@
             topContent.style.cssText = `
                 font-family: 'JetBrains Mono', 'SF Mono', monospace;
                 font-weight: 700;
-                font-size: 1.125rem;
+                font-size: 1.5rem;
                 color: #d4952a;
                 text-shadow: 0 0 18px rgba(212, 149, 42, 0.12);
                 display: flex;
@@ -81,7 +81,7 @@
             bottomContent.style.cssText = `
                 font-family: 'JetBrains Mono', 'SF Mono', monospace;
                 font-weight: 700;
-                font-size: 1.125rem;
+                font-size: 1.5rem;
                 color: #d4952a;
                 text-shadow: 0 0 18px rgba(212, 149, 42, 0.12);
                 display: flex;
