@@ -178,13 +178,11 @@
 
     // Add Solari display to navigation (left side)
     function addSolariToNav() {
-        const nav = document.querySelector('nav > div');
-        if (!nav) return;
+        const container = document.getElementById('solari-container');
+        if (!container) return;
 
         const solariDisplay = createSolariDisplay();
-
-        // Insert at the very beginning (leftmost position)
-        nav.insertBefore(solariDisplay, nav.firstChild);
+        container.appendChild(solariDisplay);
     }
 
     // Smooth scroll progress bar
@@ -432,29 +430,8 @@
         links.forEach(link => {
             const text = link.textContent.trim();
 
-            // Remove emoji from text
-            link.textContent = text.replace(/📚\s*/, '').replace(/🏠\s*/, '');
-
-            // Style for "文章列表" button - change to "ARTICLES"
-            if (text.includes('文章列表')) {
-                link.textContent = 'ARTICLES';
-                link.style.cssText = `
-                    padding: 0.625rem 1.25rem;
-                    background: rgba(255, 255, 255, 0.05);
-                    border: 1px solid rgba(255, 255, 255, 0.1);
-                    border-radius: 10px;
-                    color: rgba(255, 255, 255, 0.9);
-                    text-decoration: none;
-                    font-weight: 600;
-                    font-size: 0.875rem;
-                    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-                    backdrop-filter: blur(10px);
-                    -webkit-backdrop-filter: blur(10px);
-                    display: inline-flex;
-                    align-items: center;
-                    gap: 0.5rem;
-                `;
-
+            // Add hover effects for ARTICLES button
+            if (text.includes('ARTICLES')) {
                 link.onmouseenter = () => {
                     link.style.background = 'rgba(255, 255, 255, 0.1)';
                     link.style.borderColor = 'rgba(255, 255, 255, 0.2)';
@@ -470,49 +447,18 @@
                 };
             }
 
-            // Style for "返回首页" button - change to "HOME" with black text
-            if (text.includes('返回首页') || text.includes('首页')) {
-                link.textContent = 'HOME';
-                link.style.cssText = `
-                    padding: 0.625rem 1.5rem;
-                    background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%);
-                    color: #000;
-                    text-decoration: none;
-                    border-radius: 10px;
-                    font-weight: 700;
-                    font-size: 0.875rem;
-                    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-                    box-shadow: 0 4px 15px rgba(217, 119, 6, 0.3);
-                    border: 1px solid rgba(255, 255, 255, 0.1);
-                    position: relative;
-                    overflow: hidden;
-                `;
-
-                // Add shine effect
-                const shine = document.createElement('div');
-                shine.style.cssText = `
-                    position: absolute;
-                    top: 0;
-                    left: -100%;
-                    width: 100%;
-                    height: 100%;
-                    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-                    transition: left 0.5s;
-                `;
-                link.appendChild(shine);
-
+            // Add hover effects for HOME button
+            if (text.includes('HOME')) {
                 link.onmouseenter = () => {
                     link.style.transform = 'translateY(-2px)';
-                    link.style.boxShadow = '0 8px 25px rgba(217, 119, 6, 0.5)';
+                    link.style.boxShadow = '0 6px 20px rgba(217, 119, 6, 0.6)';
                     link.style.background = 'linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%)';
-                    shine.style.left = '100%';
                 };
 
                 link.onmouseleave = () => {
                     link.style.transform = 'translateY(0)';
-                    link.style.boxShadow = '0 4px 15px rgba(217, 119, 6, 0.3)';
+                    link.style.boxShadow = '0 4px 15px rgba(217, 119, 6, 0.4)';
                     link.style.background = 'linear-gradient(135deg, #d97706 0%, #f59e0b 100%)';
-                    shine.style.left = '-100%';
                 };
             }
         });
@@ -520,16 +466,7 @@
 
     // Optimize navigation spacing and add glass effect
     function optimizeNavigation() {
-        // Add ultra strong glass effect to nav
-        const nav = document.querySelector('nav');
-        if (nav) {
-            nav.style.backdropFilter = 'blur(60px) saturate(250%) brightness(1.1)';
-            nav.style.webkitBackdropFilter = 'blur(60px) saturate(250%) brightness(1.1)';
-            nav.style.background = 'rgba(20, 20, 20, 0.4)';
-            nav.style.borderBottom = '1px solid rgba(255, 255, 255, 0.15)';
-            nav.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1), inset 0 -1px 0 rgba(0, 0, 0, 0.5)';
-        }
-
+        // Navigation styles are now defined in HTML, only add responsive styles
         const style = document.createElement('style');
         style.textContent = `
             /* Compact navigation */
@@ -652,17 +589,16 @@
             return;
         }
 
-        // Wait a bit for React to render
-        setTimeout(() => {
-            addSolariToNav();
-            addHamburgerMenu();
-            enhanceNavButtons();
-            createScrollProgress();
-            createReadingTime();
-            addSectionMarkers();
-            enhanceCodeBlocks();
-            optimizeNavigation();
-            addContentAnimations();
+        // Initialize immediately - no setTimeout needed
+        addSolariToNav();
+        addHamburgerMenu();
+        enhanceNavButtons();
+        createScrollProgress();
+        createReadingTime();
+        addSectionMarkers();
+        enhanceCodeBlocks();
+        optimizeNavigation();
+        addContentAnimations();
 
             let lastStatus = '';
             let ticking = false;
