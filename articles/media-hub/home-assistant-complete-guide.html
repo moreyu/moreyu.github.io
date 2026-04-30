@@ -382,7 +382,7 @@
             <div id="logo-container"></div>
             <div style="display: flex; gap: 2rem; align-items: center;">
                 <a href="../../articles.html" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; font-weight: 500; transition: all 0.3s ease; position: relative;">
-                    📚 文章列表
+                     文章列表
                 </a>
                 <a href="../../index.html#blog" style="padding: 0.5rem 1.5rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);">
                     返回首页
@@ -412,7 +412,7 @@
                     </header>
 
                     <div className="article-content">
-                        <strong>⚠️ 遇到的问题：</strong>
+                        <strong>️ 遇到的问题：</strong>
             <p style={{marginBottom: '0.5rem'}}>用了两个月后，SD 卡突然挂了，所有配置都没了。虽然有备份，但恢复起来还是很麻烦。后来换了 SSD，但树莓派的 USB 启动有点玄学，折腾了一晚上才搞定。</p>
         </div>
 
@@ -423,7 +423,7 @@
         <p>装的是 Proxmox VE，然后在虚拟机里跑 HA。这样的好处是可以同时跑其他服务，比如 AdGuard Home、Nginx Proxy Manager 之类的。</p>
 
         <div>
-            <strong>✅ 最终方案：</strong>
+            <strong> 最终方案：</strong>
             <p style={{marginBottom: 0}}>N100 小主机 + Proxmox VE + Home Assistant OS 虚拟机。稳定运行半年了，没出过问题。功耗也不高，满载也就 15W，待机只有 6W。</p>
         </div>
 
@@ -456,7 +456,7 @@ qm set 100 --boot c --bootdisk scsi0
 qm start 100</code></pre>
 
         <div>
-            <strong>⚠️ 踩坑记录：</strong>
+            <strong>️ 踩坑记录：</strong>
             <p>第一次装的时候，虚拟机一直卡在启动界面。后来发现是 CPU 类型选错了，要选 <code>host</code> 而不是 <code>kvm64</code>。还有就是内存至少要给 2GB，不然会很卡。</p>
         </div>
 
@@ -485,7 +485,7 @@ qm start 100</code></pre>
         </ol>
 
         <div>
-            <strong>💡 小技巧：</strong>
+            <strong> 小技巧：</strong>
             <p style={{marginBottom: 0}}>如果 GitHub 访问慢，可以用 Cloudflare WARP 或者改 hosts。我是在路由器上装了 Clash，直接全局代理，速度飞快。</p>
         </div>
 
@@ -511,7 +511,7 @@ qm start 100</code></pre>
         <p>这个插件的好处是支持云端控制，即使设备不在局域网也能控制。而且支持的设备很全，基本上米家的设备都能接入。</p>
 
         <div>
-            <strong>⚠️ 遇到的问题：</strong>
+            <strong>️ 遇到的问题：</strong>
             <p>有些设备（比如空调伴侣）需要开启局域网控制才能用。在米家 App 里找到设备，进入设置，开启"局域网控制"。还有就是要记下设备的 Token，有些设备需要手动填。</p>
             <p style={{marginBottom: 0}}>获取 Token 的方法：用抓包工具（比如 Charles）抓米家 App 的请求，或者用小米云服务的 API。我是用的后者，写了个 Python 脚本批量获取。</p>
         </div>
@@ -570,7 +570,7 @@ qm start 100</code></pre>
           brightness_pct: 80</code></pre>
 
         <div>
-            <strong>💡 优化技巧：</strong>
+            <strong> 优化技巧：</strong>
             <p style={{marginBottom: 0}}>后来我加了一个条件：如果家里已经有人（通过其他设备判断），就不开灯。这样可以避免重复触发。还有就是亮度可以根据时间动态调整，晚上 10 点后只开 30% 亮度，不刺眼。</p>
         </div>
 
@@ -589,7 +589,7 @@ qm start 100</code></pre>
         <p>早上 7 点，如果检测到卧室有人移动（通过人体传感器），就自动退出睡眠模式，窗帘缓慢打开，播放轻音乐。</p>
 
         <div>
-            <strong>⚠️ 踩坑记录：</strong>
+            <strong>️ 踩坑记录：</strong>
             <p style={{marginBottom: 0}}>最开始用的是时间触发，结果有时候 11 点还没睡，灯就自动关了，很尴尬。后来改成门窗传感器 + 时间条件，体验好多了。还有就是空调的控制，米家的空调伴侣有时候会失联，需要加个重试逻辑。</p>
         </div>
 
@@ -638,7 +638,7 @@ qm start 100</code></pre>
         </ul>
 
         <div>
-            <strong>💡 小技巧：</strong>
+            <strong> 小技巧：</strong>
             <p style={{marginBottom: 0}}>可以在 HA 里创建"脚本"（Script），然后同步到米家作为"场景"。这样就能用语音触发复杂的自动化流程了。比如"小爱同学，我要看电影"，就会自动关灯、拉窗帘、打开投影仪。</p>
         </div>
 

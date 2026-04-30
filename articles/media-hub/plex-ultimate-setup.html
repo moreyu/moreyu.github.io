@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Plex 终极搭建指南：从入门到私人影院 - Moreyu</title>
     <meta name="description" content="从零开始搭建 Plex 媒体服务器，包含硬件选择、NAS 配置、转码优化、远程访问等实战经验">
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🧠%3C/text%3E%3C/svg%3E">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%3C/text%3E%3C/svg%3E">
     
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
@@ -23,7 +23,7 @@
             <div id="logo-container"></div>
             <div style="display: flex; gap: 2rem; align-items: center;">
                 <a href="../../articles.html" style="color: rgba(255, 255, 255, 0.8); text-decoration: none; font-weight: 500; transition: all 0.3s ease; position: relative;">
-                    📚 文章列表
+                     文章列表
                 </a>
                 <a href="../../index.html#blog" style="padding: 0.5rem 1.5rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);">
                     返回首页
@@ -80,9 +80,9 @@
                             <strong>实际体验：</strong>
                         </p>
                         <ul>
-                            <li>✅ 直接播放（Direct Play）完美 - 1080p H.264 视频流畅</li>
-                            <li>❌ 转码能力为零 - 遇到 HEVC/H.265 或 4K 视频直接卡死</li>
-                            <li>❌ 移动硬盘供电不稳 - 经常出现 I/O 错误，数据库损坏过两次</li>
+                            <li> 直接播放（Direct Play）完美 - 1080p H.264 视频流畅</li>
+                            <li> 转码能力为零 - 遇到 HEVC/H.265 或 4K 视频直接卡死</li>
+                            <li> 移动硬盘供电不稳 - 经常出现 I/O 错误，数据库损坏过两次</li>
                         </ul>
                         <p>
                             用了三个月后，我意识到树莓派只适合做轻量级 NAS，跑 Plex 太勉强了。尤其是家里有 4K 电视后，转码需求变得刚需。
@@ -104,10 +104,10 @@
                             <strong>实际体验：</strong>
                         </p>
                         <ul>
-                            <li>✅ 1080p HEVC 转码流畅 - 可以同时转码 2-3 路</li>
-                            <li>✅ 数据安全性高 - RAID 1 + Btrfs 文件系统，再也没出现过数据丢失</li>
-                            <li>⚠️ 4K HDR 转码吃力 - J4125 的 Quick Sync 只支持到 8bit，HDR 转 SDR 效果很差</li>
-                            <li>❌ 远程访问速度慢 - 家里是 100Mbps 上行，外网看 1080p 经常卡顿</li>
+                            <li> 1080p HEVC 转码流畅 - 可以同时转码 2-3 路</li>
+                            <li> 数据安全性高 - RAID 1 + Btrfs 文件系统，再也没出现过数据丢失</li>
+                            <li>️ 4K HDR 转码吃力 - J4125 的 Quick Sync 只支持到 8bit，HDR 转 SDR 效果很差</li>
+                            <li> 远程访问速度慢 - 家里是 100Mbps 上行，外网看 1080p 经常卡顿</li>
                         </ul>
                         <p>
                             DS920+ 用了一年半，基本满足需求。但随着我开始收集 4K Remux 资源（单个文件 50-80GB），转码问题再次凸显。
@@ -137,10 +137,10 @@
                             <strong>实际体验：</strong>
                         </p>
                         <ul>
-                            <li>✅ 4K HDR 转码完美 - 可以同时转码 5-6 路 4K HEVC</li>
-                            <li>✅ 功耗控制优秀 - 整机待机 25W，满载转码 55W</li>
-                            <li>✅ 存储空间充足 - 12TB 可用空间，目前用了 8TB</li>
-                            <li>✅ 系统稳定性高 - Ubuntu + ZFS，运行半年零故障</li>
+                            <li> 4K HDR 转码完美 - 可以同时转码 5-6 路 4K HEVC</li>
+                            <li> 功耗控制优秀 - 整机待机 25W，满载转码 55W</li>
+                            <li> 存储空间充足 - 12TB 可用空间，目前用了 8TB</li>
+                            <li> 系统稳定性高 - Ubuntu + ZFS，运行半年零故障</li>
                         </ul>
 
                         <h2>Plex 安装与配置</h2>
@@ -276,10 +276,10 @@ sudo reboot</code>`}} />
                             进入 Plex 设置 → 转码器（Transcoder）：
                         </p>
                         <ul>
-                            <li>✅ 使用硬件加速（需要 Plex Pass）</li>
+                            <li> 使用硬件加速（需要 Plex Pass）</li>
                             <li>转码临时目录：<code>/transcode</code>（建议使用 SSD 或 RAM Disk）</li>
                             <li>转码质量：自动（Automatic）</li>
-                            <li>✅ 使用硬件加速进行视频上传（如果支持）</li>
+                            <li> 使用硬件加速进行视频上传（如果支持）</li>
                         </ul>
 
                         <h3>RAM Disk 加速转码</h3>
