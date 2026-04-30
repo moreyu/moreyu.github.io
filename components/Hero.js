@@ -22,7 +22,7 @@ function Hero() {
 
                 {/* Headline */}
                 <h1
-                    className="text-7xl md:text-8xl lg:text-9xl font-black leading-[0.95] mb-8 fade-in-up fade-in-delay-3"
+                    className="text-6xl md:text-8xl lg:text-9xl font-black leading-[0.95] mb-8 fade-in-up fade-in-delay-3"
                     style={{
                         color: 'var(--text)',
                         letterSpacing: '-0.05em'
@@ -30,7 +30,7 @@ function Hero() {
                 >
                     Build Fast,
                     <br />
-                    <span className="gradient-text">Ship Faster</span>
+                    <span className="gradient-text" style={{ whiteSpace: 'nowrap' }}>Ship Faster</span>
                 </h1>
 
                 {/* Subheading */}
