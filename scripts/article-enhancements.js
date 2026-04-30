@@ -8,10 +8,10 @@
         container.id = 'solari-display';
         container.style.cssText = `
             display: flex;
-            gap: 4px;
-            padding: 8px 12px;
+            gap: 3px;
+            padding: 6px 10px;
             background: #161513;
-            border-radius: 8px;
+            border-radius: 6px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
         `;
 
@@ -22,8 +22,8 @@
             charDiv.className = 'solari-char';
             charDiv.style.cssText = `
                 position: relative;
-                width: 32px;
-                height: 44px;
+                width: 24px;
+                height: 32px;
                 perspective: 400px;
             `;
 
@@ -35,7 +35,7 @@
                 width: 100%;
                 height: 50%;
                 background: linear-gradient(180deg, #2a2825 0%, #252420 100%);
-                border-radius: 4px 4px 0 0;
+                border-radius: 3px 3px 0 0;
                 transform-origin: bottom;
                 overflow: hidden;
                 backface-visibility: hidden;
@@ -47,7 +47,7 @@
             topContent.style.cssText = `
                 font-family: 'JetBrains Mono', 'SF Mono', monospace;
                 font-weight: 700;
-                font-size: 1.5rem;
+                font-size: 1.125rem;
                 color: #d4952a;
                 text-shadow: 0 0 18px rgba(212, 149, 42, 0.12);
                 display: flex;
@@ -69,7 +69,7 @@
                 width: 100%;
                 height: 50%;
                 background: linear-gradient(180deg, #222120 0%, #1f1e1b 100%);
-                border-radius: 0 0 4px 4px;
+                border-radius: 0 0 3px 3px;
                 border-top: 1px solid #0a0a09;
                 overflow: hidden;
                 backface-visibility: hidden;
@@ -81,7 +81,7 @@
             bottomContent.style.cssText = `
                 font-family: 'JetBrains Mono', 'SF Mono', monospace;
                 font-weight: 700;
-                font-size: 1.5rem;
+                font-size: 1.125rem;
                 color: #d4952a;
                 text-shadow: 0 0 18px rgba(212, 149, 42, 0.12);
                 display: flex;
@@ -368,7 +368,7 @@
         mobileMenu.style.cssText = `
             display: none;
             position: fixed;
-            top: 80px;
+            top: 64px;
             left: 0;
             right: 0;
             background: rgba(10, 10, 10, 0.98);
@@ -401,6 +401,24 @@
 
         navInner.appendChild(hamburger);
         nav.appendChild(mobileMenu);
+
+        // Add responsive styles
+        const style = document.createElement('style');
+        style.textContent = `
+            @media (max-width: 768px) {
+                #hamburger-btn {
+                    display: flex !important;
+                }
+                nav > div > div:last-child {
+                    display: none !important;
+                }
+                #solari-display {
+                    transform: scale(0.85);
+                    transform-origin: left center;
+                }
+            }
+        `;
+        document.head.appendChild(style);
     }
 
     // Enhance navigation buttons
@@ -452,16 +470,16 @@
                 };
             }
 
-            // Style for "返回首页" button - change to "HOME"
+            // Style for "返回首页" button - change to "HOME" with black text
             if (text.includes('返回首页') || text.includes('首页')) {
                 link.textContent = 'HOME';
                 link.style.cssText = `
                     padding: 0.625rem 1.5rem;
                     background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%);
-                    color: white;
+                    color: #000;
                     text-decoration: none;
                     border-radius: 10px;
-                    font-weight: 600;
+                    font-weight: 700;
                     font-size: 0.875rem;
                     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
                     box-shadow: 0 4px 15px rgba(217, 119, 6, 0.3);
