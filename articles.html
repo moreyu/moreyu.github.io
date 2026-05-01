@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>文章列表 | 个人博客</title>
     <meta name="description" content="浏览所有技术文章和生活分享">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/images/apple-touch-icon.png">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -134,6 +140,53 @@
             #mobile-menu-btn {
                 display: block !important;
             }
+        }
+
+        /* Love, Death & Robots Easter Eggs */
+        .ldr-robot {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            font-size: 40px;
+            cursor: pointer;
+            z-index: 9999;
+            opacity: 0;
+            transition: all 0.3s ease;
+            filter: drop-shadow(0 0 10px rgba(255, 0, 128, 0.5));
+            animation: ldrFloat 3s ease-in-out infinite;
+        }
+
+        .ldr-robot.visible {
+            opacity: 0.8;
+        }
+
+        .ldr-robot:hover {
+            opacity: 1;
+            transform: scale(1.2) rotate(10deg);
+            filter: drop-shadow(0 0 20px rgba(121, 40, 202, 0.8));
+        }
+
+        @keyframes ldrFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .ldr-tooltip {
+            position: fixed;
+            background: linear-gradient(135deg, #ff0080, #7928ca);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            z-index: 10000;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .ldr-tooltip.show {
+            opacity: 1;
         }
     </style>
 </head>
@@ -511,6 +564,50 @@
                     link.style.boxShadow = '0 4px 15px rgba(217, 119, 6, 0.3)';
                 });
             }
+        });
+
+        // Love, Death & Robots Easter Egg - Robot Icon
+        const ldrRobots = ['🤖', '👾', '🦾', '🦿', '💀', '👽'];
+        const ldrMessages = [
+            'Three Robots were here...',
+            'Sonnie says hi!',
+            'Zima Blue awaits',
+            'The yogurt is watching',
+            'Good hunting!',
+            'Lucky 13 ✈️'
+        ];
+
+        const robotIcon = document.createElement('div');
+        robotIcon.className = 'ldr-robot';
+        robotIcon.innerHTML = ldrRobots[Math.floor(Math.random() * ldrRobots.length)];
+        document.body.appendChild(robotIcon);
+
+        const tooltip = document.createElement('div');
+        tooltip.className = 'ldr-tooltip';
+        document.body.appendChild(tooltip);
+
+        // Show robot after scrolling
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 200) {
+                robotIcon.classList.add('visible');
+            } else {
+                robotIcon.classList.remove('visible');
+            }
+        });
+
+        // Change robot on click and show message
+        robotIcon.addEventListener('click', () => {
+            robotIcon.innerHTML = ldrRobots[Math.floor(Math.random() * ldrRobots.length)];
+            const message = ldrMessages[Math.floor(Math.random() * ldrMessages.length)];
+
+            tooltip.textContent = message;
+            tooltip.style.bottom = '140px';
+            tooltip.style.right = '20px';
+            tooltip.classList.add('show');
+
+            setTimeout(() => {
+                tooltip.classList.remove('show');
+            }, 2000);
         });
     </script>
 </body>

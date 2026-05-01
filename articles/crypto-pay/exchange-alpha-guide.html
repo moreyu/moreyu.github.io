@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta http-equiv="refresh" content="0; url=exchange-alpha-strategy.html">
     <title>页面已移动</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/images/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/images/apple-touch-icon.png">
+    
 </head>
 <body>
     <p>页面已移动到 <a href="exchange-alpha-strategy.html">exchange-alpha-strategy.html</a></p>
@@ -11,5 +16,45 @@
         window.location.href = 'exchange-alpha-strategy.html';
     </script>
     <script src="../../scripts/article-enhancements.js"></script>
+
+    <!-- LDR Easter Egg -->
+    <div class="ldr-hidden-message" id="ldr-message"></div>
+
+    <script>
+        // LDR Easter Egg - Triple click anywhere
+        let clickCount = 0;
+        let clickTimer;
+
+        document.addEventListener('click', () => {
+            clickCount++;
+            clearTimeout(clickTimer);
+
+            if (clickCount === 3) {
+                const messages = [
+                    '💀 LOVE, DEATH & ROBOTS 🤖',
+                    '🎬 "When the yogurt took over..."',
+                    '⚡ "Good hunting, Sonnie!"',
+                    '🌌 "Zima Blue"',
+                    '🦾 "Three Robots"',
+                    '✈️ "Lucky 13"'
+                ];
+                const msg = messages[Math.floor(Math.random() * messages.length)];
+                const ldrMsg = document.getElementById('ldr-message');
+                ldrMsg.textContent = msg;
+                ldrMsg.classList.add('show');
+
+                setTimeout(() => {
+                    ldrMsg.classList.remove('show');
+                }, 3000);
+
+                clickCount = 0;
+            }
+
+            clickTimer = setTimeout(() => {
+                clickCount = 0;
+            }, 500);
+        });
+
+    </script>
 </body>
 </html>

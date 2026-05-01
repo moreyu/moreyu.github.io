@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI辅助全栈开发：从零搭建一个完整项目 - Moreyu</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/images/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/images/apple-touch-icon.png">
+    
     <meta name="description" content="用AI工具从零开始构建全栈应用，涵盖前端、后端、数据库、部署全流程。2小时完成传统需要2周的全栈项目。">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%3C/text%3E%3C/svg%3E">
 
@@ -295,5 +300,45 @@ Claude执行：
         }
     </script>
     <script src="../../scripts/article-enhancements.js"></script>
+
+    <!-- LDR Easter Egg -->
+    <div class="ldr-hidden-message" id="ldr-message"></div>
+
+    <script>
+        // LDR Easter Egg - Triple click anywhere
+        let clickCount = 0;
+        let clickTimer;
+
+        document.addEventListener('click', () => {
+            clickCount++;
+            clearTimeout(clickTimer);
+
+            if (clickCount === 3) {
+                const messages = [
+                    '💀 LOVE, DEATH & ROBOTS 🤖',
+                    '🎬 "When the yogurt took over..."',
+                    '⚡ "Good hunting, Sonnie!"',
+                    '🌌 "Zima Blue"',
+                    '🦾 "Three Robots"',
+                    '✈️ "Lucky 13"'
+                ];
+                const msg = messages[Math.floor(Math.random() * messages.length)];
+                const ldrMsg = document.getElementById('ldr-message');
+                ldrMsg.textContent = msg;
+                ldrMsg.classList.add('show');
+
+                setTimeout(() => {
+                    ldrMsg.classList.remove('show');
+                }, 3000);
+
+                clickCount = 0;
+            }
+
+            clickTimer = setTimeout(() => {
+                clickCount = 0;
+            }, 500);
+        });
+
+    </script>
 </body>
 </html>
