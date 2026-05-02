@@ -2,188 +2,8 @@
 (function() {
     'use strict';
 
-    // Create Solari split-flap display (same style as homepage MOREYU)
-    function createSolariDisplay() {
-        const container = document.createElement('div');
-        container.id = 'solari-display';
-        container.style.cssText = `
-            display: flex;
-            gap: 4px;
-            padding: 8px 12px;
-            background: #161513;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-        `;
-
-        // Create character slots (max 13 chars for "ALMOST DONE")
-        const maxChars = 13;
-        for (let i = 0; i < maxChars; i++) {
-            const charDiv = document.createElement('div');
-            charDiv.className = 'solari-char';
-            charDiv.style.cssText = `
-                position: relative;
-                width: 32px;
-                height: 44px;
-                perspective: 400px;
-            `;
-
-            const topFlap = document.createElement('div');
-            topFlap.className = 'solari-flap-top';
-            topFlap.style.cssText = `
-                position: absolute;
-                top: 0;
-                width: 100%;
-                height: 50%;
-                background: linear-gradient(180deg, #2a2825 0%, #252420 100%);
-                border-radius: 3px 3px 0 0;
-                transform-origin: bottom;
-                overflow: hidden;
-                backface-visibility: hidden;
-                transform-style: preserve-3d;
-            `;
-
-            const topContent = document.createElement('div');
-            topContent.className = 'solari-content';
-            topContent.style.cssText = `
-                font-family: 'JetBrains Mono', 'SF Mono', monospace;
-                font-weight: 700;
-                font-size: 1.5rem;
-                color: #d4952a;
-                text-shadow: 0 0 18px rgba(212, 149, 42, 0.12);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                width: 100%;
-                height: 200%;
-                position: absolute;
-                top: 0;
-            `;
-            topContent.textContent = ' ';
-            topFlap.appendChild(topContent);
-
-            const bottomFlap = document.createElement('div');
-            bottomFlap.className = 'solari-flap-bottom';
-            bottomFlap.style.cssText = `
-                position: absolute;
-                bottom: 0;
-                width: 100%;
-                height: 50%;
-                background: linear-gradient(180deg, #222120 0%, #1f1e1b 100%);
-                border-radius: 0 0 3px 3px;
-                border-top: 1px solid #0a0a09;
-                overflow: hidden;
-                backface-visibility: hidden;
-                transform-style: preserve-3d;
-            `;
-
-            const bottomContent = document.createElement('div');
-            bottomContent.className = 'solari-content';
-            bottomContent.style.cssText = `
-                font-family: 'JetBrains Mono', 'SF Mono', monospace;
-                font-weight: 700;
-                font-size: 1.5rem;
-                color: #d4952a;
-                text-shadow: 0 0 18px rgba(212, 149, 42, 0.12);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                width: 100%;
-                height: 200%;
-                position: absolute;
-                bottom: 0;
-            `;
-            bottomContent.textContent = ' ';
-            bottomFlap.appendChild(bottomContent);
-
-            charDiv.appendChild(topFlap);
-            charDiv.appendChild(bottomFlap);
-            container.appendChild(charDiv);
-        }
-
-        return container;
-    }
-
-    // Random letter for animation
-    function randomLetter() {
-        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ';
-        return chars[Math.floor(Math.random() * chars.length)];
-    }
-
-    // Flip a character with rolling animation
-    function flipCharacter(charDiv, targetChar, delay = 0) {
-        // Hide empty slots
-        if (targetChar === ' ') {
-            charDiv.style.opacity = '0';
-            charDiv.style.width = '4px';
-            return;
-        } else {
-            charDiv.style.opacity = '1';
-            charDiv.style.width = '32px';
-        }
-
-        setTimeout(() => {
-            const topContent = charDiv.querySelector('.solari-flap-top .solari-content');
-            const bottomContent = charDiv.querySelector('.solari-flap-bottom .solari-content');
-
-            let iterations = 0;
-            const maxIterations = Math.floor(Math.random() * 5) + 8; // 8-12 次随机翻滚
-
-            const interval = setInterval(() => {
-                if (iterations < maxIterations) {
-                    const randomChar = randomLetter();
-                    topContent.textContent = randomChar;
-                    bottomContent.textContent = randomChar;
-                    iterations++;
-                } else {
-                    topContent.textContent = targetChar;
-                    bottomContent.textContent = targetChar;
-                    clearInterval(interval);
-                }
-            }, 80);
-        }, delay);
-    }
-
-    // Update status text with rolling animation (triggered by scroll progress)
-    let currentStatus = '';
-    function updateStatus(scrollPercentage) {
-        const container = document.getElementById('solari-display');
-        if (!container) return;
-
-        let status = '';
-        if (scrollPercentage < 5) {
-            status = 'START        ';
-        } else if (scrollPercentage < 25) {
-            status = 'READING...   ';
-        } else if (scrollPercentage < 50) {
-            status = 'HALFWAY      ';
-        } else if (scrollPercentage < 75) {
-            status = 'KEEP GOING   ';
-        } else if (scrollPercentage < 95) {
-            status = 'ALMOST DONE  ';
-        } else {
-            status = 'COMPLETED ✓  ';
-        }
-
-        // Only animate when status actually changes
-        if (status === currentStatus) return;
-        currentStatus = status;
-
-        const chars = container.querySelectorAll('.solari-char');
-        chars.forEach((charDiv, i) => {
-            const targetChar = status[i] || ' ';
-            // Stagger the animation for each character
-            flipCharacter(charDiv, targetChar, i * 50);
-        });
-    }
-
-    // Add Solari display to navigation (left side)
-    function addSolariToNav() {
-        const container = document.getElementById('solari-container');
-        if (!container) return;
-
-        const solariDisplay = createSolariDisplay();
-        container.appendChild(solariDisplay);
-    }
+    // Solari logo is now rendered via React component in article HTML
+    // The scroll status display has been removed to avoid confusion
 
     // Smooth scroll progress bar
     function createScrollProgress() {
@@ -334,89 +154,34 @@
         });
     }
 
-    // Add hamburger menu for mobile
-    function addHamburgerMenu() {
-        const nav = document.querySelector('nav');
-        if (!nav) return;
+    // Enable mobile menu functionality (HTML already has the structure)
+    function enableMobileMenu() {
+        const menuBtn = document.querySelector('.mobile-menu-btn');
+        const mobileMenu = document.querySelector('.mobile-menu');
 
-        const navInner = nav.querySelector('div');
-        const navButtons = navInner.querySelector('div:last-child');
+        if (!menuBtn || !mobileMenu) return;
 
-        // Create hamburger button
-        const hamburger = document.createElement('button');
-        hamburger.id = 'hamburger-btn';
-        hamburger.style.cssText = `
-            display: none;
-            flex-direction: column;
-            gap: 4px;
-            padding: 8px;
-            background: transparent;
-            border: none;
-            cursor: pointer;
-        `;
-        hamburger.innerHTML = `
-            <span style="width: 24px; height: 2px; background: rgba(255, 255, 255, 0.8); transition: all 0.3s;"></span>
-            <span style="width: 24px; height: 2px; background: rgba(255, 255, 255, 0.8); transition: all 0.3s;"></span>
-            <span style="width: 24px; height: 2px; background: rgba(255, 255, 255, 0.8); transition: all 0.3s;"></span>
-        `;
+        menuBtn.addEventListener('click', () => {
+            const isHidden = mobileMenu.classList.contains('hidden');
 
-        // Create mobile menu
-        const mobileMenu = document.createElement('div');
-        mobileMenu.id = 'mobile-menu';
-        mobileMenu.style.cssText = `
-            display: none;
-            position: fixed;
-            top: 64px;
-            left: 0;
-            right: 0;
-            background: rgba(10, 10, 10, 0.98);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 1rem;
-            z-index: 999;
-        `;
-        mobileMenu.innerHTML = navButtons.innerHTML;
+            if (isHidden) {
+                mobileMenu.classList.remove('hidden');
+            } else {
+                mobileMenu.classList.add('hidden');
+            }
 
-        // Toggle menu
-        hamburger.onclick = () => {
-            const isOpen = mobileMenu.style.display === 'flex';
-            mobileMenu.style.display = isOpen ? 'none' : 'flex';
-            mobileMenu.style.flexDirection = 'column';
-            mobileMenu.style.gap = '1rem';
-
-            // Animate hamburger
-            const spans = hamburger.querySelectorAll('span');
-            if (isOpen) {
+            // Animate hamburger icon
+            const spans = menuBtn.querySelectorAll('span');
+            if (isHidden) {
+                spans[0].style.transform = 'rotate(45deg) translateY(6px)';
+                spans[1].style.opacity = '0';
+                spans[2].style.transform = 'rotate(-45deg) translateY(-6px)';
+            } else {
                 spans[0].style.transform = 'rotate(0)';
                 spans[1].style.opacity = '1';
                 spans[2].style.transform = 'rotate(0)';
-            } else {
-                spans[0].style.transform = 'rotate(45deg) translateY(8px)';
-                spans[1].style.opacity = '0';
-                spans[2].style.transform = 'rotate(-45deg) translateY(-8px)';
             }
-        };
-
-        navInner.appendChild(hamburger);
-        nav.appendChild(mobileMenu);
-
-        // Add responsive styles
-        const style = document.createElement('style');
-        style.textContent = `
-            @media (max-width: 768px) {
-                #hamburger-btn {
-                    display: flex !important;
-                }
-                nav > div > div:last-child {
-                    display: none !important;
-                }
-                #solari-display {
-                    transform: scale(0.85);
-                    transform-origin: left center;
-                }
-            }
-        `;
-        document.head.appendChild(style);
+        });
     }
 
     // Enhance navigation buttons
@@ -508,15 +273,6 @@
                     gap: 0.5rem !important;
                 }
 
-                /* Hide desktop menu, show hamburger */
-                nav > div > div:last-child {
-                    display: none !important;
-                }
-
-                #hamburger-btn {
-                    display: flex !important;
-                }
-
                 /* Scale down Solari on mobile */
                 #solari-display {
                     transform: scale(0.6);
@@ -532,7 +288,7 @@
                 }
 
                 /* Mobile menu links */
-                #mobile-menu a {
+                .mobile-menu a {
                     display: block;
                     padding: 0.75rem 1rem;
                     text-align: center;
@@ -540,7 +296,7 @@
                     transition: background 0.2s;
                 }
 
-                #mobile-menu a:hover {
+                .mobile-menu a:hover {
                     background: rgba(255, 255, 255, 0.05);
                 }
             }
@@ -590,8 +346,7 @@
         }
 
         // Initialize immediately - no setTimeout needed
-        addSolariToNav();
-        addHamburgerMenu();
+        enableMobileMenu();
         enhanceNavButtons();
         createScrollProgress();
         createReadingTime();
@@ -600,32 +355,12 @@
         optimizeNavigation();
         addContentAnimations();
 
-        let lastStatus = '';
         let ticking = false;
 
-        // Update on scroll
+        // Update scroll progress bar on scroll
         window.addEventListener('scroll', () => {
             if (!ticking) {
                 window.requestAnimationFrame(() => {
-                    const windowHeight = window.innerHeight;
-                    const documentHeight = document.documentElement.scrollHeight;
-                    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-                    const scrollPercentage = (scrollTop / (documentHeight - windowHeight)) * 100;
-
-                    // Only update status if it changed
-                    let newStatus = '';
-                    if (scrollPercentage < 5) newStatus = 'START';
-                    else if (scrollPercentage < 25) newStatus = 'READING...';
-                    else if (scrollPercentage < 50) newStatus = 'HALFWAY';
-                    else if (scrollPercentage < 75) newStatus = 'KEEP GOING';
-                    else if (scrollPercentage < 95) newStatus = 'ALMOST DONE';
-                    else newStatus = 'COMPLETED ✓';
-
-                    if (newStatus !== lastStatus) {
-                        updateStatus(scrollPercentage);
-                        lastStatus = newStatus;
-                    }
-
                     updateScrollProgress();
                     ticking = false;
                 });
@@ -634,7 +369,6 @@
         });
 
         // Initial update
-        updateStatus(0);
         updateScrollProgress();
     }
 
