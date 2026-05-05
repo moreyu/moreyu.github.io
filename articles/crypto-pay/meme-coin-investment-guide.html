@@ -370,22 +370,25 @@
         }
     
         /* LDR Easter Egg */
-        .ldr-hidden-message {
+                .ldr-hidden-message {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: linear-gradient(135deg, rgba(255, 0, 128, 0.95), rgba(121, 40, 202, 0.95));
-            color: white;
+            background: #0a0a0a;
+            color: #ff0000;
             padding: 30px 50px;
-            border-radius: 15px;
-            font-size: 1.5rem;
+            border-radius: 4px;
+            border: 1px solid #333;
+            box-shadow: 0 0 0 1px #ff0000;
+            font-size: 1.2rem;
             font-weight: bold;
+            font-family: 'JetBrains Mono', monospace;
+            letter-spacing: 0.1em;
             z-index: 10000;
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.5s ease;
-            box-shadow: 0 0 50px rgba(255, 0, 128, 0.8);
             text-align: center;
         }
 
@@ -1620,13 +1623,13 @@
             clearTimeout(clickTimer);
 
             if (clickCount === 3) {
-                const messages = [
-                    '💀 LOVE, DEATH & ROBOTS 🤖',
-                    '🎬 "When the yogurt took over..."',
-                    '⚡ "Good hunting, Sonnie!"',
-                    '🌌 "Zima Blue"',
-                    '🦾 "Three Robots"',
-                    '✈️ "Lucky 13"'
+                                const messages = [
+                    'LOVE, DEATH & ROBOTS',
+                    '"When the yogurt took over..."',
+                    '"Good hunting, Sonnie!"',
+                    '"Zima Blue"',
+                    '"Three Robots"',
+                    '"Lucky 13"'
                 ];
                 const msg = messages[Math.floor(Math.random() * messages.length)];
                 const ldrMsg = document.getElementById('ldr-message');
