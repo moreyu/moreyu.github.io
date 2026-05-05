@@ -303,37 +303,6 @@
         }
 
         /* Love, Death & Robots Easter Eggs */
-        .ldr-easter-egg {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, #ff0080, #7928ca, #0070f3);
-            border-radius: 50%;
-            cursor: pointer;
-            z-index: 9999;
-            opacity: 0;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 20px rgba(255, 0, 128, 0.5);
-            animation: ldrPulse 3s ease-in-out infinite;
-        }
-
-        .ldr-easter-egg.visible {
-            opacity: 0.7;
-        }
-
-        .ldr-easter-egg:hover {
-            opacity: 1;
-            transform: scale(1.1);
-            box-shadow: 0 0 40px rgba(255, 0, 128, 0.8);
-        }
-
-        @keyframes ldrPulse {
-            0%, 100% { box-shadow: 0 0 20px rgba(255, 0, 128, 0.5); }
-            50% { box-shadow: 0 0 40px rgba(121, 40, 202, 0.8); }
-        }
-
         @keyframes ldrGlitch {
             0%, 100% { transform: translate(0, 0); }
             20% { transform: translate(-2px, 2px); }
@@ -361,23 +330,21 @@
         }
 
         .ldr-content {
-            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            background: #0a0a0a;
             padding: 40px;
-            border-radius: 20px;
+            border-radius: 4px;
             max-width: 600px;
-            border: 2px solid;
-            border-image: linear-gradient(135deg, #ff0080, #7928ca, #0070f3) 1;
-            animation: ldrGlitch 0.3s ease;
+            border: 1px solid #333;
+            box-shadow: 0 0 0 1px #ff0000;
         }
 
         .ldr-title {
-            font-size: 2rem;
+            font-size: 1.5rem;
             font-weight: bold;
-            background: linear-gradient(135deg, #ff0080, #7928ca, #0070f3);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #ff0000;
             margin-bottom: 20px;
-            animation: rainbow 5s linear infinite;
+            font-family: 'JetBrains Mono', monospace;
+            letter-spacing: 0.1em;
         }
 
         .ldr-quote {
@@ -385,7 +352,8 @@
             color: #a8a8a8;
             margin: 20px 0;
             padding-left: 20px;
-            border-left: 3px solid #ff0080;
+            border-left: 2px solid #ff0000;
+            font-family: 'JetBrains Mono', monospace;
         }
 
         /* Grid background */
@@ -624,16 +592,6 @@
             { text: "Jibaro: Love is a siren's call.", episode: "Jibaro" }
         ];
 
-        // Create LDR easter egg button
-        const ldrButton = document.createElement('div');
-        ldrButton.className = 'ldr-easter-egg';
-        ldrButton.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-5-9c.83 0 1.5-.67 1.5-1.5S7.83 8 7 8s-1.5.67-1.5 1.5S6.17 11 7 11zm5 0c.83 0 1.5-.67 1.5-1.5S12.83 8 12 8s-1.5.67-1.5 1.5S11.17 11 12 11zm5 0c.83 0 1.5-.67 1.5-1.5S17.83 8 17 8s-1.5.67-1.5 1.5.67 1.5 1.5 1.5z"/></svg>';
-        ldrButton.style.display = 'flex';
-        ldrButton.style.alignItems = 'center';
-        ldrButton.style.justifyContent = 'center';
-        ldrButton.style.color = 'white';
-        document.body.appendChild(ldrButton);
-
         // Create modal
         const ldrModal = document.createElement('div');
         ldrModal.className = 'ldr-modal';
@@ -643,7 +601,7 @@
                 <div class="ldr-quote" id="ldr-quote-text"></div>
                 <div style="text-align: center; margin-top: 30px;">
                     <button onclick="this.parentElement.parentElement.parentElement.classList.remove('active')"
-                            style="background: linear-gradient(135deg, #ff0080, #7928ca); color: white; padding: 12px 30px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 1rem; font-family: 'JetBrains Mono', monospace;">
+                            style="background: #ff0000; color: #fff; padding: 12px 30px; border: none; border-radius: 2px; cursor: pointer; font-weight: bold; font-size: 0.875rem; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.1em;">
                         CLOSE
                     </button>
                 </div>
@@ -651,29 +609,16 @@
         `;
         document.body.appendChild(ldrModal);
 
-        // Show button after scrolling
-        let scrollThreshold = 300;
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > scrollThreshold) {
-                ldrButton.classList.add('visible');
-            } else {
-                ldrButton.classList.remove('visible');
-            }
-        });
-
-        // Show random quote on click
-        ldrButton.addEventListener('click', () => {
-            const randomQuote = ldrQuotes[Math.floor(Math.random() * ldrQuotes.length)];
-            document.getElementById('ldr-quote-text').innerHTML = `
-                "${randomQuote.text}"<br><br>
-                <span style="color: #ff0080; font-weight: bold;">— ${randomQuote.episode}</span>
-            `;
-            ldrModal.classList.add('active');
-        });
-
         // Close modal on background click
         ldrModal.addEventListener('click', (e) => {
             if (e.target === ldrModal) {
+                ldrModal.classList.remove('active');
+            }
+        });
+
+        // Close modal on ESC key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
                 ldrModal.classList.remove('active');
             }
         });
@@ -687,17 +632,10 @@
             if (ldrSequence.length > 3) ldrSequence.shift();
 
             if (JSON.stringify(ldrSequence) === JSON.stringify(targetSequence)) {
-                // Trigger glitch effect
-                document.body.style.animation = 'ldrGlitch 0.5s ease';
-                ldrButton.style.animation = 'rainbow 2s linear infinite';
-                setTimeout(() => {
-                    document.body.style.animation = '';
-                }, 500);
-
                 // Show all quotes
                 const allQuotes = ldrQuotes.map(q => `"${q.text}" — ${q.episode}`).join('<br><br>');
                 document.getElementById('ldr-quote-text').innerHTML = `
-                    <div style="color: #0070f3; font-weight: bold; margin-bottom: 20px; font-family: 'JetBrains Mono', monospace;">SECRET UNLOCKED</div>
+                    <div style="color: #ff0000; font-weight: bold; margin-bottom: 20px; font-family: 'JetBrains Mono', monospace;">SECRET UNLOCKED</div>
                     ${allQuotes}
                 `;
                 ldrModal.classList.add('active');
