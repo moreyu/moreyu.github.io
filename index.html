@@ -33,7 +33,7 @@
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        sans: ['"JetBrains Mono"', '"SF Mono"', 'Consolas', 'monospace'],
                         mono: ['"JetBrains Mono"', 'monospace']
                     }
                 }
@@ -72,10 +72,15 @@
             margin: 0;
             padding: 0;
             background: var(--bg);
-            font-family: 'Inter', system-ui, sans-serif;
+            font-family: 'JetBrains Mono', 'SF Mono', 'Consolas', monospace;
             color: var(--text);
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Apply sans-serif to Chinese characters only */
+        body * {
+            font-family: 'JetBrains Mono', 'SF Mono', 'Consolas', monospace;
         }
 
         /* Loading indicator */
