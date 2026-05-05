@@ -4,7 +4,7 @@ function Hero() {
     const [showCursor, setShowCursor] = React.useState(true);
     const [typingLine, setTypingLine] = React.useState(1);
     const fullLine1 = 'Build Fast,';
-    const fullLine2 = 'Ship Faster';
+    const fullLine2 = 'Ship Faster...';
 
     React.useEffect(() => {
         let currentIndex = 0;
