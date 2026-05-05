@@ -624,17 +624,14 @@
             { text: "Jibaro: Love is a siren's call.", episode: "Jibaro" }
         ];
 
-        let ldrClickCount = 0;
-        let ldrTimeout;
-
         // Create LDR easter egg button
         const ldrButton = document.createElement('div');
         ldrButton.className = 'ldr-easter-egg';
-        ldrButton.innerHTML = '💀';
-        ldrButton.style.fontSize = '30px';
+        ldrButton.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-5-9c.83 0 1.5-.67 1.5-1.5S7.83 8 7 8s-1.5.67-1.5 1.5S6.17 11 7 11zm5 0c.83 0 1.5-.67 1.5-1.5S12.83 8 12 8s-1.5.67-1.5 1.5S11.17 11 12 11zm5 0c.83 0 1.5-.67 1.5-1.5S17.83 8 17 8s-1.5.67-1.5 1.5.67 1.5 1.5 1.5z"/></svg>';
         ldrButton.style.display = 'flex';
         ldrButton.style.alignItems = 'center';
         ldrButton.style.justifyContent = 'center';
+        ldrButton.style.color = 'white';
         document.body.appendChild(ldrButton);
 
         // Create modal
@@ -646,7 +643,7 @@
                 <div class="ldr-quote" id="ldr-quote-text"></div>
                 <div style="text-align: center; margin-top: 30px;">
                     <button onclick="this.parentElement.parentElement.parentElement.classList.remove('active')"
-                            style="background: linear-gradient(135deg, #ff0080, #7928ca); color: white; padding: 12px 30px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 1rem;">
+                            style="background: linear-gradient(135deg, #ff0080, #7928ca); color: white; padding: 12px 30px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 1rem; font-family: 'JetBrains Mono', monospace;">
                         CLOSE
                     </button>
                 </div>
@@ -700,7 +697,7 @@
                 // Show all quotes
                 const allQuotes = ldrQuotes.map(q => `"${q.text}" — ${q.episode}`).join('<br><br>');
                 document.getElementById('ldr-quote-text').innerHTML = `
-                    <div style="color: #0070f3; font-weight: bold; margin-bottom: 20px;">🎉 SECRET UNLOCKED! 🎉</div>
+                    <div style="color: #0070f3; font-weight: bold; margin-bottom: 20px; font-family: 'JetBrains Mono', monospace;">SECRET UNLOCKED</div>
                     ${allQuotes}
                 `;
                 ldrModal.classList.add('active');

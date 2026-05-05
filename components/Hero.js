@@ -1,4 +1,29 @@
 function Hero() {
+    const [displayText, setDisplayText] = React.useState('');
+    const [showCursor, setShowCursor] = React.useState(true);
+    const fullText = 'Build Fast, Ship Faster';
+
+    React.useEffect(() => {
+        let currentIndex = 0;
+        const typingInterval = setInterval(() => {
+            if (currentIndex <= fullText.length) {
+                setDisplayText(fullText.slice(0, currentIndex));
+                currentIndex++;
+            } else {
+                clearInterval(typingInterval);
+            }
+        }, 80);
+
+        const cursorInterval = setInterval(() => {
+            setShowCursor(prev => !prev);
+        }, 530);
+
+        return () => {
+            clearInterval(typingInterval);
+            clearInterval(cursorInterval);
+        };
+    }, []);
+
     return (
         <section className="relative min-h-screen overflow-hidden flex items-center justify-center" style={{ background: 'var(--bg)' }}>
             {/* Grid Background */}
@@ -17,20 +42,23 @@ function Hero() {
                     borderRadius: '100px'
                 }}>
                     <div className="w-2 h-2 rounded-full" style={{ background: 'var(--success)', boxShadow: '0 0 10px var(--success)' }}></div>
-                    <span className="text-sm font-medium" style={{ color: 'var(--text-secondary)' }}>Available for opportunities</span>
+                    <span className="text-sm font-medium" style={{ color: 'var(--text-secondary)', fontFamily: 'JetBrains Mono, monospace' }}>Available for opportunities</span>
                 </div>
 
-                {/* Headline */}
+                {/* Headline with Typewriter Effect */}
                 <h1
                     className="text-6xl md:text-8xl lg:text-9xl font-black leading-[0.95] mb-8 fade-in-up fade-in-delay-3"
                     style={{
                         color: 'var(--text)',
-                        letterSpacing: '-0.05em'
+                        letterSpacing: '-0.02em',
+                        fontFamily: 'JetBrains Mono, SF Mono, Consolas, monospace',
+                        minHeight: '200px'
                     }}
                 >
-                    Build Fast,
-                    <br />
-                    <span className="gradient-text" style={{ whiteSpace: 'nowrap' }}>Ship Faster</span>
+                    <span className="gradient-text">
+                        {displayText}
+                        <span style={{ opacity: showCursor ? 1 : 0, color: 'var(--accent)' }}>_</span>
+                    </span>
                 </h1>
 
                 {/* Subheading */}
@@ -47,7 +75,7 @@ function Hero() {
                         href="https://all-in.cc.cd"
                         target="_blank"
                         className="btn-primary flex items-center gap-3"
-                        style={{ textDecoration: 'none' }}
+                        style={{ textDecoration: 'none', fontFamily: 'JetBrains Mono, monospace' }}
                     >
                         <svg className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                             <path d="M13 10V3L4 14h7v7l9-11h-7z"/>
@@ -70,8 +98,8 @@ function Hero() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto fade-in-up fade-in-delay-6">
                     <div className="glass-card glass-card-hover p-8 text-left glow">
                         <div className="code-block mb-6">React</div>
-                        <div className="text-3xl font-bold mb-2" style={{ color: 'var(--text)' }}>Frontend</div>
-                        <div className="text-sm" style={{ color: 'var(--text-secondary)' }}>
+                        <div className="text-3xl font-bold mb-2" style={{ color: 'var(--text)', fontFamily: 'JetBrains Mono, monospace' }}>Frontend</div>
+                        <div className="text-sm" style={{ color: 'var(--text-secondary)', fontFamily: 'JetBrains Mono, monospace' }}>
                             React, Next.js, TypeScript
                             <br />
                             Tailwind, Framer Motion
@@ -79,8 +107,8 @@ function Hero() {
                     </div>
                     <div className="glass-card glass-card-hover p-8 text-left glow">
                         <div className="code-block mb-6">Python</div>
-                        <div className="text-3xl font-bold mb-2" style={{ color: 'var(--text)' }}>Backend</div>
-                        <div className="text-sm" style={{ color: 'var(--text-secondary)' }}>
+                        <div className="text-3xl font-bold mb-2" style={{ color: 'var(--text)', fontFamily: 'JetBrains Mono, monospace' }}>Backend</div>
+                        <div className="text-sm" style={{ color: 'var(--text-secondary)', fontFamily: 'JetBrains Mono, monospace' }}>
                             FastAPI, Django, Go
                             <br />
                             PostgreSQL, Redis, Docker
@@ -88,8 +116,8 @@ function Hero() {
                     </div>
                     <div className="glass-card glass-card-hover p-8 text-left glow">
                         <div className="code-block mb-6">AI/ML</div>
-                        <div className="text-3xl font-bold mb-2" style={{ color: 'var(--text)' }}>Intelligence</div>
-                        <div className="text-sm" style={{ color: 'var(--text-secondary)' }}>
+                        <div className="text-3xl font-bold mb-2" style={{ color: 'var(--text)', fontFamily: 'JetBrains Mono, monospace' }}>Intelligence</div>
+                        <div className="text-sm" style={{ color: 'var(--text-secondary)', fontFamily: 'JetBrains Mono, monospace' }}>
                             LangChain, OpenAI API
                             <br />
                             RAG, Vector Search, Agents
@@ -100,7 +128,7 @@ function Hero() {
 
             {/* Scroll Indicator */}
             <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-3 fade-in-up fade-in-delay-7">
-                <div className="text-xs font-semibold tracking-widest" style={{ color: 'var(--text-tertiary)' }}>SCROLL</div>
+                <div className="text-xs font-semibold tracking-widest" style={{ color: 'var(--text-tertiary)', fontFamily: 'JetBrains Mono, monospace' }}>SCROLL</div>
                 <svg className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" style={{ color: 'var(--text-tertiary)', animation: 'bounce 2s infinite' }}>
                     <path d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
                 </svg>
