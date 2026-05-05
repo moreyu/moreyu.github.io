@@ -4,7 +4,7 @@ function Hero() {
     const [showCursor, setShowCursor] = React.useState(true);
     const [typingLine, setTypingLine] = React.useState(1);
     const fullLine1 = 'Build Fast,';
-    const fullLine2 = 'Ship Faster...';
+    const fullLine2 = 'Ship Faster';
 
     React.useEffect(() => {
         let currentIndex = 0;
@@ -64,11 +64,14 @@ function Hero() {
                     style={{
                         color: 'var(--text)',
                         letterSpacing: '-0.02em',
-                        minHeight: '200px'
+                        minHeight: '200px',
+                        fontFamily: 'JetBrains Mono, SF Mono, Consolas, monospace'
                     }}
                 >
-                    {line1Text}
-                    {typingLine === 1 && <span style={{ opacity: showCursor ? 1 : 0, color: 'var(--accent)' }}>_</span>}
+                    <span className="gradient-text">
+                        {line1Text}
+                        {typingLine === 1 && <span style={{ opacity: showCursor ? 1 : 0, color: 'var(--accent)' }}>_</span>}
+                    </span>
                     <br />
                     <span className="gradient-text" style={{ whiteSpace: 'nowrap' }}>
                         {line2Text}
@@ -113,7 +116,7 @@ function Hero() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto fade-in-up fade-in-delay-6">
                     <div className="glass-card glass-card-hover p-8 text-left glow">
                         <div className="code-block mb-6">React</div>
-                        <div className="text-3xl font-bold mb-2" style={{ color: 'var(--text)' }}>Frontend</div>
+                        <div className="text-3xl font-bold mb-2" style={{ color: 'var(--text)', fontFamily: 'Inter, system-ui, sans-serif' }}>Frontend</div>
                         <div className="text-sm" style={{ color: 'var(--text-secondary)' }}>
                             React, Next.js, TypeScript
                             <br />
@@ -122,7 +125,7 @@ function Hero() {
                     </div>
                     <div className="glass-card glass-card-hover p-8 text-left glow">
                         <div className="code-block mb-6">Python</div>
-                        <div className="text-3xl font-bold mb-2" style={{ color: 'var(--text)' }}>Backend</div>
+                        <div className="text-3xl font-bold mb-2" style={{ color: 'var(--text)', fontFamily: 'Inter, system-ui, sans-serif' }}>Backend</div>
                         <div className="text-sm" style={{ color: 'var(--text-secondary)' }}>
                             FastAPI, Django, Go
                             <br />
@@ -131,7 +134,7 @@ function Hero() {
                     </div>
                     <div className="glass-card glass-card-hover p-8 text-left glow">
                         <div className="code-block mb-6">AI/ML</div>
-                        <div className="text-3xl font-bold mb-2" style={{ color: 'var(--text)' }}>Intelligence</div>
+                        <div className="text-3xl font-bold mb-2" style={{ color: 'var(--text)', fontFamily: 'Inter, system-ui, sans-serif' }}>Intelligence</div>
                         <div className="text-sm" style={{ color: 'var(--text-secondary)' }}>
                             LangChain, OpenAI API
                             <br />
