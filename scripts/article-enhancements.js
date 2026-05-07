@@ -336,92 +336,10 @@
         });
     }
 
-    // Add hamburger menu for mobile
+    // Add hamburger menu for mobile - DISABLED (HTML already has it)
     function addHamburgerMenu() {
-        const nav = document.querySelector('nav');
-        if (!nav) return;
-
-        // Check if hamburger menu already exists in HTML
-        if (document.getElementById('mobile-menu-btn')) {
-            console.log('Hamburger menu already exists, skipping creation');
-            return;
-        }
-
-        const navInner = nav.querySelector('div');
-        const navButtons = navInner.querySelector('div:last-child');
-
-        // Create hamburger button
-        const hamburger = document.createElement('button');
-        hamburger.id = 'hamburger-btn';
-        hamburger.style.cssText = `
-            display: none;
-            flex-direction: column;
-            gap: 4px;
-            padding: 8px;
-            background: transparent;
-            border: none;
-            cursor: pointer;
-        `;
-        hamburger.innerHTML = `
-            <span style="width: 24px; height: 2px; background: rgba(255, 255, 255, 0.8); transition: all 0.3s;"></span>
-            <span style="width: 24px; height: 2px; background: rgba(255, 255, 255, 0.8); transition: all 0.3s;"></span>
-            <span style="width: 24px; height: 2px; background: rgba(255, 255, 255, 0.8); transition: all 0.3s;"></span>
-        `;
-
-        // Create mobile menu
-        const mobileMenu = document.createElement('div');
-        mobileMenu.id = 'mobile-menu';
-        mobileMenu.style.cssText = `
-            display: none;
-            position: fixed;
-            top: 64px;
-            left: 0;
-            right: 0;
-            background: rgba(10, 10, 10, 0.98);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 1rem;
-            z-index: 999;
-        `;
-        mobileMenu.innerHTML = navButtons.innerHTML;
-
-        // Toggle menu
-        hamburger.onclick = () => {
-            const isOpen = mobileMenu.style.display === 'flex';
-            mobileMenu.style.display = isOpen ? 'none' : 'flex';
-            mobileMenu.style.flexDirection = 'column';
-            mobileMenu.style.gap = '1rem';
-
-            // Animate hamburger
-            const spans = hamburger.querySelectorAll('span');
-            if (isOpen) {
-                spans[0].style.transform = 'rotate(0)';
-                spans[1].style.opacity = '1';
-                spans[2].style.transform = 'rotate(0)';
-            } else {
-                spans[0].style.transform = 'rotate(45deg) translateY(8px)';
-                spans[1].style.opacity = '0';
-                spans[2].style.transform = 'rotate(-45deg) translateY(-8px)';
-            }
-        };
-
-        navInner.appendChild(hamburger);
-        nav.appendChild(mobileMenu);
-
-        // Add responsive styles
-        const style = document.createElement('style');
-        style.textContent = `
-            @media (max-width: 768px) {
-                #hamburger-btn {
-                    display: flex !important;
-                }
-                nav > div > div:last-child {
-                    display: none !important;
-                }
-                /* Keep Solari normal size on mobile */
-            }
-        `;
-        document.head.appendChild(style);
+        // Completely disabled - hamburger menu is in HTML
+        return;
     }
 
     // Enhance navigation buttons
@@ -579,15 +497,11 @@
                     display: none !important;
                 }
 
-                #hamburger-btn {
-                    display: flex !important;
-                }
+                /* No hamburger-btn styling - using HTML's mobile-menu-btn instead */
 
-                /* Scale down Solari on mobile */
+                /* Keep Solari normal size on mobile */
                 #solari-display {
-                    transform: scale(0.6);
-                    transform-origin: left center;
-                    padding: 6px 8px !important;
+                    /* No scaling - keep original size */
                 }
 
                 #reading-time {
