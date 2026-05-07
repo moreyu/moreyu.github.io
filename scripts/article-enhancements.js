@@ -341,6 +341,12 @@
         const nav = document.querySelector('nav');
         if (!nav) return;
 
+        // Check if hamburger menu already exists in HTML
+        if (document.getElementById('mobile-menu-btn')) {
+            console.log('Hamburger menu already exists, skipping creation');
+            return;
+        }
+
         const navInner = nav.querySelector('div');
         const navButtons = navInner.querySelector('div:last-child');
 
@@ -413,8 +419,13 @@
                     display: none !important;
                 }
                 #solari-display {
-                    transform: scale(0.85);
+                    transform: scale(0.7);
                     transform-origin: left center;
+                }
+            }
+            @media (max-width: 480px) {
+                #solari-display {
+                    display: none !important;
                 }
             }
         `;
