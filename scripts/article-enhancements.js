@@ -418,15 +418,7 @@
                 nav > div > div:last-child {
                     display: none !important;
                 }
-                #solari-display {
-                    transform: scale(0.7);
-                    transform-origin: left center;
-                }
-            }
-            @media (max-width: 480px) {
-                #solari-display {
-                    display: none !important;
-                }
+                /* Keep Solari normal size on mobile */
             }
         `;
         document.head.appendChild(style);
@@ -666,7 +658,7 @@
         // Wait a bit for React to render
         setTimeout(() => {
             addSolariToNav();
-            addHamburgerMenu();
+            // addHamburgerMenu(); // Disabled: HTML already has hamburger menu
             enhanceNavButtons();
             createScrollProgress();
             createReadingTime();
