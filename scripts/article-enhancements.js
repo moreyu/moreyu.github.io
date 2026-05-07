@@ -3,7 +3,143 @@
     'use strict';
 
     // Solari logo is now rendered via React component in article HTML
-    // The scroll status display has been removed to avoid confusion
+    // Solari scroll status display shows reading progress
+
+    // Create Solari scroll status display
+    function createSolariDisplay() {
+        const container = document.createElement('div');
+        container.id = 'solari-scroll-status';
+        container.style.cssText = `
+            position: fixed;
+            top: 80px;
+            right: 30px;
+            padding: 12px 16px;
+            background: rgba(10, 10, 10, 0.95);
+            border: 2px solid #ff0000;
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+            z-index: 999;
+            font-family: 'JetBrains Mono', monospace;
+            box-shadow: 0 4px 20px rgba(255, 0, 0, 0.3);
+        `;
+
+        const display = document.createElement('div');
+        display.id = 'solari-chars';
+        display.style.cssText = `
+            display: flex;
+            gap: 2px;
+        `;
+
+        // Create 13 character slots
+        for (let i = 0; i < 13; i++) {
+            const slot = document.createElement('div');
+            slot.className = 'solari-slot';
+            slot.style.cssText = `
+                width: 14px;
+                height: 24px;
+                position: relative;
+                perspective: 400px;
+            `;
+
+            const flipper = document.createElement('div');
+            flipper.className = 'solari-flipper';
+            flipper.style.cssText = `
+                width: 100%;
+                height: 100%;
+                position: relative;
+                transform-style: preserve-3d;
+                transition: transform 0.6s ease;
+            `;
+
+            const front = document.createElement('div');
+            front.className = 'solari-face solari-front';
+            front.style.cssText = `
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                backface-visibility: hidden;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: #1a1a1a;
+                color: #ff0000;
+                font-size: 16px;
+                font-weight: 600;
+                border: 1px solid #333;
+            `;
+            front.textContent = ' ';
+
+            const back = document.createElement('div');
+            back.className = 'solari-face solari-back';
+            back.style.cssText = `
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                backface-visibility: hidden;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: #1a1a1a;
+                color: #ff0000;
+                font-size: 16px;
+                font-weight: 600;
+                border: 1px solid #333;
+                transform: rotateX(180deg);
+            `;
+            back.textContent = ' ';
+
+            flipper.appendChild(front);
+            flipper.appendChild(back);
+            slot.appendChild(flipper);
+            display.appendChild(slot);
+        }
+
+        container.appendChild(display);
+        document.body.appendChild(container);
+    }
+
+    // Flip a single character
+    function flipCharacter(index, newChar) {
+        const slots = document.querySelectorAll('.solari-slot');
+        if (!slots[index]) return;
+
+        const flipper = slots[index].querySelector('.solari-flipper');
+        const front = flipper.querySelector('.solari-front');
+        const back = flipper.querySelector('.solari-back');
+
+        // Set new character on back face
+        back.textContent = newChar;
+
+        // Flip animation
+        flipper.style.transform = 'rotateX(180deg)';
+
+        // After flip completes, reset for next flip
+        setTimeout(() => {
+            front.textContent = newChar;
+            flipper.style.transition = 'none';
+            flipper.style.transform = 'rotateX(0deg)';
+            setTimeout(() => {
+                flipper.style.transition = 'transform 0.6s ease';
+            }, 50);
+        }, 600);
+    }
+
+    // Update status with flip animation
+    let lastStatus = '';
+    function updateStatus(status) {
+        if (status === lastStatus) return;
+        lastStatus = status;
+
+        // Pad status to 13 characters
+        const paddedStatus = status.padEnd(13, ' ');
+
+        // Flip each character with stagger
+        for (let i = 0; i < 13; i++) {
+            setTimeout(() => {
+                flipCharacter(i, paddedStatus[i]);
+            }, i * 50);
+        }
+    }
 
     // Smooth scroll progress bar
     function createScrollProgress() {
@@ -23,7 +159,7 @@
         return bar;
     }
 
-    // Update scroll progress bar
+    // Update scroll progress bar and Solari status
     function updateScrollProgress() {
         const bar = document.getElementById('scroll-progress-bar');
         if (!bar) return;
@@ -34,6 +170,21 @@
 
         const scrollPercentage = (scrollTop / (documentHeight - windowHeight)) * 100;
         bar.style.width = Math.min(100, Math.max(0, scrollPercentage)) + '%';
+
+        // Update Solari status based on scroll percentage
+        let status = 'START        ';
+        if (scrollPercentage > 95) {
+            status = 'COMPLETED ✓  ';
+        } else if (scrollPercentage > 75) {
+            status = 'ALMOST DONE  ';
+        } else if (scrollPercentage > 50) {
+            status = 'KEEP GOING   ';
+        } else if (scrollPercentage > 25) {
+            status = 'HALFWAY      ';
+        } else if (scrollPercentage > 5) {
+            status = 'READING...   ';
+        }
+        updateStatus(status);
     }
 
     // Floating reading time indicator
@@ -348,6 +499,7 @@
         // Initialize immediately - no setTimeout needed
         enableMobileMenu();
         enhanceNavButtons();
+        createSolariDisplay();
         createScrollProgress();
         createReadingTime();
         addSectionMarkers();
